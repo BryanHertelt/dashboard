@@ -23,8 +23,8 @@ class Database_connector:
             self.connection.close()
 
 
-db = Database_connector("host=localhost user=postgres password=password dbname=example port=5432")
-cursor = db.get_cursor()
-cursor.execute("CREATE TABLE xejsflghjgsjef (id SERIAL PRIMARY KEY, type VARCHAR(50), location VARCHAR(50));")
-db.connection.commit()
-db.close_connection()
+# Redis Connectors
+class Message_broker_connector:
+    
+    def __init__(self, connection_string):
+        pass
