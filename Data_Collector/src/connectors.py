@@ -13,27 +13,15 @@ class Database_connector:
     def get_cursor(self): # Establish connection and returns cursor
         try:
             self.connection = psycopg2.connect(self._connections_string)
-        except Exception as error:
-            #Logging
-            pass
+        except psycopg2.OperationalError as error:
             self._connection = None
-        try:   
-            self.cursor = self.connection.cursor()
-        except Exception as error:
-            #Logging
-            pass
+        self.cursor = self.connection.cursor()
         return self.cursor
      
     def close_connection(self): # Closes connection.
         if self.connection != None:
-            try:
-                self.connection.close()
-            except Exception as error:
-                #Logging
-                pass
-        else:
-            #Logging
-            pass
+            self.connection.close()
+
 
 db = Database_connector("host=localhost user=postgres password=password dbname=example port=5432")
 cursor = db.get_cursor()
