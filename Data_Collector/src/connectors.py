@@ -15,6 +15,7 @@ class Database_connector:
             self.connection = psycopg2.connect(self._connections_string)
         except psycopg2.OperationalError as error:
             self._connection = None
+            raise
         self.cursor = self.connection.cursor()
         return self.cursor
      
