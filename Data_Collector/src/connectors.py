@@ -17,7 +17,14 @@ class Database_connector:
             self._connection = None
             raise
         self.cursor = self.connection.cursor()
-        return self.cursor
+    
+    def write(self, query_statement, data):
+        if self.cursor != None:
+            try:
+                psycopg2.execute_value(self.cursor, query_statement, data)
+            except:
+                self.cursor.rollback()
+                raise
      
     def close_connection(self): #Closes connection.
         if self.connection != None:
