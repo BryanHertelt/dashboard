@@ -1,3 +1,8 @@
 .python-version
 .DS_Store
 Flyzer.code-workspace
+Data_Collector/src/__pycache__/__init__.cpython-38.pyc
+Data_Collector/src/__pycache__/connectors.cpython-38.pyc
+Data_Collector/test/__pycache__/test_connectors.cpython-38-pytest-7.1.2.pyc
+Data_Collector/test/__pycache__/__init__.cpython-38.pyc
+.vscode/settings.json
