@@ -1,8 +1,8 @@
-# Imports
+#Imports 
 import psycopg2
 from psycopg2 import OperationalError
 
-# Database Connector
+#Database Connector
 class Database_connector:
     
     def __init__(self,connections_string): 
@@ -10,7 +10,7 @@ class Database_connector:
         self.cursor = None
         self.connection = None
     
-    def get_cursor(self): # Establish connection and returns cursor
+    def get_cursor(self): #Establish connection and returns cursor
         try:
             self.connection = psycopg2.connect(self._connections_string)
         except psycopg2.OperationalError as error:
@@ -19,12 +19,12 @@ class Database_connector:
         self.cursor = self.connection.cursor()
         return self.cursor
      
-    def close_connection(self): # Closes connection.
+    def close_connection(self): #Closes connection.
         if self.connection != None:
             self.connection.close()
 
 
-# Redis Connectors
+#Redis Connectors
 class Message_broker_connector:
     
     def __init__(self, connection_string):
