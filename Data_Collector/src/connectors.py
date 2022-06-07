@@ -1,6 +1,5 @@
 #Imports 
 import psycopg2
-from psycopg2 import OperationalError
 
 #Database Connector
 class Database_connector:
@@ -10,26 +9,29 @@ class Database_connector:
         self.cursor = None
         self.connection = None
     
-    def get_cursor(self): #Establish connection and returns cursor
+    def connect(self): #Establish connection and returns cursor
         try:
             self.connection = psycopg2.connect(self._connections_string)
-        except psycopg2.OperationalError as error:
-            self._connection = None
+        except Exception as e:
+            #### Log e
             raise
-        self.cursor = self.connection.cursor()
+        else:
+            self.cursor = self.connection.cursor()
     
     def write(self, query_statement, data):
         if self.cursor != None:
             try:
                 psycopg2.execute_value(self.cursor, query_statement, data)
-            except:
+            except Exception as e:
+                #### Log e
                 self.cursor.rollback()
                 raise
+            else:
+                self.cursor.commit()
      
     def close_connection(self): #Closes connection.
         if self.connection != None:
             self.connection.close()
-
 
 #Redis Connectors
 class Message_broker_connector:
