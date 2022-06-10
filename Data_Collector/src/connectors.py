@@ -59,9 +59,9 @@ class Message_broker_connector:
     def connect(self):
         try:
             self.connection = redis.Redis(
-                host=self.connection_string["host"],
-                port=self.connection_string["port"],
-                password=self.connection_string["password"],
+                host=self._connection_string["host"],
+                port=self._connection_string["port"],
+                password=self._connection_string["password"],
             )
         except redis.RedisError as error:
             self._logger.exception("Messagebroker connect failed.")
