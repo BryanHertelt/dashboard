@@ -1,10 +1,10 @@
-#Imports 
 ###LOGGER_NAME muss noch festgelegt werden###
 
+#Imports 
 import psycopg2
+import redis
 import logging
 from psycopg2 import OperationalError, ProgrammingError
-
 
 class Database_connector:
     
@@ -47,5 +47,19 @@ class Database_connector:
 #Redis Connectors
 class Message_broker_connector:
     
-    def __init__(self, connection_string):
+    ''' Connects to message broker'''
+    
+    def __init__(self, connection_string: dict):
+        self._connection_string = connection_string
+        self.connection = None
+        self.logger = logging.getLogger("LOGGER_NAME")
+        # Log 
+       
+    def connect(self):
+        self.connection = redis.Redis(host=self.connection_string["host"], port=self.connection["port"])
+    
+    def write(self, query_statement: str, data: list):
+        pass
+    
+    def close_connection(self):
         pass
