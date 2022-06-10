@@ -14,8 +14,8 @@ class Database_connector:
         self._connection_string = connection_string
         self.cursor = None
         self.connection = None
-        self.logger = logging.getLogger("LOGGER_NAME")
-        self.logger.debug("Database_connector initialized.")
+        self._logger = logging.getLogger("LOGGER_NAME")
+        self._logger.debug("Database_connector initialized.")
     
     def connect(self): #Establish connection and returns cursor
         try:
@@ -56,7 +56,18 @@ class Message_broker_connector:
         # Log 
        
     def connect(self):
-        self.connection = redis.Redis(host=self.connection_string["host"], port=self.connection["port"])
+        try:
+            self.connection = redis.Redis(
+                host=self.connection_string["host"],
+                port=self.connection_string["port"],
+                password=self.connection_string["password"],
+            )
+        except redis.RedisError as error:
+            # Log e
+            raise
+        else:
+            # Log
+            pass
     
     def write(self, query_statement: str, data: list):
         pass
