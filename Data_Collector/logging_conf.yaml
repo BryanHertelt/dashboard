@@ -1,0 +1,27 @@
+'''
+#muss noch in der main.py initialisiert werden
+
+import logging.config
+with open("PATH", "r")
+    logging.config.dictConfig(yaml.load(LOGGING_CONFIG))
+
+'''
+version: 1
+formatters:
+  default:
+    format: '%(asctime)s %(levelname)s %(name)s %(message)s'
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: DEBUG
+    formatter: default
+    stream: ext://sys.stdout
+  file:
+    class : logging.FileHandler
+    formatter: default
+    filename: bot.log
+loggers:
+  cloaked_chatter:
+    level: DEBUG
+    handlers: [console, file]
+    propagate: no
