@@ -19,9 +19,13 @@ handlers:
   file:
     class : logging.FileHandler
     formatter: default
-    filename: bot.log
+    filename: collector.log
 loggers:
-  cloaked_chatter:
+  connectors:
     level: DEBUG
-    handlers: [console, file]
+    handlers: [console]
+    propagate: no
+  __main__: 
+    level: DEBUG
+    handlers: [console]
     propagate: no
