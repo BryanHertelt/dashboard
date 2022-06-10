@@ -21,28 +21,28 @@ class Database_connector:
         try:
             self.connection = psycopg2.connect(self._connection_string)
         except OperationalError as error:
-            self.logger.exception("Connection to database failed.")
+            self._logger.exception("Connection to database failed.")
             raise
         else:
             self.cursor = self.connection.cursor()
-            self.logging.debug("Connection to database established.")
+            self._logger.info("Connection to database succeeded.")
     
     def write(self, query_statement: str, data: list): #Write query statement
         if self.cursor != None:
             try:
                 psycopg2.execute_value(self.cursor, query_statement, data)
             except ProgrammingError as error:
-                self.logger.exception("Cannot execute query statement")
+                self._logger.exception("Cannot execute query statement")
                 self.cursor.rollback()
                 raise
             else:
                 self.cursor.commit()
-                self.logger.debug("Executed query statement.")
+                self._logger.debug("Executed query statement.")
      
     def close_connection(self): #Closes connection.
         if self.connection != None:
             self.connection.close()
-            self.logger.info("Connection closed.")
+            self._logger.info("Connection closed.")
 
 #Redis Connectors
 class Message_broker_connector:
@@ -53,7 +53,8 @@ class Message_broker_connector:
         self._connection_string = connection_string
         self.connection = None
         self.logger = logging.getLogger("LOGGER_NAME")
-        # Log 
+        self._logger = logging.getLogger("LOGGER_NAME")
+        self._logger.debug("Message_broker_connector initialized.")
        
     def connect(self):
         try:
@@ -63,14 +64,20 @@ class Message_broker_connector:
                 password=self.connection_string["password"],
             )
         except redis.RedisError as error:
-            # Log e
+            self._logger.exception("Messagebroker connect failed.")
             raise
         else:
-            # Log
-            pass
+            self._logger.debug("Messagebroker connect succeeded.")
     
-    def write(self, query_statement: str, data: list):
-        pass
-    
-    def close_connection(self):
-        pass
+    def write(self, data: list):
+        try:
+            pipeline = self.connection.pipeline()
+        except redis.RedisError as error:
+            self._logger.exception("Messagebroker write failed.")
+            raise
+        else:
+            self._logger.debug("Messagebroker write succeeded.")
+        for item in data:
+            pipeline.hsmet(item)                   ###Change to right command###
+        pipeline.execute()
+        self._logger.debug("Write succeeded.")
