@@ -16,7 +16,7 @@ class Database_connector:
         self._connection_string = connection_string
         self.cursor = None
         self.connection = None
-        self._logger = logging.getLogger("LOGGER_NAME")
+        self._logger = logging.getLogger("connectors")
         self._logger.debug("Database_connector initialized.")
     
     def connect(self):
@@ -62,8 +62,7 @@ class Message_broker_connector:
     def __init__(self, connection_string: dict):
         self._connection_string = connection_string
         self.connection = None
-        self.logger = logging.getLogger("LOGGER_NAME")
-        self._logger = logging.getLogger("LOGGER_NAME")
+        self.logger = logging.getLogger("connectors")
         self._logger.debug("Message_broker_connector initialized.")
        
     def connect(self):
@@ -82,7 +81,7 @@ class Message_broker_connector:
         else:
             self._logger.debug("Messagebroker connect succeeded.")
     
-    def write(self, data: list):
+    def write(self, data: list, source: str):
         
         '''Executes query statement.'''
         
@@ -94,6 +93,11 @@ class Message_broker_connector:
         else:
             self._logger.debug("Messagebroker write succeeded.")
         for item in data:
-            pipeline.hsmet(item)                   ###Change to right command###
-        pipeline.execute()
-        self._logger.debug("Write succeeded.")
+            pipeline.publish(source + item[0], item[1])
+        try:
+            pipeline.execute()
+        except redis.RedisError as error:
+            self._logger.exception("Pipeline execute failed.")
+            raise
+        else:
+            self._logger.debug("Write succeeded.")
