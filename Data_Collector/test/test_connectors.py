@@ -9,6 +9,6 @@ def test_Database_connector():
     db.close_connection()
 
 def test_Message_broker_connector():
-    mb = Message_broker_connector({"host": "localhost"})
+    mb = Message_broker_connector({"host": "localhost", "port": 6379})
     mb.connect()
-    pass
+    mb.connection.ping()
