@@ -1,6 +1,5 @@
 ###LOGGER_NAME muss noch festgelegt werden###
 
-#Imports 
 import psycopg2
 import redis
 import logging
@@ -56,10 +55,9 @@ class Database_connector:
             self.connection.close()
             self._logger.info("Connection closed.")
 
-#Redis Connectors
 class Message_broker_connector:
     
-    ''' Connects to message broker'''
+    ''' Object for message broker connections and operations.'''
     
     def __init__(self, connection_string: dict):
         self._connection_string = connection_string
@@ -69,6 +67,9 @@ class Message_broker_connector:
         self._logger.debug("Message_broker_connector initialized.")
        
     def connect(self):
+        
+        '''Connects to message broker.'''
+        
         try:
             self.connection = redis.Redis(
                 host=self._connection_string["host"],
@@ -82,6 +83,9 @@ class Message_broker_connector:
             self._logger.debug("Messagebroker connect succeeded.")
     
     def write(self, data: list):
+        
+        '''Executes query statement.'''
+        
         try:
             pipeline = self.connection.pipeline()
         except redis.RedisError as error:
