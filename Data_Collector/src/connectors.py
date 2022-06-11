@@ -8,16 +8,22 @@ from psycopg2 import OperationalError, ProgrammingError
 
 class Database_connector:
     
-    '''Connects to database'''
+    '''Object for database connections and operations.'''
     
-    def __init__(self,connection_string: str): 
+    def __init__(self,connection_string: str):
+        
+        '''Initialize the Database_connector object.''' 
+        
         self._connection_string = connection_string
         self.cursor = None
         self.connection = None
         self._logger = logging.getLogger("LOGGER_NAME")
         self._logger.debug("Database_connector initialized.")
     
-    def connect(self): #Establish connection and returns cursor
+    def connect(self):
+        
+        '''Connects to the database.'''
+        
         try:
             self.connection = psycopg2.connect(self._connection_string)
         except OperationalError as error:
@@ -27,7 +33,10 @@ class Database_connector:
             self.cursor = self.connection.cursor()
             self._logger.info("Connection to database succeeded.")
     
-    def write(self, query_statement: str, data: list): #Write query statement
+    def write(self, query_statement: str, data: list):
+        
+        '''Executes query statement.'''
+        
         if self.cursor != None:
             try:
                 psycopg2.execute_value(self.cursor, query_statement, data)
@@ -39,7 +48,10 @@ class Database_connector:
                 self.cursor.commit()
                 self._logger.debug("Executed query statement.")
      
-    def close_connection(self): #Closes connection.
+    def close_connection(self):
+        
+        '''Closes connection to database.'''
+        
         if self.connection != None:
             self.connection.close()
             self._logger.info("Connection closed.")
