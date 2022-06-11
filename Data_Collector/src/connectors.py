@@ -62,7 +62,7 @@ class Message_broker_connector:
     def __init__(self, connection_string: dict):
         self._connection_string = connection_string
         self.connection = None
-        self.logger = logging.getLogger("connectors")
+        self._logger = logging.getLogger("connectors")
         self._logger.debug("Message_broker_connector initialized.")
        
     def connect(self):
