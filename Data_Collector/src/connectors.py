@@ -1,5 +1,3 @@
-###LOGGER_NAME muss noch festgelegt werden###
-
 import psycopg2
 import redis
 import logging
