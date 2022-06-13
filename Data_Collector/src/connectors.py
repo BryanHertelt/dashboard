@@ -32,13 +32,14 @@ class Database_connector:
             self.cursor = self.connection.cursor()
             self._logger.info("Connection to database succeeded.")
     
-    def write(self, query_statement: str, data: list):
+    def write(self, query_statement: str, data: list, table: str):
         
         '''Executes query statement.'''
-        
+
         if self.cursor != None:
+            args_str = ",".join("('%s', '%s')" % (coin, price, volume) for (coin, price, volume) in data)
             try:
-                psycopg2.execute_value(self.cursor, query_statement, data)
+                self.cursor.execute(query_statement.format(table=table + args_str) )
             except ProgrammingError as error:
                 self._logger.exception("Cannot execute query statement")
                 self.cursor.rollback()
