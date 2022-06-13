@@ -19,7 +19,7 @@ class Database_connector:
     
     def connect(self):
         
-        '''Connects to the database.'''
+        '''This function connects to the database.'''
         
         try:
             self.connection = psycopg2.connect(self._connection_string)
@@ -32,7 +32,7 @@ class Database_connector:
     
     def write(self, query_statement: str, data: list, table: str):
         
-        '''Executes query statement.'''
+        '''This function executes the query statement.'''
 
         if self.cursor != None:
             args_str = ",".join("('%s', '%s', '%s')" % (coin, price, volume) for (coin, price, volume) in data)
@@ -48,7 +48,7 @@ class Database_connector:
      
     def close_connection(self):
         
-        '''Closes connection to database.'''
+        '''This function closes the connection to  the database.'''
         
         if self.connection != None:
             self.connection.close()
@@ -66,7 +66,7 @@ class Message_broker_connector:
        
     def connect(self):
         
-        '''Connects to message broker.'''
+        '''This function connects to message broker.'''
         
         try:
             self.connection = redis.Redis(
@@ -82,7 +82,7 @@ class Message_broker_connector:
     
     def write(self, data: list, source: str):
         
-        '''Executes query statement.'''
+        '''This function executes the query statement.'''
         
         try:
             pipeline = self.connection.pipeline()
@@ -100,3 +100,46 @@ class Message_broker_connector:
             raise
         else:
             self._logger.debug("Write succeeded.")
+            
+class Websocket_connector:
+    
+    '''Object for websocket connections and operations.'''
+    
+    def __init__(self):
+        pass
+    
+    def on_message(self):
+        
+        '''This function runs on the event of a new message.'''
+        
+        pass
+    
+    def on_error(self):
+        
+        '''This function runs on the event of an error.'''
+        
+        pass
+    
+    def on_close(self):
+        
+        '''This function runs on the event of a close.'''
+        
+        pass
+    
+    def on_open(self):
+        
+        '''This function runs on the event of a new connection.'''
+        
+        pass
+    
+    def connect(self):
+        
+        '''This functions creates a new connection to a websocket server.'''
+        
+        pass
+    
+    def close_connection(self):
+        
+        '''This function closes the connection to a websocket server.'''
+        
+        pass
