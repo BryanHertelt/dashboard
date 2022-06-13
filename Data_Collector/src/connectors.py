@@ -35,7 +35,7 @@ class Database_connector:
         '''Executes query statement.'''
 
         if self.cursor != None:
-            args_str = ",".join("('%s', '%s')" % (coin, price, volume) for (coin, price, volume) in data)
+            args_str = ",".join("('%s', '%s', '%s')" % (coin, price, volume) for (coin, price, volume) in data)
             try:
                 self.cursor.execute(query_statement.format(table=table + args_str) )
             except ProgrammingError as error:
