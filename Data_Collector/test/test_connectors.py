@@ -1,4 +1,5 @@
 import psycopg2
+import redis
 import time
 
 from src.connectors import Database_connector, Message_broker_connector
@@ -16,7 +17,7 @@ def test_Message_broker_connector():
 def test_db_bench():
     TABLE_NAME = "prices"
     CONNECTION = "postgres://postgres:password@localhost:5432/benchmark"
-    dataset = [("coin", x) for x in range(50000,100001) ]
+    dataset = [("coin", x) for x in range(50000, 100001)]
 
     with psycopg2.connect(CONNECTION) as conn:
         cursor = conn.cursor()
@@ -35,3 +36,16 @@ def test_db_bench():
         end = time.time()
         
     print(end - start)
+    
+def test_redis_bench():
+    dataset = [("coin", x) for x in range(50000, 1000010)]
+    r = redis.Redis(host="localhost", port="6379")
+    pipeline = r.pipeline()
+    start = time.time()
+    for item in dataset:
+        pipeline.publish(str(item), str(item))
+    pipeline.execute()
+    end = time.time()
+    print(end - start)
+    
+test_redis_bench()
