@@ -1,6 +1,8 @@
 import psycopg2
 import redis
 import time
+import websockets
+import asyncio
 
 from src.connectors import Database_connector, Message_broker_connector
 
@@ -48,4 +50,13 @@ def test_redis_bench():
     end = time.time()
     print(end - start)
     
-test_redis_bench()
+
+async def handler(websocket):
+    async for message in websocket:
+        print(message)
+
+async def main():
+    async with websockets.connect("wss://api.gemini.com/v1/marketdata/BTCUSD") as websocket:
+        await handler(websocket)
+
+#asyncio.run(main())
