@@ -4,7 +4,7 @@ import time
 import websockets
 import asyncio
 
-from src.connectors import Database_connector, Message_broker_connector
+from src.connectors import Database_connector, Message_broker_connector, Websocket_connector
 
 def test_Database_connector():
     db = Database_connector("host=localhost dbname=test user=postgres port=5433 password=root")
@@ -58,5 +58,9 @@ async def handler(websocket):
 async def main():
     async with websockets.connect("wss://api.gemini.com/v1/marketdata/BTCUSD") as websocket:
         await handler(websocket)
+####asyncio.run(main())####
 
-#asyncio.run(main())
+def test_Websocket_connector():
+    connector = Websocket_connector(
+        "wss://api.gemini.com/v1/marketdata/BTCUSD")
+    connector.run()
