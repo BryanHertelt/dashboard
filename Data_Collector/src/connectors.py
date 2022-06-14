@@ -1,6 +1,6 @@
-import psycopg2
-import redis
 import logging
+
+import psycopg2
 from psycopg2 import OperationalError, ProgrammingError
 
 class Database_connector:
@@ -53,6 +53,8 @@ class Database_connector:
         if self.connection != None:
             self.connection.close()
             self._logger.info("Connection closed.")
+
+import redis
 
 class Message_broker_connector:
     
