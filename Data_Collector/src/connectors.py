@@ -1,5 +1,6 @@
 import logging
-
+import websockets
+import asyncio
 import psycopg2
 from psycopg2 import OperationalError, ProgrammingError
 
@@ -107,41 +108,16 @@ class Websocket_connector:
     
     '''Object for websocket connections and operations.'''
     
-    def __init__(self):
-        pass
+    def __init__(self, websocket_url: str):
+        self._websocket_url = websocket_url
     
-    def on_message(self):
-        
-        '''This function runs on the event of a new message.'''
-        
-        pass
+    async def connect(self):
+        async with websockets.connect(self._websocket_url) as websocket:
+            await self.handler(websocket)
     
-    def on_error(self):
-        
-        '''This function runs on the event of an error.'''
-        
-        pass
+    async def handler(self, websocket):
+       async for message in websocket:
+           print(message)
     
-    def on_close(self):
-        
-        '''This function runs on the event of a close.'''
-        
-        pass
-    
-    def on_open(self):
-        
-        '''This function runs on the event of a new connection.'''
-        
-        pass
-    
-    def connect(self):
-        
-        '''This functions creates a new connection to a websocket server.'''
-        
-        pass
-    
-    def close_connection(self):
-        
-        '''This function closes the connection to a websocket server.'''
-        
-        pass
+    def run(self):
+        asyncio.run(self.connect())
