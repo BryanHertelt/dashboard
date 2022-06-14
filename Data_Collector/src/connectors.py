@@ -111,13 +111,29 @@ class Websocket_connector:
     def __init__(self, websocket_url: str):
         self._websocket_url = websocket_url
     
-    async def connect(self):
-        async with websockets.connect(self._websocket_url) as websocket:
-            await self.handler(websocket)
+    async def create_connection(self):
+        
+        '''This function creates a websocket connection.'''
+        
+        async for websocket in websockets.connect(self._websocket_url):
+            try:
+                self.handler(websocket)
+            except websockets.ConnectionClose as error:
+                #Log error
+                continue
+            except websockets.InvalidHandshake as error:
+                #Log error
+                raise
+            except websockets.InvalidState as error:
+                #Log error
+                raise
     
     async def handler(self, websocket):
        async for message in websocket:
-           print(message)
+           print(message) ###SEND DATA TO PARSER###
     
-    def run(self):
-        asyncio.run(self.connect())
+    def connect(self):
+        
+        '''This function creates the connection and connect the handler with the websocket.'''
+        
+        asyncio.run(self.create_connection())
