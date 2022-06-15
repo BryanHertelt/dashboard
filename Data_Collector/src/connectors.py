@@ -117,7 +117,7 @@ class Websocket_connector:
         
         async for websocket in websockets.connect(self._websocket_url):
             try:
-                self.handler(websocket)
+                self.receive(websocket)
             except websockets.ConnectionClose as error:
                 #Log error
                 continue
@@ -128,7 +128,7 @@ class Websocket_connector:
                 #Log error
                 raise
     
-    async def handler(self, websocket):
+    async def receive(self, websocket):
         
         '''This function handles every message received from the websocket.'''
         
