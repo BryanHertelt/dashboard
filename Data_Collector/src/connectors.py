@@ -129,7 +129,10 @@ class Websocket_connector:
                 raise
     
     async def handler(self, websocket):
-       async for message in websocket:
+        
+        '''This function handles every message received from the websocket.'''
+        
+        async for message in websocket:
            print(message) ###SEND DATA TO PARSER###
     
     def connect(self):
