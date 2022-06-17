@@ -115,6 +115,18 @@ class Websocket_connector:
         
         '''This function creates a websocket connection.'''
         
+        try:
+            self._websocket_connection = await websockets.connect(self._websocket_url)
+        except websockets.ConnectionClose as error:
+            #Log error
+            raise
+        except websockets.InvalidHandshake as error:
+            #Log error
+            raise
+        except websockets.InvalidState as error:
+            #Log error
+            raise 
+        '''
         async for websocket in websockets.connect(self._websocket_url):
             try:
                 self._websocket_connection = websocket
@@ -127,6 +139,7 @@ class Websocket_connector:
             except websockets.InvalidState as error:
                 #Log error
                 raise
+        '''
     
     async def _message_handler(self, websocket):
         
