@@ -1,8 +1,9 @@
 import logging
+
+import redis
 import websockets
 import asyncio
 import psycopg2
-from psycopg2 import OperationalError, ProgrammingError
 
 class Database_connector:
     
@@ -24,7 +25,7 @@ class Database_connector:
         
         try:
             self.connection = psycopg2.connect(self._connection_string)
-        except OperationalError as error:
+        except psycopg2.OperationalError as error:
             self._logger.exception("Connection to database failed.")
             raise
         else:
@@ -39,7 +40,7 @@ class Database_connector:
             args_str = ",".join("('%s', '%s', '%s')" % (coin, price, volume) for (coin, price, volume) in data)
             try:
                 self.cursor.execute(query_statement.format(table=table + args_str) )
-            except ProgrammingError as error:
+            except psycopg2.ProgrammingError as error:
                 self._logger.exception("Cannot execute query statement")
                 self.cursor.rollback()
                 raise
@@ -54,8 +55,6 @@ class Database_connector:
         if self.connection != None:
             self.connection.close()
             self._logger.info("Connection closed.")
-
-import redis
 
 class Message_broker_connector:
     
@@ -110,14 +109,15 @@ class Websocket_connector:
     
     def __init__(self, websocket_url: str):
         self._websocket_url = websocket_url
+        self._websocket_connection = None
     
-    async def create_connection(self):
+    async def _connection_handler(self):
         
         '''This function creates a websocket connection.'''
         
         async for websocket in websockets.connect(self._websocket_url):
             try:
-                self.receive(websocket)
+                self._websocket_connection = websocket
             except websockets.ConnectionClose as error:
                 #Log error
                 continue
@@ -128,15 +128,25 @@ class Websocket_connector:
                 #Log error
                 raise
     
-    async def receive(self, websocket):
+    async def _message_handler(self, websocket):
         
         '''This function handles every message received from the websocket.'''
         
         async for message in websocket:
            print(message) ###SEND DATA TO PARSER###
     
-    def connect(self):
+    def receive_messages(self):
         
-        '''This function creates the connection and connect the handler with the websocket.'''
+        '''This function creates the connection and connect the message handler with the websocket.'''
         
-        asyncio.run(self.create_connection())
+        asyncio.run(self._message_handler(self._websocket_connection))
+        
+    async def send_messages(self, message: str):
+        try:
+            await self._websocket_connection.send(message)
+        except websockets.ConncetionClosed as error:
+            #Log e
+            raise
+        except websockets.TypeError as error:
+            #Log e
+            raise
