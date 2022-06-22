@@ -163,6 +163,16 @@ class Websocket_connector:
         '''This function handles every message received from the websocket.'''
         
         if self._websocket_connection:
+            async for message in self._websocket_connection:
+               try:
+                   parser_func(message)
+               except websockets.exceptions.ConnectionsClosed:
+                   self.reconnect()#Reconnect
+                   self._logger.exception("Websocket connection closed.")
+               except websockets.exceptions.RuntimeError:
+                   self._logger.exception("Send() method was called from the event loop, in the same moment.")
+                   raise
+            '''
             while True:
                 try:
                     message = await self._websocket_connection.recv()
@@ -174,6 +184,7 @@ class Websocket_connector:
                     self._logger.exception("Recv() method was called, from the event loop, in the same moment")
                     raise
                 parser_func(message)
+            '''
     
     def receive_message(self, parser_func):
         
