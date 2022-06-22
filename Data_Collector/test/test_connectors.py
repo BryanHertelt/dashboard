@@ -2,6 +2,7 @@ import psycopg2
 import redis
 import time
 import websockets
+import asyncio
 
 from src.connectors import Database_connector, Message_broker_connector, Websocket_connector
 
@@ -68,4 +69,14 @@ def test_Websocket_connector():
         "ws://localhost:8001", 4)
     connector.receive_message(prin)
 
-test_Websocket_connector()
+async def test_Websocket_endpoint():
+    websocket = await websockets.connect("ws://localhost:8001")
+    while True:
+        message = await websocket.recv()
+        print(message)
+
+loop = asyncio.get_event_loop()
+loop.run_until_complete(test_Websocket_endpoint())
+loop.close()
+     
+

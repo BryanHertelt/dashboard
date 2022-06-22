@@ -6,6 +6,7 @@ def websocket():
   async def handler(websocket):
       while True:
           await websocket.send("bing bong")
+          await asyncio.sleep(1)
 
 
 
@@ -17,4 +18,4 @@ def websocket():
   if __name__ == "__main__":
       asyncio.run(main())
 
-#websocket()
+websocket()
