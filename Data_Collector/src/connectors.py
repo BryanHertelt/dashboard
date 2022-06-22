@@ -175,11 +175,11 @@ class Websocket_connector:
                     raise
                 parser_func(message)
     
-    def receive_message(self):
+    def receive_message(self, parser_func):
         
         '''This function creates the connection and connect the message handler with the websocket.'''
         
-        asyncio.run(self._message_handler())
+        asyncio.run(self._message_handler(parser_func))
         
     async def send_message(self, message: str):
         
