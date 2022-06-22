@@ -109,9 +109,10 @@ class Websocket_connector:
     
     '''Object for websocket connections and operations.'''
     
-    def __init__(self, websocket_url: str):
+    def __init__(self, websocket_url: str, max_reconnects: int):
         self._websocket_url = websocket_url
         self._websocket_connection = None
+        self._max_reconnects = max_reconnects
         self._logger = logging.getLogger("connectors")
         self._logger.debug("Websocket_connector initialized.")
     
@@ -123,28 +124,30 @@ class Websocket_connector:
             self._websocket_connection = await websockets.connect(self._websocket_url)
         except websockets.exceptions.ConnectionClose:
             self._logger.exception("Websocket connection closed.")
-            #Reconnect
+            self.reconnect()#Reconnect
             raise
         except websockets.exceptions.InvalidHandshake:
             self._logger.exception("Handshake with websocket failed.")
-            #Reconnect
+            self.reconnect()#Reconnect
             raise
         except websockets.exceptions.InvalidURI:
             self._logger.exception("Invalid websocket uri.")
             raise 
     
-    def reconnect(self, max_reconnects: int):
-        for _ in range(max_reconnects):
+    def reconnect(self):
+        for _ in range(self._max_reconnects):
             try:
                 self.create_connection()
             except websockets.exceptions.ConnectionClosed:
                 self._logger.exception("Reconnecting failed.")
                 continue
             except Exception:
-                self._logger.exception("Error when trying to reconnect to the websocket.")
+                self._logger.exception(
+                    "Error when trying to reconnect to the websocket.")
                 raise
             else:
                 return
+               
     
     
     async def close_connection(self, reason: str ="", code: int = 1000):
@@ -164,7 +167,7 @@ class Websocket_connector:
                 try:
                     message = await self._websocket_connection.recv()
                 except websockets.exceptions.ConnectionClose:
-                    #Reconnect
+                    self.reconnect()#Reconnect
                     self._logger.exception("Websocket connection closed.")
                     pass
                 except websockets.exceptions.RuntimeError:
@@ -186,7 +189,7 @@ class Websocket_connector:
             await self._websocket_connection.send(json.dumps(message))
         except websockets.exceptions.ConncetionClosed:
             self._logger.exception("Websocket connection closed.")
-            #Reconnect
+            self.reconnect()#Reconnect
         except websockets.exceptions.TypeError:
             self._logger.exception("Message type is not accepted.")
             raise
