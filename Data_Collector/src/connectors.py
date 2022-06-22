@@ -133,8 +133,18 @@ class Websocket_connector:
             self._logger.exception("Invalid websocket uri.")
             raise 
     
-    def reconnect(self):
-        pass
+    def reconnect(self, max_reconnects: int):
+        for _ in range(max_reconnects):
+            try:
+                self.create_connection()
+            except websockets.exceptions.ConnectionClosed:
+                self._logger.exception("Reconnecting failed.")
+                continue
+            except Exception:
+                self._logger.exception("Error when trying to reconnect to the websocket.")
+                raise
+            else:
+                return
     
     
     async def close_connection(self, reason: str ="", code: int = 1000):
