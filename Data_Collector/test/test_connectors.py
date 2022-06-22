@@ -2,7 +2,6 @@ import psycopg2
 import redis
 import time
 import websockets
-import asyncio
 
 from src.connectors import Database_connector, Message_broker_connector, Websocket_connector
 
@@ -60,7 +59,14 @@ async def main():
         await handler(websocket)
 ####asyncio.run(main())####
 
+#Helper function for the test_Websocket_connector() function
+def prin(message):
+    print(message)
+    
 def test_Websocket_connector():
     connector = Websocket_connector(
-        "wss://api.gemini.com/v1/marketdata/BTCUSD")
-    connector.run()
+        "wss://api.gemini.com/v1/marketdata/BTCUSD", 4)
+    connector.receive_message(prin)
+    connector.close_connection()
+
+test_Websocket_connector()
