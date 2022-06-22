@@ -65,8 +65,7 @@ def prin(message):
     
 def test_Websocket_connector():
     connector = Websocket_connector(
-        "wss://api.gemini.com/v1/marketdata/BTCUSD", 4)
+        "ws://localhost:8001", 4)
     connector.receive_message(prin)
-    connector.close_connection()
 
 test_Websocket_connector()
