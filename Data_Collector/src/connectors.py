@@ -122,17 +122,19 @@ class Websocket_connector:
         
         try:
             self._websocket_connection = await websockets.connect(self._websocket_url)
-        except websockets.exceptions.ConnectionClose:
+        except websockets.ConnectionClosed:
             self._logger.exception("Websocket connection closed.")
             self.reconnect()#Reconnect
             raise
-        except websockets.exceptions.InvalidHandshake:
+        except websockets.InvalidHandshake:
             self._logger.exception("Handshake with websocket failed.")
             self.reconnect()#Reconnect
             raise
-        except websockets.exceptions.InvalidURI:
+        except websockets.InvalidURI:
             self._logger.exception("Invalid websocket uri.")
             raise 
+        else:
+            print("Successfully created websocket.")
     
     def reconnect(self):
         for _ in range(self._max_reconnects):
@@ -163,34 +165,20 @@ class Websocket_connector:
         '''This function handles every message received from the websocket.'''
         
         if self._websocket_connection:
-            async for message in self._websocket_connection:
-               try:
-                   parser_func(message)
-               except websockets.exceptions.ConnectionsClosed:
-                   self.reconnect()#Reconnect
-                   self._logger.exception("Websocket connection closed.")
-               except websockets.exceptions.RuntimeError:
-                   self._logger.exception("Send() method was called from the event loop, in the same moment.")
-                   raise
-            '''
             while True:
                 try:
                     message = await self._websocket_connection.recv()
-                except websockets.exceptions.ConnectionClose:
-                    self.reconnect()#Reconnect
+                except websockets.ConnectionClosed:
+                    self.reconnect()  # Reconnect
                     self._logger.exception("Websocket connection closed.")
                     pass
-                except websockets.exceptions.RuntimeError:
-                    self._logger.exception("Recv() method was called, from the event loop, in the same moment")
-                    raise
                 parser_func(message)
-            '''
     
-    def receive_message(self, parser_func):
+    async def receive_message(self, parser_func):
         
         '''This function creates the connection and connect the message handler with the websocket.'''
         
-        asyncio.run(self._message_handler(parser_func))
+        await self._message_handler(parser_func)
         
     async def send_message(self, message: str):
         
