@@ -1,0 +1,2 @@
+class WebsocketNotReachable(BaseException):
+  pass
