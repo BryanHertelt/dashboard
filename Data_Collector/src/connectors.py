@@ -2,9 +2,9 @@ import logging
 
 import redis
 import websockets
-import asyncio
 import psycopg2
 import json
+from time import sleep
 
 class Database_connector:
     
@@ -124,34 +124,38 @@ class Websocket_connector:
             self._websocket_connection = await websockets.connect(self._websocket_url)
         except websockets.ConnectionClosed:
             self._logger.exception("Websocket connection closed.")
-            self.reconnect()#Reconnect
+            await self.reconnect()#Reconnect
             raise
         except websockets.InvalidHandshake:
             self._logger.exception("Handshake with websocket failed.")
-            self.reconnect()#Reconnect
+            await self.reconnect()#Reconnect
             raise
         except websockets.InvalidURI:
             self._logger.exception("Invalid websocket uri.")
             raise 
-        else:
-            print("Successfully created websocket.")
     
-    def reconnect(self):
-        for _ in range(self._max_reconnects):
+    async def reconnect(self):
+        
+        '''This function reconnects to the websocket server.'''
+        
+        for reconnect in range(self._max_reconnects):
+            sleep(reconnect)
+            self._logger.debug("Reconnect initialized.")
             try:
-                self.create_connection()
+                await self.create_connection()
             except websockets.exceptions.ConnectionClosed:
                 self._logger.exception("Reconnecting failed.")
                 continue
             except Exception:
                 self._logger.exception(
                     "Error when trying to reconnect to the websocket.")
-                raise
+                continue
             else:
+                self._logger.info("Reconnecting succeeded.")
                 return
-               
-    
-    
+        self._logger.critical("Reconnect failed.")
+        raise BaseException('Reconnect failed') ###Change to custom exception
+            
     async def close_connection(self, reason: str ="", code: int = 1000):
         
         '''This function closes the websocket connection.'''
@@ -169,7 +173,7 @@ class Websocket_connector:
                 try:
                     message = await self._websocket_connection.recv()
                 except websockets.ConnectionClosed:
-                    self.reconnect()  # Reconnect
+                    await self.reconnect()  # Reconnect
                     self._logger.exception("Websocket connection closed.")
                     pass
                 parser_func(message)
@@ -188,7 +192,7 @@ class Websocket_connector:
             await self._websocket_connection.send(json.dumps(message))
         except websockets.exceptions.ConncetionClosed:
             self._logger.exception("Websocket connection closed.")
-            self.reconnect()#Reconnect
+            await self.reconnect()#Reconnect
         except websockets.exceptions.TypeError:
             self._logger.exception("Message type is not accepted.")
             raise
