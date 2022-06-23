@@ -75,8 +75,4 @@ async def test_Websocket_endpoint():
         message = await websocket.recv()
         print(message)
 
-loop = asyncio.get_event_loop()
-loop.run_until_complete(test_Websocket_endpoint())
-loop.close()
-     
-
+asyncio.run(test_Websocket_endpoint())
