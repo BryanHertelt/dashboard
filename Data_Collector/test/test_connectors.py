@@ -58,9 +58,9 @@ async def handler(websocket):
 async def main():
     async with websockets.connect("wss://api.gemini.com/v1/marketdata/BTCUSD") as websocket:
         await handler(websocket)
-####asyncio.run(main())####
+#asyncio.run(main())
 
-#Helper function for the test_Websocket_connector() function
+###Helper function for the test_Websocket_connector() function###
 def prin(message):
     print(message)
     
@@ -76,4 +76,4 @@ async def test_Websocket_endpoint():
         message = await websocket.recv()
         prin(message)
 
-asyncio.run(test_Websocket_connector())
+#asyncio.run(test_Websocket_connector())
