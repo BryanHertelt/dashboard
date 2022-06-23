@@ -5,6 +5,7 @@ import websockets
 import psycopg2
 import json
 from time import sleep
+from .exceptions import WebsocketNotReachable
 
 class Database_connector:
     
@@ -154,7 +155,8 @@ class Websocket_connector:
                 self._logger.info("Reconnecting succeeded.")
                 return
         self._logger.critical("Reconnect failed.")
-        raise BaseException('Reconnect failed') ###Change to custom exception
+        raise WebsocketNotReachable
+        #raise BaseException('Reconnect failed') ###Change to custom exception
             
     async def close_connection(self, reason: str ="", code: int = 1000):
         
