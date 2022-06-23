@@ -64,15 +64,16 @@ async def main():
 def prin(message):
     print(message)
     
-def test_Websocket_connector():
-    connector = Websocket_connector(
+async def test_Websocket_connector():
+    connector =  Websocket_connector(
         "ws://localhost:8001", 4)
-    connector.receive_message(prin)
+    await connector.create_connection()
+    await connector.receive_message(prin)
 
 async def test_Websocket_endpoint():
     websocket = await websockets.connect("ws://localhost:8001")
     while True:
         message = await websocket.recv()
-        print(message)
+        prin(message)
 
-asyncio.run(test_Websocket_endpoint())
+asyncio.run(test_Websocket_connector())
