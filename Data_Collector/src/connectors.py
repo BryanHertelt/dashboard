@@ -139,7 +139,7 @@ class Websocket_connector:
         
         '''This function reconnects to the websocket server.'''
         
-        for reconnect in range(self._max_reconnects):
+        for reconnect in range(self._max_reconnects + 1):
             sleep(reconnect)
             self._logger.debug("Reconnect initialized.")
             try:
@@ -156,7 +156,6 @@ class Websocket_connector:
                 return
         self._logger.critical("Reconnect failed.")
         raise WebsocketNotReachable
-        #raise BaseException('Reconnect failed') ###Change to custom exception
             
     async def close_connection(self, reason: str ="", code: int = 1000):
         
