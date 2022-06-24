@@ -1,9 +1,10 @@
 import logging
-
 import redis
 import websockets
 import psycopg2
 import json
+import asyncio
+
 from time import sleep
 from .exceptions import WebsocketNotReachable
 
@@ -144,22 +145,20 @@ class Websocket_connector:
             self._logger.debug("Reconnect initialized.")
             try:
                 await self.create_connection()
-            except websockets.exceptions.ConnectionClosed:
-                self._logger.exception("Reconnecting failed.")
-                continue
             except Exception:
                 self._logger.exception(
-                    "Error when trying to reconnect to the websocket.")
+                    "Problem when trying to reconnect to the websocket. The connection was probably closed by the host.")
                 continue
             else:
                 self._logger.info("Reconnecting succeeded.")
                 return
-        self._logger.critical("Reconnect failed.")
+        self._logger.critical("Reconnect failed. Host was not reachable after multiple reconnects.")
         raise WebsocketNotReachable
             
     async def close_connection(self, reason: str ="", code: int = 1000):
         
         '''This function closes the websocket connection.'''
+        
         if self._websocket_connection:
             await self._websocket_connection.close(reason=reason, code=code)
             self._logger.info("Websocket connection closed.")
@@ -191,10 +190,10 @@ class Websocket_connector:
         
         try:
             await self._websocket_connection.send(json.dumps(message))
-        except websockets.exceptions.ConncetionClosed:
+        except websockets.ConncetionClosed:
             self._logger.exception("Websocket connection closed.")
             await self.reconnect()#Reconnect
-        except websockets.exceptions.TypeError:
+        except websockets.TypeError:
             self._logger.exception("Message type is not accepted.")
             raise
         except TypeError:
