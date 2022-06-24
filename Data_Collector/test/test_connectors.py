@@ -4,6 +4,7 @@ import time
 import websockets
 import asyncio
 
+from time import sleep
 from src.connectors import Database_connector, Message_broker_connector, Websocket_connector
 
 def test_Database_connector():
@@ -68,7 +69,10 @@ async def test_Websocket_connector():
     connector =  Websocket_connector(
         "ws://localhost:8001", 4)
     await connector.create_connection()
-    await connector.receive_message(prin)
+    #await connector.receive_message(prin)
+    sleep(2)
+    await connector.close_connection()
+    print("Connection closed.")
 
 async def test_Websocket_endpoint():
     websocket = await websockets.connect("ws://localhost:8001")
@@ -76,4 +80,4 @@ async def test_Websocket_endpoint():
         message = await websocket.recv()
         prin(message)
 
-#asyncio.run(test_Websocket_connector())
+asyncio.run(test_Websocket_connector())
