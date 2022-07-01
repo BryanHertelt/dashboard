@@ -155,7 +155,7 @@ class Websocket_connector:
         self._logger.critical("Reconnect failed. Host was not reachable after multiple reconnects.")
         raise WebsocketNotReachable
             
-    async def close_connection(self, reason: str ="", code: int = 1000) -> None:
+    async def close_connection(self, reason: str = "", code: int = 1000) -> None:
         
         '''This function closes the websocket connection.'''
         
