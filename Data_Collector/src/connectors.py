@@ -12,7 +12,7 @@ class Database_connector:
     
     '''Object for database connections and operations.'''
     
-    def __init__(self,connection_string: str):
+    def __init__(self,connection_string: str) -> None:
         
         '''Initialize the Database_connector object.''' 
         
@@ -22,7 +22,7 @@ class Database_connector:
         self._logger = logging.getLogger("connectors")
         self._logger.debug("Database_connector initialized.")
     
-    def connect(self):
+    def connect(self) -> None:
         
         '''This function connects to the database.'''
         
@@ -35,7 +35,7 @@ class Database_connector:
             self.cursor = self.connection.cursor()
             self._logger.info("Connection to database succeeded.")
     
-    def write(self, query_statement: str, data: list, table: str):
+    def write(self, query_statement: str, data: list, table: str) -> None:
         
         '''This function executes the query statement.'''
 
@@ -52,7 +52,7 @@ class Database_connector:
                 self.cursor.commit()
                 self._logger.debug("Executed query statement.")
      
-    def close_connection(self):
+    def close_connection(self) -> None:
         
         '''This function closes the connection to  the database.'''
         
@@ -64,13 +64,13 @@ class Message_broker_connector:
     
     ''' Object for message broker connections and operations.'''
     
-    def __init__(self, connection_string: dict):
+    def __init__(self, connection_string: dict) -> None:
         self._connection_string = connection_string
         self.connection = None
         self._logger = logging.getLogger("connectors")
         self._logger.debug("Message_broker_connector initialized.")
        
-    def connect(self):
+    def connect(self) -> None:
         
         '''This function connects to message broker.'''
         
@@ -86,7 +86,7 @@ class Message_broker_connector:
         else:
             self._logger.debug("Messagebroker connect succeeded.")
     
-    def write(self, data: list, source: str):
+    def write(self, data: list, source: str) -> None:
         
         '''This function executes the query statement.'''
         
