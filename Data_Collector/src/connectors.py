@@ -41,14 +41,10 @@ class Database_connector:
         
         if self.cursor != None:
             args_str = ",".join("('%s', '%s', '%s')" %(coin, price, volume) for (coin, price, volume) in data)
-            try:
-                self.cursor.execute(query_statement.format(table=table + args_str))
-            except psycopg2.ProgrammingError as error:
-                raise
-            else:
-                self.cursor.commit()
+            self.cursor.execute(query_statement.format(table=table + args_str))
+            self.cursor.commit()
 
-    def close_connection(self) -> None: #Exceptions: OperationalError
+    def close_connection(self) -> None: 
         
         '''This function closes the connection to  the database.'''
         
@@ -132,10 +128,7 @@ class Websocket_connector:
         
         if self._websocket_connection:
             while True:
-                try:
-                    message = await self._websocket_connection.recv()
-                except websockets.exceptions.ConnectionClosed:
-                    await self.create_connection()
+                message = await self._websocket_connection.recv()
                 parser_func(message)
     
     async def receive_message(self, parser_func) -> None:
@@ -148,7 +141,4 @@ class Websocket_connector:
         
         '''This function sends messages to the websocket'''
         
-        try:
-            await self._websocket_connection.send(json.dumps(message))
-        except websockets.exceptions.ConncetionClosed:
-            await self.create_connection()
+        await self._websocket_connection.send(json.dumps(message))
