@@ -8,9 +8,11 @@ from time import sleep
 from src.connectors import Database_connector, Message_broker_connector, Websocket_connector
 
 def test_Database_connector():
-    db = Database_connector("host=localhost dbname=test user=postgres port=5433 password=root")
+    db = Database_connector("host=localhost dbname=test user=postgres port=5433 password=root", 3)
     db.connect()
     db.close_connection()
+
+test_Database_connector()
 
 def test_Message_broker_connector():
     mb = Message_broker_connector({"host": "localhost", "port": 6379})
@@ -80,4 +82,4 @@ async def test_Websocket_endpoint():
         message = await websocket.recv()
         prin(message)
 
-asyncio.run(test_Websocket_connector())
+#asyncio.run(test_Websocket_connector())
