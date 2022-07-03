@@ -7,7 +7,7 @@ import asyncio
 
 from time import sleep
 
-class Database_connector:
+class Database_connector: ###ASYNC IMPLEMENTATION MISSING###
     
     '''Object for database connections and operations.'''
     
@@ -21,7 +21,7 @@ class Database_connector:
         self._logger = logging.getLogger("connectors")
         self._max_reconnects = max_reconnects
     
-    def connect(self) -> None:
+    async def connect(self) -> None:
         
         '''This function connects to the database.'''
         for count in range(self._max_reconnects+1):
@@ -35,7 +35,7 @@ class Database_connector:
                 return
         raise exception
     
-    def write(self, query_statement: str, data: list, table: str) -> None: 
+    async def write(self, query_statement: str, data: list, table: str) -> None: 
         
         '''This function executes the query statement.'''
         
@@ -44,7 +44,7 @@ class Database_connector:
             self.cursor.execute(query_statement.format(table=table + args_str))
             self.cursor.commit()
 
-    def close_connection(self) -> None: 
+    async def close_connection(self) -> None: 
         
         '''This function closes the connection to  the database.'''
         
