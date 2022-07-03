@@ -5,6 +5,7 @@ import psycopg2
 import json
 import asyncio
 
+from redis import asyncio as aioredis
 from time import sleep
 
 class Database_connector: ###ASYNC IMPLEMENTATION MISSING###
@@ -62,13 +63,13 @@ class Message_broker_connector:
         self._logger.debug("Message_broker_connector initialized.")
         self._max_reconnects = max_reconnects
        
-    def connect(self) -> None:
+    async def connect(self) -> None:
         
         '''This function connects to message broker.'''
         
         for count in range(self._max_reconnects+1):
             try:
-                self.connection = redis.Redis(
+                self.connection = await aioredis.from_url(
                     host=self._connection_string["host"],
                     port=self._connection_string["port"],
                     password=self._connection_string["password"],
@@ -81,14 +82,14 @@ class Message_broker_connector:
                 return
         raise exception
     
-    def write(self, data: list, source: str) -> None:
+    async def write(self, data: list, source: str) -> None:
         
         '''This function executes the query statement.'''
         
         pipeline = self.connection.pipeline()
         for item in data:
-            pipeline.publish(source + item[0], item[1])
-        pipeline.execute()
+            await pipeline.publish(source + item[0], item[1])
+        await pipeline.execute()
             
 class Websocket_connector:
     
