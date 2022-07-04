@@ -19,7 +19,7 @@ async def test_Database_connector():
 #asyncio.run(test_Database_connector())
 
 async def test_Message_broker_connector():
-    mb = Message_broker_connector("redis: // localhost", 3)
+    mb = Message_broker_connector("redis://localhost", 3)
     await mb.connect()
     data = [("BTC", "1000"), ("ETH", "190")]
     await mb.write(data, "BINANCE")
