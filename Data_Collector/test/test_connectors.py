@@ -7,12 +7,16 @@ import asyncio
 from time import sleep
 from src.connectors import Database_connector, Message_broker_connector, Websocket_connector
 
-def test_Database_connector():
-    db = Database_connector("host=localhost dbname=test user=postgres port=5433 password=root", 3)
-    db.connect()
-    db.close_connection()
+async def test_Database_connector():
+    db = Database_connector(
+        "postgres://postgres:password@localhost:5432/benchmark", 3)
+    await db.connect()
+    start = time.time()
+    await db.write("INSERT INTO {table} (coin, price, volume) VALUES ", [("100", "a", "a") for x in range(50000)], "test_table")
+    print(time.time()-start)
+    await db.close_connection()
 
-#test_Database_connector()
+#asyncio.run(test_Database_connector())
 
 async def test_Message_broker_connector():
     mb = Message_broker_connector("redis: // localhost", 3)
@@ -44,6 +48,8 @@ def test_db_bench():
         end = time.time()
         
     print(end - start)
+
+#test_db_bench()
     
 def test_redis_bench():
     dataset = [("coin", x) for x in range(50000, 1000010)]
@@ -66,7 +72,6 @@ async def main():
         await handler(websocket)
 #asyncio.run(main())
 
-###Helper function for the test_Websocket_connector() function###
 def prin(message):
     print(message)
     
