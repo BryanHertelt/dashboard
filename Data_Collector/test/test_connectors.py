@@ -12,13 +12,16 @@ def test_Database_connector():
     db.connect()
     db.close_connection()
 
-test_Database_connector()
+#test_Database_connector()
 
-def test_Message_broker_connector():
-    mb = Message_broker_connector({"host": "localhost", "port": 6379})
-    mb.connect()
-    mb.connection.ping()
-    
+async def test_Message_broker_connector():
+    mb = Message_broker_connector("redis: // localhost", 3)
+    await mb.connect()
+    data = [("BTC", "1000"), ("ETH", "190")]
+    await mb.write(data, "BINANCE")
+
+#asyncio.run(test_Message_broker_connector())
+
 def test_db_bench():
     TABLE_NAME = "prices"
     CONNECTION = "postgres://postgres:password@localhost:5432/benchmark"
