@@ -8,7 +8,7 @@ import asyncio
 from redis import asyncio as aioredis
 from time import sleep
 
-class Database_connector: ###ASYNC IMPLEMENTATION MISSING###
+class Database_connector:
     
     '''Object for database connections and operations.'''
     
