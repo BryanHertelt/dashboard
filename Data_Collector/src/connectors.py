@@ -67,6 +67,7 @@ class Message_broker_connector:
         for count in range(self._max_reconnects+1):
             try:
                 self.connection = await aioredis.from_url(self._instance_url)
+                await self.connection.ping()
             except redis.RedisError as error:
                 exception = error
                 await asyncio.sleep(count)
@@ -82,7 +83,6 @@ class Message_broker_connector:
         async with self.connection.pipeline() as pipeline:
             for item in data:
                 await pipeline.publish(source + item[0], item[1])
-            await pipeline.execute()
             
 class Websocket_connector:
     
