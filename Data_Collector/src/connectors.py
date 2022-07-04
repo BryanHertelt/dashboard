@@ -130,3 +130,14 @@ class Websocket_connector:
         '''This function sends messages to the websocket'''
         
         await self._websocket_connection.send(json.dumps(message))
+        
+class Api_Connector:
+    
+    def __init__(self):
+        pass
+    
+    def make_request(self):
+        pass
+    
+    def sheduler(self):
+        pass
