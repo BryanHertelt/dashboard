@@ -30,7 +30,7 @@ class Database_connector: ###ASYNC IMPLEMENTATION MISSING###
                 self.connection = psycopg2.connect(self._connection_string)
             except psycopg2.OperationalError as error:
                 exception = error
-                sleep(count)
+                await asyncio.sleep(count)
                 continue
             else:
                 return
@@ -56,11 +56,9 @@ class Message_broker_connector:
     
     ''' Object for message broker connections and operations.'''
     
-    def __init__(self, connection_string: dict, max_reconnects: int) -> None:
-        self._connection_string = connection_string
+    def __init__(self, instance_url: str, max_reconnects: int) -> None:
+        self._instance_url = instance_url
         self.connection = None
-        self._logger = logging.getLogger("connectors")
-        self._logger.debug("Message_broker_connector initialized.")
         self._max_reconnects = max_reconnects
        
     async def connect(self) -> None:
@@ -69,14 +67,10 @@ class Message_broker_connector:
         
         for count in range(self._max_reconnects+1):
             try:
-                self.connection = await aioredis.from_url(
-                    host=self._connection_string["host"],
-                    port=self._connection_string["port"],
-                    password=self._connection_string["password"],
-                )
+                self.connection = await aioredis.from_url(self._instance_url)
             except redis.RedisError as error:
                 exception = error
-                sleep(count)
+                await asyncio.sleep(count)
                 continue
             else:
                 return
@@ -86,10 +80,10 @@ class Message_broker_connector:
         
         '''This function executes the query statement.'''
         
-        pipeline = self.connection.pipeline()
-        for item in data:
-            await pipeline.publish(source + item[0], item[1])
-        await pipeline.execute()
+        async with self.connection.pipeline() as pipeline:
+            for item in data:
+                await pipeline.publish(source + item[0], item[1])
+            await pipeline.execute()
             
 class Websocket_connector:
     
