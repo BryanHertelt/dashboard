@@ -6,7 +6,6 @@ import asyncpg
 import asyncio
 
 from redis import asyncio as aioredis
-from time import sleep
 
 class Database_connector:
     
@@ -57,7 +56,7 @@ class Message_broker_connector:
     
     def __init__(self, instance_url: str, max_reconnects: int) -> None:
         self._instance_url = instance_url
-        self.connection = None
+        self._connection = None
         self._max_reconnects = max_reconnects
        
     async def connect(self) -> None:
@@ -66,8 +65,8 @@ class Message_broker_connector:
         
         for count in range(self._max_reconnects+1):
             try:
-                self.connection = await aioredis.from_url(self._instance_url)
-                await self.connection.ping()
+                self._connection = await aioredis.from_url(self._instance_url)
+                await self._connection.ping()
             except redis.RedisError as error:
                 exception = error
                 await asyncio.sleep(count)
@@ -80,7 +79,7 @@ class Message_broker_connector:
         
         '''This function executes the query statement.'''
         
-        async with self.connection.pipeline() as pipeline:
+        async with self._connection.pipeline() as pipeline:
             for item in data:
                 await pipeline.publish(source + item[0], item[1])
             
@@ -88,10 +87,11 @@ class Websocket_connector:
     
     '''Object for websocket connections and operations.'''
     
-    def __init__(self, websocket_url: str, max_reconnects: int) -> None:
+    def __init__(self, websocket_url: str, max_reconnects: int, max_size: int = None) -> None:
         self._websocket_url = websocket_url
         self._websocket_connection = None
         self._max_reconnects = max_reconnects
+        self._max_size = None
     
     async def create_connection(self) -> None:
         
@@ -102,7 +102,7 @@ class Websocket_connector:
                 self._websocket_connection = await websockets.connect(self._websocket_url)
             except (websockets.exceptions.ConnectionClosed, OSError, websockets.exceptions.InvalidHandshake) as error:
                 exception = error
-                sleep(count)
+                await asyncio.sleep(count)
                 continue
             else:
                 return
@@ -116,7 +116,7 @@ class Websocket_connector:
             await self._websocket_connection.close(reason=reason, code=code)
             self._logger.info("Websocket connection closed.")
                        
-    async def _message_handler(self, parser_func) -> None:
+    async def receive_message(self, parser_func) -> None:
         
         '''This function handles every message received from the websocket.'''
         
@@ -124,12 +124,6 @@ class Websocket_connector:
             while True:
                 message = await self._websocket_connection.recv()
                 parser_func(message)
-    
-    async def receive_message(self, parser_func) -> None:
-        
-        '''This function creates the connection and connect the message handler with the websocket.'''
-        
-        await self._message_handler(parser_func)
         
     async def send_message(self, message: str) -> None:
         
