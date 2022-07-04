@@ -1,8 +1,8 @@
 import logging
 import redis
 import websockets
-import psycopg2
 import json
+import asyncpg
 import asyncio
 
 from redis import asyncio as aioredis
@@ -17,18 +17,18 @@ class Database_connector: ###ASYNC IMPLEMENTATION MISSING###
         '''Initialize the Database_connector object.''' 
         
         self._connection_string = connection_string
-        self.cursor = None
-        self.connection = None
+        self._cursor = None
+        self._connection = None
         self._logger = logging.getLogger("connectors")
         self._max_reconnects = max_reconnects
     
-    async def connect(self) -> None:
+    async def connect(self) -> None: 
         
         '''This function connects to the database.'''
         for count in range(self._max_reconnects+1):
             try:
-                self.connection = psycopg2.connect(self._connection_string)
-            except psycopg2.OperationalError as error:
+                self._connection = await asyncpg.connect(self._connection_string)
+            except (asyncpg.PostgresError, OSError) as error:
                 exception = error
                 await asyncio.sleep(count)
                 continue
@@ -40,17 +40,16 @@ class Database_connector: ###ASYNC IMPLEMENTATION MISSING###
         
         '''This function executes the query statement.'''
         
-        if self.cursor != None:
+        if self._connection != None:
             args_str = ",".join("('%s', '%s', '%s')" %(coin, price, volume) for (coin, price, volume) in data)
-            self.cursor.execute(query_statement.format(table=table + args_str))
-            self.cursor.commit()
+            await self._connection.execute(query_statement.format(table=table) + args_str)
 
     async def close_connection(self) -> None: 
         
         '''This function closes the connection to  the database.'''
         
-        if self.connection != None:
-            self.connection.close()
+        if self._connection != None:
+            await self._connection.close()
 
 class Message_broker_connector:
     
