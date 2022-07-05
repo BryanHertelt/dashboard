@@ -1,4 +1,5 @@
 import logging
+from pytest import param
 import redis
 import websockets
 import json
@@ -134,7 +135,7 @@ class Websocket_connector:
         
 class Api_Connector:
     
-    def __init__(self, url: str):
+    def __init__(self, url: str, parameter: dict):
         
         ''' This function initializes the Api_Connector.'''
         
@@ -142,6 +143,7 @@ class Api_Connector:
         self._response = None
         self._url = url
         self._status = None
+        self._params = parameter
     
     async def create_session(self):
         
@@ -153,7 +155,7 @@ class Api_Connector:
         
         '''This function creates a new request.'''
         
-        async with self._session.get(self._url) as response:
+        async with self._session.get(self._url, params=self._params) as response:
             self._status = response.status
             self._response = await response.text()
     
