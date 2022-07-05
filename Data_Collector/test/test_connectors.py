@@ -95,10 +95,14 @@ async def test_Websocket_endpoint():
 #asyncio.run(test_Websocket_endpoint())
 
 async def test_Api_connector():
-    connector = Api_Connector("http://google.com", "Test-Parmeter")
+    connector = Api_Connector(
+        "https://api1.binance.com/api/v3/time")
     await connector.create_session()
-    await connector.make_request()
-    print(connector._response)
+    for i in range(10):
+        await connector.make_request()
+        print(connector._response)
+        print(connector._status)
+        await asyncio.sleep(0.5)
     await connector.close_session()
     
 #asyncio.run(test_Api_connector())
