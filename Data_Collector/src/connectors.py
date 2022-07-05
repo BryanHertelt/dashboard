@@ -1,5 +1,4 @@
 import logging
-from pytest import param
 import redis
 import websockets
 import json
