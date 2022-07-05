@@ -4,7 +4,6 @@ import time
 import websockets
 import asyncio
 
-from time import sleep
 from src.connectors import Database_connector, Message_broker_connector, Websocket_connector, Api_Connector
 
 async def test_Database_connector():
@@ -77,7 +76,7 @@ def prin(message):
     
 async def test_Websocket_connector():
     connector =  Websocket_connector(
-        "ws://localhost:8001", 6, 2**30)
+        "wss://api.gemini.com/v1/marketdata/BTCUSD", 6, 2**60)
     await connector.create_connection()
     await connector.receive_message(prin)
     #sleep(2)
