@@ -4,6 +4,7 @@ import websockets
 import json
 import asyncpg
 import asyncio
+import aiohttp
 
 from redis import asyncio as aioredis
 
@@ -133,11 +134,31 @@ class Websocket_connector:
         
 class Api_Connector:
     
-    def __init__(self):
-        pass
+    def __init__(self, url: str):
+        
+        ''' This function initializes the Api_Connector.'''
+        
+        self._session = None
+        self._response = None
+        self._url = url
+        self._status = None
     
-    def make_request(self):
-        pass
+    async def create_session(self):
+        
+        '''This function creates a new session.'''
+        
+        self._session = aiohttp.ClientSession()
     
-    def sheduler(self):
-        pass
+    async def make_request(self):
+        
+        '''This function creates a new request.'''
+        
+        async with self._session.get(self._url) as response:
+            self._status = response.status
+            self._response = await response.text()
+    
+    async def close_session(self):
+        
+        '''This function closes the session.'''
+        
+        await self._session.close()
