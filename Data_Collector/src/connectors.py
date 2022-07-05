@@ -135,7 +135,7 @@ class Websocket_connector:
         
 class Api_Connector:
     
-    def __init__(self, url: str, parameter: dict):
+    def __init__(self, url: str, parameter: dict, timeout: int):
         
         ''' This function initializes the Api_Connector.'''
         
@@ -144,12 +144,13 @@ class Api_Connector:
         self._url = url
         self._status = None
         self._params = parameter
+        self._timeout = aiohttp.ClientTimeout(total=timeout)
     
     async def create_session(self):
         
         '''This function creates a new session.'''
         
-        self._session = aiohttp.ClientSession()
+        self._session = aiohttp.ClientSession(timeout=self._timeout)
     
     async def make_request(self):
         
