@@ -96,7 +96,7 @@ async def test_Websocket_endpoint():
 
 async def test_Api_connector():
     connector = Api_Connector(
-        "https://api1.binance.com/api/v3/time")
+        "https://api1.binance.com/api/v3/time", {})
     await connector.create_session()
     for i in range(10):
         await connector.make_request()
