@@ -5,7 +5,7 @@ import websockets
 import asyncio
 
 from time import sleep
-from src.connectors import Database_connector, Message_broker_connector, Websocket_connector
+from src.connectors import Database_connector, Message_broker_connector, Websocket_connector, Api_Connector
 
 async def test_Database_connector():
     db = Database_connector(
@@ -93,3 +93,12 @@ async def test_Websocket_endpoint():
         prin(message)
 
 #asyncio.run(test_Websocket_endpoint())
+
+async def test_Api_connector():
+    connector = Api_Connector("http://google.com", "Test-Parmeter")
+    await connector.create_session()
+    await connector.make_request()
+    print(connector._response)
+    await connector.close_session()
+    
+#asyncio.run(test_Api_connector())
