@@ -428,3 +428,11 @@ class Api_Connector:
         """
         
         await self._session.close()
+        
+class File_Connector:
+    
+    def __init__(self, file_path: str, file_format: str):
+        pass
+    
+    def read_file(self):
+        pass
