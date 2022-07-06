@@ -21,7 +21,6 @@ class Database_connector:
             A asyncpg.Connection object, which represents the connection to  the database.
         max_reconnects (int): 
             An integer, which is the maximum allowed number of reconnects.
-    
     """
     
     def __init__(self, connection_string: str, max_reconnects: int) -> None: 
@@ -119,16 +118,54 @@ class Database_connector:
 
 class Message_broker_connector:
     
-    ''' Object for message broker connections and operations.'''
+    """The connector for Redis.
+    
+    The connector connects to a given redis instance over the instance url and writes into it.
+    
+    Attributes:
+        instance_url (str):
+            A string, which specifies the url to the redis instance.
+        max_reconnects (int):
+            An integer, which is the maximum allowed number of reconnects.
+    """
     
     def __init__(self, instance_url: str, max_reconnects: int) -> None:
+        
+        """Initialize the Message_broker_connector.
+        
+        Args:
+            instance_url (str):
+                A string, which specifies the url to the redis instance.
+            max_reconnects (int):
+                An integer, which is the maximum allowed number of reconnects.
+        
+        Returns:
+            None
+        
+        Raises:
+            None
+        """
+        
         self._instance_url: str = instance_url
         self._connection: aioredis.ConnectionPool
         self._max_reconnects: int = max_reconnects
        
     async def connect(self) -> aioredis.ConnectionPool:
         
-        '''This function connects to message broker.'''
+        """Connects to the given redis instance.
+        
+        Connects to the given redis instance over the self._instance_url. When the connection fails, it starts retrying until it successfully establish a connection or the maximum amount of reconnects is reached.
+        
+        Args:
+            None
+        
+        Returns:
+            The self._connection object will be returned. It represents a connection to the given redis instance with an object of aioredis.ConnectionPool.
+        
+        Raises:
+            redis.RedisError:
+                This exception will be raised, if, ater reaching the maximum amount of reconnects, the connection attempt was still not successful.
+        """
         
         for count in range(self._max_reconnects+1):
             try:
@@ -144,7 +181,22 @@ class Message_broker_connector:
     
     async def write(self, data: List[Tuple[str]], source: str) -> None:
         
-        '''This function executes the query statement.'''
+        """Writes given data into the redis instance.
+        
+        Writes given data into the redis instance. For executing the publish statements does the method use a pipe. Also the data gets published to a specific stream.
+        
+        Args:
+            data (List[Tuple[str]]):
+                A list, which represents to data thath should be inserted and published in the corresponding streams.
+            source (str):
+                A string, which specifies the exchange. This information is used to build the correct stream name.
+        
+        Returns:
+            None
+        
+        Raises:
+            None
+        """
         
         async with self._connection.pipeline() as pipeline:
             for item in data:
@@ -152,9 +204,38 @@ class Message_broker_connector:
             
 class Websocket_connector:
     
-    '''Object for websocket connections and operations.'''
+    """The connector for a websocket.
+    
+    The connector connects to a given websocket adress and receives messages from it.
+    
+    Attributes:
+        websocket_url (str):
+            A string, which specifies the address to the websocket.
+        max_reconnects (int):
+            An integer, which is the maximum allowed number of reconnects.
+        max_size (int):
+            An integer, which limits the size of the message buffer from the websocket connector. 
+    """
     
     def __init__(self, websocket_url: str, max_reconnects: int, max_size: int = None) -> None:
+        
+        """Initializes the websocket connector.
+        
+        Args:
+            websocket_url (str):
+                A string, which specifies the address to the websocket.
+            max_reconnects (int):
+                An integer, which is the maximum allowed number of reconnects.
+            max_size (int):
+                An integer, which limits the size of the message buffer from the websocket connector.
+        
+        Returns:
+            None
+        
+        Raises:
+            None
+        """
+        
         self._websocket_url: str = websocket_url
         self._websocket_connection: websockets.WebSocketClientProtocol
         self._max_reconnects: int = max_reconnects
@@ -162,7 +243,19 @@ class Websocket_connector:
     
     async def create_connection(self) -> websockets.WebSocketClientProtocol:
         
-        '''This function creates a websocket connection.'''
+        """Creates a connection to the websocket over the given address.
+        
+        Creates a connection to the websocket over the given adress. The method will try to connect to the websocket until the maximum amount of reconnects is reached or the connection attempt was successful.
+        
+        Args:
+            None
+        
+        Returns:
+            The new connection will be returned, which is a websocket.WebSocketClientProtocol object.
+        
+        Raises:
+            None
+        """
         
         for count in range(self._max_reconnects+1):
             try:
@@ -177,15 +270,42 @@ class Websocket_connector:
             
     async def close_connection(self, reason: str = "", code: int = 1000) -> None:
         
-        '''This function closes the websocket connection.'''
+        """Closes the connection to the websocket.
+        
+        Closes the connection to the websocket, if the connection exists. Otherwise it does nothing.
+        
+        Args:
+            reason (str) = "":
+                A string, which specifies the reason for the connection to be closed. It gets passed with the close command.
+            code (int) = 1000:
+                An integer, which specifies the close code. It gets passed with the close command.
+        
+        Returns:
+            None
+            
+        Raises:
+            None
+        """
         
         if self._websocket_connection:
             await self._websocket_connection.close(reason=reason, code=code)
-            self._logger.info("Websocket connection closed.")
                        
     async def receive_message(self, parser_func: Callable[[str], str]) -> None:
         
-        '''This function handles every message received from the websocket.'''
+        """Receives messages from the websocket.
+        
+        Receives messages from the websocket and passes them into a given parser function.
+        
+        Args:
+            parser_func (Callable[[str], str]):
+                A function, which handles the incoming messages and formats them for the database, message connector.
+        
+        Returns:
+            None
+        
+        Raises:
+            None
+        """
         
         if self._websocket_connection:
             while True:
@@ -194,15 +314,56 @@ class Websocket_connector:
         
     async def send_message(self, message: str) -> None:
         
-        '''This function sends messages to the websocket'''
+        """Sends messages through the websocket.
+        
+        Sends messages through the websocket. The messages gets passed to the method.
+        
+        Args:
+            message (str):
+                A string, which represents the message that should be send through the websocket.
+        
+        Returns:
+            None
+        
+        Raises:
+            None
+        """
         
         await self._websocket_connection.send(json.dumps(message))
         
 class Api_Connector:
     
+    """The connector for an api.
+    
+    The connector makes a request to the given url and passes the result into a parser function.
+    
+    Attributes:
+        url (str):
+            A string, which represents the url, to which the request should be made.
+        parameter (Dict[str, str]):
+            A dictionary, which holds optional parameters in it, which are passed with the url.
+        timeout (int):
+            An integer, which specifies the timeout for each request attempt.
+    """
+    
     def __init__(self, url: str, parameter: Dict[str, str], timeout: int) -> None:
         
-        ''' This function initializes the Api_Connector.'''
+        """Initializes the Api_connector.
+        
+        Args:
+            url (str):
+                A string, which represents the url, to which the request should be made.
+            parameter (Dict[str, str]):
+                A dictionary, which holds optional parameters in it, which are passed with the url.
+            timeout (int):
+                An integer, which specifies the timeout for each request attempt.
+        
+        Returns:
+            None
+        
+        Raises:
+            None
+        """
         
         self._session: aiohttp.ClientSession
         self._response: str
@@ -213,20 +374,57 @@ class Api_Connector:
     
     async def create_session(self) -> None:
         
-        '''This function creates a new session.'''
+        """Creates a new session.
+        
+        Creates a new session for making new http-requests. The session is represented by a aiohttp.ClientSession() object.
+        
+        Args:
+            None
+        
+        Returns:
+            None
+        
+        Raises:
+            None
+        """
         
         self._session = aiohttp.ClientSession(timeout=self._timeout)
     
-    async def make_request(self) -> str:
+    async def make_request(self) -> None:
         
-        '''This function creates a new request.'''
+        """Makes a request, with the given url and parameters.
+        
+        Makes a request, with the given url and parameters. The response is divided into the statuscode and response text.
+        
+        Args:
+            None
+        
+        Returns:
+            None
+        
+        Raises:
+            None
+        """
         
         async with self._session.get(self._url, params=self._params) as response:
             self._status = response.status
             self._response = await response.text()
+            
     
     async def close_session(self) -> None:
         
-        '''This function closes the session.'''
+        """Closes the session.
+        
+        Closes the session, when nor more rquests are made.
+        
+        Args:
+            None
+        
+        Returns:
+            None
+        
+        Raises:
+            None
+        """
         
         await self._session.close()
