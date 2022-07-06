@@ -76,9 +76,10 @@ def prin(message):
     
 async def test_Websocket_connector():
     connector =  Websocket_connector(
-        "wss://api.gemini.com/v1/marketdata/BTCUSD", 6, 2**60)
+        "ws://localhost:8001", 6, 2**60)
     await connector.create_connection()
-    await connector.receive_message(prin)
+    await connector.send_message("Test")
+    #await connector.receive_message(prin)
     #sleep(2)
     #await connector.close_connection()
     #print("Connection closed.")

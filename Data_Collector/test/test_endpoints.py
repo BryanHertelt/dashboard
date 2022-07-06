@@ -5,8 +5,11 @@ import websockets
 def websocket():
   async def handler(websocket):
       while True:
+          message = await websocket.recv()
+          print(message)
           await websocket.send("bing bong")
           await asyncio.sleep(1)
+
 
 
 
