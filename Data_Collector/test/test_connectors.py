@@ -4,7 +4,7 @@ import time
 import websockets
 import asyncio
 
-from src.connectors import Database_connector, Message_broker_connector, Websocket_connector, Api_Connector
+from src.connectors import Database_connector, Message_broker_connector, Websocket_connector, Api_Connector, File_Connector
 
 async def test_Database_connector():
     db = Database_connector(
@@ -106,3 +106,8 @@ async def test_Api_connector():
     await connector.close_session()
     
 #asyncio.run(test_Api_connector())
+
+async def test_File_connector():
+    pass
+
+asyncio.run(test_File_connector())
