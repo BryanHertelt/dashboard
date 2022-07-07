@@ -332,7 +332,7 @@ class Websocket_connector:
         
         await self._websocket_connection.send(orjson.dumps(message))
         
-class Api_Connector:
+class Api_connector:
     
     """The connector for an api.
     
@@ -432,7 +432,7 @@ class Api_Connector:
         
         await self._session.close()
         
-class File_Connector:
+class File_connector:
     
     """Reads from a file.
     

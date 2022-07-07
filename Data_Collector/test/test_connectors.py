@@ -4,7 +4,7 @@ import time
 import websockets
 import asyncio
 
-from src.connectors import Database_connector, Message_broker_connector, Websocket_connector, Api_Connector, File_Connector
+from src.connectors import Database_connector, Message_broker_connector, Websocket_connector, Api_connector, File_connector
 
 async def test_Database_connector():
     db = Database_connector(
@@ -95,7 +95,7 @@ async def test_Websocket_endpoint():
 #asyncio.run(test_Websocket_endpoint())
 
 async def test_Api_connector():
-    connector = Api_Connector(
+    connector = Api_connector(
         "https://api1.binance.com/api/v3/time", {}, 2)
     await connector.create_session()
     for i in range(10):
@@ -108,6 +108,6 @@ async def test_Api_connector():
 #asyncio.run(test_Api_connector())
 
 async def test_File_connector():
-    await File_Connector.read_file("r", prin, "test_files/test.txt")
+    await File_connector.read_file("r", prin, "test_files/test.txt")
 
 #asyncio.run(test_File_connector())
