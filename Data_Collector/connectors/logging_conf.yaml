@@ -1,0 +1,31 @@
+'''
+#muss noch in der main.py initialisiert werden
+
+import logging.config
+with open("PATH", "r")
+    logging.config.dictConfig(yaml.load(LOGGING_CONFIG))
+
+'''
+version: 1
+formatters:
+  default:
+    format: '%(asctime)s %(levelname)s %(lineno)d %(name)s %(message)s'
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: DEBUG
+    formatter: default
+    stream: ext://sys.stdout
+  file:
+    class : logging.FileHandler
+    formatter: default
+    filename: collector.log
+loggers:
+  connectors:
+    level: DEBUG
+    handlers: [console]
+    propagate: no
+  __main__: 
+    level: DEBUG
+    handlers: [console]
+    propagate: no
