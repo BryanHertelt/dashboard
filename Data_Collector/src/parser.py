@@ -1,14 +1,7 @@
-class Websocket_parser:
+class Parser:
     
-    def parse(self):
-        raise NotImplementedError
-
-class Api_parser:
+    def parse(self, data):
+        return self._fromatter(data)
     
-    def parse(self):
-        raise NotImplementedError
-
-class File_parser:
-    
-    def parse(self):
+    def _formatter(self, data):
         raise NotImplementedError
