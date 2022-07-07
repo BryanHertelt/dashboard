@@ -1,9 +1,12 @@
 def test_parser():
     pass
 
-def test_formatting():
+def parser(message):
+    return message[0]["price"]
+
+def test_formatting(parser):
     test_string = [{"data": 1, "price": 1010}, [1]]
-    result = test_string[1]["price"]
+    result = parser(test_string)
     print(result)
 
-test_formatting()
+#test_formatting(parser)
