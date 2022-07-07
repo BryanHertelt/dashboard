@@ -1,23 +1,14 @@
 class Websocket_parser:
     
-    def __init__(self):
-        pass
-    
     def parse(self):
-        pass
+        raise NotImplementedError
 
 class Api_parser:
     
-    def __init__(self):
-        pass
-    
     def parse(self):
-        pass
+        raise NotImplementedError
 
 class File_parser:
     
-    def __init__(self):
-        pass
-    
-    def parser(self):
-        pass
+    def parse(self):
+        raise NotImplementedError
