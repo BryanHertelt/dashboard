@@ -436,7 +436,7 @@ class File_Connector:
     
     """Reads from a file.
     
-    Reads data from a file and returns it.
+    Reads data from a file and returns it. It has only a classmethod for reading a file.
     
     Attributes:
         None
