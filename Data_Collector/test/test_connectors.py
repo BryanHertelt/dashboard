@@ -108,6 +108,6 @@ async def test_Api_connector():
 #asyncio.run(test_Api_connector())
 
 async def test_File_connector():
-    pass
+    await File_Connector.read_file("r", prin, "test_files/test.txt")
 
-asyncio.run(test_File_connector())
+#asyncio.run(test_File_connector())
