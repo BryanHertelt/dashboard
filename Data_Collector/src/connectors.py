@@ -1,9 +1,10 @@
 import redis
 import websockets
-import json
+import orjson
 import asyncpg
 import asyncio
 import aiohttp
+import aiofiles
 
 from redis import asyncio as aioredis
 from typing import Callable, Dict, List, Tuple, Union
@@ -329,7 +330,7 @@ class Websocket_connector:
             None
         """
         
-        await self._websocket_connection.send(json.dumps(message))
+        await self._websocket_connection.send(orjson.dumps(message))
         
 class Api_Connector:
     
@@ -390,14 +391,15 @@ class Api_Connector:
         
         self._session = aiohttp.ClientSession(timeout=self._timeout)
     
-    async def make_request(self) -> None:
+    async def make_request(self, parser_func: Callable[[str], str]) -> None:
         
         """Makes a request, with the given url and parameters.
         
         Makes a request, with the given url and parameters. The response is divided into the statuscode and response text.
         
         Args:
-            None
+            parser_func (Callable[[str], str]):
+                A function which converts the raw message into the correct format.
         
         Returns:
             None
@@ -409,6 +411,7 @@ class Api_Connector:
         async with self._session.get(self._url, params=self._params) as response:
             self._status = response.status
             self._response = await response.text()
+            parser_func(self._response)
             
     
     async def close_session(self) -> None:
@@ -431,8 +434,32 @@ class Api_Connector:
         
 class File_Connector:
     
-    def __init__(self, file_path: str, file_format: str):
-        pass
+    """Reads from a file.
     
-    def read_file(self):
-        pass
+    Reads data from a file and returns it.
+    
+    Attributes:
+        None
+    """
+    
+    @classmethod
+    async def read_file(self, parser_func: Callable[[str], str], file_path: str) -> None:
+        
+        """Reads from file.
+        
+        Reads from file at the given path and returns the data.
+        
+        Args:
+            file_path (str):
+                A string representing the path to the file.
+        
+        Returns:
+            The data from the file is returned as a result.
+            
+        Raises:
+            None
+        """
+        
+        async with aiofiles.open(file_path, "r") as file:
+            content= await file.read()
+            parser_func(content)
