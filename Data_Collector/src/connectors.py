@@ -255,7 +255,8 @@ class Websocket_connector:
             The new connection will be returned, which is a websocket.WebSocketClientProtocol object.
         
         Raises:
-            None
+            websockets.exceptions.ConnectionClosed, OSError, websockets.exceptions.InvalidHandshake:
+                This exception will be raised, if, ater reaching the maximum amount of reconnects, the connection attempt was still not successful.
         """
         
         for count in range(self._max_reconnects+1):

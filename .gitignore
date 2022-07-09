@@ -10,3 +10,4 @@ Data_Collector/test/__pycache__/test_endpoints.cpython-38-pytest-7.1.2.pyc
 .gitignore
 Data_Collector/test/__pycache__/test_parser.cpython-38-pytest-7.1.2.pyc
 Data_Collector/src/__pycache__/parser.cpython-38.pyc
+Data_Collector/src/__pycache__/connectors.cpython-38.pyc
