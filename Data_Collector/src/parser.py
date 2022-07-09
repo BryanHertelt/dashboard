@@ -43,7 +43,8 @@ class Parser:
             None
             
         Raises:
-            None   
+            NotImplementedError:
+                This exception will be raised, if the method is not implemented.
         """
         
         raise NotImplementedError
