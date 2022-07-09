@@ -7,7 +7,7 @@ import aiohttp
 import aiofiles
 
 from redis import asyncio as aioredis
-from typing import Callable, Dict, List, Tuple, Union
+from typing import Dict, List, Tuple, Union
 
 class Database_connector:
     
@@ -292,15 +292,14 @@ class Websocket_connector:
         if self._websocket_connection:
             await self._websocket_connection.close(reason=reason, code=code)
                        
-    async def receive_message(self, parser_func: Callable[[str], str]) -> None:
+    async def receive_message(self) -> None:
         
         """Receives messages from the websocket.
         
         Receives messages from the websocket and passes them into a given parser function.
         
         Args:
-            parser_func (Callable[[str], str]):
-                A function, which handles the incoming messages and formats them for the database, message connector.
+            None
         
         Returns:
             None
@@ -312,7 +311,7 @@ class Websocket_connector:
         if self._websocket_connection:
             while True:
                 message = await self._websocket_connection.recv()
-                parser_func(message)
+                yield message
         
     async def send_message(self, message: str) -> None:
         
@@ -392,15 +391,14 @@ class Api_connector:
         
         self._session = aiohttp.ClientSession(timeout=self._timeout)
     
-    async def make_request(self, parser_func: Callable[[str], str]) -> None:
+    async def make_request(self) -> None:
         
         """Makes a request, with the given url and parameters.
         
-        Makes a request, with the given url and parameters. The response is divided into the statuscode and response text.
+        Makes a request, with the given url and parameters. The response is divided into the statuscode and response text, where the text gets returned.
         
         Args:
-            parser_func (Callable[[str], str]):
-                A function which converts the raw message into the correct format.
+            None
         
         Returns:
             None
@@ -412,7 +410,7 @@ class Api_connector:
         async with self._session.get(self._url, params=self._params) as response:
             self._status = response.status
             self._response = await response.text()
-            parser_func(self._response)
+            return self._response
             
     
     async def close_session(self) -> None:
@@ -444,7 +442,7 @@ class File_connector:
     """
     
     @classmethod
-    async def read_file(self, parser_func: Callable[[str], str], file_path: str) -> None:
+    async def read_file(self, file_path: str) -> None:
         
         """Reads from file.
         
@@ -463,4 +461,4 @@ class File_connector:
         
         async with aiofiles.open(file_path, "r") as file:
             content= await file.read()
-            parser_func(content)
+            return content
