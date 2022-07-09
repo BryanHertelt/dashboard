@@ -101,15 +101,15 @@ async def test_Api_connector():
         "https://api1.binance.com/api/v3/time", {}, 2)
     await connector.create_session()
     for i in range(10):
-        await connector.make_request()
-        print(connector._response)
-        print(connector._status)
+        response = await connector.make_request()
+        print(response)
         await asyncio.sleep(0.5)
     await connector.close_session()
     
 #asyncio.run(test_Api_connector())
 
 async def test_File_connector():
-    await File_connector.read_file("r", prin, "test_files/test.txt")
+    content = await File_connector.read_file("test_files/test.txt")
+    print(content)
 
 #asyncio.run(test_File_connector())
