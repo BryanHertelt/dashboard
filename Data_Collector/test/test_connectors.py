@@ -78,7 +78,9 @@ async def test_Websocket_connector():
     connector =  Websocket_connector(
         "ws://localhost:8001", 6, 2**60)
     await connector.create_connection()
-    await connector.send_message("Test")
+    #await connector.send_message("Test")
+    async for message in connector.receive_message():
+        print(message)
     #await connector.receive_message(prin)
     #sleep(2)
     #await connector.close_connection()
