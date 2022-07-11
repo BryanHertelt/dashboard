@@ -441,8 +441,8 @@ class File_connector:
         None
     """
     
-    @classmethod
-    async def read_file(self, file_path: str) -> None:
+    @staticmethod
+    async def read_file(file_path: str) -> None:
         
         """Reads from file.
         
