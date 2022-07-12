@@ -401,7 +401,7 @@ class Api_connector:
             None
         
         Returns:
-            None
+            It returns the response text.
         
         Raises:
             None
@@ -412,7 +412,6 @@ class Api_connector:
             self._response = await response.text()
             return self._response
             
-    
     async def close_session(self) -> None:
         
         """Closes the session.
