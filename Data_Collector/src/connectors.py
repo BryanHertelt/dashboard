@@ -347,7 +347,7 @@ class Api_connector:
             An integer, which specifies the timeout for each request attempt.
     """
     
-    def __init__(self, url: str, parameter: Dict[str, str], timeout: int) -> None:
+    def __init__(self, parameter: Dict[str, str], timeout: int) -> None:
         
         """Initializes the Api_connector.
         
@@ -368,7 +368,6 @@ class Api_connector:
         
         self._session: aiohttp.ClientSession
         self._response: str
-        self._url = url
         self._status: Union[str, int]
         self._params: Dict[str, str] = parameter
         self._timeout: aiohttp.ClientTimeout = aiohttp.ClientTimeout(total=timeout)
@@ -391,14 +390,15 @@ class Api_connector:
         
         self._session = aiohttp.ClientSession(timeout=self._timeout)
     
-    async def make_request(self) -> None:
+    async def make_request(self, url: str) -> str:
         
         """Makes a request, with the given url and parameters.
         
         Makes a request, with the given url and parameters. The response is divided into the statuscode and response text, where the text gets returned.
         
         Args:
-            None
+            url (str):
+                A string, which represents the url.
         
         Returns:
             It returns the response text.
@@ -407,7 +407,7 @@ class Api_connector:
             None
         """
         
-        async with self._session.get(self._url, params=self._params) as response:
+        async with self._session.get(url, params=self._params) as response:
             self._status = response.status
             self._response = await response.text()
             return self._response
