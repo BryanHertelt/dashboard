@@ -302,7 +302,7 @@ class Websocket_connector:
             None
         
         Returns:
-            None
+            It yields every message, so it can be consumed by a for loop.
         
         Raises:
             None
