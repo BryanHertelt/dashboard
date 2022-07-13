@@ -3,6 +3,7 @@ import redis
 import time
 import websockets
 import asyncio
+import json
 
 from src.connectors import Database_connector, Message_broker_connector, Websocket_connector, Api_connector, File_connector
 
@@ -76,11 +77,21 @@ def prin(message):
     
 async def test_Websocket_connector():
     connector =  Websocket_connector(
-        "ws://localhost:8001", 6, 2**60)
+        "wss://stream.binance.com:9443", 6, 2**60)
     await connector.create_connection()
+    response = await connector.subscribe({
+        "method": "SUBSCRIBE",
+        "params":
+        [
+            "btcusdt@aggTrade",
+            "btcusdt@depth"
+        ],
+        "id": 1
+    })
+    print(response)
     #await connector.send_message("Test")
-    async for message in connector.receive_message():
-        print(message)
+    #async for message in connector.receive_message():
+        #print(message)
     #await connector.receive_message(prin)
     #sleep(2)
     #await connector.close_connection()
@@ -112,3 +123,20 @@ async def test_File_connector():
     print(content)
 
 #asyncio.run(test_File_connector())
+
+async def test_Websocket_subscribe():
+    connection = await websockets.connect("wss://stream.binance.com:9443/ws/!ticker@arr", ssl=True)
+    await connection.send(json.dumps({
+        "method": "SUBSCRIBE",
+        "params":
+        [
+            "btcusdt@aggTrade",
+            "btcusdt@depth"
+        ],
+        "id": 1
+    }))
+    while True:
+        response = await connection.recv()
+        print(response)
+
+#asyncio.run(test_Websocket_subscribe())
