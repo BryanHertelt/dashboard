@@ -1,6 +1,6 @@
 import redis
 import websockets
-import orjson
+import json
 import asyncpg
 import asyncio
 import aiohttp
@@ -313,15 +313,15 @@ class Websocket_connector:
                 message = await self._websocket_connection.recv()
                 yield message
         
-    async def send_message(self, message: str) -> None:
+    async def subscribe(self, message: dict) -> Union[str, bytes]:
         
         """Sends messages through the websocket.
         
         Sends messages through the websocket. The messages gets passed to the method.
         
         Args:
-            message (str):
-                A string, which represents the message that should be send through the websocket.
+            message (dict):
+                A dictionary, which represents the subscription message that should be send through the websocket.
         
         Returns:
             None
@@ -330,7 +330,9 @@ class Websocket_connector:
             None
         """
         
-        await self._websocket_connection.send(orjson.dumps(message))
+        await self._websocket_connection.send(json.dumps(message))
+        response = await self._websocket_connection.recv()
+        return response
         
 class Api_connector:
     
