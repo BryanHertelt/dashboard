@@ -77,18 +77,18 @@ def prin(message):
     
 async def test_Websocket_connector():
     connector =  Websocket_connector(
-        "wss://stream.binance.com:9443", 6, 2**60)
+        "wss://stream.binance.com:9443/ws", 6, 2**60)
     await connector.create_connection()
     response = await connector.subscribe({
         "method": "SUBSCRIBE",
         "params":
         [
-            "btcusdt@aggTrade",
-            "btcusdt@depth"
+            "btcusdt@aggTrade"
         ],
         "id": 1
     })
     print(response)
+    await connector.close_connection()
     #await connector.send_message("Test")
     #async for message in connector.receive_message():
         #print(message)
