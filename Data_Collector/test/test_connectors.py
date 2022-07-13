@@ -125,7 +125,7 @@ async def test_File_connector():
 #asyncio.run(test_File_connector())
 
 async def test_Websocket_subscribe():
-    connection = await websockets.connect("wss://stream.binance.com:9443/ws/!ticker@arr", ssl=True)
+    connection = await websockets.connect("wss://stream.binance.com:9443/ws", ssl=True)
     await connection.send(json.dumps({
         "method": "SUBSCRIBE",
         "params":
