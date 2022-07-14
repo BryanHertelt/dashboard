@@ -10,11 +10,12 @@ class Parser:
         None
     """
     
-    def parse(self, data: Union[str,list]):
+    @staticmethod
+    def parse(data: Union[str,list]):
         
         """Parses the data.
         
-        Parses the data with the self._formatter() method.
+        Parses the data with the function, which gets implemented by a subclass.
         
         Args:
             data (Union[list, str]):
@@ -24,27 +25,9 @@ class Parser:
             It returns the formatted data.
         
         Raises:
-            None
-        """
-        
-        return self._fromatter(data)
-    
-    def _formatter(self, data: Union[list, str]):
-        
-        """Formats the data.
-        
-        Formats the data and gets implemented in a subclass.
-        
-        Args:
-            data (Union[list, str]):
-                 A list or string, which specifies the raw data.
-        
-        Returns:
-            None
-            
-        Raises:
             NotImplementedError:
-                This exception will be raised, if the method is not implemented.
+                This exceptions is raised, when the parse() method gets called outside of a subclass.
+
         """
         
         raise NotImplementedError
