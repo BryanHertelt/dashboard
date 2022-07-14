@@ -1,15 +1,16 @@
 import asyncio
 
 from connectors import Message_broker_connector, Database_connector, Websocket_connector, Api_connector
-from typing import Callable
+from parser import Parser
+from typing import Callable, Type
 
 class Websocket_collector:
     
-    def __init__(self, parser: Callable[[str], str], message_broker: Message_broker_connector, 
+    def __init__(self, parser: Type[Parser], message_broker: Message_broker_connector, 
                  database: Database_connector , connector: Websocket_connector):
         self._mb: Message_broker_connector = message_broker
         self._db: Database_connector = database
-        self._parser: Callable[[str], str] = parser
+        self._parser: Type[Parser] = parser
         self._connector: Websocket_connector = connector
     
     async def setup(self, subscription_message: str = None):
