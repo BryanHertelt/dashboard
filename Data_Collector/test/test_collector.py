@@ -17,7 +17,7 @@ async def test_Websocket_collector():
     collector = Websocket_collector(
         Wss_parser(), Message_broker_connector("redis://localhost:6379", 3), Database_connector("postgres://postgres:password@localhost:5432/benchmark", 3), Websocket_connector("ws://localhost:8001", 6, 2**60))
     await collector.setup()
-    await collector.collect("INSERT INTO {table} (coin, price, volume) VALUES ", "test_table", "TEST")
+    await collector.collect("INSERT INTO {table} (name, price, volume) VALUES ", "test_table", "TEST")
 
 #asyncio.run(test_Websocket_collector())
 
@@ -30,9 +30,9 @@ class Api_parser(Parser):
     
 async def test_Api_collector():
     collector = Api_collector(Api_parser(), Message_broker_connector(
-        "redis://localhost:6379", 3), Database_connector("postgres://postgres:password@localhost:5432/benchmark", 3), Api_connector("https://api1.binance.com/api/v3/time", {}, 2))
+        "redis://localhost:6379", 3), Database_connector("postgres://postgres:password@localhost:5432/benchmark", 3), Api_connector(2))
     await collector.setup()
-    await collector.collect("INSERT INTO {table} (coin, price, volume) VALUES ", "test_table", "TEST")
+    await collector.collect("INSERT INTO {table} (name, price, volume) VALUES ", "test_table", "TEST", 1, "https://api1.binance.com/api/v3/time", {})
 
 #asyncio.run(test_Api_collector())
 
