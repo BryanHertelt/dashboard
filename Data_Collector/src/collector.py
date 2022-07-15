@@ -1,4 +1,5 @@
 import asyncio
+import time
 
 from .connectors import Message_broker_connector, Database_connector, Websocket_connector, Api_connector
 from .parser import Parser
@@ -56,9 +57,12 @@ class Api_collector(Collector):
         await super().setup()
         await self._connector.create_session()
     
-    async def collect(self, query_statement, table, source):
-        for i in range(10):
-            response = await self._connector.make_request()
+    async def collect(self, query_statement, table, source, request_time_limit, url, parameter):
+        difference = 0
+        while True:
+            start_time = time.time()
+            response = await self._connector.make_request(url, parameter)
             data = self._parser.parse(response)
             await asyncio.gather(self._write(query_statement, data, table), self._publish(data, source))
-            await asyncio.sleep(1)
+            difference = 0 if ((time.time() - start_time) > request_time_limit) else (request_time_limit - (time.time() - start_time))
+            await asyncio.sleep(difference)
