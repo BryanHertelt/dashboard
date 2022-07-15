@@ -17,11 +17,11 @@ class Collector:
             self._db.connect(),
         )
 
-    async def _write(self, data):
-        await self._db.write("INSERT INTO {table} (name, price, volume) VALUES ", data, "test_table")
+    async def _write(self, query_statement, data, table):
+        await self._db.write(query_statement, data, table)
     
-    async def _publish(self, data):
-        await self._mb.write(data, "X")
+    async def _publish(self, data, source):
+        await self._mb.write(data, source)
     
     async def collect(self):
         raise NotImplementedError
@@ -40,11 +40,10 @@ class Websocket_collector(Collector):
             response = await self._connector.subscribe(subscription_message)
             return response
     
-    async def collect(self):
+    async def collect(self, query_statement, table, source):
         async for message in self._connector.receive_message():
              data = self._parser.parse(message)
-             print(data)
-             await asyncio.gather(self._write(data), self._publish(data))
+             await asyncio.gather(self._write(query_statement, data, table), self._publish(data, source))
 
 class Api_collector(Collector):
     
@@ -57,9 +56,9 @@ class Api_collector(Collector):
         await super().setup()
         await self._connector.create_session()
     
-    async def collect(self):
+    async def collect(self, query_statement, table, source):
         for i in range(10):
             response = await self._connector.make_request()
             data = self._parser.parse(response)
-            await asyncio.gather(self._write(data), self._publish(data))
+            await asyncio.gather(self._write(query_statement, data, table), self._publish(data, source))
             await asyncio.sleep(1)
