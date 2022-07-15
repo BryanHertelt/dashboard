@@ -1,5 +1,6 @@
 import json
 import asyncio
+import time
 
 from src.collector import Websocket_collector, Api_collector
 from src.connectors import Websocket_connector, Api_connector, Message_broker_connector, Database_connector
@@ -34,3 +35,19 @@ async def test_Api_collector():
     await collector.collect("INSERT INTO {table} (coin, price, volume) VALUES ", "test_table", "TEST")
 
 #asyncio.run(test_Api_collector())
+
+async def test_time_controller():
+    connector = Api_connector("https://api1.binance.com/api/v3/time", {}, 2)
+    await connector.create_session()
+    difference = 0
+    while True:
+        itera = time.time()
+        start_time = time.time()
+        await connector.make_request()
+        difference = 0 if (time.time() - start_time) > 1 else (1 - (time.time() - start_time))
+        print("Call: ", time.time() - start_time)
+        print("Sleep: ", difference)
+        time.sleep(difference)
+        print("Loop: ", time.time() - itera)
+
+#asyncio.run(test_time_controller())
