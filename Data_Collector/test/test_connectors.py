@@ -21,8 +21,9 @@ async def test_Database_connector():
 async def test_Message_broker_connector():
     mb = Message_broker_connector("redis://localhost", 3)
     await mb.connect()
-    data = [("BTC", "1000"), ("ETH", "190")]
-    await mb.write(data, "BINANCE")
+    await mb._connection.ping()
+    data = [("BTC", 1000), ("ETH", "190")]
+    await mb.write(data, "X")
 
 #asyncio.run(test_Message_broker_connector())
 
@@ -52,16 +53,20 @@ def test_db_bench():
 #test_db_bench()
     
 def test_redis_bench():
-    dataset = [("coin", x) for x in range(50000, 1000010)]
+    dataset = [("BTC", str(x)) for x in range(10)]
+    source = "X"
+    #dataset = [("btc", 42)]
     r = redis.Redis(host="localhost", port="6379")
+    r.publish("btc", 100)
     pipeline = r.pipeline()
     start = time.time()
     for item in dataset:
-        pipeline.publish(str(item), str(item))
+        pipeline.publish(source + item[0], item[1])
     pipeline.execute()
     end = time.time()
     print(end - start)
-    
+
+#test_redis_bench()
 
 async def handler(websocket):
     async for message in websocket:
@@ -108,10 +113,10 @@ async def test_Websocket_endpoint():
 #asyncio.run(test_Websocket_endpoint())
 
 async def test_Api_connector():
-    connector = Api_connector({}, 2)
+    connector = Api_connector("https://api1.binance.com/api/v3/time", {}, 2)
     await connector.create_session()
     for i in range(10):
-        response = await connector.make_request("https://api1.binance.com/api/v3/time")
+        response = await connector.make_request()
         print(type(response))
         await asyncio.sleep(0.5)
     await connector.close_session()
