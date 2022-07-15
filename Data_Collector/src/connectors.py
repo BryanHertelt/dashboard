@@ -202,6 +202,7 @@ class Message_broker_connector:
         async with self._connection.pipeline() as pipeline:
             for item in data:
                 await pipeline.publish(source + item[0], item[1])
+            await pipeline.execute()
             
 class Websocket_connector:
     
@@ -349,7 +350,7 @@ class Api_connector:
             An integer, which specifies the timeout for each request attempt.
     """
     
-    def __init__(self, parameter: Dict[str, str], timeout: int) -> None:
+    def __init__(self, url: str, parameter: Dict[str, str], timeout: int) -> None:
         
         """Initializes the Api_connector.
         
@@ -368,6 +369,7 @@ class Api_connector:
             None
         """
         
+        self._url: str = url
         self._session: aiohttp.ClientSession
         self._response: str
         self._status: Union[str, int]
@@ -392,15 +394,14 @@ class Api_connector:
         
         self._session = aiohttp.ClientSession(timeout=self._timeout)
     
-    async def make_request(self, url: str) -> str:
+    async def make_request(self) -> str:
         
         """Makes a request, with the given url and parameters.
         
         Makes a request, with the given url and parameters. The response is divided into the statuscode and response text, where the text gets returned.
         
         Args:
-            url (str):
-                A string, which represents the url.
+            None
         
         Returns:
             It returns the response text.
@@ -409,7 +410,7 @@ class Api_connector:
             None
         """
         
-        async with self._session.get(url, params=self._params) as response:
+        async with self._session.get(self._url, params=self._params) as response:
             self._status = response.status
             self._response = await response.text()
             return self._response
