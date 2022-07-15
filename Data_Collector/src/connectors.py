@@ -350,15 +350,11 @@ class Api_connector:
             An integer, which specifies the timeout for each request attempt.
     """
     
-    def __init__(self, url: str, parameter: Dict[str, str], timeout: int) -> None:
+    def __init__(self, timeout: int) -> None:
         
         """Initializes the Api_connector.
         
         Args:
-            url (str):
-                A string, which represents the url, to which the request should be made.
-            parameter (Dict[str, str]):
-                A dictionary, which holds optional parameters in it, which are passed with the url.
             timeout (int):
                 An integer, which specifies the timeout for each request attempt.
         
@@ -369,11 +365,9 @@ class Api_connector:
             None
         """
         
-        self._url: str = url
         self._session: aiohttp.ClientSession
         self._response: str
         self._status: Union[str, int]
-        self._params: Dict[str, str] = parameter
         self._timeout: aiohttp.ClientTimeout = aiohttp.ClientTimeout(total=timeout)
     
     async def create_session(self) -> None:
@@ -394,14 +388,17 @@ class Api_connector:
         
         self._session = aiohttp.ClientSession(timeout=self._timeout)
     
-    async def make_request(self) -> str:
+    async def make_request(self, url: str, parameter: Dict[str, str]) -> str:
         
         """Makes a request, with the given url and parameters.
         
         Makes a request, with the given url and parameters. The response is divided into the statuscode and response text, where the text gets returned.
         
         Args:
-            None
+            url (str): 
+                A string representing the url to make a request.
+            parameter (Dict[str, str]): 
+                A dictionary of parameters to make a request with.
         
         Returns:
             It returns the response text.
@@ -410,7 +407,7 @@ class Api_connector:
             None
         """
         
-        async with self._session.get(self._url, params=self._params) as response:
+        async with self._session.get(url, params=parameter) as response:
             self._status = response.status
             self._response = await response.text()
             return self._response
