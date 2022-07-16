@@ -51,3 +51,30 @@ async def test_time_controller():
         print("Loop: ", time.time() - itera)
 
 #asyncio.run(test_time_controller())
+
+class Test:
+    
+    def __init__(self):
+        self.collector = Websocket_collector(
+            Wss_parser(), Message_broker_connector("redis://localhost:6379", 3), Database_connector("postgres://postgres:password@localhost:5432/benchmark", 3), Websocket_connector("ws://localhost:8001", 6, 2**60))
+        
+    async def start(self):
+        await self.collector.setup()
+        
+    async def sleep(self):
+        time.sleep(10)
+        
+    async def shutdown(self):
+        print("Shutdown")
+
+async def test_shutdown():
+    test = Test()
+    try:
+        await test.start()
+        await test.sleep()
+    except Exception as e:
+        print("Error")
+    finally:
+        await test.shutdown()
+
+#asyncio.run(test_shutdown())
