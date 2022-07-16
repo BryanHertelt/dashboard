@@ -26,6 +26,9 @@ class Collector:
     
     async def collect(self):
         raise NotImplementedError
+    
+    async def shutdown(self):
+        await self._db.close_connection()
 
 class Websocket_collector(Collector):
     
@@ -45,6 +48,10 @@ class Websocket_collector(Collector):
         async for message in self._connector.receive_message():
              data = self._parser.parse(message)
              await asyncio.gather(self._write(query_statement, data, table), self._publish(data, source))
+    
+    async def shutdown(self):
+        super().shutdown()
+        await self._connector.close_connection()
 
 class Api_collector(Collector):
     
@@ -57,12 +64,19 @@ class Api_collector(Collector):
         await super().setup()
         await self._connector.create_session()
     
-    async def collect(self, query_statement, table, source, request_time_limit, url, parameter):
+    async def collect(self, query_statement, table, source, request_time_limit, url, parameter, stream: bool = True):
         difference = 0
         while True:
             start_time = time.time()
             response = await self._connector.make_request(url, parameter)
             data = self._parser.parse(response)
-            await asyncio.gather(self._write(query_statement, data, table), self._publish(data, source))
+            if stream:
+                await asyncio.gather(self._write(query_statement, data, table), self._publish(data, source))
+            else:
+                return data
             difference = 0 if ((time.time() - start_time) > request_time_limit) else (request_time_limit - (time.time() - start_time))
             await asyncio.sleep(difference)
+            
+    async def shutdown(self):
+        super().shutdown()
+        await self._connector.close_session()
