@@ -78,3 +78,18 @@ async def test_shutdown():
         await test.shutdown()
 
 #asyncio.run(test_shutdown())
+
+async def test_exception_handling():
+    collector = Websocket_collector(
+        Wss_parser(), Message_broker_connector("redis://localhost:6379", 3), Database_connector("postgres://postgres:password@localhost:5432/benchmark", 5), Websocket_connector("ws://localhost:8001", 6, 2**60))
+    await collector.setup()
+    #await collector._write("INSERT INTO {table} (name, price, volume) VALUES ", [
+                    #("XRP", "100", "100") for x in range(5)], "test_table")
+    print("Sleep!")
+    time.sleep(5)
+    while True:
+        data = [("BB", 3672), ("ETH", "190")]
+        await collector._publish(data, "X")
+        time.sleep(1)
+
+#asyncio.run(test_exception_handling())
