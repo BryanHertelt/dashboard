@@ -1,5 +1,9 @@
 import asyncio
 import time
+import asyncpg
+import redis
+import websockets
+import aiohttp
 
 from .connectors import Message_broker_connector, Database_connector, Websocket_connector, Api_connector
 from .parser import Parser
@@ -18,11 +22,17 @@ class Collector:
             self._db.connect(),
         )
 
-    async def _write(self, query_statement, data, table):
-        await self._db.write(query_statement, data, table)
+    async def _write(self, query_statement, data, table): #Exception Handling
+        try:
+            await self._db.write(query_statement, data, table)
+        except asyncpg.exceptions.ConnectionDoesNotExistError:
+            await self._db.connect()
     
-    async def _publish(self, data, source):
-        await self._mb.write(data, source)
+    async def _publish(self, data, source): #Exception Handling
+        try:
+            await self._mb.write(data, source)
+        except redis.exceptions.ConnectionError:
+            await self._mb.connect()
     
     async def collect(self):
         raise NotImplementedError
@@ -37,17 +47,27 @@ class Websocket_collector(Collector):
         super().__init__(parser, message_broker, database)
         self._connector: Websocket_connector = connector
     
-    async def setup(self, subscription_message: str = None):
+    async def setup(self, subscription_message: str = None): #Exception Handling
         await super().setup()
         await self._connector.create_connection()
         if subscription_message != None:
-            response = await self._connector.subscribe(subscription_message)
-            return response
+            try:
+                response = await self._connector.subscribe(subscription_message)
+            except websockets.exceptions.ConnectionClosedError:
+                await self._connector.create_connection()
+                response = await self._connector.subscribe(subscription_message)
+                return response
+            else:
+                return response
     
-    async def collect(self, query_statement, table, source):
-        async for message in self._connector.receive_message():
-             data = self._parser.parse(message)
-             await asyncio.gather(self._write(query_statement, data, table), self._publish(data, source))
+    async def collect(self, query_statement, table, source): #Exception Handling
+        while True:
+            try:
+                async for message in self._connector.receive_message():
+                    data = self._parser.parse(message)
+                    await asyncio.gather(self._write(query_statement, data, table), self._publish(data, source))
+            except websockets.exceptions.ConnectionClosedError:
+                await self._connector.create_connection()
     
     async def shutdown(self):
         super().shutdown()
@@ -64,11 +84,14 @@ class Api_collector(Collector):
         await super().setup()
         await self._connector.create_session()
     
-    async def collect(self, query_statement, table, source, request_time_limit, url, parameter, stream: bool = True):
+    async def collect(self, query_statement, table, source, request_time_limit, url, parameter, stream: bool = True): #Exception Handling
         difference = 0
         while True:
             start_time = time.time()
-            response = await self._connector.make_request(url, parameter)
+            try:
+                response = await self._connector.make_request(url, parameter)
+            except aiohttp.ClientResponseError: #Logging?
+                pass
             data = self._parser.parse(response)
             if stream:
                 await asyncio.gather(self._write(query_statement, data, table), self._publish(data, source))
