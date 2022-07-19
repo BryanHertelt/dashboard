@@ -145,3 +145,29 @@ async def test_Websocket_subscribe():
         print(response)
 
 #asyncio.run(test_Websocket_subscribe())
+
+async def test_database_exceptions():
+    connector = Database_connector("postgres://postgres:password@localhost:5432/benchmark", 3)
+    await connector.connect()
+    time.sleep(5)
+    await connector.write("INSERT INTO {table} (coin, price, volume) VALUES ", [
+                    ("100", "a", "a") for x in range(50000)], "test_table")
+    
+#asyncio.run(test_database_exceptions())
+
+async def test_message_broker_exceptions():
+    connector = Message_broker_connector("redis://localhost", 3)
+    await connector.connect()
+    time.sleep(5)
+    data = [("BTC", 1000), ("ETH", "190")]
+    await connector.write(data, "X")
+
+#asyncio.run(test_message_broker_exceptions())
+
+async def test_websocket_exceptions():
+    connector = Websocket_connector("ws://locahlhost:8001", 3, 2**60)
+    await connector.create_connection()
+    time.sleep(5)
+    await connector.subscribe("Test")
+    
+asyncio.run(test_websocket_exceptions())
