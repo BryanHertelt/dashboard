@@ -26,6 +26,7 @@ class Api_parser(Parser):
     @staticmethod
     def parse(data: str):
         parsed_data = data
+        print(data)
         return [("BTC", "187", "187")]
     
 async def test_Api_collector():
@@ -93,3 +94,19 @@ async def test_exception_handling():
         time.sleep(1)
 
 #asyncio.run(test_exception_handling())
+
+async def test_full_Websocket_collector():
+    collector = Websocket_collector(
+        Wss_parser(), Message_broker_connector("redis://localhost:6379", 8), Database_connector("postgres://postgres:password@localhost:5432/benchmark", 8), Websocket_connector("ws://localhost:8001", 6, 2**60))
+    await collector.setup()
+    await collector.collect("INSERT INTO {table} (name, price, volume) VALUES ", "test_table", "X")
+
+#asyncio.run(test_full_Websocket_collector())
+
+async def test_full_Api_collector():
+    collector = Api_collector(Api_parser(), Message_broker_connector(
+        "redis://localhost:6379", 8), Database_connector("postgres://postgres:password@localhost:5432/benchmark", 3), Api_connector(8))
+    await collector.setup()
+    await collector.collect("INSERT INTO {table} (name, price, volume) VALUES ", "test_table", "X", 1, "http://localhost:8080", {}, 5)
+    
+#asyncio.run(test_full_Api_collector())

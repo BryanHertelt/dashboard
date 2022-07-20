@@ -1,6 +1,9 @@
 import asyncio
 import websockets
 import json
+import aiohttp
+
+from aiohttp import web
 
 
 def websocket():
@@ -22,4 +25,22 @@ def websocket():
   if __name__ == "__main__":
       asyncio.run(main())
 
-websocket()
+#websocket()
+
+def web_server():
+    
+
+    async def handler(request: web.Request) -> web.Response:
+        raise aiohttp.web.HTTPBadRequest()
+        #return web.Response(text="SUCCESS")
+
+
+    async def init_app() -> web.Application:
+        app = web.Application()
+        app.add_routes([web.get("/", handler)])
+        return app
+
+
+    web.run_app(init_app())
+
+#web_server()
