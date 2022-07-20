@@ -25,13 +25,13 @@ class Collector:
     async def _write(self, query_statement, data, table): #Exception Handling
         try:
             await self._db.write(query_statement, data, table)
-        except asyncpg.exceptions.ConnectionDoesNotExistError:
+        except (asyncpg.exceptions.ConnectionDoesNotExistError, asyncpg.exceptions._base.InterfaceError):
             await self._db.connect()
     
     async def _publish(self, data, source): #Exception Handling
         try:
             await self._mb.write(data, source)
-        except redis.exceptions.ConnectionError:
+        except (redis.exceptions.ConnectionError, OSError):
             await self._mb.connect()
     
     async def collect(self):
@@ -84,14 +84,20 @@ class Api_collector(Collector):
         await super().setup()
         await self._connector.create_session()
     
-    async def collect(self, query_statement, table, source, request_time_limit, url, parameter, stream: bool = True): #Exception Handling
-        difference = 0
+    async def collect(self, query_statement, table, source, request_time_limit, url, parameter, max_reconnects: int, stream: bool = True): #Exception Handling
+        difference, reconnects  = 0, 0
         while True:
             start_time = time.time()
             try:
                 response = await self._connector.make_request(url, parameter)
-            except aiohttp.ClientResponseError: #Logging?
-                pass
+            except (aiohttp.ClientResponseError, aiohttp.client_exceptions.ClientConnectorError)as error: #Logging?
+                if reconnects <= max_reconnects:
+                    reconnects += 1
+                    await asyncio.sleep(reconnects)
+                    continue
+                raise error
+            else:
+                reconnects = 0
             data = self._parser.parse(response)
             if stream:
                 await asyncio.gather(self._write(query_statement, data, table), self._publish(data, source))
