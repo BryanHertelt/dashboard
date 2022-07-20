@@ -388,7 +388,7 @@ class Api_connector:
         
         self._session = aiohttp.ClientSession(timeout=self._timeout)
     
-    async def make_request(self, url: str, parameter: Dict[str, str]) -> str:
+    async def make_request(self, url: str, parameter: Dict[str, str]) -> Tuple[str, str]:
         
         """Makes a request, with the given url and parameters.
         
@@ -401,7 +401,7 @@ class Api_connector:
                 A dictionary of parameters to make a request with.
         
         Returns:
-            It returns the response text.
+            It returns the response text and the status code as a tuple.
         
         Raises:
             None
@@ -410,7 +410,7 @@ class Api_connector:
         async with self._session.get(url, params=parameter) as response:
             self._status = response.status
             self._response = await response.text()
-            return self._response
+            return (self._response, self._status)
             
     async def close_session(self) -> None:
         
