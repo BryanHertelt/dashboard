@@ -7,7 +7,7 @@ import aiohttp
 
 from .connectors import Message_broker_connector, Database_connector, Websocket_connector, Api_connector
 from .parser import Parser
-from typing import Type
+from typing import Tuple, Type, List
 
 class Collector:
     
@@ -69,7 +69,7 @@ class Collector:
             self._db.connect(),
         )
 
-    async def _write(self, query_statement, data, table): 
+    async def _write(self, query_statement: str, data: List[Tuple[str]], table: str): 
         
         """Writes data into the database.
         
@@ -78,7 +78,7 @@ class Collector:
         Args:
             query_statement (str):
                 This string specifies the query statement, which is used to insert the data.
-            data (List[Tuple[]]):
+            data (List[Tuple[str]]):
                 This list contains the data to be written to the database.
             table (str):
                 This strings specifies the target table in the database.
@@ -95,7 +95,7 @@ class Collector:
         except (asyncpg.exceptions.ConnectionDoesNotExistError, asyncpg.exceptions._base.InterfaceError):
             await self._db.connect()
     
-    async def _publish(self, data, source):
+    async def _publish(self, data: List[Tuple[str]], source: str):
         
         """Publishes the data to the message broker.
         
@@ -227,7 +227,7 @@ class Websocket_collector(Collector):
             else:
                 return response
     
-    async def collect(self, query_statement, table, source):
+    async def collect(self, query_statement: str, table: str, source: str):
         
         """Collects data from the websocket and saves them.
         
@@ -335,7 +335,7 @@ class Api_collector(Collector):
         await super().setup()
         await self._connector.create_session()
     
-    async def collect(self, query_statement, table, source, request_time_limit, url, parameter, max_reconnects: int, stream: bool = True):
+    async def collect(self, query_statement:str , table: str, source: str, request_time_limit: int, url: str, parameter: dict, max_reconnects: int, stream: bool = True):
         
         """Collects data from the api endpoint and saves them.
         
