@@ -41,9 +41,9 @@ class Database_connector:
             None
         """ 
         
-        self._connection_string: str = connection_string
-        self._connection: asyncpg.Connection
-        self._max_reconnects: int = max_reconnects
+        self.__connection_string: str = connection_string
+        self.__connection: asyncpg.Connection
+        self.__max_reconnects: int = max_reconnects
     
     async def connect(self) -> asyncpg.Connection: 
         
@@ -62,15 +62,15 @@ class Database_connector:
                 This exception will be raised, if, afer the limit of reconnects is reached, there is still no working connection.
         """
         
-        for count in range(self._max_reconnects+1):
+        for count in range(self.__max_reconnects+1):
             try:
-                self._connection = await asyncpg.connect(self._connection_string)
+                self._connection = await asyncpg.connect(self.__connection_string)
             except (asyncpg.PostgresError, OSError) as error:
                 exception = error
                 await asyncio.sleep(count)
                 continue
             else:
-                return self._connection
+                return self.__connection
         raise exception
     
     async def write(self, query_statement: str, data: List[Tuple[str]], table: str) -> None: 
@@ -94,9 +94,9 @@ class Database_connector:
             None
         """
         
-        if self._connection != None:
+        if self.__connection != None:
             args_str = ",".join("('%s', '%s', '%s')" %(coin, price, volume) for (coin, price, volume) in data)
-            await self._connection.execute(query_statement.format(table=table) + args_str)
+            await self.__connection.execute(query_statement.format(table=table) + args_str)
 
     async def close_connection(self) -> None: 
         
@@ -114,8 +114,8 @@ class Database_connector:
             None
         """
         
-        if self._connection != None:
-            await self._connection.close()
+        if self.__connection != None:
+            await self.__connection.close()
 
 class Message_broker_connector:
     
@@ -147,9 +147,9 @@ class Message_broker_connector:
             None
         """
         
-        self._instance_url: str = instance_url
-        self._connection: aioredis.ConnectionPool
-        self._max_reconnects: int = max_reconnects
+        self.__instance_url: str = instance_url
+        self.__connection: aioredis.ConnectionPool
+        self.__max_reconnects: int = max_reconnects
        
     async def connect(self) -> aioredis.ConnectionPool:
         
@@ -168,16 +168,16 @@ class Message_broker_connector:
                 This exception will be raised, if, ater reaching the maximum amount of reconnects, the connection attempt was still not successful.
         """
         
-        for count in range(self._max_reconnects+1):
+        for count in range(self.__max_reconnects+1):
             try:
-                self._connection = await aioredis.from_url(self._instance_url)
-                await self._connection.ping()
+                self.__connection = await aioredis.from_url(self.__instance_url)
+                await self.__connection.ping()
             except redis.RedisError as error:
                 exception = error
                 await asyncio.sleep(count)
                 continue
             else:
-                return self._connection
+                return self.__connection
         raise exception
     
     async def write(self, data: List[Tuple[str]], source: str) -> None:
@@ -199,7 +199,7 @@ class Message_broker_connector:
             None
         """
         
-        async with self._connection.pipeline() as pipeline:
+        async with self.__connection.pipeline() as pipeline:
             for item in data:
                 await pipeline.publish(source + item[0], item[1])
             await pipeline.execute()
@@ -238,10 +238,10 @@ class Websocket_connector:
             None
         """
         
-        self._websocket_url: str = websocket_url
-        self._websocket_connection: websockets.WebSocketClientProtocol
-        self._max_reconnects: int = max_reconnects
-        self._max_size: int = max_size
+        self.__websocket_url: str = websocket_url
+        self.__websocket_connection: websockets.WebSocketClientProtocol
+        self.__max_reconnects: int = max_reconnects
+        self.__max_size: int = max_size
     
     async def create_connection(self) -> websockets.WebSocketClientProtocol:
         
@@ -260,15 +260,15 @@ class Websocket_connector:
                 This exception will be raised, if, ater reaching the maximum amount of reconnects, the connection attempt was still not successful.
         """
         
-        for count in range(self._max_reconnects+1):
+        for count in range(self.__max_reconnects+1):
             try:
-                self._websocket_connection = await websockets.connect(self._websocket_url, max_size=self._max_size)
+                self.__websocket_connection = await websockets.connect(self.__websocket_url, max_size=self.__max_size)
             except (websockets.exceptions.ConnectionClosed, OSError, websockets.exceptions.InvalidHandshake) as error:
                 exception = error
                 await asyncio.sleep(count)
                 continue
             else:
-                return self._websocket_connection
+                return self.__websocket_connection
         raise exception 
             
     async def close_connection(self, reason: str = "", code: int = 1000) -> None:
@@ -290,8 +290,8 @@ class Websocket_connector:
             None
         """
         
-        if self._websocket_connection:
-            await self._websocket_connection.close(reason=reason, code=code)
+        if self.__websocket_connection:
+            await self.__websocket_connection.close(reason=reason, code=code)
                        
     async def receive_message(self) -> None:
         
@@ -309,9 +309,9 @@ class Websocket_connector:
             None
         """
         
-        if self._websocket_connection:
+        if self.__websocket_connection:
             while True:
-                message = await self._websocket_connection.recv()
+                message = await self.__websocket_connection.recv()
                 yield message
         
     async def subscribe(self, message: dict) -> Union[str, bytes]:
@@ -331,8 +331,8 @@ class Websocket_connector:
             None
         """
         
-        await self._websocket_connection.send(json.dumps(message))
-        response = await self._websocket_connection.recv()
+        await self.__websocket_connection.send(json.dumps(message))
+        response = await self.__websocket_connection.recv()
         return response
         
 class Api_connector:
@@ -365,10 +365,10 @@ class Api_connector:
             None
         """
         
-        self._session: aiohttp.ClientSession
-        self._response: str
-        self._status: Union[str, int]
-        self._timeout: aiohttp.ClientTimeout = aiohttp.ClientTimeout(total=timeout)
+        self.__session: aiohttp.ClientSession
+        self.__response: str
+        self.__status: Union[str, int]
+        self.__timeout: aiohttp.ClientTimeout = aiohttp.ClientTimeout(total=timeout)
     
     async def create_session(self) -> None:
         
@@ -386,7 +386,7 @@ class Api_connector:
             None
         """
         
-        self._session = aiohttp.ClientSession(timeout=self._timeout)
+        self._session = aiohttp.ClientSession(timeout=self.__timeout)
     
     async def make_request(self, url: str, parameter: Dict[str, str]) -> Tuple[str, str]:
         
@@ -407,10 +407,10 @@ class Api_connector:
             None
         """
         
-        async with self._session.get(url, params=parameter) as response:
-            self._status = response.status
-            self._response = await response.text()
-            return (self._response, self._status)
+        async with self.__session.get(url, params=parameter) as response:
+            self.__status = response.status
+            self.__response = await response.text()
+            return (self.__response, self.__status)
             
     async def close_session(self) -> None:
         
@@ -428,7 +428,7 @@ class Api_connector:
             None
         """
         
-        await self._session.close()
+        await self.__session.close()
         
 class File_connector:
     

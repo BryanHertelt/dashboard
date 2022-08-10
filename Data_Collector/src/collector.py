@@ -7,7 +7,7 @@ import aiohttp
 
 from .connectors import Message_broker_connector, Database_connector, Websocket_connector, Api_connector
 from .parser import Parser
-from typing import Tuple, Type, List
+from typing import Tuple, List, Union
 
 class Collector:
     
@@ -44,9 +44,9 @@ class Collector:
             None
         """
         
-        self._mb: Message_broker_connector = message_broker
-        self._db: Database_connector = database
-        self._parser: Type[Parser] = parser
+        self.__mb: Message_broker_connector = message_broker
+        self.__db: Database_connector = database
+        self.__parser: Parser = parser
         
     async def setup(self):
         
@@ -65,11 +65,11 @@ class Collector:
         """
         
         await asyncio.gather(
-            self._mb.connect(),
-            self._db.connect(),
+            self.__mb.connect(),
+            self.__db.connect(),
         )
 
-    async def _write(self, query_statement: str, data: List[Tuple[str]], table: str): 
+    async def __write(self, query_statement: str, data: List[Tuple[str]], table: str): 
         
         """Writes data into the database.
         
@@ -91,11 +91,11 @@ class Collector:
         """
         
         try:
-            await self._db.write(query_statement, data, table)
+            await self.__db.write(query_statement, data, table)
         except (asyncpg.exceptions.ConnectionDoesNotExistError, asyncpg.exceptions._base.InterfaceError):
-            await self._db.connect()
+            await self.__db.connect()
     
-    async def _publish(self, data: List[Tuple[str]], source: str):
+    async def __publish(self, data: List[Tuple[str]], source: str):
         
         """Publishes the data to the message broker.
         
@@ -116,9 +116,9 @@ class Collector:
         """
         
         try:
-            await self._mb.write(data, source)
+            await self.__mb.write(data, source)
         except (redis.exceptions.ConnectionError, OSError):
-            await self._mb.connect()
+            await self.__mb.connect()
     
     async def collect(self):
         
@@ -155,7 +155,7 @@ class Collector:
             None
         """
         
-        await self._db.close_connection()
+        await self.__db.close_connection()
 
 class Websocket_collector(Collector):
     
@@ -174,7 +174,7 @@ class Websocket_collector(Collector):
             An object, which connects to the websocket server.
     """
     
-    def __init__(self, parser: Parser, message_broker: Message_broker_connector, database: Database_connector , connector: Websocket_connector):
+    def __init__(self, parser: Parser, message_broker: Message_broker_connector, database: Database_connector , connector: Websocket_connector) -> None:
         
         """Initiliaze the Websocket_collector.
         
@@ -196,9 +196,9 @@ class Websocket_collector(Collector):
         """
         
         super().__init__(parser, message_broker, database)
-        self._connector: Websocket_connector = connector
+        self.__connector: Websocket_connector = connector
     
-    async def setup(self, subscription_message: str = None):
+    async def setup(self, subscription_message: str = None) -> Union[str, bytes]:
         
         """Setup the collector.
         
@@ -216,18 +216,18 @@ class Websocket_collector(Collector):
         """
         
         await super().setup()
-        await self._connector.create_connection()
+        await self.__connector.create_connection()
         if subscription_message != None:
             try:
-                response = await self._connector.subscribe(subscription_message)
+                response = await self.__connector.subscribe(subscription_message)
             except websockets.exceptions.ConnectionClosedError:
-                await self._connector.create_connection()
-                response = await self._connector.subscribe(subscription_message)
+                await self.__connector.create_connection()
+                response = await self.__connector.subscribe(subscription_message)
                 return response
             else:
                 return response
     
-    async def collect(self, query_statement: str, table: str, source: str):
+    async def collect(self, query_statement: str, table: str, source: str) -> None:
         
         """Collects data from the websocket and saves them.
         
@@ -250,13 +250,13 @@ class Websocket_collector(Collector):
         
         while True:
             try:
-                async for message in self._connector.receive_message():
-                    data = self._parser.parse(message)
-                    await asyncio.gather(self._write(query_statement, data, table), self._publish(data, source))
+                async for message in self.__connector.receive_message():
+                    data = self.__parser.parse(message)
+                    await asyncio.gather(self.__write(query_statement, data, table), self.__publish(data, source))
             except websockets.exceptions.ConnectionClosedError:
-                await self._connector.create_connection()
+                await self.__connector.create_connection()
     
-    async def shutdown(self):
+    async def shutdown(self) -> None:
         
         """Shuts down the collector.
         
@@ -273,7 +273,7 @@ class Websocket_collector(Collector):
         """
         
         super().shutdown()
-        await self._connector.close_connection()
+        await self.__connector.close_connection()
 
 class Api_collector(Collector):
     
@@ -292,7 +292,7 @@ class Api_collector(Collector):
             An object, which connects to the api server.
     """
     
-    def __init__(self, parser: Parser, message_broker: Message_broker_connector, database: Database_connector, connector: Api_connector):
+    def __init__(self, parser: Parser, message_broker: Message_broker_connector, database: Database_connector, connector: Api_connector) -> None:
         
         """Initiliazes the Api_collector.
         
@@ -314,9 +314,9 @@ class Api_collector(Collector):
         """
         
         super().__init__(parser, message_broker, database)
-        self._connector: Api_connector = connector
+        self.__connector: Api_connector = connector
     
-    async def setup(self):
+    async def setup(self) -> None:
         
         """Setup the collector.
         
@@ -333,9 +333,9 @@ class Api_collector(Collector):
         """
         
         await super().setup()
-        await self._connector.create_session()
+        await self.__connector.create_session()
     
-    async def collect(self, query_statement:str , table: str, source: str, request_time_limit: int, url: str, parameter: dict, max_reconnects: int, stream: bool = True):
+    async def collect(self, query_statement:str , table: str, source: str, request_time_limit: int, url: str, parameter: dict, max_reconnects: int, stream: bool = True) -> Union[None, list]:
         
         """Collects data from the api endpoint and saves them.
         
@@ -360,17 +360,18 @@ class Api_collector(Collector):
                 A boolean specifing if the data should be written into the database and the message broker or if it should be returned. 
             
         Returns:
-            If stream is set on true the response from the http request gets returned.
+            If stream is set on false the response from the http request gets returned.
             
         Raises:
             aiohttp.ClientResponseError, aiohttp.client_exceptions.ClientConnectorError:
                 These exceptions will be raised after reaching the limit of allowed reconnects without establishing a successful connection.
         """
+        
         difference, reconnects  = 0, 0
         while True:
             start_time = time.time()
             try:
-                response = await self._connector.make_request(url, parameter)
+                response = await self.__connector.make_request(url, parameter)
             except (aiohttp.ClientResponseError, aiohttp.client_exceptions.ClientConnectorError)as error:
                 if reconnects <= max_reconnects:
                     reconnects += 1
@@ -379,15 +380,15 @@ class Api_collector(Collector):
                 raise error
             else:
                 reconnects = 0
-            data = self._parser.parse(response)
+            data = self.__parser.parse(response)
             if stream:
-                await asyncio.gather(self._write(query_statement, data, table), self._publish(data, source))
+                await asyncio.gather(self.__write(query_statement, data, table), self.__publish(data, source))
             else:
                 return data
             difference = 0 if ((time.time() - start_time) > request_time_limit) else (request_time_limit - (time.time() - start_time))
             await asyncio.sleep(difference)
             
-    async def shutdown(self):
+    async def shutdown(self) -> None:
         
         """Shuts down the Api_collector.
         
@@ -404,4 +405,4 @@ class Api_collector(Collector):
         """
         
         super().shutdown()
-        await self._connector.close_session()
+        await self.__connector.close_session()
