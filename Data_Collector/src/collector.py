@@ -205,7 +205,7 @@ class Websocket_collector(Collector):
         Setup the collector. Runs the method from the parent class, connects to the websocket and subscribes the specific stream.
         
         Args:
-            subscription_message (str):
+            subscription_message (str) = None:
                 A string representation of the subscription message.
         
         Returns:
@@ -335,7 +335,7 @@ class Api_collector(Collector):
         await super().setup()
         await self.__connector.create_session()
     
-    async def collect(self, query_statement:str , table: str, source: str, request_time_limit: int, url: str, parameter: dict, max_reconnects: int, stream: bool = True) -> Union[None, list]:
+    async def collect(self, query_statement: str, table: str, source: str, url: str, request_time_limit: int = 1, parameter: dict = [], max_reconnects: int = 5, stream: bool = True) -> Union[None, list]:
         
         """Collects data from the api endpoint and saves them.
         
@@ -348,15 +348,15 @@ class Api_collector(Collector):
                 A string representing the table in the database.
             source (str):
                 A string representing the source, which will  be used to build the key for the message broker.
-            request_time_limit (int):
-                An integer representing the minimum time interval between each http request.
             url (str):
                 A string representing the url target.
-            parameter (dict):
+            request_time_limit (int) = 1:
+                An integer representing the minimum time interval between each http request.
+            parameter (dict) = []:
                 A dictionary with parameters for the request.
-            max_reconnects (int):
+            max_reconnects (int) = 5:
                 An integer representing the maximum number of reconnects.
-            stream (bool):
+            stream (bool) = True:
                 A boolean specifing if the data should be written into the database and the message broker or if it should be returned. 
             
         Returns:

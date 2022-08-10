@@ -130,14 +130,14 @@ class Message_broker_connector:
             An integer, which is the maximum allowed number of reconnects.
     """
     
-    def __init__(self, instance_url: str, max_reconnects: int) -> None:
+    def __init__(self, instance_url: str, max_reconnects: int = 5) -> None:
         
         """Initialize the Message_broker_connector.
         
         Args:
             instance_url (str):
                 A string, which specifies the url to the redis instance.
-            max_reconnects (int):
+            max_reconnects (int) = 5:
                 An integer, which is the maximum allowed number of reconnects.
         
         Returns:
@@ -219,16 +219,16 @@ class Websocket_connector:
             An integer, which limits the size of the message buffer from the websocket connector. 
     """
     
-    def __init__(self, websocket_url: str, max_reconnects: int, max_size: int = None) -> None:
+    def __init__(self, websocket_url: str, max_reconnects: int = 5, max_size: int = None) -> None:
         
         """Initializes the websocket connector.
         
         Args:
             websocket_url (str):
                 A string, which specifies the address to the websocket.
-            max_reconnects (int):
+            max_reconnects (int) = 5:
                 An integer, which is the maximum allowed number of reconnects.
-            max_size (int):
+            max_size (int) = None:
                 An integer, which limits the size of the message buffer from the websocket connector.
         
         Returns:
