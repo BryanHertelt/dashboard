@@ -8,6 +8,9 @@ from src.connectors import Database_connector
 
 @pytest.fixture
 def get_database_connector():
+    
+    """Returns the default testing object of the Database_connector."""
+    
     connector = Database_connector(
         "postgres://postgres:password@localhost:5432/benchmark", 2
     )
@@ -16,7 +19,9 @@ def get_database_connector():
 
 @pytest.mark.asyncio
 async def test_connect_successful(get_database_connector):
-
+    
+    """Tests if the Database_connector returns the correct object if the connection was successful."""
+    
     database_connector = get_database_connector
     future = asyncio.Future()
     future.set_result(asyncpg.Connection)
@@ -29,6 +34,8 @@ async def test_connect_successful(get_database_connector):
 
 @pytest.mark.asyncio
 async def test_connect_unsuccessful(get_database_connector):
+
+    """Tests if the exception handling is correct, when the connection can not be established."""
 
     database_connector = get_database_connector
     future = asyncio.Future()
@@ -44,6 +51,8 @@ async def test_connect_unsuccessful(get_database_connector):
 
 @pytest.mark.asyncio
 async def test_reconnect(get_database_connector):
+
+    """Tests if reconnecting after a connection fail is successful."""
 
     database_connector = get_database_connector
     future_exception, future_sucessful = asyncio.Future(), asyncio.Future()

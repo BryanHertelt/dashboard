@@ -8,12 +8,17 @@ from src.connectors import Message_broker_connector
 
 @pytest.fixture
 def get_message_broker_connector():
+    
+    """Returns the default testing object of the Message_broker_connector."""
+    
     connector = Message_broker_connector("redis://test", 2)
     return connector
 
 
 @pytest.mark.asyncio
 async def test_connect_successful(get_message_broker_connector):
+    
+    """Tests if the Message_broker_connnector returns the correct object if the connection was successful."""
     
     message_broker_connector = get_message_broker_connector
     future_sucessful = asyncio.Future()
@@ -28,6 +33,9 @@ async def test_connect_successful(get_message_broker_connector):
 
 @pytest.mark.asyncio
 async def test_connect_unsuccessful(get_message_broker_connector):
+    
+    """Tests if the exception handling is correct, when it is not possible to establish a connection."""
+    
     message_broker_connector = get_message_broker_connector
     future = asyncio.Future()
     future.set_exception(redis.RedisError)
@@ -42,6 +50,8 @@ async def test_connect_unsuccessful(get_message_broker_connector):
 
 @pytest.mark.asyncio
 async def test_reconnect(get_message_broker_connector):
+    
+    """Tests if it is possible to reconnect afer a connection error."""
     
     message_broker_connector = get_message_broker_connector
     future_exception, future_sucessful = asyncio.Future(), asyncio.Future()
