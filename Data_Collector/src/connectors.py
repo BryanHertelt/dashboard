@@ -42,7 +42,7 @@ class Database_connector:
         """ 
         
         self.__connection_string: str = connection_string
-        self.__connection: asyncpg.Connection
+        self.__connection: asyncpg.Connection = None
         self.__max_reconnects: int = max_reconnects
     
     async def connect(self) -> asyncpg.Connection: 
@@ -62,18 +62,18 @@ class Database_connector:
                 This exception will be raised, if, afer the limit of reconnects is reached, there is still no working connection.
         """
         
-        for count in range(self.__max_reconnects+1):
+        for count in range(self.__max_reconnects):
             try:
-                self._connection = await asyncpg.connect(self.__connection_string)
+                self.__connection = await asyncpg.connect(self.__connection_string)
             except (asyncpg.PostgresError, OSError) as error:
                 exception = error
-                await asyncio.sleep(count)
+                await asyncio.sleep(count+1)
                 continue
             else:
                 return self.__connection
         raise exception
     
-    async def write(self, query_statement: str, data: List[Tuple[str]], table: str) -> None: 
+    async def write(self, query_statement: str, data: List[Tuple[str]], table: str) -> False: 
         
         """Writes to the database.
         
@@ -88,7 +88,7 @@ class Database_connector:
                 This string names the table, where the data should be inserted.
         
         Returns:
-            None
+            Returns false if theres no connection, which could be used to write something into the database.
         
         Raises:
             None
@@ -97,6 +97,8 @@ class Database_connector:
         if self.__connection != None:
             args_str = ",".join("('%s', '%s', '%s')" %(coin, price, volume) for (coin, price, volume) in data)
             await self.__connection.execute(query_statement.format(table=table) + args_str)
+        else:
+            return False
 
     async def close_connection(self) -> None: 
         
@@ -168,13 +170,13 @@ class Message_broker_connector:
                 This exception will be raised, if, ater reaching the maximum amount of reconnects, the connection attempt was still not successful.
         """
         
-        for count in range(self.__max_reconnects+1):
+        for count in range(self.__max_reconnects):
             try:
                 self.__connection = await aioredis.from_url(self.__instance_url)
                 await self.__connection.ping()
             except redis.RedisError as error:
                 exception = error
-                await asyncio.sleep(count)
+                await asyncio.sleep(count+1)
                 continue
             else:
                 return self.__connection
@@ -260,12 +262,12 @@ class Websocket_connector:
                 This exception will be raised, if, ater reaching the maximum amount of reconnects, the connection attempt was still not successful.
         """
         
-        for count in range(self.__max_reconnects+1):
+        for count in range(self.__max_reconnects):
             try:
                 self.__websocket_connection = await websockets.connect(self.__websocket_url, max_size=self.__max_size)
             except (websockets.exceptions.ConnectionClosed, OSError, websockets.exceptions.InvalidHandshake) as error:
                 exception = error
-                await asyncio.sleep(count)
+                await asyncio.sleep(count+1)
                 continue
             else:
                 return self.__websocket_connection
