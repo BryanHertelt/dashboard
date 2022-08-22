@@ -24,14 +24,14 @@ class Database_connector:
             An integer, which is the maximum allowed number of reconnects.
     """
     
-    def __init__(self, connection_string: str, max_reconnects: int) -> None: 
+    def __init__(self, connection_string: str, max_reconnects: int = 5) -> None: 
         
         """Initialize the Database_connector.
         
         Args:
             connection_string (str): 
                 A string which specifies the address to the database.
-            max_reconnects (int):
+            max_reconnects (int) = 5:
                 An integer, which is the maximum allowed number of reconnects.
         
         Returns:

@@ -367,7 +367,7 @@ class Api_collector(Collector):
                 These exceptions will be raised after reaching the limit of allowed reconnects without establishing a successful connection.
         """
         
-        difference, reconnects  = 0, 0
+        remaining_sleep_time, reconnects  = 0, 0
         while True:
             start_time = time.time()
             try:
@@ -385,8 +385,8 @@ class Api_collector(Collector):
                 await asyncio.gather(self.__write(query_statement, data, table), self.__publish(data, source))
             else:
                 return data
-            difference = 0 if ((time.time() - start_time) > request_time_limit) else (request_time_limit - (time.time() - start_time))
-            await asyncio.sleep(difference)
+            remaining_sleep_time = 0 if ((time.time() - start_time) > request_time_limit) else (request_time_limit - (time.time() - start_time))
+            await asyncio.sleep(remaining_sleep_time)
             
     async def shutdown(self) -> None:
         

@@ -1,10 +1,10 @@
 import pytest
 import mock
 import redis
-import asyncio
 
 from redis import asyncio as aioredis
 from src.connectors import Message_broker_connector
+from tests.development.utils.helper_funcs import future_exception, future_result
 
 @pytest.fixture
 def get_message_broker_connector():
@@ -21,10 +21,8 @@ async def test_connect_successful(get_message_broker_connector):
     """Tests if the Message_broker_connnector returns the correct object if the connection was successful."""
     
     message_broker_connector = get_message_broker_connector
-    future_sucessful = asyncio.Future()
-    future_sucessful.set_result(aioredis.ConnectionPool)
-    aioredis.from_url = mock.MagicMock(return_value=future_sucessful)
-    aioredis.ConnectionPool.ping = mock.MagicMock(return_value=future_sucessful)
+    aioredis.from_url = mock.MagicMock(return_value=future_result(aioredis.ConnectionPool))
+    aioredis.ConnectionPool.ping = mock.MagicMock(return_value=future_result(aioredis.ConnectionPool))
     
     connection = await message_broker_connector.connect()
     
@@ -37,9 +35,7 @@ async def test_connect_unsuccessful(get_message_broker_connector):
     """Tests if the exception handling is correct, when it is not possible to establish a connection."""
     
     message_broker_connector = get_message_broker_connector
-    future = asyncio.Future()
-    future.set_exception(redis.RedisError)
-    aioredis.from_url = mock.MagicMock(return_value=future)
+    aioredis.from_url = mock.MagicMock(return_value=future_exception(redis.RedisError))
 
     with pytest.raises(redis.RedisError):
         connection = await message_broker_connector.connect()
@@ -54,12 +50,9 @@ async def test_reconnect(get_message_broker_connector):
     """Tests if it is possible to reconnect afer a connection error."""
     
     message_broker_connector = get_message_broker_connector
-    future_exception, future_sucessful = asyncio.Future(), asyncio.Future()
-    future_exception.set_exception(redis.RedisError)
-    future_sucessful.set_result(aioredis.ConnectionPool)
     aioredis.from_url = mock.MagicMock(
-        side_effect=[future_exception, future_sucessful])
-    aioredis.from_url.ping = mock.MagicMock(side_effect=[future_exception, future_sucessful])
+        side_effect=[future_exception(redis.RedisError), future_result(aioredis.ConnectionPool)])
+    aioredis.from_url.ping = mock.MagicMock(side_effect=[future_exception(redis.RedisError), future_result(aioredis.ConnectionPool)])
 
     connection = await message_broker_connector.connect()
 

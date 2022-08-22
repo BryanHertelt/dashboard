@@ -1,9 +1,9 @@
-import asyncio
 import mock 
 import websockets
 import pytest
 
 from src.connectors import Websocket_connector
+from tests.development.utils.helper_funcs import future_exception, future_result
 
 class WebsocketException(websockets.exceptions.ConnectionClosed):
     
@@ -28,9 +28,7 @@ async def test_connect_successful(get_websocket_connector):
     """Tests if the Websocket_connector returns the correct object if the connection was successful."""
     
     websocket_connector = get_websocket_connector
-    future = asyncio.Future()
-    future.set_result(websockets.WebSocketClientProtocol)
-    websockets.connect = mock.MagicMock(return_value=future)
+    websockets.connect = mock.MagicMock(return_value=future_result(websockets.WebSocketClientProtocol))
 
     connection = await websocket_connector.create_connection()
 
@@ -43,9 +41,7 @@ async def test_connect_unsuccessful(get_websocket_connector):
     """Tests if the exception handling is correct, when it is not possible to establish a connection."""
     
     websocket_connector = get_websocket_connector
-    future = asyncio.Future()
-    future.set_exception(WebsocketException)
-    websockets.connect = mock.MagicMock(return_value=future)
+    websockets.connect = mock.MagicMock(return_value=future_exception(WebsocketException))
 
     with pytest.raises(WebsocketException):
         connection = await websocket_connector.create_connection()
@@ -60,11 +56,8 @@ async def test_reconnect(get_websocket_connector):
     """Test if the object reconnects, when a connection error occurs."""
     
     websocket_connector = get_websocket_connector
-    future_exception, future_sucessful = asyncio.Future(), asyncio.Future()
-    future_exception.set_exception(WebsocketException)
-    future_sucessful.set_result(websockets.WebSocketClientProtocol)
     websockets.connect = mock.MagicMock(
-        side_effect=[future_exception, future_sucessful])
+        side_effect=[future_exception(WebsocketException), future_result(websockets.WebSocketClientProtocol)])
 
     connection = await websocket_connector.create_connection()
 
