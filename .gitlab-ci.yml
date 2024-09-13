@@ -1,0 +1,29 @@
+build_documenation:
+  stage: build
+  image: python:latest
+  script:
+    - cd TechnicalDocumentation
+    - pip install -r requirements.txt 
+    - mkdocs build --site-dir ../public
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: $CI_COMMIT_BRANCH == "tec-docs" && $CI_COMMIT_TITLE =~ /Run build\./
+
+.coverage_DataCollectors:
+  stage: build
+  needs: ["build_documenation"]
+  image: python:latest
+  script:
+    - cd TechnicalDocumentation
+    - pip install -r requirements.txt
+    - cp -r ../Data_Collectors/tests/coverage .
+    - mkdocs build --config-file coverage.yml
+    - rm ../public/Components/DataCollectors/Testing/Coverage/index.html
+    - cp -r site/coverage/ ../public/Components/DataCollectors/Testing/Coverage
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: $CI_COMMIT_BRANCH == "tec-docs" && $CI_COMMIT_TITLE =~ /Run build\./
