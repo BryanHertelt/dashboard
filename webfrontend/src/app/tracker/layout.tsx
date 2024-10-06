@@ -1,3 +1,4 @@
+import HeadBarContainer from "@/lib/trackerlayout/headbar";
 import SidebarContainer from "@/lib/trackerlayout/sidebar";
 
 export default function TrackerLayout({
@@ -6,11 +7,12 @@ export default function TrackerLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
+    <div>
       <nav>
+        <HeadBarContainer />
         <SidebarContainer />
       </nav>
-      {children}
-    </>
+      <div>{children}</div>
+    </div>
   );
 }
