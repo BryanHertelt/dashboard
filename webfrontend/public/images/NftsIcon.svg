@@ -1,0 +1,14 @@
+<svg viewBox="0 0 18 18" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+<mask id="path-1-inside-1_1340_45840" fill="white">
+<rect x="18" y="13.8125" width="13.3766" height="13.3907" rx="1" transform="rotate(-180 18 13.8125)"/>
+</mask>
+<rect x="18" y="13.8125" width="13.3766" height="13.3907" rx="1" transform="rotate(-180 18 13.8125)" stroke="#7A7A7A" stroke-width="2.4" mask="url(#path-1-inside-1_1340_45840)"/>
+<mask id="path-2-inside-2_1340_45840" fill="white">
+<rect x="15.6885" y="15.4121" width="13.3766" height="13.3907" rx="1" transform="rotate(-180 15.6885 15.4121)"/>
+</mask>
+<rect x="15.6885" y="15.4121" width="13.3766" height="13.3907" rx="1" transform="rotate(-180 15.6885 15.4121)" stroke="#7A7A7A" stroke-width="2.4" mask="url(#path-2-inside-2_1340_45840)"/>
+<mask id="path-3-inside-3_1340_45840" fill="white">
+<rect x="13.377" y="17.0215" width="13.3766" height="13.3907" rx="1" transform="rotate(-180 13.377 17.0215)"/>
+</mask>
+<rect x="13.377" y="17.0215" width="13.3766" height="13.3907" rx="1" transform="rotate(-180 13.377 17.0215)" stroke="#7A7A7A" stroke-width="2.4" mask="url(#path-3-inside-3_1340_45840)"/>
+</svg>
