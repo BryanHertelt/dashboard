@@ -18,4 +18,5 @@ export {default as SnapshotIcon} from "./SnapshotIcon.svg"
 export {default as WatchListIcon} from "./WatchListIcon.svg"
 export {default as DashboardIcon} from "./DashboardIcon.svg"
 export {default as SupportIcon} from "./SupportIcon.svg"
+export {default as UnfoldSideBarIcon} from "./UnfoldSidebarIcon.svg"
 

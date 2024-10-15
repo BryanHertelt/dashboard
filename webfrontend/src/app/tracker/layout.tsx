@@ -1,5 +1,5 @@
 import HeadBarContainer from "@/lib/trackerlayout/headbar";
-import SidebarContainer from "@/lib/trackerlayout/sidebar";
+import SidebarContainer from "@/lib/trackerlayout/sidebar/sidebar";
 
 export default function TrackerLayout({
   children,
@@ -8,10 +8,8 @@ export default function TrackerLayout({
 }) {
   return (
     <section className="flex flex-row justify-start h-screen">
-      <nav className="flex flex-col justify-between w-2/12 h-full">
-        <SidebarContainer />
-      </nav>
-      <div className="flex flex-col justify-start w-10/12 h-screen">
+      <SidebarContainer />
+      <div className="flex flex-col justify-start w-10/12 h-screen flex-grow">
         <nav className="flex flex-row justify-end h-16 drop-shadow-sm  shadow-gray-100">
           <HeadBarContainer />
         </nav>
