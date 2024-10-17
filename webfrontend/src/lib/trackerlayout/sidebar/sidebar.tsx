@@ -26,7 +26,7 @@ export default function SidebarContainer() {
     <>
       {fold ? (
         <nav className="flex flex-col justify-between w-2/12 h-full">
-          <nav className="flex flex-col h-full border border-red-300 w-full ">
+          <nav className="flex flex-col h-full  w-full ">
             <header className="flex flex-row justify-start m-2.5 my-3.5 align-baseline">
               <LogoIcon className="text-4xl" />
               <h1 className="text-3xl font-semibold"> Flyzer </h1>

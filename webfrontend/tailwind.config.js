@@ -17,7 +17,8 @@ module.exports = {
       black: colors.black,
       white: colors.white,
       gray: colors.gray, 
-      blue: "#1872FF",
+      blue: "#00327F",
+      icongray: "#7A7A7A", 
       backgroundchild: '#EFEEF3'
     },
   },

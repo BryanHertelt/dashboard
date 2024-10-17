@@ -14,15 +14,18 @@ SettingsIcon,
 SupportIcon
 } from "../../public/images/index"
 
+import { baseURL } from "./tablecomponentAPI"
 
-
-
-interface sidebarelementinterface {
+export interface sidebarelementinterface {
     id: number, 
     IconComponent: React.ComponentType, 
     link: string, 
     element: string, 
     position: number | string
+}
+
+export interface sidebarnavApiInterface {
+get: () => Promise<sidebarelementinterface[] | null> 
 }
 
 export const sidebarnavResponse: sidebarelementinterface[] = [
@@ -118,3 +121,24 @@ export const sidebarnavResponse: sidebarelementinterface[] = [
         position: "default"
     }
 ]
+
+export const sidebarnavApi = {
+    /**
+     * This function will not be used while writing the UI. Instead I will use the hardcoded sidebarnavResponse in sidebarnavAPI.ts. 
+     * @returns A json with the sidebar data consisting of the elements from sidebarelementinterface.
+     */
+    get: async () => {
+        try {
+        let SidebarnavResponse = (await fetch(`${baseURL}/navigation`))
+        if (!SidebarnavResponse.ok) {
+            console.log(`Error while fetching the sidebar elements:Response Status:${SidebarnavResponse.statusText} `)
+            return null 
+        }
+        let SidebarnavData = SidebarnavResponse.json()
+        return SidebarnavData 
+        } catch(error){
+            console.error("Error while fetching data in the Asset API Layer: " , error)
+            return null
+        }
+    }
+}

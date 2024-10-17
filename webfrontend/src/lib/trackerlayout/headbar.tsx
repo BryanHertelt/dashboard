@@ -5,7 +5,11 @@ import {
   PortfolioIcon,
 } from "../../../public/images";
 
-export default function HeadBarContainer() {
+/**
+ * This component holds the headbar.
+ * @returns All icons of the headbar with right positioning.
+ */
+const HeadBarContainer = (): React.ReactNode => {
   return (
     <nav className="flex flex-row justify-end w-full h-full shadow-sm  shadow-gray-300">
       <div className="w-full justify-start self-center">
@@ -22,4 +26,6 @@ export default function HeadBarContainer() {
       </span>
     </nav>
   );
-}
+};
+
+export default HeadBarContainer;
