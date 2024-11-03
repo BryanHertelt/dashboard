@@ -14,7 +14,7 @@ SettingsIcon,
 SupportIcon
 } from "../../public/images/index"
 
-import { baseURL } from "./tablecomponentAPI"
+// import { baseURL } from "./tablecomponentAPI"
 
 export interface sidebarelementinterface {
     id: number, 
@@ -96,7 +96,7 @@ export const sidebarnavResponse: sidebarelementinterface[] = [
         id: 10, 
         IconComponent: ReportsIcon,
         link: "reports",
-        element: "Watchlist",
+        element: "Reports",
         position: "default"
     }, 
     {
@@ -122,11 +122,11 @@ export const sidebarnavResponse: sidebarelementinterface[] = [
     }
 ]
 
+/**
 export const sidebarnavApi = {
     /**
      * This function will not be used while writing the UI. Instead I will use the hardcoded sidebarnavResponse in sidebarnavAPI.ts. 
      * @returns A json with the sidebar data consisting of the elements from sidebarelementinterface.
-     */
     get: async () => {
         try {
         let SidebarnavResponse = (await fetch(`${baseURL}/navigation`))
@@ -142,3 +142,4 @@ export const sidebarnavApi = {
         }
     }
 }
+*/ 

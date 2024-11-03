@@ -1,0 +1,774 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FoldedSideBar Component matches snapshot 1`] = `
+<div>
+  <ul
+    class="mt-5"
+  >
+    <li
+      class="text-sm font-light text-gray-400 pl-3"
+    >
+       General 
+    </li>
+    <li
+      class="flex justify-center"
+    >
+      <a
+        class="flex flex-row mt-1 py-1 justify-center align-middle pl-2 text-icongray hover:bg-blue hover:text-white hover:w-6/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md"
+        href="./dashboard"
+      >
+        <div
+          class="mt-1 mr-2 text-2xl h-full self-center"
+        >
+          <div
+            data-testid="icon-1"
+          />
+        </div>
+      </a>
+    </li>
+    <li
+      class="flex justify-center"
+    >
+      <a
+        class="flex flex-row mt-1 py-1 justify-center align-middle pl-2 text-icongray hover:bg-blue hover:text-white hover:w-6/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md"
+        href="./assetdistribution"
+      >
+        <div
+          class="mt-1 mr-2 text-2xl h-full self-center"
+        >
+          <div
+            data-testid="icon-2"
+          />
+        </div>
+      </a>
+    </li>
+    <li
+      class="flex justify-center"
+    >
+      <a
+        class="flex flex-row mt-1 py-1 justify-center align-middle pl-2 text-icongray hover:bg-blue hover:text-white hover:w-6/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md"
+        href="./defi"
+      >
+        <div
+          class="mt-1 mr-2 text-2xl h-full self-center"
+        >
+          <div
+            data-testid="icon-3"
+          />
+        </div>
+      </a>
+    </li>
+    <li
+      class="flex justify-center"
+    >
+      <a
+        class="flex flex-row mt-1 py-1 justify-center align-middle pl-2 text-icongray hover:bg-blue hover:text-white hover:w-6/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md"
+        href="./transactions"
+      >
+        <div
+          class="mt-1 mr-2 text-2xl h-full self-center"
+        >
+          <div
+            data-testid="icon-4"
+          />
+        </div>
+      </a>
+    </li>
+    <li
+      class="flex justify-center"
+    >
+      <a
+        class="flex flex-row mt-1 py-1 justify-center align-middle pl-2 text-icongray hover:bg-blue hover:text-white hover:w-6/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md"
+        href="./explorer"
+      >
+        <div
+          class="mt-1 mr-2 text-2xl h-full self-center"
+        >
+          <div
+            data-testid="icon-5"
+          />
+        </div>
+      </a>
+    </li>
+    <li
+      class="flex justify-center"
+    >
+      <a
+        class="flex flex-row mt-1 py-1 justify-center align-middle pl-2 text-icongray hover:bg-blue hover:text-white hover:w-6/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md"
+        href="./nfts"
+      >
+        <div
+          class="mt-1 mr-2 text-2xl h-full self-center"
+        >
+          <div
+            data-testid="icon-6"
+          />
+        </div>
+      </a>
+    </li>
+    <li
+      class="flex justify-center"
+    >
+      <a
+        class="flex flex-row mt-1 py-1 justify-center align-middle pl-2 text-icongray hover:bg-blue hover:text-white hover:w-6/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md"
+        href="./derivatives"
+      >
+        <div
+          class="mt-1 mr-2 text-2xl h-full self-center"
+        >
+          <div
+            data-testid="icon-7"
+          />
+        </div>
+      </a>
+    </li>
+    <li
+      class="flex justify-center"
+    >
+      <a
+        class="flex flex-row mt-1 py-1 justify-center align-middle pl-2 text-icongray hover:bg-blue hover:text-white hover:w-6/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md"
+        href="./snapshots"
+      >
+        <div
+          class="mt-1 mr-2 text-2xl h-full self-center"
+        >
+          <div
+            data-testid="icon-8"
+          />
+        </div>
+      </a>
+    </li>
+    <li
+      class="flex justify-center"
+    >
+      <a
+        class="flex flex-row mt-1 py-1 justify-center align-middle pl-2 text-icongray hover:bg-blue hover:text-white hover:w-6/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md"
+        href="./watchlist"
+      >
+        <div
+          class="mt-1 mr-2 text-2xl h-full self-center"
+        >
+          <div
+            data-testid="icon-9"
+          />
+        </div>
+      </a>
+    </li>
+    <li
+      class="flex justify-center"
+    >
+      <a
+        class="flex flex-row mt-1 py-1 justify-center align-middle pl-2 text-icongray hover:bg-blue hover:text-white hover:w-6/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md"
+        href="./reports"
+      >
+        <div
+          class="mt-1 mr-2 text-2xl h-full self-center"
+        >
+          <div
+            data-testid="icon-10"
+          />
+        </div>
+      </a>
+    </li>
+    <li
+      class="text-sm font-light text-gray-400 pl-3 mt-5"
+    >
+       Support 
+    </li>
+    <li
+      class="flex justify-center"
+    >
+      <a
+        class="flex flex-row mt-1 py-1 justify-center align-middle pl-2 text-icongray hover:bg-blue hover:text-white hover:w-6/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md"
+        href="./help"
+      >
+        <div
+          class="mt-1 mr-2 text-2xl h-full self-center"
+        >
+          <div
+            data-testid="icon-11"
+          />
+        </div>
+      </a>
+    </li>
+    <li
+      class="flex justify-center"
+    >
+      <a
+        class="flex flex-row mt-1 py-1 justify-center align-middle pl-2 text-icongray hover:bg-blue hover:text-white hover:w-6/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md"
+        href="./settings"
+      >
+        <div
+          class="mt-1 mr-2 text-2xl h-full self-center"
+        >
+          <div
+            data-testid="icon-12"
+          />
+        </div>
+      </a>
+    </li>
+    <li
+      class="flex justify-center"
+    >
+      <a
+        class="flex flex-row mt-1 py-1 justify-center align-middle pl-2 text-icongray hover:bg-blue hover:text-white hover:w-6/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md"
+        href="./getsupport"
+      >
+        <div
+          class="mt-1 mr-2 text-2xl h-full self-center"
+        >
+          <div
+            data-testid="icon-13"
+          />
+        </div>
+      </a>
+    </li>
+  </ul>
+</div>
+`;
+
+exports[`HeadbarContainer matches snapshots 1`] = `
+<nav
+  className="flex flex-row justify-end w-full h-full shadow-sm  shadow-gray-300"
+>
+  <div
+    className="w-full justify-start self-center"
+  >
+    <UNDEFINED
+      className="text-2xl"
+    />
+  </div>
+  <span
+    className="flex flex-row justify-end w-full self-center"
+  >
+    <UNDEFINED
+      className="text-3xl mr-3.5"
+    />
+    <button
+      className="bg-blue rounded-md text-white text-sm font-light pl-2.5 pr-2.5 mr-3.5"
+    >
+       
+      Manage
+       
+    </button>
+    <UNDEFINED
+      className="text-3xl mr-3.5"
+    />
+    <UNDEFINED
+      className="text-3xl mr-3.5"
+    />
+  </span>
+</nav>
+`;
+
+exports[`SidebarContainer matches snapshot 1`] = `
+<div
+  data-testid="sidebarcontainer"
+>
+  <nav
+    className="flex flex-col justify-between w-20 h-full"
+  >
+    <nav
+      className="flex flex-col h-full border border-red-300 w-full "
+    >
+      <header
+        className="flex flex-row ml-2.5 justify-start my-3.5 align-baseline w-20"
+      >
+        <UNDEFINED
+          className="text-4xl"
+        />
+        <button
+          className=" flex flex-row w-20 justify-start ml-1.5"
+          role="button"
+        >
+          <UNDEFINED
+            className="text-4xl"
+            onClick={[Function]}
+          />
+        </button>
+      </header>
+      <hr />
+      <FoldedSideBar
+        sidebarnavResponse={
+          [
+            {
+              "IconComponent": {
+                "blurDataURL": "data:image/png;base64,imagedata",
+                "height": 40,
+                "src": "/img.jpg",
+                "width": 40,
+              },
+              "element": "Dashboard",
+              "id": 1,
+              "link": "dashboard",
+              "position": "default",
+            },
+            {
+              "IconComponent": {
+                "blurDataURL": "data:image/png;base64,imagedata",
+                "height": 40,
+                "src": "/img.jpg",
+                "width": 40,
+              },
+              "element": "Asset-Distribution",
+              "id": 2,
+              "link": "assetdistribution",
+              "position": "default",
+            },
+            {
+              "IconComponent": {
+                "blurDataURL": "data:image/png;base64,imagedata",
+                "height": 40,
+                "src": "/img.jpg",
+                "width": 40,
+              },
+              "element": "Defi",
+              "id": 3,
+              "link": "defi",
+              "position": "default",
+            },
+            {
+              "IconComponent": {
+                "blurDataURL": "data:image/png;base64,imagedata",
+                "height": 40,
+                "src": "/img.jpg",
+                "width": 40,
+              },
+              "element": "Transactions",
+              "id": 4,
+              "link": "transactions",
+              "position": "default",
+            },
+            {
+              "IconComponent": {
+                "blurDataURL": "data:image/png;base64,imagedata",
+                "height": 40,
+                "src": "/img.jpg",
+                "width": 40,
+              },
+              "element": "Explorer",
+              "id": 5,
+              "link": "explorer",
+              "position": "default",
+            },
+            {
+              "IconComponent": {
+                "blurDataURL": "data:image/png;base64,imagedata",
+                "height": 40,
+                "src": "/img.jpg",
+                "width": 40,
+              },
+              "element": "NFTs",
+              "id": 6,
+              "link": "nfts",
+              "position": "default",
+            },
+            {
+              "IconComponent": {
+                "blurDataURL": "data:image/png;base64,imagedata",
+                "height": 40,
+                "src": "/img.jpg",
+                "width": 40,
+              },
+              "element": "Derivatives",
+              "id": 7,
+              "link": "derivatives",
+              "position": "default",
+            },
+            {
+              "IconComponent": {
+                "blurDataURL": "data:image/png;base64,imagedata",
+                "height": 40,
+                "src": "/img.jpg",
+                "width": 40,
+              },
+              "element": "Snapshots",
+              "id": 8,
+              "link": "snapshots",
+              "position": "default",
+            },
+            {
+              "IconComponent": {
+                "blurDataURL": "data:image/png;base64,imagedata",
+                "height": 40,
+                "src": "/img.jpg",
+                "width": 40,
+              },
+              "element": "Watchlist",
+              "id": 9,
+              "link": "watchlist",
+              "position": "default",
+            },
+            {
+              "IconComponent": {
+                "blurDataURL": "data:image/png;base64,imagedata",
+                "height": 40,
+                "src": "/img.jpg",
+                "width": 40,
+              },
+              "element": "Reports",
+              "id": 10,
+              "link": "reports",
+              "position": "default",
+            },
+            {
+              "IconComponent": {
+                "blurDataURL": "data:image/png;base64,imagedata",
+                "height": 40,
+                "src": "/img.jpg",
+                "width": 40,
+              },
+              "element": "Help",
+              "id": 11,
+              "link": "help",
+              "position": "default",
+            },
+            {
+              "IconComponent": {
+                "blurDataURL": "data:image/png;base64,imagedata",
+                "height": 40,
+                "src": "/img.jpg",
+                "width": 40,
+              },
+              "element": "Settings",
+              "id": 12,
+              "link": "settings",
+              "position": "default",
+            },
+            {
+              "IconComponent": {
+                "blurDataURL": "data:image/png;base64,imagedata",
+                "height": 40,
+                "src": "/img.jpg",
+                "width": 40,
+              },
+              "element": "Get Support",
+              "id": 13,
+              "link": "getsupport",
+              "position": "default",
+            },
+          ]
+        }
+      />
+    </nav>
+  </nav>
+</div>
+`;
+
+exports[`UnfoldedSidebar Component matches snapshot 1`] = `
+<div>
+  <ul
+    class="mt-5"
+  >
+    <li
+      class="text-sm font-light text-gray-400 pl-5"
+    >
+       General 
+    </li>
+    <li
+      class="flex justify-center"
+    >
+      <a
+        class="flex flex-row pl-5 mt-1 rounded-md text-icongray group hover:bg-blue hover:text-white hover:w-11/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md focus: w-11/12 transition duration-300 ease-in-out"
+        href="./dashboard"
+      >
+        <div
+          class="mt-1 mr-2 text-2xl h-full self-center group-hover:text-white"
+        >
+           
+          <div
+            data-testid="icon-1"
+          />
+           
+        </div>
+        <div
+          class="text-sm self-center text-black group-hover:text-white"
+        >
+          Dashboard
+        </div>
+      </a>
+    </li>
+    <li
+      class="flex justify-center"
+    >
+      <a
+        class="flex flex-row pl-5 mt-1 rounded-md text-icongray group hover:bg-blue hover:text-white hover:w-11/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md focus: w-11/12 transition duration-300 ease-in-out"
+        href="./assetdistribution"
+      >
+        <div
+          class="mt-1 mr-2 text-2xl h-full self-center group-hover:text-white"
+        >
+           
+          <div
+            data-testid="icon-2"
+          />
+           
+        </div>
+        <div
+          class="text-sm self-center text-black group-hover:text-white"
+        >
+          Asset-Distribution
+        </div>
+      </a>
+    </li>
+    <li
+      class="flex justify-center"
+    >
+      <a
+        class="flex flex-row pl-5 mt-1 rounded-md text-icongray group hover:bg-blue hover:text-white hover:w-11/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md focus: w-11/12 transition duration-300 ease-in-out"
+        href="./defi"
+      >
+        <div
+          class="mt-1 mr-2 text-2xl h-full self-center group-hover:text-white"
+        >
+           
+          <div
+            data-testid="icon-3"
+          />
+           
+        </div>
+        <div
+          class="text-sm self-center text-black group-hover:text-white"
+        >
+          Defi
+        </div>
+      </a>
+    </li>
+    <li
+      class="flex justify-center"
+    >
+      <a
+        class="flex flex-row pl-5 mt-1 rounded-md text-icongray group hover:bg-blue hover:text-white hover:w-11/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md focus: w-11/12 transition duration-300 ease-in-out"
+        href="./transactions"
+      >
+        <div
+          class="mt-1 mr-2 text-2xl h-full self-center group-hover:text-white"
+        >
+           
+          <div
+            data-testid="icon-4"
+          />
+           
+        </div>
+        <div
+          class="text-sm self-center text-black group-hover:text-white"
+        >
+          Transactions
+        </div>
+      </a>
+    </li>
+    <li
+      class="flex justify-center"
+    >
+      <a
+        class="flex flex-row pl-5 mt-1 rounded-md text-icongray group hover:bg-blue hover:text-white hover:w-11/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md focus: w-11/12 transition duration-300 ease-in-out"
+        href="./explorer"
+      >
+        <div
+          class="mt-1 mr-2 text-2xl h-full self-center group-hover:text-white"
+        >
+           
+          <div
+            data-testid="icon-5"
+          />
+           
+        </div>
+        <div
+          class="text-sm self-center text-black group-hover:text-white"
+        >
+          Explorer
+        </div>
+      </a>
+    </li>
+    <li
+      class="flex justify-center"
+    >
+      <a
+        class="flex flex-row pl-5 mt-1 rounded-md text-icongray group hover:bg-blue hover:text-white hover:w-11/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md focus: w-11/12 transition duration-300 ease-in-out"
+        href="./nfts"
+      >
+        <div
+          class="mt-1 mr-2 text-2xl h-full self-center group-hover:text-white"
+        >
+           
+          <div
+            data-testid="icon-6"
+          />
+           
+        </div>
+        <div
+          class="text-sm self-center text-black group-hover:text-white"
+        >
+          NFTs
+        </div>
+      </a>
+    </li>
+    <li
+      class="flex justify-center"
+    >
+      <a
+        class="flex flex-row pl-5 mt-1 rounded-md text-icongray group hover:bg-blue hover:text-white hover:w-11/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md focus: w-11/12 transition duration-300 ease-in-out"
+        href="./derivatives"
+      >
+        <div
+          class="mt-1 mr-2 text-2xl h-full self-center group-hover:text-white"
+        >
+           
+          <div
+            data-testid="icon-7"
+          />
+           
+        </div>
+        <div
+          class="text-sm self-center text-black group-hover:text-white"
+        >
+          Derivatives
+        </div>
+      </a>
+    </li>
+    <li
+      class="flex justify-center"
+    >
+      <a
+        class="flex flex-row pl-5 mt-1 rounded-md text-icongray group hover:bg-blue hover:text-white hover:w-11/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md focus: w-11/12 transition duration-300 ease-in-out"
+        href="./snapshots"
+      >
+        <div
+          class="mt-1 mr-2 text-2xl h-full self-center group-hover:text-white"
+        >
+           
+          <div
+            data-testid="icon-8"
+          />
+           
+        </div>
+        <div
+          class="text-sm self-center text-black group-hover:text-white"
+        >
+          Snapshots
+        </div>
+      </a>
+    </li>
+    <li
+      class="flex justify-center"
+    >
+      <a
+        class="flex flex-row pl-5 mt-1 rounded-md text-icongray group hover:bg-blue hover:text-white hover:w-11/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md focus: w-11/12 transition duration-300 ease-in-out"
+        href="./watchlist"
+      >
+        <div
+          class="mt-1 mr-2 text-2xl h-full self-center group-hover:text-white"
+        >
+           
+          <div
+            data-testid="icon-9"
+          />
+           
+        </div>
+        <div
+          class="text-sm self-center text-black group-hover:text-white"
+        >
+          Watchlists
+        </div>
+      </a>
+    </li>
+    <li
+      class="flex justify-center"
+    >
+      <a
+        class="flex flex-row pl-5 mt-1 rounded-md text-icongray group hover:bg-blue hover:text-white hover:w-11/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md focus: w-11/12 transition duration-300 ease-in-out"
+        href="./reports"
+      >
+        <div
+          class="mt-1 mr-2 text-2xl h-full self-center group-hover:text-white"
+        >
+           
+          <div
+            data-testid="icon-10"
+          />
+           
+        </div>
+        <div
+          class="text-sm self-center text-black group-hover:text-white"
+        >
+          Reports
+        </div>
+      </a>
+    </li>
+    <li
+      class="text-sm font-light text-gray-400 pl-5 mt-5"
+    >
+       Support 
+    </li>
+    <li
+      class="flex justify-center"
+    >
+      <a
+        class="flex flex-row pl-5 mt-1 rounded-md text-icongray group hover:bg-blue hover:text-white hover:w-11/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md focus: w-11/12 transition duration-300 ease-in-out"
+        href="./help"
+      >
+        <div
+          class="mt-1 mr-2 text-2xl h-full self-center group-hover:text-white"
+        >
+           
+          <div
+            data-testid="icon-11"
+          />
+           
+        </div>
+        <div
+          class="text-sm self-center text-black group-hover:text-white"
+        >
+          Help
+        </div>
+      </a>
+    </li>
+    <li
+      class="flex justify-center"
+    >
+      <a
+        class="flex flex-row pl-5 mt-1 rounded-md text-icongray group hover:bg-blue hover:text-white hover:w-11/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md focus: w-11/12 transition duration-300 ease-in-out"
+        href="./settings"
+      >
+        <div
+          class="mt-1 mr-2 text-2xl h-full self-center group-hover:text-white"
+        >
+           
+          <div
+            data-testid="icon-12"
+          />
+           
+        </div>
+        <div
+          class="text-sm self-center text-black group-hover:text-white"
+        >
+          Settings
+        </div>
+      </a>
+    </li>
+    <li
+      class="flex justify-center"
+    >
+      <a
+        class="flex flex-row pl-5 mt-1 rounded-md text-icongray group hover:bg-blue hover:text-white hover:w-11/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md focus: w-11/12 transition duration-300 ease-in-out"
+        href="./getsupport"
+      >
+        <div
+          class="mt-1 mr-2 text-2xl h-full self-center group-hover:text-white"
+        >
+           
+          <div
+            data-testid="icon-13"
+          />
+           
+        </div>
+        <div
+          class="text-sm self-center text-black group-hover:text-white"
+        >
+          Get Support
+        </div>
+      </a>
+    </li>
+  </ul>
+</div>
+`;
