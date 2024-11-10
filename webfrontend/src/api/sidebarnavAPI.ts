@@ -39,7 +39,7 @@ export const sidebarnavResponse: sidebarelementinterface[] = [
     {
         id: 2, 
         IconComponent: AssetDistributionIcon,
-        link: "assetdistribution",
+        link: "asset-distribution",
         element: "Asset-Distribution" ,
         position: "default"
     }, 

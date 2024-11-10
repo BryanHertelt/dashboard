@@ -9,7 +9,7 @@ const renderUnfoldedBulletPoints = (
   return (
     <li key={sidebarElementContainer.id} className="flex justify-center">
       <Link
-        href={`./${sidebarElementContainer.link}`}
+        href={`/tracker/${sidebarElementContainer.link}`}
         className="flex flex-row pl-5 mt-1 rounded-md text-icongray group
          hover:bg-blue hover:text-white hover:w-11/12 hover:rounded-md
           focus:bg-blue focus:text-white focus:rounded-md focus: w-11/12
