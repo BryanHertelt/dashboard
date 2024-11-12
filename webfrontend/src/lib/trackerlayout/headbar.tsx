@@ -11,7 +11,7 @@ import {
  */
 const HeadBarContainer = (): React.ReactNode => {
   return (
-    <nav className="flex flex-row justify-end w-full h-full shadow-sm  shadow-gray-300">
+    <nav className="flex flex-row justify-end w-full h-full shadow-sm bg-white shadow-gray-300">
       <div className="w-full justify-start self-center">
         <BackArrowIcon className="text-2xl" />
       </div>

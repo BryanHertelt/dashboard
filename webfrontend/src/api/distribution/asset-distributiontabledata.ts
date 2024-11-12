@@ -1,0 +1,116 @@
+export type CryptoCurrencyResponseObject = {
+    symbol: string, 
+    assettype: string, 
+    id: string, 
+    assetname: string, 
+    assetabbreviation: string, 
+    assetamount: number, 
+    assetpercentage: string, 
+    assetvalue: string, 
+    assetmarketprice: string, 
+    assetchange24h: string, 
+    assetchange7d: string,
+    notes: string
+}
+
+export const cryptocurrencyMockData: CryptoCurrencyResponseObject[] = [
+    {
+        symbol: "A",
+        assettype : "Cryptocurrency",
+        id: "eadlk4jas1dwq2et478",
+        assetname: "Bitcoin",
+        assetabbreviation: "BTC", 
+        assetamount: 10,
+        assetpercentage: "23 %",
+        assetvalue: "890000 USD",
+        assetmarketprice: "89000 USD",
+        assetchange24h: "7 %",
+        assetchange7d: "20 %",
+        notes: "Notes"
+      }, 
+      {
+        symbol: "A",
+        assettype : "Cryptocurrency",
+        id: "eadlk4ja24fwq2et478",
+        assetname: "Ethereum",
+        assetabbreviation: "ETH", 
+        assetamount: 10,
+        assetpercentage: "23 %",
+        assetvalue: "890000 USD",
+        assetmarketprice: "89000 USD",
+        assetchange24h: "7 %",
+        assetchange7d: "20 %",
+        notes: "Notes"
+      }, 
+      {
+        symbol: "A",
+        assettype : "Cryptocurrency",
+        id: "eadlk4jasdget478",
+        assetname: "BNB",
+        assetabbreviation: "BNB", 
+        assetamount: 10,
+        assetpercentage: "23 %",
+        assetvalue: "890000 USD",
+        assetmarketprice: "89000 USD",
+        assetchange24h: "7 %",
+        assetchange7d: "20 %",
+        notes: "Notes"
+      }, 
+      {
+        symbol: "A",
+        assettype : "Cryptocurrency",
+        id: "eaasfvss1dwq2et478",
+        assetname: "Dogecoin",
+        assetabbreviation: "DOGE", 
+        assetamount: 10,
+        assetpercentage: "23 %",
+        assetvalue: "890000 USD",
+        assetmarketprice: "89000 USD",
+        assetchange24h: "7 %",
+        assetchange7d: "20 %",
+        notes: "Notes"
+      }, 
+      {
+        symbol: "A",
+        assettype : "Cryptocurrency",
+        id: "eadlk4jas1asgvx478",
+        assetname: "Solana",
+        assetabbreviation: "SOL", 
+        assetamount: 10,
+        assetpercentage: "23 %",
+        assetvalue: "890000 USD",
+        assetmarketprice: "89000 USD",
+        assetchange24h: "7 %",
+        assetchange7d: "20 %",
+        notes: "Notes"
+      }, 
+      {
+        symbol: "A",
+        assettype : "Cryptocurrency",
+        id: "eadlk4jas1asfy234",
+        assetname: "Tether",
+        assetabbreviation: "USDT", 
+        assetamount: 10,
+        assetpercentage: "23 %",
+        assetvalue: "890000 USD",
+        assetmarketprice: "89000 USD",
+        assetchange24h: "7 %",
+        assetchange7d: "20 %",
+        notes: "Notes"
+      }, 
+
+      {
+        symbol: "A",
+        assettype : "Cryptocurrency",
+        id: "eadlk4jasflkyjvklwq38",
+        assetname: "Tron",
+        assetabbreviation: "TRX", 
+        assetamount: 10,
+        assetpercentage: "23 %",
+        assetvalue: "890000 USD",
+        assetmarketprice: "89000 USD",
+        assetchange24h: "7 %",
+        assetchange7d: "20 %",
+        notes: "Notes"
+      }
+]

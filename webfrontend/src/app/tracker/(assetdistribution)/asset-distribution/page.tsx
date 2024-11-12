@@ -1,5 +1,74 @@
+"use client";
+import {
+  AssetLineChart,
+  AssetPieChart,
+} from "@/lib/distribution/assets-distributioncharts";
+
+import { DataTable } from "@/lib/datatable/data-table";
+import { assetdistributioncolumns } from "@/lib/distribution/asset-distributioncolumns";
+import { cryptocurrencyMockData } from "@/api/distribution/asset-distributiontabledata";
+
 const AssetDistribution = () => {
-  return <p> Asset Distribution Page </p>;
+  return (
+    <>
+      <div className="h-4/6 bg-white rounded-md shadow-even w-8/12 flex-grow pl-7 py-7">
+        <header>
+          <h1 className="font-semibold text-xl"> Assets </h1>
+          <div className=" flex flex-row justify-end">
+            <p className=" w-11/12 font-semibold text-2xl"> $5.200 </p>
+            <button> Cost Basis </button>
+            <button> Timeframe </button>
+          </div>
+          Icon BTC Icon ETH MyAssets
+        </header>
+        <div className="w-full h-4/6">
+          <div className=" flex flex-row justify-center w-full h-full">
+            <AssetLineChart />
+          </div>
+        </div>
+      </div>
+      <div className=" bg-white p-7 h-4/6 ml-7 w-3/12 rounded-md shadow-even">
+        <header>
+          <h1>Asset Distribution</h1>
+          <p className="text-gray-400">
+            {" "}
+            You can see your Asset Distribution here.{" "}
+          </p>
+        </header>
+        <hr />
+        <div className=" flex flex-row justify-center align-middle w-full h-full my-11">
+          <div className="flex flex-row justify-center w-9/12 h-4/6">
+            <AssetPieChart />
+          </div>
+        </div>
+      </div>
+      <div className="bg-white shadow-even mt-9 p-7 w-full">
+        <div className="flex flex-row justify-between mb-7">
+          <header>
+            <h1 className="font-semibold text-xl"> Assets </h1>
+            <p className="text-icongray">
+              {" "}
+              You can see all your cryptocurrencies here.{" "}
+            </p>
+          </header>
+          <nav className="flex flex-row justify-around">
+            <button className="mr-5 active:bg-blue active:text-white focus:bg-blue focus:text-white">
+              {" "}
+              Cryptocurrencies{" "}
+            </button>
+            <button className="mr-5"> NFTs </button>
+            <button> Derivatives </button>
+          </nav>
+        </div>
+        <div>
+          <DataTable
+            columns={assetdistributioncolumns}
+            data={cryptocurrencyMockData}
+          />
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default AssetDistribution;

@@ -22,7 +22,7 @@ const SidebarContainer = (): React.ReactElement => {
   return (
     <div data-testid="sidebarcontainer">
       {fold ? (
-        <nav className="flex flex-col justify-between w-full h-full">
+        <nav className="flex flex-col justify-between w-full h-full shadow-even">
           <nav className="flex flex-col h-full  w-full ">
             <header className="flex flex-row justify-start m-2.5 my-3.5 align-baseline">
               <LogoIcon className="text-4xl" />
@@ -42,7 +42,7 @@ const SidebarContainer = (): React.ReactElement => {
           </nav>
         </nav>
       ) : (
-        <nav className="flex flex-col justify-between w-20 h-full">
+        <nav className="flex flex-col justify-between w-20 h-full shadow-even">
           <nav className="flex flex-col h-full border border-red-300 w-full ">
             <header className="flex flex-row ml-2.5 justify-start my-3.5 align-baseline w-20">
               <LogoIcon className="text-4xl" />
