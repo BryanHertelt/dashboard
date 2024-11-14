@@ -19,4 +19,6 @@ export {default as WatchListIcon} from "./WatchListIcon.svg"
 export {default as DashboardIcon} from "./DashboardIcon.svg"
 export {default as SupportIcon} from "./SupportIcon.svg"
 export {default as UnfoldSideBarIcon} from "./UnfoldSidebarIcon.svg"
+export {default as BitcoinIcon} from "./BitcoinIcon.svg"
+export {default as EthereumIcon} from "./EthereumIcon.svg"
 

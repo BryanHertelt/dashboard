@@ -9,7 +9,7 @@ const AssetDistributionLayout = ({
     <section className="flex flex-col flex-wrap w-full h-full px-12">
       <header className="flex flex-col justify-around w-full h-1/6">
         <h1 className="text-3xl"> Asset-Distribution </h1>
-        <nav className="flex flex-row justify-between rounded-md shadow-even bg-white w-1/5 py-1 text-gray-600">
+        <nav className="flex flex-row justify-between rounded-md shadow-even bg-white w-1/5 py-1 text-icongray">
           <div className="mx-2">
             <Link href={"/tracker/asset-distribution"}> Assets </Link>
           </div>

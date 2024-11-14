@@ -7,6 +7,7 @@ import {
 import { DataTable } from "@/lib/datatable/data-table";
 import { assetdistributioncolumns } from "@/lib/distribution/asset-distributioncolumns";
 import { cryptocurrencyMockData } from "@/api/distribution/asset-distributiontabledata";
+import { BitcoinIcon, EthereumIcon } from "@/../public/images";
 
 const AssetDistribution = () => {
   return (
@@ -19,7 +20,17 @@ const AssetDistribution = () => {
             <button> Cost Basis </button>
             <button> Timeframe </button>
           </div>
-          Icon BTC Icon ETH MyAssets
+          <div className="flex flex-row">
+            <button>
+              {" "}
+              <BitcoinIcon />{" "}
+            </button>
+            <button>
+              {" "}
+              <EthereumIcon />{" "}
+            </button>
+            <button> MyAssets </button>
+          </div>
         </header>
         <div className="w-full h-4/6">
           <div className=" flex flex-row justify-center w-full h-full">
@@ -30,14 +41,14 @@ const AssetDistribution = () => {
       <div className=" bg-white p-7 h-4/6 ml-7 w-3/12 rounded-md shadow-even">
         <header>
           <h1>Asset Distribution</h1>
-          <p className="text-gray-400">
+          <p className="text-icongray mb-3">
             {" "}
             You can see your Asset Distribution here.{" "}
           </p>
         </header>
         <hr />
         <div className=" flex flex-row justify-center align-middle w-full h-full my-11">
-          <div className="flex flex-row justify-center w-9/12 h-4/6">
+          <div className="flex flex-row justify-center w-10/12 h-4/6">
             <AssetPieChart />
           </div>
         </div>
