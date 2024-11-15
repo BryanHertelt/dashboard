@@ -11,7 +11,7 @@ WatchListIcon,
 ReportsIcon,
 HelpIcon,
 SettingsIcon,
-SupportIcon
+SupportIcon,
 } from "../../public/images/index"
 
 // import { baseURL } from "./tablecomponentAPI"

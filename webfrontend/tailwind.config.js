@@ -17,10 +17,15 @@ module.exports = {
   		current: 'currentColor',
   		black: '#000000',
   		white: '#FFFFFF',
-  		gray: 'colors.gray',
+  		gray: '#EFEEF3',
+		currentvaluefont: '4A4A4A',
   		blue: '#00327F',
   		icongray: '#7A7A7A',
-  		backgroundchild: '#EFEEF3'
+  		backgroundchild: '#EFEEF3',
+		green: '#04B900', 
+		lightgreen: 'rgba(4, 185, 0, 0.1)',
+		red: '#DA0000',
+		lightred: 'rgba(218, 0, 0, 0.1)'
   	},
   	extend: {
 		boxShadow: {

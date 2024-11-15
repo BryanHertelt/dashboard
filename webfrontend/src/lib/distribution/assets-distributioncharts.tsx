@@ -1,3 +1,5 @@
+"use client";
+
 import { Line, Pie } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -10,11 +12,13 @@ import {
   Legend,
   ChartOptions,
   ArcElement,
+  Filler,
 } from "chart.js";
 import {
   assetLineChartData,
   assetPieChartData,
 } from "@/api/distribution/assetdistributionAPI";
+import { AlignCenter } from "lucide-react";
 
 ChartJS.register(
   CategoryScale,
@@ -24,11 +28,13 @@ ChartJS.register(
   ArcElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  Filler
 );
 
 const lineChartOptions: ChartOptions<"line"> = {
   responsive: true,
+  maintainAspectRatio: false,
   plugins: {
     legend: {
       display: false,
@@ -37,20 +43,33 @@ const lineChartOptions: ChartOptions<"line"> = {
   scales: {
     y: {
       position: "right",
-      ticks: {
-        callback: function (value, index, ticks) {
-          return "$" + value;
-        },
-      },
-    },
-    x: {
-      ticks: {
-        padding: 0,
-      },
     },
   },
   layout: {
     padding: 0,
+  },
+  animation: {
+    duration: 0,
+  },
+};
+
+const doughnutLabel = {
+  id: "doughnutLabel",
+  afterDatasetsDraw(chart: any, args: any, plugins: any) {
+    const { ctx, data } = chart;
+
+    const centerX = chart.getDatasetMeta(0).data[0].x;
+    const centerY = chart.getDatasetMeta(0).data[0].y;
+
+    ctx.save();
+    ctx.font = "bold 1.25rem sans-serif";
+    ctx.fillStyle = "black";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText("$123,000.22", centerX, centerY - 11);
+
+    ctx.font = "1rem sans-serif";
+    ctx.fillText("100%", centerX, centerY + 11);
   },
 };
 
@@ -64,24 +83,6 @@ const pieChartOptions: ChartOptions<"pie"> = {
   },
 };
 
-const textCenter = {
-  id: "textCenter",
-  beforeDatasetsDraw(chart: any, args: any, pluginOptions: any) {
-    const { ctx, data } = chart;
-
-    ctx.save();
-    ctx.font = "bolder 50px sans-serif";
-    ctx.fillStyle = "black";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText(
-      "Text",
-      chart.getDatasetMeta(0).assetPieChartData[1].x,
-      chart.getDatasetMeta(0).assetPieChartData[1].y
-    );
-  },
-};
-
 export const AssetLineChart = () => {
   return <Line options={lineChartOptions} data={assetLineChartData} />;
 };
@@ -91,7 +92,7 @@ export const AssetPieChart = () => {
     <Pie
       options={pieChartOptions}
       data={assetPieChartData}
-      //  plugins={[textCenter]}
+      plugins={[doughnutLabel]}
     />
   );
 };

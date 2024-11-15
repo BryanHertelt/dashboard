@@ -7,7 +7,7 @@ import {
 const AssetDistribution = () => {
   return (
     <>
-      <div className="h-4/6 bg-white rounded-md shadow-even w-8/12 flex-grow pl-7 py-7">
+      <div className="h-4/6 bg-white rounded-md shadow-even w-8/12 flex-grow pl-7 py-7 pr-8">
         <AssetValueComponent />
       </div>
       <div className=" bg-white p-7 h-4/6 ml-7 w-3/12 rounded-md shadow-even">
