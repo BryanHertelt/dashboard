@@ -1,5 +1,26 @@
 
 
+export const assetDataTableLineChartData = {
+labels: [
+    "Day 1",
+    "Day2",
+    "Day 3",
+    "Day 4", 
+    "Day 5", 
+    "Day 6",
+    "Day 7" 
+], 
+datasets: [
+    {
+        label: "currentValue", 
+        data: [890000, 880000, 2000, 850000, 890000, 120000, 400000], 
+        borderColor: "#04B900", 
+        pointRadius: 0
+        
+    }
+]
+}
+
 export const assetLineChartData = {
     labels: [
         "12 PM",

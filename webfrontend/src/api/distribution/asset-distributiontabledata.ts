@@ -57,7 +57,7 @@ export const cryptocurrencyMockData: CryptoCurrencyResponseObject[] = [
         assetvalue: 890000,
         assetmarketprice: 89000,
         assetchange24h:7,
-        assetchange7d: [890000, 880000, 887000, 8500000, 890000],
+        assetchange7d: [890000, 880000, 2000, 8500000, 890000],
         notes: "Notes"
       }, 
       {

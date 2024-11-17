@@ -8,7 +8,9 @@ import {
 import {
   AssetPercentageValueIcon,
   SortingDataTableIcon,
+  NotesInDataTableIcon,
 } from "../../../public/images";
+import { AssetDataTableLineChart } from "@/lib/distribution/assets-distributioncharts";
 
 export const assetdistributioncolumns: ColumnDef<CryptoCurrencyResponseObject>[] =
   [
@@ -61,7 +63,17 @@ export const assetdistributioncolumns: ColumnDef<CryptoCurrencyResponseObject>[]
     },
     {
       accessorKey: "assetvalue",
-      header: () => <div className="text-icongray font-normal"> Value </div>,
+      header: ({ column }) => {
+        return (
+          <button
+            className="flex flex-row text-icongray font-normal items-center"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            {" "}
+            Value <SortingDataTableIcon className="ml-2 h-4 w-4" />{" "}
+          </button>
+        );
+      },
       cell: ({ row }) => {
         const amount = parseFloat(row.getValue("assetvalue"));
         const formatted = new Intl.NumberFormat("en-US", {
@@ -74,9 +86,17 @@ export const assetdistributioncolumns: ColumnDef<CryptoCurrencyResponseObject>[]
     },
     {
       accessorKey: "assetmarketprice",
-      header: () => (
-        <div className="text-icongray font-normal"> Market Price </div>
-      ),
+      header: ({ column }) => {
+        return (
+          <button
+            className="flex flex-row text-icongray font-normal items-center"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            {" "}
+            Market Price <SortingDataTableIcon className="ml-2 h-4 w-4" />{" "}
+          </button>
+        );
+      },
       cell: ({ row }) => {
         const amount = parseFloat(row.getValue("assetmarketprice"));
         const formatted = new Intl.NumberFormat("en-US", {
@@ -89,9 +109,17 @@ export const assetdistributioncolumns: ColumnDef<CryptoCurrencyResponseObject>[]
     },
     {
       accessorKey: "assetchange24h",
-      header: () => (
-        <div className="text-icongray font-normal"> Change 24h </div>
-      ),
+      header: ({ column }) => {
+        return (
+          <button
+            className="flex flex-row text-icongray font-normal items-center"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            {" "}
+            Change 24 h <SortingDataTableIcon className="ml-2 h-4 w-4" />{" "}
+          </button>
+        );
+      },
       cell: ({ row }) => {
         const percentage = parseFloat(row.getValue("assetpercentage"));
         const renderPercentageCell = () => {
@@ -136,16 +164,42 @@ export const assetdistributioncolumns: ColumnDef<CryptoCurrencyResponseObject>[]
     },
     {
       accessorKey: "assetchange7d",
-      header: () => (
-        <div className="text-icongray font-normal"> Change 7D </div>
-      ),
+      header: ({ column }) => {
+        return (
+          <button
+            className="flex flex-row text-icongray font-normal items-center"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            {" "}
+            Change 7d <SortingDataTableIcon className="ml-2 h-4 w-4" />{" "}
+          </button>
+        );
+      },
       cell: ({ row }) => {
         const percentage = parseFloat(row.getValue("assetpercentage"));
-        return <div> {percentage} %</div>;
+        return (
+          <div className="w-2/6 h-5">
+            {" "}
+            <AssetDataTableLineChart />{" "}
+          </div>
+        );
       },
     },
     {
       accessorKey: "notes",
-      header: () => <div className="text-icongray font-normal"> Notes </div>,
+      header: () => (
+        <div className="flex flex-row justify-start text-icongray font-normal">
+          {" "}
+          Notes{" "}
+        </div>
+      ),
+      cell: ({ row }) => {
+        return (
+          <div className="flex flex-row justify-start text-3xl items-center">
+            {" "}
+            <NotesInDataTableIcon />{" "}
+          </div>
+        );
+      },
     },
   ];

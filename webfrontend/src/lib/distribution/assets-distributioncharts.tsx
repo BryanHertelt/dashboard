@@ -17,8 +17,8 @@ import {
 import {
   assetLineChartData,
   assetPieChartData,
+  assetDataTableLineChartData,
 } from "@/api/distribution/assetdistributionAPI";
-import { AlignCenter } from "lucide-react";
 
 ChartJS.register(
   CategoryScale,
@@ -43,6 +43,30 @@ const lineChartOptions: ChartOptions<"line"> = {
   scales: {
     y: {
       position: "right",
+    },
+  },
+  layout: {
+    padding: 0,
+  },
+  animation: {
+    duration: 0,
+  },
+};
+
+const assetDataTableLineChartDataOptions: ChartOptions<"line"> = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      display: false,
+    },
+  },
+  scales: {
+    x: {
+      display: false,
+    },
+    y: {
+      display: false,
     },
   },
   layout: {
@@ -93,6 +117,15 @@ export const AssetPieChart = () => {
       options={pieChartOptions}
       data={assetPieChartData}
       plugins={[doughnutLabel]}
+    />
+  );
+};
+
+export const AssetDataTableLineChart = () => {
+  return (
+    <Line
+      options={assetDataTableLineChartDataOptions}
+      data={assetDataTableLineChartData}
     />
   );
 };

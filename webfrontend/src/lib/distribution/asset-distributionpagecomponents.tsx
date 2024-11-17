@@ -87,12 +87,18 @@ export const AssetDistributionDetailComponent = () => {
           </p>
         </header>
         <nav className="flex flex-row justify-around">
-          <button className="mr-5 active:bg-blue active:text-white focus:bg-blue focus:text-white">
+          <button className="mr-5 px-2 text-base h-5/6 active:bg-blue active:text-white focus:bg-blue focus:text-white rounded-md">
             {" "}
             Cryptocurrencies{" "}
           </button>
-          <button className="mr-5"> NFTs </button>
-          <button> Derivatives </button>
+          <button className="mr-5 px-2 text-base h-5/6 active:bg-blue active:text-white focus:bg-blue focus:text-white rounded-md">
+            {" "}
+            NFTs{" "}
+          </button>
+          <button className="mr-5 px-2 text-base h-5/6 active:bg-blue active:text-white focus:bg-blue focus:text-white rounded-md">
+            {" "}
+            Derivatives{" "}
+          </button>
         </nav>
       </div>
       <div>
