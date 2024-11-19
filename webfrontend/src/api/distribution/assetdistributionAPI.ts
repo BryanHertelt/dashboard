@@ -82,3 +82,26 @@ export const assetPieChartData = {
     ]
 
 }
+
+
+export const assetGroupPieChartData = {
+labels: [
+    "AssetGroup 1", 
+    "Asset Group2", 
+    "Asset Group 3", 
+    "Asset Group 4", 
+    "Asset Group 5"
+], 
+datasets: [
+    {
+        label: "Asset Group",
+        data: [300, 100, 207.67, 45, 800],
+        backgroundColor: [
+            "#0042AB", 
+            "#005CD3", 
+            "#3686DC", 
+            "#1298E6"
+        ]
+    }
+]
+}

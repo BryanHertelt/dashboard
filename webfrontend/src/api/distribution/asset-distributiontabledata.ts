@@ -14,6 +14,18 @@ export type CryptoCurrencyResponseObject = {
     notes: string
 }
 
+export type AssetGroupResponseObject = {
+  id: string , 
+  groupname: string, 
+  assetcount: number , 
+  groupvalue: number, 
+  grouppercentage: number, 
+  groupchange24h: number , 
+  groupchange24hvalue: number , 
+  groupchange7d: number[], 
+  description: string
+}
+
 export const cryptocurrencyMockData: CryptoCurrencyResponseObject[] = [
     {
         symbol: "A",
@@ -121,4 +133,117 @@ export const cryptocurrencyMockData: CryptoCurrencyResponseObject[] = [
         assetchange7d: [890000, 880000, 897000, 8500000, 890000],
         notes: "Notes"
       }
+]
+
+export const assetGroupData: AssetGroupResponseObject[] = [
+  {
+    id: "we342asfja" , 
+    groupname: "Asset Group 1", 
+    assetcount: 10 , 
+    groupvalue: 2300 , 
+    grouppercentage: 10 , 
+    groupchange24h: 21 , 
+    groupchange24hvalue: 1700 , 
+    groupchange7d: [890000, 880000, 897000, 8500000, 890000], 
+    description: "description"
+  },
+  {
+    id: "we342asdffja" , 
+    groupname: "Asset Group 2", 
+    assetcount: 10 , 
+    groupvalue: 2300 , 
+    grouppercentage: 10 , 
+    groupchange24h: 21 , 
+    groupchange24hvalue: 1700 , 
+    groupchange7d: [890000, 880000, 897000, 8500000, 890000], 
+    description: "description"
+  },
+  {
+    id: "we342a3sffja" , 
+    groupname: "Asset Group 3", 
+    assetcount: 10 , 
+    groupvalue: 2300 , 
+    grouppercentage: 10 , 
+    groupchange24h: -21 , 
+    groupchange24hvalue: 1700 , 
+    groupchange7d: [890000, 880000, 897000, 8500000, 890000], 
+    description: "description"
+  },
+  {
+    id: "we342asxsdfa" , 
+    groupname: "Asset Group 4", 
+    assetcount: 10 , 
+    groupvalue: 2300 , 
+    grouppercentage: 10 , 
+    groupchange24h: 21 , 
+    groupchange24hvalue: 1700 , 
+    groupchange7d: [890000, 880000, 897000, 8500000, 890000], 
+    description: "description"
+  },
+  {
+    id: "we342asxsfqa" , 
+    groupname: "Asset Group 5", 
+    assetcount: 10 , 
+    groupvalue: 2300 , 
+    grouppercentage: 10 , 
+    groupchange24h: 21 , 
+    groupchange24hvalue: 1700 , 
+    groupchange7d: [890000, 880000, 897000, 8500000, 890000], 
+    description: "description"
+  },
+  {
+    id: "we342aasdfqa" , 
+    groupname: "Asset Group 6", 
+    assetcount: 10 , 
+    groupvalue: 2300 , 
+    grouppercentage: 10 , 
+    groupchange24h: 21 , 
+    groupchange24hvalue: 1700 , 
+    groupchange7d: [890000, 880000, 897000, 8500000, 890000], 
+    description: "description"
+  },
+  {
+    id: "asfe342asfja" , 
+    groupname: "Asset Group 7", 
+    assetcount: 10 , 
+    groupvalue: 2300 , 
+    grouppercentage: 10 , 
+    groupchange24h: 21 , 
+    groupchange24hvalue: 1700 , 
+    groupchange7d: [890000, 880000, 897000, 8500000, 890000], 
+    description: "description"
+  },
+  {
+    id: "we342axfgq2fja" , 
+    groupname: "Asset Group 8", 
+    assetcount: 10 , 
+    groupvalue: 2300 , 
+    grouppercentage: 10 , 
+    groupchange24h: 21 , 
+    groupchange24hvalue: 1700 , 
+    groupchange7d: [890000, 880000, 897000, 8500000, 890000], 
+    description: "description"
+  },
+  {
+    id: "we34xfawcfsfja" , 
+    groupname: "Asset Group 9", 
+    assetcount: 10 , 
+    groupvalue: 2300 , 
+    grouppercentage: 10 , 
+    groupchange24h: 21 , 
+    groupchange24hvalue: 1700 , 
+    groupchange7d: [890000, 880000, 897000, 8500000, 890000], 
+    description: "description"
+  },
+  {
+    id: "we34jkol9fja" , 
+    groupname: "Asset Group 10", 
+    assetcount: 10 , 
+    groupvalue: 2300 , 
+    grouppercentage: 10 , 
+    groupchange24h: 21 , 
+    groupchange24hvalue: 1700 , 
+    groupchange7d: [890000, 880000, 897000, 8500000, 890000], 
+    description: "description"
+  }
 ]

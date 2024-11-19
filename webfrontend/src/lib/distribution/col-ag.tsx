@@ -1,0 +1,173 @@
+"use client";
+
+import { ColumnDef } from "@tanstack/react-table";
+import {
+  AssetGroupResponseObject,
+  assetGroupData,
+} from "@/api/distribution/asset-distributiontabledata";
+import {
+  AssetPercentageValueIcon,
+  NotesInDataTableIcon,
+  SortingDataTableIcon,
+} from "../../../public/images";
+
+import { AssetDataTableLineChart } from "./assets-distributioncharts";
+
+export const assetgrouplistcolumns: ColumnDef<AssetGroupResponseObject>[] = [
+  {
+    accessorKey: "groupname",
+    header: "Asset-Groups",
+    cell: ({ row }) => {
+      const groupname: string = row.getValue("groupname");
+      return <div className=""> {groupname} </div>;
+    },
+  },
+  {
+    accessorKey: "grouppercentage",
+    header: "%",
+    cell: ({ row }) => {
+      const percentage = parseFloat(row.getValue("grouppercentage"));
+      return <div className=""> {percentage} %</div>;
+    },
+  },
+];
+
+export const assetgroupdistributioncolumns: ColumnDef<AssetGroupResponseObject>[] =
+  [
+    {
+      accessorKey: "groupname",
+      header: () => (
+        <div className="text-icongray font-normal"> Asset-Groups </div>
+      ),
+    },
+    {
+      accessorKey: "assetcount",
+      header: () => (
+        <div className="text-icongray font-normal"> Asset-Count </div>
+      ),
+    },
+    {
+      accessorKey: "groupvalue",
+      header: "Value",
+      cell: ({ row }) => {
+        const groupvalue = parseFloat(row.getValue("groupvalue"));
+        const formattedgroupvalue = new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "USD",
+        }).format(groupvalue);
+        return <div> {formattedgroupvalue}</div>;
+      },
+    },
+    {
+      accessorKey: "grouppercentage",
+      header: ({ column }) => {
+        return (
+          <button
+            className="flex flex-row text-icongray font-normal items-center"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            {" "}
+            % <SortingDataTableIcon className="ml-2 h-4 w-4" />{" "}
+          </button>
+        );
+      },
+      cell: ({ row }) => {
+        const grouppercentage = parseFloat(row.getValue("grouppercentage"));
+        return <div> {grouppercentage} %</div>;
+      },
+    },
+    {
+      accessorKey: "groupchange24h",
+      header: ({ column }) => {
+        return (
+          <button
+            className="flex flex-row text-icongray font-normal items-center"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            {" "}
+            Change 24h <SortingDataTableIcon className="ml-2 h-4 w-4" />{" "}
+          </button>
+        );
+      },
+      cell: ({ row }) => {
+        const grouppercentage = parseFloat(row.getValue("groupchange24h"));
+        const renderPercentageCell = () => {
+          for (let index = 0; index < assetGroupData.length; index++) {
+            if (grouppercentage == assetGroupData[index].groupchange24h) {
+              const formattedPercentageValue = new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
+              }).format(assetGroupData[index].groupchange24hvalue);
+              if (grouppercentage < 0) {
+                return (
+                  <div className="flex flex-row bg-lightred text-red text-xs w-1/2 rounded-md items-center">
+                    <div className="flex flex-row mx-1 text-red">
+                      <AssetPercentageValueIcon />
+                    </div>
+                    <div className="flex flex-col">
+                      {" "}
+                      <p>{grouppercentage}% </p>
+                      <p> {formattedPercentageValue} </p>
+                    </div>{" "}
+                  </div>
+                );
+              } else {
+                return (
+                  <div className="flex flex-row bg-lightgreen text-green text-xs w-1/2 rounded-md items-center">
+                    <div className="flex flex-row mx-1">
+                      <AssetPercentageValueIcon />
+                    </div>
+                    <div className="flex flex-col">
+                      {" "}
+                      <p>{grouppercentage}% </p>
+                      <p> {formattedPercentageValue} </p>
+                    </div>{" "}
+                  </div>
+                );
+              }
+            }
+          }
+        };
+        return renderPercentageCell();
+      },
+    },
+    {
+      accessorKey: "groupchange7d",
+      header: ({ column }) => {
+        return (
+          <button
+            className="flex flex-row text-icongray font-normal items-center"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            {" "}
+            Change 7d <SortingDataTableIcon className="ml-2 h-4 w-4" />{" "}
+          </button>
+        );
+      },
+      cell: ({ row }) => {
+        return (
+          <div className="w-2/6 h-5">
+            {" "}
+            <AssetDataTableLineChart />{" "}
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: "notes",
+      header: () => (
+        <div className="flex flex-row justify-start text-icongray font-normal">
+          {" "}
+          Notes{" "}
+        </div>
+      ),
+      cell: ({ row }) => {
+        return (
+          <div className="flex flex-row justify-start text-3xl items-center">
+            {" "}
+            <NotesInDataTableIcon />{" "}
+          </div>
+        );
+      },
+    },
+  ];
