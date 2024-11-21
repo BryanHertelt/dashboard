@@ -26,6 +26,18 @@ export type AssetGroupResponseObject = {
   description: string
 }
 
+export type HoldingsResponseObject = {
+  id: string , 
+  holdingname: string, 
+  assetcount: number , 
+  holdingvalue: number, 
+  holdingpercentage: number, 
+  holdingchange24h: number , 
+  holdingchange24hvalue: number , 
+  holdingchange7d: number[], 
+  description: string
+}
+
 export const cryptocurrencyMockData: CryptoCurrencyResponseObject[] = [
     {
         symbol: "A",
@@ -247,3 +259,117 @@ export const assetGroupData: AssetGroupResponseObject[] = [
     description: "description"
   }
 ]
+
+export const holdingsData: HoldingsResponseObject[] = [
+  {
+      id: "we342asfja" , 
+      holdingname: "Holding 1", 
+      assetcount: 13 , 
+      holdingvalue: 2340 , 
+      holdingpercentage: 10 , 
+      holdingchange24h: 22 , 
+      holdingchange24hvalue: 1700 , 
+      holdingchange7d: [890000, 87000, 897000, 8501000, 890030], 
+      description: "description"
+    },
+    {
+      id: "we342sfdvsfja" , 
+      holdingname: "Holding 2", 
+      assetcount: 13 , 
+      holdingvalue: 2340 , 
+      holdingpercentage: 10 , 
+      holdingchange24h: 22 , 
+      holdingchange24hvalue: 1700 , 
+      holdingchange7d: [890000, 87000, 897000, 8501000, 890030], 
+      description: "description"
+    },
+    {
+      id: "we342asfghja" , 
+      holdingname: "Holding 3", 
+      assetcount: 13 , 
+      holdingvalue: 2340 , 
+      holdingpercentage: 10 , 
+      holdingchange24h: 22 , 
+      holdingchange24hvalue: 1700 , 
+      holdingchange7d: [890000, 87000, 897000, 8501000, 890030], 
+      description: "description"
+    },
+    {
+      id: "we342asfyxcdja" , 
+      holdingname: "Holding 4", 
+      assetcount: 13 , 
+      holdingvalue: 2340 , 
+      holdingpercentage: 10 , 
+      holdingchange24h: 22 , 
+      holdingchange24hvalue: 1700 , 
+      holdingchange7d: [890000, 87000, 897000, 8501000, 890030], 
+      description: "description"
+    },
+    {
+      id: "we342asf2sdja" , 
+      holdingname: "Holding 5", 
+      assetcount: 13 , 
+      holdingvalue: 2340 , 
+      holdingpercentage: 10 , 
+      holdingchange24h: 22 , 
+      holdingchange24hvalue: 1700 , 
+      holdingchange7d: [890000, 87000, 897000, 8501000, 890030], 
+      description: "description"
+    },
+    {
+      id: "we342asfjaff" , 
+      holdingname: "Holding 6", 
+      assetcount: 13 , 
+      holdingvalue: 2340 , 
+      holdingpercentage: 10 , 
+      holdingchange24h: 22 , 
+      holdingchange24hvalue: 1700 , 
+      holdingchange7d: [890000, 87000, 897000, 8501000, 890030], 
+      description: "description"
+    },
+    {
+      id: "wey3fa42asfja" , 
+      holdingname: "Holding 7", 
+      assetcount: 13 , 
+      holdingvalue: 2340 , 
+      holdingpercentage: 10 , 
+      holdingchange24h: 22 , 
+      holdingchange24hvalue: 1700 , 
+      holdingchange7d: [890000, 87000, 897000, 8501000, 890030], 
+      description: "description"
+    },
+    {
+      id: "we342asf3ddd" , 
+      holdingname: "Holding 8", 
+      assetcount: 13 , 
+      holdingvalue: 2340 , 
+      holdingpercentage: 10 , 
+      holdingchange24h: 22 , 
+      holdingchange24hvalue: 1700 , 
+      holdingchange7d: [890000, 87000, 897000, 8501000, 890030], 
+      description: "description"
+    },
+    {
+      id: "we342akfksfja" , 
+      holdingname: "Holding 9", 
+      assetcount: 13 , 
+      holdingvalue: 2340 , 
+      holdingpercentage: 10 , 
+      holdingchange24h: 22 , 
+      holdingchange24hvalue: 1700 , 
+      holdingchange7d: [890000, 87000, 897000, 8501000, 890030], 
+      description: "description"
+    },
+    {
+      id: "we3yc42asxcfja" , 
+      holdingname: "Holding 10", 
+      assetcount: 13 , 
+      holdingvalue: 2340 , 
+      holdingpercentage: 10 , 
+      holdingchange24h: 22 , 
+      holdingchange24hvalue: 1700 , 
+      holdingchange7d: [890000, 87000, 897000, 8501000, 890030], 
+      description: "description"
+    }
+]
+

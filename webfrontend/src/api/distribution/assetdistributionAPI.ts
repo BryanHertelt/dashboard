@@ -1,4 +1,29 @@
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend,
+    ChartOptions,
+    ArcElement,
+    Filler,
+  } from "chart.js";
+import { assetGroupData, holdingsData } from "./asset-distributiontabledata";
 
+  ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    ArcElement,
+    Title,
+    Tooltip,
+    Legend,
+    Filler
+  );
 
 export const assetDataTableLineChartData = {
 labels: [
@@ -85,17 +110,11 @@ export const assetPieChartData = {
 
 
 export const assetGroupPieChartData = {
-labels: [
-    "AssetGroup 1", 
-    "Asset Group2", 
-    "Asset Group 3", 
-    "Asset Group 4", 
-    "Asset Group 5"
-], 
+labels: assetGroupData.map((agobject)=> agobject.groupname),
 datasets: [
     {
-        label: "Asset Group",
-        data: [300, 100, 207.67, 45, 800],
+        label: "Share",
+        data: assetGroupData.map(((agobject)=> agobject.grouppercentage)),
         backgroundColor: [
             "#0042AB", 
             "#005CD3", 
@@ -105,3 +124,95 @@ datasets: [
     }
 ]
 }
+
+export const holdingsPieChartData = {
+  labels: holdingsData.map((holdingobject)=> holdingobject.holdingname ),
+  datasets: [
+    {
+    label: "Share",
+    data: holdingsData.map((holdingsobject)=>holdingsobject.holdingpercentage ),
+    backgroundColor: [
+      "#0042AB", 
+      "#005CD3", 
+      "#3686DC", 
+      "#1298E6"
+  ]
+    }
+  ]
+}
+  
+  export const lineChartOptions: ChartOptions<"line"> = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false,
+      },
+    },
+    scales: {
+      y: {
+        position: "right",
+      },
+    },
+    layout: {
+      padding: 0,
+    },
+    animation: {
+      duration: 0,
+    },
+  };
+  
+  export const assetDataTableLineChartDataOptions: ChartOptions<"line"> = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false,
+      },
+    },
+    scales: {
+      x: {
+        display: false,
+      },
+      y: {
+        display: false,
+      },
+    },
+    layout: {
+      padding: 0,
+    },
+    animation: {
+      duration: 0,
+    },
+  };
+  
+  export const doughnutLabel = 
+  {
+    id: "doughnutLabel",
+    afterDatasetsDraw(chart: any, args: any, plugins: any) {
+      const { ctx, data } = chart;
+  
+      const centerX = chart.getDatasetMeta(0).data[0].x;
+      const centerY = chart.getDatasetMeta(0).data[0].y;
+  
+      ctx.save();
+      ctx.font = "bold 1.25rem sans-serif";
+      ctx.fillStyle = "black";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText("$123,000.22", centerX, centerY - 11);
+  
+      ctx.font = "1rem sans-serif";
+      ctx.fillText("100%", centerX, centerY + 11);
+  }
+} 
+  
+ export const pieChartOptions: ChartOptions<"pie"> = {
+    responsive: true,
+    cutout: "70%",
+    plugins: {
+      legend: {
+        display: false,
+      },
+    },
+  };

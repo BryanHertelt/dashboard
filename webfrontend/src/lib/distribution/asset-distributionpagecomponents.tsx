@@ -1,7 +1,7 @@
 "use client";
 import {
   AssetLineChart,
-  AssetPieChart,
+  PieChart,
 } from "@/lib/distribution/assets-distributioncharts";
 import { assetGroupData } from "@/api/distribution/asset-distributiontabledata";
 
@@ -11,7 +11,7 @@ import { cryptocurrencyMockData } from "@/api/distribution/asset-distributiontab
 import { BitcoinIcon, EthereumIcon } from "@/../public/images";
 import { assetgroupdistributioncolumns, assetgrouplistcolumns } from "./col-ag";
 
-export const AssetValueComponent = () => {
+export const AssetValueChartComponent = (props: any) => {
   return (
     <>
       <header>
@@ -50,43 +50,37 @@ export const AssetValueComponent = () => {
       </header>
       <div className="w-full h-4/6 mt-6">
         <div className=" flex flex-row justify-center w-full h-full">
-          <AssetLineChart />
+          <AssetLineChart data={props.data} />
         </div>
       </div>
     </>
   );
 };
 
-export const AssetDistributionComponent = () => {
+export const DistributionComponent = (props: any) => {
   return (
     <>
       <header>
-        <h1>Asset Distribution</h1>
-        <p className="text-icongray mb-3">
-          {" "}
-          You can see your Asset Distribution here.{" "}
-        </p>
+        <h1>{props.title}</h1>
+        <p className="text-icongray mb-3">{props.text}</p>
       </header>
       <hr />
       <div className=" flex flex-row justify-center align-middle w-full h-full my-11">
         <div className="flex flex-row justify-center w-10/12 h-4/6">
-          <AssetPieChart />
+          <PieChart piedata={props.piedata} pieoptions={props.pieoptions} />
         </div>
       </div>
     </>
   );
 };
 
-export const AssetDistributionDetailComponent = () => {
+export const DetailTableComponent = (props: any) => {
   return (
     <>
       <div className="flex flex-row justify-between mb-7">
         <header>
-          <h1 className="font-semibold text-xl"> Assets </h1>
-          <p className="text-icongray">
-            {" "}
-            You can see all your cryptocurrencies here.{" "}
-          </p>
+          <h1 className="font-semibold text-xl"> {props.title} </h1>
+          <p className="text-icongray">{props.text}</p>
         </header>
         <nav className="flex flex-row justify-around">
           <button className="mr-5 px-2 text-base h-5/6 active:bg-blue active:text-white focus:bg-blue focus:text-white rounded-md">
@@ -104,55 +98,16 @@ export const AssetDistributionDetailComponent = () => {
         </nav>
       </div>
       <div>
-        <DataTable
-          columns={assetdistributioncolumns}
-          data={cryptocurrencyMockData}
-        />
+        <DataTable columns={props.columns} data={props.data} />
       </div>
     </>
   );
 };
 
-export const ParentListComponent = () => {
+export const ParentListComponent = (props: any) => {
   return (
     <div>
-      <DataTable columns={assetgrouplistcolumns} data={assetGroupData} />
+      <DataTable columns={props.listcolumns} data={props.listdata} />
     </div>
-  );
-};
-
-export const AssetGroupDetailComponent = () => {
-  return (
-    <>
-      <div className="flex flex-row justify-between mb-7">
-        <header>
-          <h1 className="font-semibold text-xl"> Assets </h1>
-          <p className="text-icongray">
-            {" "}
-            You can see all your cryptocurrencies here.{" "}
-          </p>
-        </header>
-        <nav className="flex flex-row justify-around">
-          <button className="mr-5 px-2 text-base h-5/6 active:bg-blue active:text-white focus:bg-blue focus:text-white rounded-md">
-            {" "}
-            Cryptocurrencies{" "}
-          </button>
-          <button className="mr-5 px-2 text-base h-5/6 active:bg-blue active:text-white focus:bg-blue focus:text-white rounded-md">
-            {" "}
-            NFTs{" "}
-          </button>
-          <button className="mr-5 px-2 text-base h-5/6 active:bg-blue active:text-white focus:bg-blue focus:text-white rounded-md">
-            {" "}
-            Derivatives{" "}
-          </button>
-        </nav>
-      </div>
-      <div>
-        <DataTable
-          columns={assetgroupdistributioncolumns}
-          data={assetGroupData}
-        />
-      </div>
-    </>
   );
 };
