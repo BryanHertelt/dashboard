@@ -3,13 +3,8 @@ import {
   AssetLineChart,
   PieChart,
 } from "@/lib/distribution/assets-distributioncharts";
-import { assetGroupData } from "@/api/distribution/asset-distributiontabledata";
-
 import { DataTable } from "@/lib/datatable/data-table";
-import { assetdistributioncolumns } from "@/lib/distribution/asset-distributioncolumns";
-import { cryptocurrencyMockData } from "@/api/distribution/asset-distributiontabledata";
 import { BitcoinIcon, EthereumIcon } from "@/../public/images";
-import { assetgroupdistributioncolumns, assetgrouplistcolumns } from "./col-ag";
 
 export const AssetValueChartComponent = (props: any) => {
   return (

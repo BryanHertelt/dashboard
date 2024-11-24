@@ -98,33 +98,23 @@ export const assetgroupdistributioncolumns: ColumnDef<AssetGroupResponseObject>[
                 style: "currency",
                 currency: "USD",
               }).format(assetGroupData[index].groupchange24hvalue);
-              if (grouppercentage < 0) {
-                return (
-                  <div className="flex flex-row bg-lightred text-red text-xs w-1/2 rounded-md items-center">
-                    <div className="flex flex-row mx-1 text-red">
-                      <AssetPercentageValueIcon />
-                    </div>
-                    <div className="flex flex-col">
-                      {" "}
-                      <p>{grouppercentage}% </p>
-                      <p> {formattedPercentageValue} </p>
-                    </div>{" "}
+              const percentagecolor =
+                grouppercentage < 0 ? "negative" : "positive";
+              const iconcolor = grouppercentage < 0 ? "text-red" : "text-green";
+              return (
+                <div
+                  className={`${percentagecolor} flex flex-row text-xs w-1/2 items-center`}
+                >
+                  <div className={`${iconcolor} flex flex-row mx-1`}>
+                    <AssetPercentageValueIcon />
                   </div>
-                );
-              } else {
-                return (
-                  <div className="flex flex-row bg-lightgreen text-green text-xs w-1/2 rounded-md items-center">
-                    <div className="flex flex-row mx-1">
-                      <AssetPercentageValueIcon />
-                    </div>
-                    <div className="flex flex-col">
-                      {" "}
-                      <p>{grouppercentage}% </p>
-                      <p> {formattedPercentageValue} </p>
-                    </div>{" "}
-                  </div>
-                );
-              }
+                  <div className="flex flex-col">
+                    {" "}
+                    <p>{grouppercentage}% </p>
+                    <p> {formattedPercentageValue} </p>
+                  </div>{" "}
+                </div>
+              );
             }
           }
         };
