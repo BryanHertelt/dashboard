@@ -11,7 +11,7 @@ import { assetgrouplistcolumns } from "@/lib/distribution/col-ag";
 import {
   assetGroupPieChartData,
   pieChartOptions,
-} from "@/api/distribution/assetdistributionAPI";
+} from "@/api/distribution/chartdataformatter";
 
 const AssetGroupDistribution = () => {
   return (

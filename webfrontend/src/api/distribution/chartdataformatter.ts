@@ -24,6 +24,7 @@ import { assetGroupData, holdingsData } from "./asset-distributiontabledata";
     Legend,
     Filler
   );
+import { StructureLayer, PortfolioDataInterface } from "../layer";
 
 export const assetDataTableLineChartData = {
 labels: [
@@ -46,45 +47,55 @@ datasets: [
 ]
 }
 
-export const assetLineChartData = {
-    labels: [
-        "12 PM",
-        "1 PM", 
-        "2 PM", 
-        "3 PM", 
-        "4 PM", 
-        "5 PM", 
-        "6 PM", 
-    ], 
-    datasets: [
-        {
-            label: "currentValue", 
-            data: [4000, 4200, 4199, 3900, 3750, 4200, 4700, 5000], 
-            borderColor: "#005BEA",
-            backgroundColor: (context:any) => {
-                 const bgColor = [
-                 "rgba(0, 91, 234, 0.3)", 
-                 "rgba(0, 91, 234, 0.2)",
-                 "rgba(0, 91, 234, 0.01)"         
-                 ]; 
-                 if(!context.chart.chartArea) {
-                    return; 
-                 } 
-            const {ctx, data, chartArea: {top, bottom}} = context.chart; 
-            const gradientBg= ctx.createLinearGradient(0, top, 0, bottom)
-            const colorTranches = 1 / (bgColor.length -1); 
-                 
-          for (let i = 0; i < bgColor.length; i++){
-            gradientBg.addColorStop(0+ i * colorTranches, bgColor[i])
+export const getAssetLineChartData = async () => {
+  const portfoliodata: PortfolioDataInterface[] | null = await StructureLayer.fetchDistributionUnits("portfolios", "?portfolioid=2");
 
-          } 
-           return gradientBg
-            },
-            pointRadius: 0,
-            fill: true, 
+  if (portfoliodata && Array.isArray(portfoliodata) && portfoliodata.length > 0) {
+    const portfoliochange7d = portfoliodata.map((portfolio) => portfolio.change7d);
+
+    return {
+      labels: [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+      ],
+      datasets: [
+        {
+          label: "currentValue",
+          data: portfoliochange7d,
+          borderColor: "#005BEA",
+          backgroundColor: (context: any) => {
+            const bgColor = [
+              "rgba(0, 91, 234, 0.3)",
+              "rgba(0, 91, 234, 0.2)",
+              "rgba(0, 91, 234, 0.01)",
+            ];
+            if (!context.chart.chartArea) {
+              return "rgba(0, 91, 234, 0.1)"; 
+            }
+            const { ctx, chartArea: { top, bottom } } = context.chart;
+            const gradientBg = ctx.createLinearGradient(0, top, 0, bottom);
+            const colorTranches = 1 / (bgColor.length - 1);
+
+            for (let i = 0; i < bgColor.length; i++) {
+              gradientBg.addColorStop(i * colorTranches, bgColor[i]);
+            }
+            return gradientBg;
+          },
+          pointRadius: 0,
+          fill: true,
         },
-    ],
-}; 
+      ],
+    };
+  } else {
+    console.warn("No portfolio data or invalid data structure.");
+    return null;
+  }
+};
 
 export const assetPieChartData = {
     labels: [

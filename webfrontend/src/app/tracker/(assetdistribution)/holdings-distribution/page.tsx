@@ -11,7 +11,7 @@ import { holdingsData } from "@/api/distribution/asset-distributiontabledata";
 import {
   holdingsPieChartData,
   pieChartOptions,
-} from "@/api/distribution/assetdistributionAPI";
+} from "@/api/distribution/chartdataformatter";
 
 const HoldingsDistribution = () => {
   return (
