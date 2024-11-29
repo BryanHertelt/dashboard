@@ -15,7 +15,7 @@ exports[`FoldedSideBar Component matches snapshot 1`] = `
     >
       <a
         class="flex flex-row mt-1 py-1 justify-center align-middle pl-2 text-icongray hover:bg-blue hover:text-white hover:w-6/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md"
-        href="./dashboard"
+        href="/tracker/dashboard"
       >
         <div
           class="mt-1 mr-2 text-2xl h-full self-center"
@@ -31,7 +31,7 @@ exports[`FoldedSideBar Component matches snapshot 1`] = `
     >
       <a
         class="flex flex-row mt-1 py-1 justify-center align-middle pl-2 text-icongray hover:bg-blue hover:text-white hover:w-6/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md"
-        href="./assetdistribution"
+        href="/tracker/assetdistribution"
       >
         <div
           class="mt-1 mr-2 text-2xl h-full self-center"
@@ -47,7 +47,7 @@ exports[`FoldedSideBar Component matches snapshot 1`] = `
     >
       <a
         class="flex flex-row mt-1 py-1 justify-center align-middle pl-2 text-icongray hover:bg-blue hover:text-white hover:w-6/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md"
-        href="./defi"
+        href="/tracker/defi"
       >
         <div
           class="mt-1 mr-2 text-2xl h-full self-center"
@@ -63,7 +63,7 @@ exports[`FoldedSideBar Component matches snapshot 1`] = `
     >
       <a
         class="flex flex-row mt-1 py-1 justify-center align-middle pl-2 text-icongray hover:bg-blue hover:text-white hover:w-6/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md"
-        href="./transactions"
+        href="/tracker/transactions"
       >
         <div
           class="mt-1 mr-2 text-2xl h-full self-center"
@@ -79,7 +79,7 @@ exports[`FoldedSideBar Component matches snapshot 1`] = `
     >
       <a
         class="flex flex-row mt-1 py-1 justify-center align-middle pl-2 text-icongray hover:bg-blue hover:text-white hover:w-6/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md"
-        href="./explorer"
+        href="/tracker/explorer"
       >
         <div
           class="mt-1 mr-2 text-2xl h-full self-center"
@@ -95,7 +95,7 @@ exports[`FoldedSideBar Component matches snapshot 1`] = `
     >
       <a
         class="flex flex-row mt-1 py-1 justify-center align-middle pl-2 text-icongray hover:bg-blue hover:text-white hover:w-6/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md"
-        href="./nfts"
+        href="/tracker/nfts"
       >
         <div
           class="mt-1 mr-2 text-2xl h-full self-center"
@@ -111,7 +111,7 @@ exports[`FoldedSideBar Component matches snapshot 1`] = `
     >
       <a
         class="flex flex-row mt-1 py-1 justify-center align-middle pl-2 text-icongray hover:bg-blue hover:text-white hover:w-6/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md"
-        href="./derivatives"
+        href="/tracker/derivatives"
       >
         <div
           class="mt-1 mr-2 text-2xl h-full self-center"
@@ -127,7 +127,7 @@ exports[`FoldedSideBar Component matches snapshot 1`] = `
     >
       <a
         class="flex flex-row mt-1 py-1 justify-center align-middle pl-2 text-icongray hover:bg-blue hover:text-white hover:w-6/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md"
-        href="./snapshots"
+        href="/tracker/snapshots"
       >
         <div
           class="mt-1 mr-2 text-2xl h-full self-center"
@@ -143,7 +143,7 @@ exports[`FoldedSideBar Component matches snapshot 1`] = `
     >
       <a
         class="flex flex-row mt-1 py-1 justify-center align-middle pl-2 text-icongray hover:bg-blue hover:text-white hover:w-6/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md"
-        href="./watchlist"
+        href="/tracker/watchlist"
       >
         <div
           class="mt-1 mr-2 text-2xl h-full self-center"
@@ -159,7 +159,7 @@ exports[`FoldedSideBar Component matches snapshot 1`] = `
     >
       <a
         class="flex flex-row mt-1 py-1 justify-center align-middle pl-2 text-icongray hover:bg-blue hover:text-white hover:w-6/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md"
-        href="./reports"
+        href="/tracker/reports"
       >
         <div
           class="mt-1 mr-2 text-2xl h-full self-center"
@@ -180,7 +180,7 @@ exports[`FoldedSideBar Component matches snapshot 1`] = `
     >
       <a
         class="flex flex-row mt-1 py-1 justify-center align-middle pl-2 text-icongray hover:bg-blue hover:text-white hover:w-6/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md"
-        href="./help"
+        href="/tracker/help"
       >
         <div
           class="mt-1 mr-2 text-2xl h-full self-center"
@@ -196,7 +196,7 @@ exports[`FoldedSideBar Component matches snapshot 1`] = `
     >
       <a
         class="flex flex-row mt-1 py-1 justify-center align-middle pl-2 text-icongray hover:bg-blue hover:text-white hover:w-6/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md"
-        href="./settings"
+        href="/tracker/settings"
       >
         <div
           class="mt-1 mr-2 text-2xl h-full self-center"
@@ -212,7 +212,7 @@ exports[`FoldedSideBar Component matches snapshot 1`] = `
     >
       <a
         class="flex flex-row mt-1 py-1 justify-center align-middle pl-2 text-icongray hover:bg-blue hover:text-white hover:w-6/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md"
-        href="./getsupport"
+        href="/tracker/getsupport"
       >
         <div
           class="mt-1 mr-2 text-2xl h-full self-center"
@@ -229,7 +229,7 @@ exports[`FoldedSideBar Component matches snapshot 1`] = `
 
 exports[`HeadbarContainer matches snapshots 1`] = `
 <nav
-  className="flex flex-row justify-end w-full h-full shadow-sm  shadow-gray-300"
+  className="flex flex-row justify-end w-full h-full shadow-sm bg-white shadow-gray-300"
 >
   <div
     className="w-full justify-start self-center"
@@ -266,7 +266,7 @@ exports[`SidebarContainer matches snapshot 1`] = `
   data-testid="sidebarcontainer"
 >
   <nav
-    className="flex flex-col justify-between w-20 h-full"
+    className="flex flex-col justify-between w-20 h-full shadow-even"
   >
     <nav
       className="flex flex-col h-full border border-red-300 w-full "
@@ -312,7 +312,7 @@ exports[`SidebarContainer matches snapshot 1`] = `
               },
               "element": "Asset-Distribution",
               "id": 2,
-              "link": "assetdistribution",
+              "link": "asset-distribution",
               "position": "default",
             },
             {
@@ -470,7 +470,7 @@ exports[`UnfoldedSidebar Component matches snapshot 1`] = `
     >
       <a
         class="flex flex-row pl-5 mt-1 rounded-md text-icongray group hover:bg-blue hover:text-white hover:w-11/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md focus: w-11/12 transition duration-300 ease-in-out"
-        href="./dashboard"
+        href="/tracker/dashboard"
       >
         <div
           class="mt-1 mr-2 text-2xl h-full self-center group-hover:text-white"
@@ -493,7 +493,7 @@ exports[`UnfoldedSidebar Component matches snapshot 1`] = `
     >
       <a
         class="flex flex-row pl-5 mt-1 rounded-md text-icongray group hover:bg-blue hover:text-white hover:w-11/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md focus: w-11/12 transition duration-300 ease-in-out"
-        href="./assetdistribution"
+        href="/tracker/assetdistribution"
       >
         <div
           class="mt-1 mr-2 text-2xl h-full self-center group-hover:text-white"
@@ -516,7 +516,7 @@ exports[`UnfoldedSidebar Component matches snapshot 1`] = `
     >
       <a
         class="flex flex-row pl-5 mt-1 rounded-md text-icongray group hover:bg-blue hover:text-white hover:w-11/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md focus: w-11/12 transition duration-300 ease-in-out"
-        href="./defi"
+        href="/tracker/defi"
       >
         <div
           class="mt-1 mr-2 text-2xl h-full self-center group-hover:text-white"
@@ -539,7 +539,7 @@ exports[`UnfoldedSidebar Component matches snapshot 1`] = `
     >
       <a
         class="flex flex-row pl-5 mt-1 rounded-md text-icongray group hover:bg-blue hover:text-white hover:w-11/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md focus: w-11/12 transition duration-300 ease-in-out"
-        href="./transactions"
+        href="/tracker/transactions"
       >
         <div
           class="mt-1 mr-2 text-2xl h-full self-center group-hover:text-white"
@@ -562,7 +562,7 @@ exports[`UnfoldedSidebar Component matches snapshot 1`] = `
     >
       <a
         class="flex flex-row pl-5 mt-1 rounded-md text-icongray group hover:bg-blue hover:text-white hover:w-11/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md focus: w-11/12 transition duration-300 ease-in-out"
-        href="./explorer"
+        href="/tracker/explorer"
       >
         <div
           class="mt-1 mr-2 text-2xl h-full self-center group-hover:text-white"
@@ -585,7 +585,7 @@ exports[`UnfoldedSidebar Component matches snapshot 1`] = `
     >
       <a
         class="flex flex-row pl-5 mt-1 rounded-md text-icongray group hover:bg-blue hover:text-white hover:w-11/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md focus: w-11/12 transition duration-300 ease-in-out"
-        href="./nfts"
+        href="/tracker/nfts"
       >
         <div
           class="mt-1 mr-2 text-2xl h-full self-center group-hover:text-white"
@@ -608,7 +608,7 @@ exports[`UnfoldedSidebar Component matches snapshot 1`] = `
     >
       <a
         class="flex flex-row pl-5 mt-1 rounded-md text-icongray group hover:bg-blue hover:text-white hover:w-11/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md focus: w-11/12 transition duration-300 ease-in-out"
-        href="./derivatives"
+        href="/tracker/derivatives"
       >
         <div
           class="mt-1 mr-2 text-2xl h-full self-center group-hover:text-white"
@@ -631,7 +631,7 @@ exports[`UnfoldedSidebar Component matches snapshot 1`] = `
     >
       <a
         class="flex flex-row pl-5 mt-1 rounded-md text-icongray group hover:bg-blue hover:text-white hover:w-11/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md focus: w-11/12 transition duration-300 ease-in-out"
-        href="./snapshots"
+        href="/tracker/snapshots"
       >
         <div
           class="mt-1 mr-2 text-2xl h-full self-center group-hover:text-white"
@@ -654,7 +654,7 @@ exports[`UnfoldedSidebar Component matches snapshot 1`] = `
     >
       <a
         class="flex flex-row pl-5 mt-1 rounded-md text-icongray group hover:bg-blue hover:text-white hover:w-11/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md focus: w-11/12 transition duration-300 ease-in-out"
-        href="./watchlist"
+        href="/tracker/watchlist"
       >
         <div
           class="mt-1 mr-2 text-2xl h-full self-center group-hover:text-white"
@@ -677,7 +677,7 @@ exports[`UnfoldedSidebar Component matches snapshot 1`] = `
     >
       <a
         class="flex flex-row pl-5 mt-1 rounded-md text-icongray group hover:bg-blue hover:text-white hover:w-11/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md focus: w-11/12 transition duration-300 ease-in-out"
-        href="./reports"
+        href="/tracker/reports"
       >
         <div
           class="mt-1 mr-2 text-2xl h-full self-center group-hover:text-white"
@@ -705,7 +705,7 @@ exports[`UnfoldedSidebar Component matches snapshot 1`] = `
     >
       <a
         class="flex flex-row pl-5 mt-1 rounded-md text-icongray group hover:bg-blue hover:text-white hover:w-11/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md focus: w-11/12 transition duration-300 ease-in-out"
-        href="./help"
+        href="/tracker/help"
       >
         <div
           class="mt-1 mr-2 text-2xl h-full self-center group-hover:text-white"
@@ -728,7 +728,7 @@ exports[`UnfoldedSidebar Component matches snapshot 1`] = `
     >
       <a
         class="flex flex-row pl-5 mt-1 rounded-md text-icongray group hover:bg-blue hover:text-white hover:w-11/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md focus: w-11/12 transition duration-300 ease-in-out"
-        href="./settings"
+        href="/tracker/settings"
       >
         <div
           class="mt-1 mr-2 text-2xl h-full self-center group-hover:text-white"
@@ -751,7 +751,7 @@ exports[`UnfoldedSidebar Component matches snapshot 1`] = `
     >
       <a
         class="flex flex-row pl-5 mt-1 rounded-md text-icongray group hover:bg-blue hover:text-white hover:w-11/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md focus: w-11/12 transition duration-300 ease-in-out"
-        href="./getsupport"
+        href="/tracker/getsupport"
       >
         <div
           class="mt-1 mr-2 text-2xl h-full self-center group-hover:text-white"

@@ -127,38 +127,3 @@ fetchDistributionUnits: async function<Data>(slug:string, searchquery: string):P
     } 
 }
 
-
-export class StructureLayerClass {
-    private slug: string; 
-    private searchquery: string; 
-
-    constructor(slug: string, searchquery: string) {
-        this.slug = slug
-        this.searchquery = searchquery
-    }
-
-    async fetchDistributionUnits<Data>():Promise<Data | null> {
-        try{
-        let rawdata = await fetch(`http://localhost:4000/${this.slug}`) 
-        if(!rawdata.ok) {
-            console.error(`Error occured while fetching: , ${rawdata.status}`)
-            return null
-        }
-        let data = await rawdata.json()
-        return data
-    } catch(error) {
-        // Don't forget to add logging here. 
-        console.error("Error while fetching data in the distribution layer: ", error)
-        return null
-    }
-    }
-}
-
-/**
- * 
- * example how to use the code to fetch assetgroups: 
- * const api = new DistributionLayer("assetgroups"); 
- * const data = await api.fetchDistributionUnits<AssetGroupDataInterface[]>
- * work with data 
- */
-
