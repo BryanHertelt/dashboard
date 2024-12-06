@@ -6,14 +6,14 @@ import {
   DetailTableComponent,
 } from "@/lib/distribution/asset-distributionpagecomponents";
 
-import { assetdistributioncolumns } from "@/lib/distribution/asset-distributioncolumns";
+import { assetdistributioncolumns } from "@/lib/distribution/col-ad";
 import { cryptocurrencyMockData } from "@/api/distribution/asset-distributiontabledata";
 
 import {
   assetLineChartData,
   assetPieChartData,
   pieChartOptions,
-} from "@/api/distribution/assetdistributionAPI";
+} from "@/api/distribution/chartdataformatter";
 
 const AssetDistribution = () => {
   return (

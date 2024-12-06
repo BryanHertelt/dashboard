@@ -6,7 +6,7 @@ import {
   lineChartOptions,
   assetDataTableLineChartDataOptions,
   doughnutLabel,
-} from "@/api/distribution/assetdistributionAPI";
+} from "@/api/distribution/chartdataformatter";
 
 export const AssetLineChart = (props: any) => {
   return <Line options={lineChartOptions} data={props.data} />;

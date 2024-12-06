@@ -24,7 +24,6 @@ import { assetGroupData, holdingsData } from "./asset-distributiontabledata";
     Legend,
     Filler
   );
-import { StructureLayer, PortfolioDataInterface } from "../layer";
 
 export const assetDataTableLineChartData = {
 labels: [
@@ -47,13 +46,7 @@ datasets: [
 ]
 }
 
-export const getAssetLineChartData = async () => {
-  const portfoliodata: PortfolioDataInterface[] | null = await StructureLayer.fetchDistributionUnits("portfolios", "?portfolioid=2");
-
-  if (portfoliodata && Array.isArray(portfoliodata) && portfoliodata.length > 0) {
-    const portfoliochange7d = portfoliodata.map((portfolio) => portfolio.change7d);
-
-    return {
+export const assetLineChartData = {
       labels: [
         "Sunday",
         "Monday",
@@ -66,7 +59,7 @@ export const getAssetLineChartData = async () => {
       datasets: [
         {
           label: "currentValue",
-          data: portfoliochange7d,
+          data: [890000, 880000, 2000, 850000, 890000, 120000, 400000], 
           borderColor: "#005BEA",
           backgroundColor: (context: any) => {
             const bgColor = [
@@ -90,12 +83,7 @@ export const getAssetLineChartData = async () => {
           fill: true,
         },
       ],
-    };
-  } else {
-    console.warn("No portfolio data or invalid data structure.");
-    return null;
-  }
-};
+    }; 
 
 export const assetPieChartData = {
     labels: [
