@@ -1,12 +1,9 @@
 "use client";
+import AssetValueChartComponent from "../_components/assetvaluechartcomponent";
+import DistributionComponent from "../_components/distributioncomp";
+import DetailTableComponent from "../_components/tabledetailcomp";
 
-import {
-  AssetValueChartComponent,
-  DistributionComponent,
-  DetailTableComponent,
-} from "@/lib/distribution/asset-distributionpagecomponents";
-
-import { assetdistributioncolumns } from "@/lib/distribution/col-ad";
+import { assetdistributioncolumns } from "@/utility/lib/distribution/col-ad";
 import { cryptocurrencyMockData } from "@/api/distribution/asset-distributiontabledata";
 
 import {
@@ -15,7 +12,7 @@ import {
   pieChartOptions,
 } from "@/api/distribution/chartdataformatter";
 
-const AssetDistribution = () => {
+const AssetDistributionComponent = () => {
   return (
     <>
       <div className="card h-4/6 w-8/12 flex-grow pl-7 py-7 pr-8">
@@ -41,4 +38,4 @@ const AssetDistribution = () => {
   );
 };
 
-export default AssetDistribution;
+export default AssetDistributionComponent;

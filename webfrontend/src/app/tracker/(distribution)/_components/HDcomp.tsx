@@ -1,11 +1,9 @@
-import {
-  DistributionComponent,
-  DetailTableComponent,
-  ParentListComponent,
-} from "@/lib/distribution/asset-distributionpagecomponents";
+import DistributionComponent from "../_components/distributioncomp";
+import DetailTableComponent from "../_components/tabledetailcomp";
+import ParentListComponent from "../_components/listparentcomp";
 
-import { holdingsdistributioncolumns } from "@/lib/distribution/col-holding";
-import { holdingslistcolumns } from "@/lib/distribution/col-holding";
+import { holdingsdistributioncolumns } from "@/utility/lib/distribution/col-holding";
+import { holdingslistcolumns } from "@/utility/lib/distribution/col-holding";
 import { holdingsData } from "@/api/distribution/asset-distributiontabledata";
 
 import {
@@ -13,7 +11,7 @@ import {
   pieChartOptions,
 } from "@/api/distribution/chartdataformatter";
 
-const HoldingsDistribution = () => {
+const HoldingsDistributionComponent = () => {
   return (
     <>
       <div className="card p-7 h-4/6  w-3/12">
@@ -42,4 +40,4 @@ const HoldingsDistribution = () => {
     </>
   );
 };
-export default HoldingsDistribution;
+export default HoldingsDistributionComponent;

@@ -9,8 +9,10 @@ import {
   AssetPercentageValueIcon,
   SortingDataTableIcon,
   NotesInDataTableIcon,
-} from "../../../public/images";
-import { AssetDataTableLineChart } from "@/lib/distribution/assets-distributioncharts";
+} from "../../../../public/images";
+import { Line } from "react-chartjs-2";
+import { assetDataTableLineChartData } from "@/api/distribution/chartdataformatter";
+import { assetDataTableLineChartDataOptions } from "@/api/distribution/chartdataformatter";
 
 export const assetdistributioncolumns: ColumnDef<CryptoCurrencyResponseObject>[] =
   [
@@ -168,8 +170,10 @@ export const assetdistributioncolumns: ColumnDef<CryptoCurrencyResponseObject>[]
         const percentage = parseFloat(row.getValue("assetpercentage"));
         return (
           <div className="w-2/6 h-5">
-            {" "}
-            <AssetDataTableLineChart />{" "}
+            <Line
+              options={assetDataTableLineChartDataOptions}
+              data={assetDataTableLineChartData}
+            />
           </div>
         );
       },

@@ -9,9 +9,10 @@ import {
   AssetPercentageValueIcon,
   NotesInDataTableIcon,
   SortingDataTableIcon,
-} from "../../../public/images";
-
-import { AssetDataTableLineChart } from "./assets-distributioncharts";
+} from "../../../../public/images";
+import { Line } from "react-chartjs-2";
+import { assetDataTableLineChartData } from "@/api/distribution/chartdataformatter";
+import { assetDataTableLineChartDataOptions } from "@/api/distribution/chartdataformatter";
 
 export const holdingslistcolumns: ColumnDef<HoldingsResponseObject>[] = [
   {
@@ -136,8 +137,10 @@ export const holdingsdistributioncolumns: ColumnDef<HoldingsResponseObject>[] =
       cell: ({ row }) => {
         return (
           <div className="w-2/6 h-5">
-            {" "}
-            <AssetDataTableLineChart />{" "}
+            <Line
+              options={assetDataTableLineChartDataOptions}
+              data={assetDataTableLineChartData}
+            />
           </div>
         );
       },

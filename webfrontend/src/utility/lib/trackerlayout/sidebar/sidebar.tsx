@@ -4,7 +4,7 @@ import {
   LogoIcon,
   FoldSideBarIcon,
   UnfoldSideBarIcon,
-} from "../../../../public/images";
+} from "../../../../../public/images";
 import UnfoldedSidebar from "./unfoldedsidebar";
 import FoldedSideBar from "./foldedsidebar";
 import { useState } from "react";

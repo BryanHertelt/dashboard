@@ -3,7 +3,7 @@ import {
   AlarmIcon,
   BackArrowIcon,
   PortfolioIcon,
-} from "../../../public/images";
+} from "../../../../public/images";
 
 /**
  * This component holds the headbar.

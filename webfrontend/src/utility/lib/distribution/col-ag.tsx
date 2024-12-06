@@ -9,9 +9,11 @@ import {
   AssetPercentageValueIcon,
   NotesInDataTableIcon,
   SortingDataTableIcon,
-} from "../../../public/images";
+} from "../../../../public/images";
 
-import { AssetDataTableLineChart } from "./assets-distributioncharts";
+import { Line } from "react-chartjs-2";
+import { assetDataTableLineChartDataOptions } from "@/api/distribution/chartdataformatter";
+import { assetDataTableLineChartData } from "@/api/distribution/chartdataformatter";
 
 export const assetgrouplistcolumns: ColumnDef<AssetGroupResponseObject>[] = [
   {
@@ -137,8 +139,10 @@ export const assetgroupdistributioncolumns: ColumnDef<AssetGroupResponseObject>[
       cell: ({ row }) => {
         return (
           <div className="w-2/6 h-5">
-            {" "}
-            <AssetDataTableLineChart />{" "}
+            <Line
+              options={assetDataTableLineChartDataOptions}
+              data={assetDataTableLineChartData}
+            />
           </div>
         );
       },

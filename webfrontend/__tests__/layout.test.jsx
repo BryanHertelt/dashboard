@@ -1,11 +1,11 @@
 import React from 'react';
 import { fireEvent, getByText, render, screen } from '@testing-library/react';
 import ShallowRenderer from 'react-test-renderer/shallow';
-import FoldedSideBar, { renderFoldedBulletPoints } from '@/lib/trackerlayout/sidebar/foldedsidebar';
-import UnfoldedSidebar from '@/lib/trackerlayout/sidebar/unfoldedsidebar';
+import FoldedSideBar, { renderFoldedBulletPoints } from '@/utility/lib/trackerlayout/sidebar/foldedsidebar';
+import UnfoldedSidebar from '@/utility/lib/trackerlayout/sidebar/unfoldedsidebar';
 import '@testing-library/jest-dom';
-import HeadBarContainer from '@/lib/trackerlayout/headbar';
-import SidebarContainer from '@/lib/trackerlayout/sidebar/sidebar';
+import HeadBarContainer from '@/utility/lib/trackerlayout/headbar';
+import SidebarContainer from '@/utility/lib/trackerlayout/sidebar/sidebar';
 
 const mockSidebarData = [
   { id: 1, IconComponent: () => <div data-testid="icon-1" />, link: "dashboard", element: "Dashboard", position: "default" },

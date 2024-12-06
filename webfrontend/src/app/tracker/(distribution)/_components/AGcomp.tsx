@@ -1,19 +1,17 @@
-import {
-  DistributionComponent,
-  DetailTableComponent,
-  ParentListComponent,
-} from "@/lib/distribution/asset-distributionpagecomponents";
+import ParentListComponent from "../_components/listparentcomp";
+import DistributionComponent from "../_components/distributioncomp";
+import DetailTableComponent from "../_components/tabledetailcomp";
 
-import { assetgroupdistributioncolumns } from "@/lib/distribution/col-ag";
+import { assetgroupdistributioncolumns } from "@/utility/lib/distribution/col-ag";
 import { assetGroupData } from "@/api/distribution/asset-distributiontabledata";
-import { assetgrouplistcolumns } from "@/lib/distribution/col-ag";
+import { assetgrouplistcolumns } from "@/utility/lib/distribution/col-ag";
 
 import {
   assetGroupPieChartData,
   pieChartOptions,
 } from "@/api/distribution/chartdataformatter";
 
-const AssetGroupDistribution = () => {
+const AssetGroupDistributionComponent = () => {
   return (
     <>
       <div className=" card p-7 h-4/6  w-3/12">
@@ -42,4 +40,4 @@ const AssetGroupDistribution = () => {
     </>
   );
 };
-export default AssetGroupDistribution;
+export default AssetGroupDistributionComponent;

@@ -1,5 +1,5 @@
-import HeadBarContainer from "@/lib/trackerlayout/headbar";
-import SidebarContainer from "@/lib/trackerlayout/sidebar/sidebar";
+import HeadBarContainer from "@/utility/lib/trackerlayout/headbar";
+import SidebarContainer from "@/utility/lib/trackerlayout/sidebar/sidebar";
 
 export default function TrackerLayout({
   children,
