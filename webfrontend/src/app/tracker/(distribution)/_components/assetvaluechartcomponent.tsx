@@ -3,7 +3,8 @@ import { Line } from "react-chartjs-2";
 import { lineChartOptions } from "@/api/distribution/chartdataformatter";
 import { BitcoinIcon, EthereumIcon } from "@/../public/images";
 
-const AssetValueChartComponent = (props: any) => {
+const AssetValueChartComponent = ({ data, portfolioResponse }: any) => {
+  console.log(portfolioResponse);
   return (
     <>
       <header>
@@ -21,8 +22,7 @@ const AssetValueChartComponent = (props: any) => {
           </div>
         </div>
         <p className=" w-11/12 font-semibold text-2xl text-currentvaluefont">
-          {" "}
-          $5.200{" "}
+          ${portfolioResponse.currentvalue}
         </p>
         <div className="flex flex-row h-10 items-center mt-5">
           <button className="mt-1 mr-2 text-3xl h-full rounded-md">
@@ -42,7 +42,7 @@ const AssetValueChartComponent = (props: any) => {
       </header>
       <div className="w-full h-4/6 mt-6">
         <div className=" flex flex-row justify-center w-full h-full">
-          <Line options={lineChartOptions} data={props.data} />
+          <Line options={lineChartOptions} data={data} />
         </div>
       </div>
     </>
