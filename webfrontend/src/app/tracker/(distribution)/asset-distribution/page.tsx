@@ -10,21 +10,20 @@ const AssetDistribution = async () => {
         `assettype=cryptocurrency`
       ),
     ]);
-    if (
-      portfolioResponse.status == "rejected" ||
-      assetResponse.status == "rejected"
-    ) {
-      throw new Error(
-        `Portoflio Response: ${portfolioResponse.status}, Asset Response: ${assetResponse.status}`
-      );
-    } else {
-      return (
-        <AssetDistributionComponent portfolioResponse={portfolioResponse} />
-      );
+    if (portfolioResponse.status == "rejected") {
+      throw new Error(`Portoflio Response failed: ${portfolioResponse.status}`);
+    } else if (assetResponse.status == "rejected") {
+      throw new Error(`Asset Response failed: ${assetResponse.status}`);
     }
+
+    return (
+      <AssetDistributionComponent
+        portfolioResponse={portfolioResponse}
+        assetResponse={assetResponse}
+      />
+    );
   } catch (error) {
     console.error(error);
-    return <div> Error </div>;
   }
 };
 export default AssetDistribution;
