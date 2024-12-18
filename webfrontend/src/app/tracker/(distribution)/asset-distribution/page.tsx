@@ -2,20 +2,29 @@ import AssetDistributionComponent from "../_components/ADcomp";
 import { StructureLayer } from "@/api/layer";
 
 const AssetDistribution = async () => {
+  let calls = 0;
   try {
-    const [portfolioResponse, assetResponse] = await Promise.allSettled([
-      StructureLayer.fetchDistributionUnits("portfolios", `portfolioid=1`),
+    const responses = await Promise.allSettled([
+      StructureLayer.fetchDistributionUnits("test", `portfolioid=1`, calls),
       StructureLayer.fetchDistributionUnits(
         "assets",
-        `assettype=cryptocurrency`
+        `assettype=cryptocurrency`,
+        calls
       ),
     ]);
-    if (portfolioResponse.status == "rejected") {
-      throw new Error(`Portoflio Response failed: ${portfolioResponse.status}`);
-    } else if (assetResponse.status == "rejected") {
-      throw new Error(`Asset Response failed: ${assetResponse.status}`);
-    }
+    console.log(responses);
+    console.log("called Asset Distribution");
+    const portfolioResponse =
+      responses[0].status == "fulfilled" ? responses[0].value : [];
+    const assetResponse =
+      responses[1].status == "fulfilled" ? responses[1].value : [];
 
+    if (responses[0].status == "rejected") {
+      console.error(`Portfolio fetch failed: ${responses[0].reason}`);
+    }
+    if (responses[1].status == "rejected") {
+      console.error(`Asset fetch failed: ${responses[1].reason}`);
+    }
     return (
       <AssetDistributionComponent
         portfolioResponse={portfolioResponse}
@@ -23,7 +32,8 @@ const AssetDistribution = async () => {
       />
     );
   } catch (error) {
-    console.error(error);
+    console.error(`Error in AssetDistribution: ${error}`); // Add logging here
+    return <div> Something went wrong. </div>;
   }
 };
 export default AssetDistribution;

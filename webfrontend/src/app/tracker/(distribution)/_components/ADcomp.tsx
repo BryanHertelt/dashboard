@@ -12,13 +12,14 @@ import {
   pieChartOptions,
 } from "@/api/distribution/chartdataformatter";
 
-const AssetDistributionComponent = (portfolioResponseProp: any) => {
+const AssetDistributionComponent = (props: any) => {
+  let portfolioResponse = props.portfolioResponse[0].currentvalue;
   return (
     <>
       <div className="card h-4/6 w-8/12 flex-grow pl-7 py-7 pr-8">
         <AssetValueChartComponent
           data={assetLineChartData}
-          portfolioResponse={portfolioResponseProp.portfolioResponse.value[0]}
+          portfolioResponse={portfolioResponse}
         />
       </div>
       <div className="card p-7 h-4/6 ml-7 w-3/12">

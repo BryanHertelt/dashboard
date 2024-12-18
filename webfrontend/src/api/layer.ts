@@ -1,3 +1,6 @@
+import { refetchAD } from "@/utility/lib/refetch";
+
+
 export interface PortfolioDataInterface   {
     portfolioid: number,
     userid: number, 
@@ -17,8 +20,6 @@ export interface PortfolioDataInterface   {
     change1hpercentage: number[], 
     costbasis: number[]
  }
-
-
 export interface CryptocurrencyDataInterface{
     symbol: string, 
     portfolioid: number, 
@@ -38,7 +39,6 @@ export interface CryptocurrencyDataInterface{
     notes: string, 
     id?: string
 }
-
 export interface NFTDataInterface{
     Symbol: string,
     portfolioid: number, 
@@ -52,7 +52,6 @@ export interface NFTDataInterface{
     CollectionFloorPrice: number, 
     NftCount: number
 }
-
 export interface DerivativesDataInterface{
     Symbol: string,
       portfolioid: number, 
@@ -75,9 +74,7 @@ export interface DerivativesDataInterface{
       SL: number,
       SettlementDate: string | null, 
 }
-
 export type AssetDataType = CryptocurrencyDataInterface | NFTDataInterface | DerivativesDataInterface; 
-
 export interface AssetGroupDataInterface{
     groupid: number, 
     portfolioid: number, 
@@ -92,7 +89,6 @@ export interface AssetGroupDataInterface{
     description: string, 
     id?:string, 
 }
-
 export interface HoldingsDataInterface {
     holdingid: number, 
     portfolioid: number, 
@@ -110,20 +106,26 @@ export interface HoldingsDataInterface {
 
 
 export const StructureLayer = {
-fetchDistributionUnits: async function<Data>(slug:string, searchquery: string):Promise<Data | null>{
-    try{
-        let rawdata = await fetch(`http://localhost:4000/${slug}?${searchquery}`, {cache: "no-store"} ) 
-        if(!rawdata.ok) {
-            console.error(`Error occured while fetching: , ${rawdata.status}`)
-            return null
-        }
-        let data = await rawdata.json()
-        return data
-    } catch(error) {
-        // Don't forget to add logging here. 
-        console.error("Error while fetching data in the distribution layer: ", error)
-        return null
-    }
-    } 
-}
+fetchDistributionUnits: async function<Data>(slug:string, searchquery: string, calls: number){
+    console.log('called fetch distribution units')
+        const possibleSlugs = ["users" , "portfolios", "assets", "assetgroups", "holdings", "test"]
+        if(possibleSlugs.includes(slug)){
+            let rawdata = await fetch(`http://localhost:4000/${slug}?${searchquery}`, {cache: "no-store"} ) 
+            if(!rawdata.ok && calls < 10){
+                console.error(`Error occured while fetching with fetchDistribution Units: ${rawdata.status}`)
+                // await refetchAD(slug, searchquery, rawdata, calls)
+            } else if(calls === 10){
+                console.error(`Error ${rawdata.status} cant be solved. Stopped trials`)
+                return []
+            } else {
+                let data = await rawdata.json()
+                console.log('')
+                return data 
+            }
+        } else {
+            console.error(`${slug} is not a valid resource`)
+            return []
+        } 
+}}
+
 

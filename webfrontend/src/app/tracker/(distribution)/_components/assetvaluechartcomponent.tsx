@@ -4,7 +4,6 @@ import { lineChartOptions } from "@/api/distribution/chartdataformatter";
 import { BitcoinIcon, EthereumIcon } from "@/../public/images";
 
 const AssetValueChartComponent = ({ data, portfolioResponse }: any) => {
-  console.log(portfolioResponse);
   return (
     <>
       <header>
@@ -22,7 +21,7 @@ const AssetValueChartComponent = ({ data, portfolioResponse }: any) => {
           </div>
         </div>
         <p className=" w-11/12 font-semibold text-2xl text-currentvaluefont">
-          ${portfolioResponse.currentvalue}
+          ${portfolioResponse}
         </p>
         <div className="flex flex-row h-10 items-center mt-5">
           <button className="mt-1 mr-2 text-3xl h-full rounded-md">
