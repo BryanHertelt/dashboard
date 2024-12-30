@@ -21,7 +21,7 @@ const AssetValueChartComponent = ({ data, portfolioResponse }: any) => {
           </div>
         </div>
         <p className=" w-11/12 font-semibold text-2xl text-currentvaluefont">
-          ${portfolioResponse}
+          ${portfolioResponse.processedQueryData[0].data.currentvalue}
         </p>
         <div className="flex flex-row h-10 items-center mt-5">
           <button className="mt-1 mr-2 text-3xl h-full rounded-md">

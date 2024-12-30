@@ -5,15 +5,12 @@ const AssetDistribution = async () => {
   let calls = 0;
   try {
     const responses = await Promise.allSettled([
-      StructureLayer.fetchDistributionUnits("test", `portfolioid=1`, calls),
+      StructureLayer.fetchDistributionUnits("portfolios", `portfolioid=1`),
       StructureLayer.fetchDistributionUnits(
         "assets",
-        `assettype=cryptocurrency`,
-        calls
+        `assettype=cryptocurrency`
       ),
     ]);
-    console.log(responses);
-    console.log("called Asset Distribution");
     const portfolioResponse =
       responses[0].status == "fulfilled" ? responses[0].value : [];
     const assetResponse =
@@ -25,6 +22,7 @@ const AssetDistribution = async () => {
     if (responses[1].status == "rejected") {
       console.error(`Asset fetch failed: ${responses[1].reason}`);
     }
+
     return (
       <AssetDistributionComponent
         portfolioResponse={portfolioResponse}

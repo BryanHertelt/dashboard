@@ -1,5 +1,3 @@
-import { refetchAD } from "@/utility/lib/refetch";
-
 
 export interface PortfolioDataInterface   {
     portfolioid: number,
@@ -106,22 +104,16 @@ export interface HoldingsDataInterface {
 
 
 export const StructureLayer = {
-fetchDistributionUnits: async function<Data>(slug:string, searchquery: string, calls: number){
-    console.log('called fetch distribution units')
-        const possibleSlugs = ["users" , "portfolios", "assets", "assetgroups", "holdings", "test"]
+fetchDistributionUnits: async function<Data>(slug:string, searchquery: string){
+        const possibleSlugs = ["users" , "portfolios", "assets", "assetgroups", "holdings"]
         if(possibleSlugs.includes(slug)){
             let rawdata = await fetch(`http://localhost:4000/${slug}?${searchquery}`, {cache: "no-store"} ) 
-            if(!rawdata.ok && calls < 10){
+            if(!rawdata.ok){
                 console.error(`Error occured while fetching with fetchDistribution Units: ${rawdata.status}`)
-                // await refetchAD(slug, searchquery, rawdata, calls)
-            } else if(calls === 10){
-                console.error(`Error ${rawdata.status} cant be solved. Stopped trials`)
-                return []
-            } else {
-                let data = await rawdata.json()
+            } 
+            let data = await rawdata.json()
                 console.log('')
                 return data 
-            }
         } else {
             console.error(`${slug} is not a valid resource`)
             return []
