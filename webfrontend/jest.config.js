@@ -11,6 +11,14 @@ const config = {
   testEnvironment: 'jsdom',
   // Add more setup options before each test is run
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  moduleNameMapper: {
+    '\\.(css|scss|sass|less)$': 'identity-obj-proxy', // Mock CSS imports
+    '\\.(png|jpg|jpeg|gif|svg)$': '<rootDir>/__mocks__/fileMock.js', // Mock image imports
+     '^@/(.*)$': '<rootDir>/src/$1'
+  },
+  transform: {
+      "^.+\\.jsx?$": "babel-jest"
+    },
   preset: 'ts-jest'
 }
  
