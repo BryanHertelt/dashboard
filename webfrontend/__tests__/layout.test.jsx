@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, getByText, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import ShallowRenderer from 'react-test-renderer/shallow';
 import FoldedSideBar, { renderFoldedBulletPoints } from '@/utility/lib/trackerlayout/sidebar/foldedsidebar';
 import UnfoldedSidebar from '@/utility/lib/trackerlayout/sidebar/unfoldedsidebar';
