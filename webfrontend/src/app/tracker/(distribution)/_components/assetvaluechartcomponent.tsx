@@ -2,8 +2,17 @@
 import { Line } from "react-chartjs-2";
 import { lineChartOptions } from "@/api/distribution/chartdataformatter";
 import { BitcoinIcon, EthereumIcon } from "@/../public/images";
+import { formatCurrency } from "@/utility/lib/currencyformatter";
 
 const AssetValueChartComponent = ({ data, portfolioResponse }: any) => {
+  if (portfolioResponse.data[0] === "failed") {
+    return (
+      <div className="flex flex-row justify-center items-center h-full w-full">
+        Failed to load portfolio data...{" "}
+      </div>
+    );
+  }
+  const portfolioValue = portfolioResponse.data[0].currentvalue;
   return (
     <>
       <header>
@@ -21,7 +30,7 @@ const AssetValueChartComponent = ({ data, portfolioResponse }: any) => {
           </div>
         </div>
         <p className=" w-11/12 font-semibold text-2xl text-currentvaluefont">
-          ${portfolioResponse.processedQueryData[0].data.currentvalue}
+          {formatCurrency(portfolioValue)}
         </p>
         <div className="flex flex-row h-10 items-center mt-5">
           <button className="mt-1 mr-2 text-3xl h-full rounded-md">

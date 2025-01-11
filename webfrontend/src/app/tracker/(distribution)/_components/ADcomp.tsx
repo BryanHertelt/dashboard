@@ -12,20 +12,19 @@ import {
   assetPieChartData,
   pieChartOptions,
 } from "@/api/distribution/chartdataformatter";
+import { ADcompPropsType } from "@/utility/lib/distribution/types";
 
-const AssetDistributionComponent = (props: any) => {
+const AssetDistributionComponent = (props: ADcompPropsType) => {
   const processedQueryData = useDistributionData([
     {
-      dataname: "processedPortfolioData",
-      qKey: "PortfolioAD",
+      qKey: ["PortfolioAD"],
       initialData: props.portfolioResponse,
       slug: "portfolios",
       searchquery: "portfolioid=1",
     },
     {
-      dataname: "processedAssetData",
       qKey: ["AssetAD", "Cryptocurrency"],
-      initialData: props.portfolioResponse,
+      initialData: props.assetResponse,
       slug: "assets",
       searchquery: "assettype=cryptocurrency",
     },
@@ -35,7 +34,7 @@ const AssetDistributionComponent = (props: any) => {
       <div className="card h-4/6 w-8/12 flex-grow pl-7 py-7 pr-8">
         <AssetValueChartComponent
           data={assetLineChartData}
-          portfolioResponse={processedQueryData}
+          portfolioResponse={processedQueryData.processedQueryData[0]}
         />
       </div>
       <div className="card p-7 h-4/6 ml-7 w-3/12">
