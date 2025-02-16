@@ -41,7 +41,6 @@ datasets: [
         data: [890000, 880000, 2000, 850000, 890000, 120000, 400000], 
         borderColor: "#04B900", 
         pointRadius: 0
-        
     }
 ]
 }
@@ -149,6 +148,16 @@ export const holdingsPieChartData = {
       },
     },
     scales: {
+      x: {
+        ticks: {
+          callback: (value, index, values) => {
+            console.log("This is the value:", value)
+            console.log("This is the index:", index)
+            console.log("This are the values:", values)
+            return []
+          }
+        }
+      },
       y: {
         position: "right",
       },

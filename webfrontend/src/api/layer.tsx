@@ -117,6 +117,7 @@ export const StructureLayer = {
       try {
         let rawdata = await fetch(
           `http://localhost:4000/${slug}?${searchquery}`,
+          // while dev, need fast data updates, replace with cache strategy in build
           { cache: "no-store" }
         );
         if (!rawdata.ok) {
