@@ -11,10 +11,11 @@ const useDistributionData = (queries: QueryConstructorInterface[]) => {
   }
   const processedQueryData = queries.map(
     (queryConstructor: QueryConstructorInterface) => {
-      const { data } = useQuery({
+      const { data, isLoading, refetch } = useQuery({
         queryKey: queryConstructor.qKey,
-        initialData: queryConstructor.initialData,
-        staleTime: 1000 * 10 * 1,
+        initialData: queryConstructor.initialData || [],
+        staleTime: queryConstructor.staleTime,
+        gcTime: queryConstructor.cacheTime,
         queryFn: async () => {
           const processedData = await StructureLayer.fetchDistributionUnits(
             `${queryConstructor.slug}`,
@@ -25,8 +26,9 @@ const useDistributionData = (queries: QueryConstructorInterface[]) => {
         retryDelay: (attemptIndex: number): number => {
           return Math.min(1000 * 2 ** attemptIndex, 33000);
         },
+        enabled: !!queryConstructor.qKey,
       });
-      return { data };
+      return { data, isLoading };
     }
   );
   return { processedQueryData };
