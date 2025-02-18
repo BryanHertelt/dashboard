@@ -1,9 +1,12 @@
-import TableComponent from "@/generalcomponents/tablecomponent/tablecomponent";
+import Link from "next/link";
 
-export default function Home() {
+const HomePage = () => {
   return (
-    <div>
-      <TableComponent />
-    </div>
+    <>
+      <p> Welcome in Flyzer</p>
+      <Link href={"/tracker"}> Click here to go to the tracker </Link>
+    </>
   );
-}
+};
+
+export default HomePage;
