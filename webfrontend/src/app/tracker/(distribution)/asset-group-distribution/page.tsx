@@ -1,4 +1,4 @@
-import AssetGroupDistributionComponent from "../_components/AGcomp";
+import AssetGroupDistributionComponent from "@/utility/lib/page-components/asset-group-distribution-comp";
 
 const AssetGroupDistribution = () => {
   return <AssetGroupDistributionComponent />;

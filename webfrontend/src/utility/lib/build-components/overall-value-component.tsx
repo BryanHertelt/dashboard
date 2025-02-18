@@ -2,11 +2,9 @@
 import { Line } from "react-chartjs-2";
 import { lineChartOptions } from "@/api/distribution/chartdataformatter";
 import { BitcoinIcon, EthereumIcon } from "@/../public/images";
-import { formatCurrency } from "@/utility/lib/dataformatters/currencyformatter";
-import DropDownMenu from "@/utility/lib/dropdownmenu";
+import { formatCurrency } from "@/utility/lib/helpers/currency-formatter";
 import { useState } from "react";
-import { formatMainLineData } from "@/utility/lib/dataformatters/formatchartdata";
-
+import { formatMainLineData } from "../design-components/charts/main-chart-line-formatter";
 const AssetValueChartComponent = ({ data, portfolioResponse }: any) => {
   const [timeframe, setTimeframe] = useState("1 day");
   const [toggled, setToggled] = useState(true);

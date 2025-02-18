@@ -1,14 +1,13 @@
 "use client";
-import AssetValueChartComponent from "../_components/assetvaluechartcomponent";
-import DistributionComponent from "../_components/distributioncomp";
-import DetailTableComponent from "../_components/tabledetailcomp";
-import useDistributionData from "@/utility/lib/distribution/hooks/distributionHook";
+import AssetValueChartComponent from "../build-components/overall-value-component";
+import DistributionComponent from "../build-components/distribution-component";
+import DetailTableComponent from "../build-components/data-table-component";
+import useDistributionData from "../datafetching/client-refetch/distribution-hook";
 
 import {
   assetLineChartData,
   pieChartOptions,
 } from "@/api/distribution/chartdataformatter";
-import { ADcompPropsType } from "@/utility/lib/distribution/types";
 
 const AssetDistributionComponent = (props: any) => {
   const { processedQueryData } = useDistributionData([

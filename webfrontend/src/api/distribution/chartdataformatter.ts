@@ -151,9 +151,6 @@ export const holdingsPieChartData = {
       x: {
         ticks: {
           callback: (value, index, values) => {
-            console.log("This is the value:", value)
-            console.log("This is the index:", index)
-            console.log("This are the values:", values)
             return []
           }
         }

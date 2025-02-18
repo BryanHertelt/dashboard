@@ -9,8 +9,7 @@ import {
   AssetPercentageValueIcon,
   NotesInDataTableIcon,
   SortingDataTableIcon,
-} from "../../../../public/images";
-
+} from "../../../../../../public/images";
 import { Line } from "react-chartjs-2";
 import { assetDataTableLineChartDataOptions } from "@/api/distribution/chartdataformatter";
 import { assetDataTableLineChartData } from "@/api/distribution/chartdataformatter";

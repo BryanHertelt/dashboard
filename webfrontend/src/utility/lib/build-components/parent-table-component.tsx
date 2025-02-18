@@ -1,4 +1,4 @@
-import { DataTable } from "@/utility/extlib/datatable/data-table";
+import { DataTable } from "@/utility/lib/design-components/datatables/table-layout/data-table";
 
 const ParentListComponent = (props: any) => {
   return (

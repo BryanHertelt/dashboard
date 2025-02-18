@@ -1,9 +1,9 @@
-import DistributionComponent from "../_components/distributioncomp";
-import DetailTableComponent from "../_components/tabledetailcomp";
-import ParentListComponent from "../_components/listparentcomp";
+import DistributionComponent from "../build-components/distribution-component";
+import DetailTableComponent from "../build-components/data-table-component";
+import ParentListComponent from "../build-components/parent-table-component";
 
-import { holdingsdistributioncolumns } from "@/utility/lib/distribution/col-holding";
-import { holdingslistcolumns } from "@/utility/lib/distribution/col-holding";
+import { holdingsdistributioncolumns } from "../design-components/datatables/datatable-version-assetdistribution/holding-cols";
+import { holdingslistcolumns } from "../design-components/datatables/datatable-version-assetdistribution/holding-cols";
 import { holdingsData } from "@/api/distribution/asset-distributiontabledata";
 
 import {

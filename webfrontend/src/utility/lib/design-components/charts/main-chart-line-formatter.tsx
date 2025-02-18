@@ -1,8 +1,3 @@
-export interface MainLineDataFormatted {}
-
-import { InitialDataMainChart } from "./types";
-import { getTimeFrame, getLabels } from "../utils";
-
 export const formatMainLineData = (initialData: any, timeframe: string) => {
   const requestTimeFrame = timeframe.replace(" ", "");
   const dataForTimeFrame = initialData[0][requestTimeFrame].map(
@@ -88,22 +83,3 @@ export const formatMainLineData = (initialData: any, timeframe: string) => {
       ],
     }; 
 */
-
-export const formatPieData = (initialData: any) => {
-  const assetsNameValuePair = initialData.map((assetobject: any) => {
-    const name = assetobject.assetname;
-    const distributionvalue = assetobject.assetpercentage;
-    return { [name]: distributionvalue };
-  });
-  return {
-    labels: assetsNameValuePair.map((assetpair: any) => Object.keys(assetpair)),
-    datasets: [
-      {
-        data: assetsNameValuePair.map((assetpair: any) =>
-          Object.values(assetpair)
-        ),
-        backgroundColor: ["#0042AB", "#005CD3", "#3686DC", "#1298E6"],
-      },
-    ],
-  };
-};

@@ -1,4 +1,4 @@
-import HoldingsDistributionComponent from "../_components/HDcomp";
+import HoldingsDistributionComponent from "@/utility/lib/page-components/holding-distribution-comp";
 
 const HoldingsDistribution = () => {
   return <HoldingsDistributionComponent />;

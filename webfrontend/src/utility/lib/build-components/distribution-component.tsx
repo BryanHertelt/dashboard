@@ -1,7 +1,7 @@
 "use client";
 import { Pie } from "react-chartjs-2";
 import { doughnutLabel } from "@/api/distribution/chartdataformatter";
-import { formatPieData } from "@/utility/lib/dataformatters/formatchartdata";
+import { formatPieData } from "../design-components/charts/pie-chart-formatter";
 
 const DistributionComponent = (props: any) => {
   const piedata = formatPieData(props.piedata);

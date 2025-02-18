@@ -1,11 +1,11 @@
 "use client";
-import { DataTable } from "@/utility/extlib/datatable/data-table";
-import useDistributionData from "@/utility/lib/distribution/hooks/distributionHook";
+import { DataTable } from "@/utility/lib/design-components/datatables/table-layout/data-table";
+import useDistributionData from "../datafetching/client-refetch/distribution-hook";
 import {
   formatDataColsCurrency,
   formatDataColsNft,
   formatDataColsDerivative,
-} from "@/utility/lib/dataformatters/formatdatacols";
+} from "@/utility/lib/design-components/datatables/datatable-version-assetdistribution/asset-distribution-cols";
 import { useState, useEffect } from "react";
 
 const DetailTableComponent = (props: any) => {

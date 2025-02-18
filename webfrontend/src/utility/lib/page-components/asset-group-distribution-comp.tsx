@@ -1,10 +1,10 @@
-import ParentListComponent from "../_components/listparentcomp";
-import DistributionComponent from "../_components/distributioncomp";
-import DetailTableComponent from "../_components/tabledetailcomp";
+import ParentListComponent from "../build-components/parent-table-component";
+import DistributionComponent from "../build-components/distribution-component";
+import DetailTableComponent from "../build-components/data-table-component";
 
-import { assetgroupdistributioncolumns } from "@/utility/lib/distribution/col-ag";
+import { assetgroupdistributioncolumns } from "../design-components/datatables/datatable-version-assetdistribution/asset-group-distribution-cols";
 import { assetGroupData } from "@/api/distribution/asset-distributiontabledata";
-import { assetgrouplistcolumns } from "@/utility/lib/distribution/col-ag";
+import { assetgrouplistcolumns } from "../design-components/datatables/datatable-version-assetdistribution/asset-group-distribution-cols";
 
 import {
   assetGroupPieChartData,

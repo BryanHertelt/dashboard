@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Inter } from "next/font/google";
-import ReactQueryProvider from "@/utility/extlib/datatable/ReactQueryProvider";
+import ReactQueryProvider from "@/utility/lib/datafetching/client-refetch/react-query-provider";
 
 export const metadata: Metadata = {
   title: "My Flyzer",

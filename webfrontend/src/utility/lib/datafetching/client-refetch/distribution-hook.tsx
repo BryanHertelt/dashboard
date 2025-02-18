@@ -1,7 +1,7 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import { StructureLayer } from "@/api/layer";
-import { QueryConstructorInterface } from "../types";
+import { StructureLayer } from "../layer";
+import { QueryConstructorInterface } from "../../types/data-fetching-types";
 
 const useDistributionData = (queries: QueryConstructorInterface[]) => {
   if (!queries || queries.length === 0) {

@@ -1,6 +1,6 @@
 import FirstLogin from "@/utility/lib/trackerlayout/firstlogin";
-import AssetDistributionComponent from "../_components/ADcomp";
-import { StructureLayer } from "@/api/layer";
+import AssetDistributionComponent from "@/utility/lib/page-components/asset-distribution-comp";
+import { StructureLayer } from "@/utility/lib/datafetching/layer";
 
 const AssetDistribution = async () => {
   const responses = await Promise.allSettled([
