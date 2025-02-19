@@ -3,31 +3,18 @@ import AssetDistributionComponent from "@/utility/lib/page-components/asset-dist
 import { StructureLayer } from "@/utility/lib/datafetching/layer";
 
 const AssetDistribution = async () => {
-  const responses = await Promise.allSettled([
-    StructureLayer.fetchDistributionUnits("portfolios", `portfolioid=1`),
-    StructureLayer.fetchDistributionUnits("assets", `assettype=cryptocurrency`),
-  ]);
-  const portfolioResponse =
-    responses[0].status == "fulfilled" ? responses[0].value : ["failed"];
-  const assetResponse =
-    responses[1].status == "fulfilled" ? responses[1].value : ["failed"];
+  const assetDistributionResponse = await StructureLayer.getPortfolioData();
 
-  if (assetResponse.length === 0) {
+  if (assetDistributionResponse.status === "failed") {
+    return (
+      <p>{assetDistributionResponse.errorMsg} We will be right back for you!</p>
+    );
+  } else if (assetDistributionResponse.assets.length === 0) {
     return <FirstLogin />;
   }
 
-  if (portfolioResponse.length === 0) {
-    //Add logging here
-    return (
-      <div> We are sorry, but there have to be an internal server error. </div>
-    );
-  }
-
   return (
-    <AssetDistributionComponent
-      portfolioResponse={portfolioResponse}
-      assetResponse={assetResponse}
-    />
+    <AssetDistributionComponent portfolioData={assetDistributionResponse} />
   );
 };
 export default AssetDistribution;

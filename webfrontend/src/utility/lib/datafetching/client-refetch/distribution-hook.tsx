@@ -17,10 +17,7 @@ const useDistributionData = (queries: QueryConstructorInterface[]) => {
         staleTime: queryConstructor.staleTime,
         gcTime: queryConstructor.cacheTime,
         queryFn: async () => {
-          const processedData = await StructureLayer.fetchDistributionUnits(
-            `${queryConstructor.slug}`,
-            `${queryConstructor.searchquery}`
-          );
+          const processedData = await StructureLayer.getPortfolioData();
           return processedData;
         },
         retryDelay: (attemptIndex: number): number => {

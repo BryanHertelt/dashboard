@@ -1,55 +1,58 @@
 "use client";
 import { DataTable } from "@/utility/lib/design-components/datatables/table-layout/data-table";
-import useDistributionData from "../datafetching/client-refetch/distribution-hook";
 import {
   formatDataColsCurrency,
   formatDataColsNft,
   formatDataColsDerivative,
 } from "@/utility/lib/design-components/datatables/datatable-version-assetdistribution/asset-distribution-cols";
 import { useState, useEffect } from "react";
+import { AssetDataType } from "../types/data-fetching-types";
+import { DerivativesDataInterface } from "../types/data-fetching-types";
+import { CryptocurrencyDataInterface } from "../types/data-fetching-types";
+import { NFTDataInterface } from "../types/data-fetching-types";
 
-const DetailTableComponent = (props: any) => {
+interface initialTableComponentData {
+  initial: AssetDataType[];
+}
+
+const DetailTableComponent = (props: initialTableComponentData) => {
   const [tableStatus, setTableStatus] = useState("cryptocurrency");
   const [tableData, setTableData] = useState(props.initial);
   const [col, setCol] = useState<any>(formatDataColsCurrency(props.initial));
   const [header, setHeader] = useState("Cryptocurrencies");
 
-  const { processedQueryData, isLoading }: any = useDistributionData([
-    {
-      qKey: ["AssetAD", `${tableStatus}`],
-      slug: "assets",
-      searchquery: `assettype=${tableStatus}`,
-      staleTime: 0, // Keep data fresh until you manually invalidate
-      cacheTime: 1000 * 60 * 5,
-    },
-  ]);
-
   useEffect(() => {
     if (tableStatus === "nft") {
-      const newTableData = processedQueryData[0].data;
-      if (newTableData !== tableData) {
-        setTableData(newTableData);
-        setCol(formatDataColsNft(newTableData));
+      const newData = props.initial.filter(
+        (asset) => asset.assettype === "nft"
+      );
+      if (newData !== tableData) {
+        setTableData(newData);
+        setCol(formatDataColsNft(newData));
         setHeader("NFTs");
       }
     }
     if (tableStatus === "cryptocurrency") {
-      const newTableData = processedQueryData[0].data;
-      if (newTableData !== tableData) {
-        setTableData(newTableData);
-        setCol(formatDataColsCurrency(newTableData));
+      const newData = props.initial.filter(
+        (asset) => asset.assettype === "cryptocurrency"
+      );
+      if (newData !== tableData) {
+        setTableData(newData);
+        setCol(formatDataColsCurrency(newData));
         setHeader("Cryptocurrencies");
       }
     }
     if (tableStatus === "derivative") {
-      const newTableData = processedQueryData[0].data;
-      if (newTableData !== tableData) {
-        setTableData(newTableData);
-        setCol(formatDataColsDerivative(newTableData));
+      const newData = props.initial.filter(
+        (asset) => asset.assettype === "derivative"
+      );
+      if (newData !== tableData) {
+        setTableData(newData);
+        setCol(formatDataColsDerivative(newData));
         setHeader("Derivatives");
       }
     }
-  }, [tableStatus, processedQueryData, tableData]);
+  }, [tableStatus]);
 
   return (
     <>

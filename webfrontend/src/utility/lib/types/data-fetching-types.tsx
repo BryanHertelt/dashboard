@@ -47,7 +47,6 @@ export interface QueryConstructorInterface {
   qKey: string[];
   initialData?: PortfolioResponseObject[] | AssetResponseObject[];
   slug: string;
-  searchquery: string;
   staleTime: number;
   cacheTime?: number;
 }
