@@ -33,10 +33,29 @@ export const StructureLayer = {
       return data;
     } catch (error) {
       console.error("Error occured in fetchDistribution Units " + `${error}`);
-      return {
-        status: "failed",
-        errorMsg: error,
-      };
+      return ["failed", error];
+    }
+  },
+  getDetailAssetData: async function (slug: string, assetid: number) {
+    try {
+      let rawdata = await fetch(`${baseUrl}/${slug}?assetid=${assetid}`, {
+        cache: "no-store",
+      });
+      if (!rawdata.ok) {
+        throw new Error("API is not reachable yest");
+      }
+      console.log(
+        "This is the rawdata in the getDetailAssetData Function",
+        rawdata
+      );
+      let data = rawdata.json();
+      console.log("This is the data in the getAsset Data Function:", data);
+      return data;
+    } catch (error) {
+      console.error(
+        "Error occuredd while fetching the detail asset pop up" + `${error}`
+      );
+      throw new Error("Error occured while fetching the detail asset pop up");
     }
   },
 };

@@ -21,7 +21,7 @@ const useDistributionData = (queries: QueryConstructorInterface[]) => {
           return processedData;
         },
         retryDelay: (attemptIndex: number): number => {
-          return Math.min(1000 * 2 ** attemptIndex, 33000);
+          return Math.min(1000 * 2 * attemptIndex, 33000);
         },
         enabled: !!queryConstructor.qKey,
       });

@@ -4,24 +4,49 @@ import {
   AssetPercentageValueIcon,
   SortingDataTableIcon,
   NotesInDataTableIcon,
+  ShowDetail,
 } from "../../../../../../public/images";
 import { Line } from "react-chartjs-2";
 import { assetDataTableLineChartData } from "@/api/distribution/chartdataformatter";
 import { assetDataTableLineChartDataOptions } from "@/api/distribution/chartdataformatter";
 import { formatCurrency } from "@/utility/lib/helpers/currency-formatter";
+import { prefetchDetailComponent } from "@/utility/lib/build-components/asset-detail-component";
+import { useQueryClient } from "@tanstack/react-query";
 
-export const formatDataColsCurrency = (parentdata: any) => {
+const toggleExpandedRow = (rowId: number, setExpandedRow: any) => {
+  setExpandedRow((prevExpandedRow: number | null) =>
+    prevExpandedRow === rowId ? null : rowId
+  );
+};
+
+export const formatDataColsCurrency = (
+  parentdata: any,
+  setExpandedRow: any,
+  queryClient: any
+) => {
   return [
     {
       accessorKey: "assetname",
       header: () => <div className="text-icongray font-normal"> Asset </div>,
       cell: ({ row }: any) => {
+        const rowId = row.id;
         const name = row.getValue("assetname");
         const renderNameCell = () => {
           for (let index = 0; index < parentdata.length; index++) {
             if (name == parentdata[index].assetname) {
               return (
                 <div className="flex flex-row text-sm font-medium items-center ml-2">
+                  <ShowDetail
+                    className="mr-4 h-3 w-3"
+                    onClick={() => toggleExpandedRow(rowId, setExpandedRow)}
+                    onMouseEnter={() =>
+                      prefetchDetailComponent(
+                        "cryptocurrency",
+                        parentdata[index].assetid,
+                        queryClient
+                      )
+                    }
+                  />
                   {parentdata[index].symbol} {""}{" "}
                   <div className="flex flex-col justify-start w-1/2 ml-2">
                     {parentdata[index].assetname}
@@ -186,31 +211,49 @@ export const formatDataColsCurrency = (parentdata: any) => {
   ];
 };
 
-export const formatDataColsDerivative = (processedQueryData: any) => {
+export const formatDataColsDerivative = (
+  processedQueryData: any,
+  setExpandedRow: any,
+  queryClient: any
+) => {
   return [
     {
-      accessorKey: "direction",
+      accessorKey: "tradedirection",
       header: () => (
         <div className="text-icongray font-normal"> Position Type </div>
       ),
       cell: ({ row }: any) => {
-        const tradedirection = row.getValue("direction");
-        const tradedirectionToUpper =
-          tradedirection.charAt(0).toUpperCase() +
-          tradedirection.substring(1, 5);
-
+        const direction = row.getValue("tradedirection");
+        const directionToUpper =
+          direction.charAt(0).toUpperCase() + direction.substring(1, 5);
+        const rowId = row.id;
         const renderPercentageCell = () => {
           for (let index = 0; index < processedQueryData.length; index++) {
-            if (tradedirection == processedQueryData[index].direction) {
+            if (direction == processedQueryData[index].tradedirection) {
               const directioncolor =
-                tradedirection < "short" ? "text-green" : "text-red";
+                direction < "short" ? "text-green" : "text-red";
               return (
                 <div
                   className={`${directioncolor} flex flex-row text-xs w-1/2 items-center`}
                 >
+                  <ShowDetail
+                    className="mr-4 h-3 w-3 text-black"
+                    onClick={() => toggleExpandedRow(rowId, setExpandedRow)}
+                    onMouseEnter={() => {
+                      console.log(
+                        "This is the asset id",
+                        processedQueryData[index].assetid
+                      );
+                      prefetchDetailComponent(
+                        "derivative",
+                        processedQueryData[index].assetid,
+                        queryClient
+                      );
+                    }}
+                  />
                   <div className="flex flex-col">
                     {" "}
-                    <p>{tradedirectionToUpper} </p>
+                    <p>{directionToUpper} </p>
                   </div>{" "}
                 </div>
               );
@@ -374,7 +417,11 @@ export const formatDataColsDerivative = (processedQueryData: any) => {
   ];
 };
 
-export const formatDataColsNft = (processedQueryData: any) => {
+export const formatDataColsNft = (
+  processedQueryData: any,
+  setExpandedRow: any,
+  queryClient: any
+) => {
   return [
     {
       accessorKey: "collectionname",
@@ -382,12 +429,28 @@ export const formatDataColsNft = (processedQueryData: any) => {
         <div className="text-icongray font-normal"> Collection </div>
       ),
       cell: ({ row }: any) => {
+        const rowId = row.id;
         const name = row.getValue("collectionname");
         const renderNameCell = () => {
           for (let index = 0; index < processedQueryData.length; index++) {
             if (name == processedQueryData[index].collectionname) {
               return (
                 <div className="flex flex-row text-sm font-medium items-center ml-2">
+                  <ShowDetail
+                    className="mr-4 h-3 w-3 text-black"
+                    onClick={() => toggleExpandedRow(rowId, setExpandedRow)}
+                    onMouseEnter={() => {
+                      console.log(
+                        "This is the asset id",
+                        processedQueryData[index].assetid
+                      );
+                      prefetchDetailComponent(
+                        "nft",
+                        processedQueryData[index].assetid,
+                        queryClient
+                      );
+                    }}
+                  />
                   {processedQueryData[index].symbol} {""}{" "}
                   <div className="flex flex-col justify-start w-1/2 ml-2">
                     {processedQueryData[index].collectionname}
