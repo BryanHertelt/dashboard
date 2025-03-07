@@ -1,7 +1,7 @@
 import { render, waitFor, screen } from "@testing-library/react";
 import AssetDistribution from "../src/app/tracker/(distribution)/asset-distribution/page";
-import { StructureLayer } from "../src/api/layer";
-import AssetDistributionComponent from "@/app/tracker/(distribution)/_components/ADcomp";
+import { StructureLayer } from "../src/utility/lib/datafetching/layer";
+import AssetDistributionComponent from "../src/utility/lib/page-components/asset-distribution-comp";
 import FirstLogin from "@/utility/lib/trackerlayout/firstlogin";
 
 const mockPortfolioResponse = [
@@ -175,9 +175,9 @@ beforeEach(() => {
 });
 
 // Mock the StructureLayer module
-jest.mock("../src/api/layer", () => ({
+jest.mock("../src/utility/lib/datafetching/layer", () => ({
   StructureLayer: {
-    fetchDistributionUnits: jest.fn((...args) => {
+    getPortfolioData: jest.fn((...args) => {
       console.log("Mock called with args:", args);
       return Promise.resolve({
         ok: true,
@@ -187,20 +187,20 @@ jest.mock("../src/api/layer", () => ({
   },
 }));
 
-jest.mock("../src/app/tracker/(distribution)/_components/ADcomp", () => {
+jest.mock("../src/utility/lib/page-components/asset-distribution-comp", () => {
   return jest.fn(() => <div>Mocked AssetDistributionComponent</div>);
 });
 
 describe("AssetDistribution", () => {
   it("should call fetchDistributionUnits with correct arguments for portfolio", async () => {
-    StructureLayer.fetchDistributionUnits
+    StructureLayer.getPortfolioData
     .mockResolvedValueOnce(mockPortfolioResponse)
     .mockResolvedValueOnce(mockAssetResponse);
-    jest.mock("../src/app/tracker/(distribution)/_components/ADcomp", () => {
+    jest.mock("../src/utility/lib/page-components/asset-distribution-comp", () => {
       return jest.fn(() => <div>Mocked AssetDistributionComponent</div>);
     });
     // Mock resolved values for both API calls
-    await StructureLayer.fetchDistributionUnits
+    await StructureLayer.getPortfolioData
       .mockResolvedValue(mockPortfolioResponse) // Mock portfolio response
       .mockResolvedValue(mockAssetResponse); // Mock asset response
 
@@ -208,12 +208,12 @@ describe("AssetDistribution", () => {
     render(AssetDistributionComponent);
 
     await waitFor(() => {
-      expect(StructureLayer.fetchDistributionUnits).toHaveBeenCalledTimes(2);
-      expect(StructureLayer.fetchDistributionUnits).toHaveBeenCalledWith(
+      expect(StructureLayer.getPortfolioData).toHaveBeenCalledTimes(2);
+      expect(StructureLayer.getPortfolioData).toHaveBeenCalledWith(
         "portfolios",
         `portfolioid=1`
       );
-      expect(StructureLayer.fetchDistributionUnits).toHaveBeenCalledWith(
+      expect(StructureLayer.getPortfolioData).toHaveBeenCalledWith(
         "assets",
         `assettype=cryptocurrency`
       );

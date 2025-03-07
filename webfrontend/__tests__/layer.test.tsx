@@ -1,73 +1,15 @@
-import { StructureLayer } from "../src/api/layer";
+import {
+  getPortfolioData,
+  getDetailAssetData,
+} from "@/utility/lib/datafetching/layer";
+import { baseUrl } from "@/utility/lib/datafetching/layer";
 
-describe("testing API layer", () => {
+describe("testing API layer for portfolio fetch", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   it("should return data, if everything is ok", async () => {
-    const mockJSON = [{ id: 1, asset: "Bitcoin" }];
-    global.fetch = jest.fn(() =>
-      Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve(mockJSON),
-      })
-    ) as jest.Mock;
-    const result = await StructureLayer.fetchDistributionUnits(
-      "assets",
-      "assettype=cryptocurrency"
-    );
-    console.log("THis is the result of the fetch in layer test:", result);
-    expect(result).toEqual(mockJSON);
-  });
-
-  it("should test if called with the right url", async () => {
-    await StructureLayer.fetchDistributionUnits(
-      "assets",
-      "assettype=cryptocurrency"
-    );
-
-    expect(fetch).toHaveBeenCalledWith(
-      `http://localhost:4000/assets?assettype=cryptocurrency`,
-      { cache: "no-store" }
-    );
-    expect(fetch).toHaveBeenCalledTimes(1);
-  });
-
-  it("should throw an error, when the wrong slug is passed", async () => {
-    const consoleErrorSpy = jest
-      .spyOn(console, "error")
-      .mockImplementation(() => {});
-    const result = await StructureLayer.fetchDistributionUnits("fail", "");
-    expect(consoleErrorSpy).toHaveBeenCalledWith(
-      "fail is not a valid resource"
-    );
-    expect(result).toStrictEqual(["failed"]);
-    consoleErrorSpy.mockRestore;
-  });
-
-  it("should throw an error, when the promise is rejected", async () => {
-    const mockJSON = [{ id: 1, asset: "Bitcoin" }];
-    global.fetch = jest.fn(() =>
-      Promise.reject({
-        ok: true,
-        json: () => Promise.resolve(mockJSON),
-      })
-    ) as jest.Mock;
-
-    const consoleErrorSpy = jest.spyOn(console, "error");
-
-    const result = await StructureLayer.fetchDistributionUnits(
-      "assets",
-      "assettype=cryptocurrency"
-    );
-
-    expect(result).toStrictEqual(["failed"]);
-
-    consoleErrorSpy.mockRestore;
-  });
-
-  it("should throw an error if data is not an array ", async () => {
     const mockJSON = { id: 1, asset: "Bitcoin" };
     global.fetch = jest.fn(() =>
       Promise.resolve({
@@ -75,60 +17,173 @@ describe("testing API layer", () => {
         json: () => Promise.resolve(mockJSON),
       })
     ) as jest.Mock;
-    const consoleErrorSpy = jest
-      .spyOn(console, "error")
-      .mockImplementation(() => {});
-    const result = await StructureLayer.fetchDistributionUnits(
-      "assets",
-      "assettype=cryptocurrency"
-    );
-    expect(consoleErrorSpy).toHaveBeenCalledWith(
-      "Error occured in fetchDistribution Units Error: Invalid response format: response isn't an array of objects"
-    );
-    expect(result).toStrictEqual(["failed"]);
+    const result = await getPortfolioData();
+    expect(result).toEqual(mockJSON);
+  });
+
+  it("should test if called with the right url", async () => {
+    await getPortfolioData();
+
+    expect(fetch).toHaveBeenCalledWith(baseUrl, { cache: "no-store" });
+    expect(fetch).toHaveBeenCalledTimes(1);
+  });
+
+  it("should throw an error, when the promise is rejected", async () => {
+    const mockJSON = [{ id: 1, asset: "Bitcoin" }];
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        ok: false,
+        json: () => Promise.resolve(mockJSON),
+      })
+    ) as jest.Mock;
+
+    const consoleErrorSpy = jest.spyOn(console, "error");
+
+    const result = await getPortfolioData();
+
+    expect(result).toStrictEqual(["failed", new Error("API is not reachable")]);
+
     consoleErrorSpy.mockRestore;
   });
-  it("should throw an error if data inside array is not an object", async () => {
-    const mockJSON = [{ id: 1, asset: "Bitcoin" }, "id"];
+
+  it("should throw if object is empty", async () => {
+    const mockJSON = {};
     global.fetch = jest.fn(() =>
       Promise.resolve({
         ok: true,
         json: () => Promise.resolve(mockJSON),
       })
     ) as jest.Mock;
-    const consoleErrorSpy = jest
-      .spyOn(console, "error")
-      .mockImplementation(() => {});
-    const result = await StructureLayer.fetchDistributionUnits(
-      "assets",
-      "assettype=cryptocurrency"
-    );
-    expect(consoleErrorSpy).toHaveBeenCalledWith(
-      "Error occured in fetchDistribution Units Error: Invalid response format: response isn't an array of objects"
-    );
-    expect(result).toStrictEqual(["failed"]);
-    consoleErrorSpy.mockRestore;
+
+    const result = await getPortfolioData();
+    expect(result).toStrictEqual(["failed", new Error("Object is empty")]);
   });
 
-  it("should throw an error if rawdata is not ok", async () => {
-    const mockResponse = [{ id: 1, asset: "Bitcoin" }];
+  it("should throw if Response isn't an object", async () => {
+    const mockJSON = [""];
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve(mockJSON),
+      })
+    ) as jest.Mock;
+
+    const result = await getPortfolioData();
+    expect(result).toStrictEqual([
+      "failed",
+      new Error("Invalid response format: PortfolioData isn't an object"),
+    ]);
+  });
+});
+
+describe("testing API layer for detailcomponent:", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+  it("should return data, if everything is ok", async () => {
+    const mockJSON = { id: 1, asset: "Bitcoin" };
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve(mockJSON),
+      })
+    ) as jest.Mock;
+    const result = await getDetailAssetData("cryptocurrency", 1);
+    expect(result).toEqual(mockJSON);
+  });
+
+  it("should be called with the right url once", async () => {
+    await getDetailAssetData("cryptocurrency", 1);
+
+    expect(fetch).toHaveBeenCalledWith(`${baseUrl}/cryptocurrency?assetid=1`, {
+      cache: "no-store",
+    });
+    expect(fetch).toHaveBeenCalledTimes(1);
+  });
+
+  it("should throw if object is empty", async () => {
+    const mockJSON = {};
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve(mockJSON),
+      })
+    ) as jest.Mock;
+
+    try {
+      await getDetailAssetData("cryptocurrency", 1);
+    } catch (err) {
+      expect(err).toBeInstanceOf(Error);
+      if (err instanceof Error) {
+        expect(err.message).toBe(
+          "Error occured while fetching the detail asset pop up"
+        );
+        if (err.cause instanceof Error) {
+          expect(err.cause.message).toBe("Object is empty");
+        }
+      }
+    }
+  });
+
+  it("should throw if response is not an object", async () => {
+    const mockJSON = ["mock"];
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve(mockJSON),
+      })
+    ) as jest.Mock;
+
+    try {
+      await getDetailAssetData("cryptocurrency", 1);
+    } catch (err) {
+      expect(err).toBeInstanceOf(Error);
+      if (err instanceof Error) {
+        expect(err.message).toBe(
+          "Error occured while fetching the detail asset pop up"
+        );
+        if (err.cause instanceof Error) {
+          expect(err.cause.message).toBe(
+            "Wrong response format: data is not an object"
+          );
+        }
+      }
+    }
+  });
+
+  it("should throw if response is not ok", async () => {
+    const mockJSON = { asset: "bitcoin", id: 1 };
     global.fetch = jest.fn(() =>
       Promise.resolve({
         ok: false,
-        json: () => Promise.resolve(mockResponse),
+        json: () => Promise.resolve(mockJSON),
       })
     ) as jest.Mock;
-    const consoleErrorSpy = jest
-      .spyOn(console, "error")
-      .mockImplementation(() => {});
-    const result = await StructureLayer.fetchDistributionUnits(
-      "assets",
-      "assettype=cryptocurrency"
-    );
-    expect(consoleErrorSpy).toHaveBeenCalledWith(
-      "Error occured in fetchDistribution Units Error: API is not reachable"
-    );
-    expect(result).toStrictEqual(["failed"]);
-    consoleErrorSpy.mockRestore;
+
+    try {
+      await getDetailAssetData("cryptocurrency", 1);
+    } catch (err) {
+      expect(err).toBeInstanceOf(Error);
+      if (err instanceof Error) {
+        expect(err.message).toBe(
+          "Error occured while fetching the detail asset pop up"
+        );
+        if (err.cause instanceof Error) {
+          expect(err.cause.message).toBe("API is not reachable");
+        }
+      }
+    }
+  });
+
+  it("should throw if response is not ok", async () => {
+    const mockJSON = { asset: "bitcoin", id: 1 };
+    global.fetch = jest.fn(() =>
+      Promise.reject({
+        ok: false,
+        json: () => Promise.reject(mockJSON),
+      })
+    ) as jest.Mock;
+
+    await expect(getDetailAssetData).rejects.toThrow();
   });
 });
