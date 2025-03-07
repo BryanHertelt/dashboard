@@ -47,7 +47,7 @@
     "jest.config.js",
     "__tests__/layout.test.jsx",
     "__tests__/assetdistribution.test.jsx"
-  ],
+, "__tests__/barcharts.test.jsx", "__tests__/barcharts.test.jsx", "__tests__/barcharts.test.jsx", "__tests__/query-detail-hook.test.jsx", "__tests__/prefetch-query-test.jsx"  ],
   "exclude": [
     "node_modules"
   ]

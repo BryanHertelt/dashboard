@@ -27,6 +27,13 @@ module.exports = {
 		red: '#DA0000',
 		lightred: 'rgba(218, 0, 0, 0.1)'
   	},
+	screens: {
+		sm: "640px", 
+		md: "768px", 
+		lp:"1100px",
+		lg:"1200px", 
+		xl:"1600px"
+	},
   	extend: {
 		boxShadow: {
 			'even': '0 0 10px rgba(0, 0, 0, 0.15)', 
