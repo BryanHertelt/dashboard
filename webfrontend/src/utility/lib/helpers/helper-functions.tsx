@@ -1,5 +1,3 @@
-import { NftDetailImageContainer } from "./image-container";
-
 export const formatCurrency = (number: number): string => {
   if (isNaN(Number(number))) {
     console.error("Type error in formatCurrency");

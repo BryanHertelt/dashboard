@@ -2,7 +2,7 @@
 import { Line } from "react-chartjs-2";
 import { lineChartOptions } from "@/api/distribution/chartdataformatter";
 import { BitcoinIcon, EthereumIcon } from "@/../public/images";
-import { formatCurrency } from "@/utility/lib/helpers/currency-formatter";
+import { formatCurrency } from "../helpers/helper-functions";
 import { useState } from "react";
 import { formatMainLineData } from "../design-components/charts/main-chart-line-formatter";
 const AssetValueChartComponent = ({ data, portfolioResponse }: any) => {
