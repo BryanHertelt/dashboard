@@ -1,7 +1,7 @@
 "use client";
 import AssetValueChartComponent from "../build-components/overall-value-component";
 import DistributionComponent from "../build-components/distribution-component";
-import DetailTableComponent from "../build-components/data-table-component";
+import TableComponent from "../build-components/data-table-component";
 import useDistributionData from "../datafetching/client-refetch/distribution-hook";
 import { useEffect } from "react";
 
@@ -42,7 +42,7 @@ const AssetDistributionComponent = (props: any) => {
         */}
       </div>
       <div className="card mt-9 p-7 w-full">
-        <DetailTableComponent initial={tableData} />
+        <TableComponent initial={tableData} />
       </div>
     </>
   );

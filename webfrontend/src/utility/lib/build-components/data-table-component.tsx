@@ -12,11 +12,15 @@ import { LoadingSkeleton } from "../datafetching/loading-skeleton";
 
 type TableStatus = "nft" | "cryptocurrency" | "derivative";
 
-const DetailTableComponent = ({ initial }: { initial: any[] }) => {
+const TableComponent = ({ initial }: { initial: any[] }) => {
   const [tableStatus, setTableStatus] = useState<TableStatus>("cryptocurrency");
   const [tableData, setTableData] = useState(initial);
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
   const [header, setHeader] = useState("Cryptocurrencies");
+  const [derivativeType, setDerivativeType] = useState<any>({
+    perp: false,
+    future: false,
+  });
   const queryClient = useQueryClient();
 
   const getFilteredData = (status: TableStatus) => {
@@ -32,7 +36,29 @@ const DetailTableComponent = ({ initial }: { initial: any[] }) => {
         header: "Cryptocurrencies",
       },
       derivative: {
-        data: initial.filter((asset) => asset.assettype === "derivative"),
+        data: initial.filter((asset) => {
+          if (derivativeType.perp === true && derivativeType.future === true) {
+            return asset.assettype === "derivative";
+          } else if (
+            derivativeType.perp === true &&
+            derivativeType.future === false
+          ) {
+            return (
+              asset.assettype === "derivative" &&
+              asset.derivativetype === "perpetual"
+            );
+          } else if (
+            derivativeType.perp === false &&
+            derivativeType.future === true
+          ) {
+            return (
+              asset.assettype === "derivative" &&
+              asset.derivativetype === "future"
+            );
+          } else {
+            return asset.assettype === "derivative";
+          }
+        }),
         format: formatDataColsDerivative,
         header: "Derivatives",
       },
@@ -44,7 +70,7 @@ const DetailTableComponent = ({ initial }: { initial: any[] }) => {
     const { data, header } = getFilteredData(tableStatus);
     setTableData(data);
     setHeader(header);
-  }, [tableStatus]);
+  }, [tableStatus, derivativeType]);
 
   const col = useMemo(() => {
     const { data, format } = getFilteredData(tableStatus);
@@ -63,9 +89,7 @@ const DetailTableComponent = ({ initial }: { initial: any[] }) => {
   }) => (
     <button
       onClick={() => setTableStatus(status)}
-      className={`mr-5 px-2 text-base h-5/6 ${getButtonClass(
-        status
-      )} rounded-md`}
+      className={` px-2 text-base h-full  ${getButtonClass(status)} rounded-md`}
     >
       {label}
     </button>
@@ -78,6 +102,7 @@ const DetailTableComponent = ({ initial }: { initial: any[] }) => {
       return <LoadingSkeleton />;
     }
   }
+
   return (
     <>
       <div className="flex flex-row justify-between mb-7">
@@ -87,7 +112,51 @@ const DetailTableComponent = ({ initial }: { initial: any[] }) => {
             You can see all your {header.toLowerCase()} here.
           </p>
         </header>
-        <nav className="flex flex-row justify-around">
+        <nav className="flex flex-row">
+          {tableStatus === "derivative" ? (
+            <div>
+              <button
+                className={`${
+                  derivativeType.perp === true ? "border border-black" : ""
+                }`}
+                onClick={() => {
+                  setDerivativeType((prevState: any) => {
+                    return {
+                      perp: !prevState.perp,
+                      future: prevState.future,
+                    };
+                  });
+                  console.log(
+                    "This is the prev state, when clicking on perp",
+                    derivativeType
+                  );
+                }}
+              >
+                {" "}
+                Perpetual{" "}
+              </button>
+              <button
+                className={`${
+                  derivativeType.future === true ? "border border-black" : ""
+                }`}
+                onClick={() => {
+                  setDerivativeType((prevState: any) => {
+                    return {
+                      perp: prevState.perp,
+                      future: !prevState.future,
+                    };
+                  });
+                  console.log(
+                    "This is the prev state, when clicking on perp",
+                    derivativeType
+                  );
+                }}
+              >
+                {" "}
+                Future{" "}
+              </button>
+            </div>
+          ) : null}
           <StatusButton status="cryptocurrency" label="Cryptocurrencies" />
           <StatusButton status="nft" label="NFTs" />
           <StatusButton status="derivative" label="Derivatives" />
@@ -105,4 +174,4 @@ const DetailTableComponent = ({ initial }: { initial: any[] }) => {
   );
 };
 
-export default DetailTableComponent;
+export default TableComponent;
