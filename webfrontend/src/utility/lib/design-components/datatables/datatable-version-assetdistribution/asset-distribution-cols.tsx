@@ -9,9 +9,8 @@ import {
 import { Line } from "react-chartjs-2";
 import { assetDataTableLineChartData } from "@/api/distribution/chartdataformatter";
 import { assetDataTableLineChartDataOptions } from "@/api/distribution/chartdataformatter";
-import { formatCurrency } from "@/utility/lib/helpers/currency-formatter";
-import { prefetchDetailComponent } from "@/utility/lib/build-components/asset-detail-component";
-import { useQueryClient } from "@tanstack/react-query";
+import { formatCurrency } from "@/utility/lib/helpers/helper-functions";
+import { prefetchDetailComponent } from "@/utility/lib/datafetching/client-refetch/prefetchQuery";
 
 const toggleExpandedRow = (rowId: number, setExpandedRow: any) => {
   setExpandedRow((prevExpandedRow: number | null) =>
@@ -240,10 +239,6 @@ export const formatDataColsDerivative = (
                     className="mr-4 h-3 w-3 text-black"
                     onClick={() => toggleExpandedRow(rowId, setExpandedRow)}
                     onMouseEnter={() => {
-                      console.log(
-                        "This is the asset id",
-                        processedQueryData[index].assetid
-                      );
                       prefetchDetailComponent(
                         "derivative",
                         processedQueryData[index].assetid,
@@ -440,10 +435,6 @@ export const formatDataColsNft = (
                     className="mr-4 h-3 w-3 text-black"
                     onClick={() => toggleExpandedRow(rowId, setExpandedRow)}
                     onMouseEnter={() => {
-                      console.log(
-                        "This is the asset id",
-                        processedQueryData[index].assetid
-                      );
                       prefetchDetailComponent(
                         "nft",
                         processedQueryData[index].assetid,

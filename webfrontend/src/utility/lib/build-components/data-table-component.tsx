@@ -6,54 +6,78 @@ import {
   formatDataColsDerivative,
 } from "@/utility/lib/design-components/datatables/datatable-version-assetdistribution/asset-distribution-cols";
 import { useState, useEffect } from "react";
-import { AssetDataType } from "../types/data-fetching-types";
-import { DerivativesDataInterface } from "../types/data-fetching-types";
-import { CryptocurrencyDataInterface } from "../types/data-fetching-types";
-import { NFTDataInterface } from "../types/data-fetching-types";
+import { useQueryClient } from "@tanstack/react-query";
+import { useMemo } from "react";
+import { LoadingSkeleton } from "../datafetching/loading-skeleton";
 
-interface initialTableComponentData {
-  initial: AssetDataType[];
-}
+type TableStatus = "nft" | "cryptocurrency" | "derivative";
 
-const DetailTableComponent = (props: initialTableComponentData) => {
-  const [tableStatus, setTableStatus] = useState("cryptocurrency");
-  const [tableData, setTableData] = useState(props.initial);
-  const [col, setCol] = useState<any>(formatDataColsCurrency(props.initial));
+const DetailTableComponent = ({ initial }: { initial: any[] }) => {
+  const [tableStatus, setTableStatus] = useState<TableStatus>("cryptocurrency");
+  const [tableData, setTableData] = useState(initial);
+  const [expandedRow, setExpandedRow] = useState<number | null>(null);
   const [header, setHeader] = useState("Cryptocurrencies");
+  const queryClient = useQueryClient();
+
+  const getFilteredData = (status: TableStatus) => {
+    const tableOptions = {
+      nft: {
+        data: initial.filter((asset) => asset.assettype === "nft"),
+        format: formatDataColsNft,
+        header: "NFTs",
+      },
+      cryptocurrency: {
+        data: initial.filter((asset) => asset.assettype === "cryptocurrency"),
+        format: formatDataColsCurrency,
+        header: "Cryptocurrencies",
+      },
+      derivative: {
+        data: initial.filter((asset) => asset.assettype === "derivative"),
+        format: formatDataColsDerivative,
+        header: "Derivatives",
+      },
+    };
+    return tableOptions[status];
+  };
 
   useEffect(() => {
-    if (tableStatus === "nft") {
-      const newData = props.initial.filter(
-        (asset) => asset.assettype === "nft"
-      );
-      if (newData !== tableData) {
-        setTableData(newData);
-        setCol(formatDataColsNft(newData));
-        setHeader("NFTs");
-      }
-    }
-    if (tableStatus === "cryptocurrency") {
-      const newData = props.initial.filter(
-        (asset) => asset.assettype === "cryptocurrency"
-      );
-      if (newData !== tableData) {
-        setTableData(newData);
-        setCol(formatDataColsCurrency(newData));
-        setHeader("Cryptocurrencies");
-      }
-    }
-    if (tableStatus === "derivative") {
-      const newData = props.initial.filter(
-        (asset) => asset.assettype === "derivative"
-      );
-      if (newData !== tableData) {
-        setTableData(newData);
-        setCol(formatDataColsDerivative(newData));
-        setHeader("Derivatives");
-      }
-    }
+    const { data, header } = getFilteredData(tableStatus);
+    setTableData(data);
+    setHeader(header);
   }, [tableStatus]);
 
+  const col = useMemo(() => {
+    const { data, format } = getFilteredData(tableStatus);
+    return format(data, setExpandedRow, queryClient);
+  }, [tableStatus]);
+
+  const getButtonClass = (status: string) =>
+    tableStatus === status ? "bg-blue text-white" : "text-black";
+
+  const StatusButton = ({
+    status,
+    label,
+  }: {
+    status: TableStatus;
+    label: string;
+  }) => (
+    <button
+      onClick={() => setTableStatus(status)}
+      className={`mr-5 px-2 text-base h-5/6 ${getButtonClass(
+        status
+      )} rounded-md`}
+    >
+      {label}
+    </button>
+  );
+
+  const realStatus = tableData.map((asset) => asset.assettype);
+
+  for (let i = 0; i < tableData.length; i++) {
+    if (tableStatus != realStatus[i]) {
+      return <LoadingSkeleton />;
+    }
+  }
   return (
     <>
       <div className="flex flex-row justify-between mb-7">
@@ -64,33 +88,18 @@ const DetailTableComponent = (props: initialTableComponentData) => {
           </p>
         </header>
         <nav className="flex flex-row justify-around">
-          <button
-            onClick={() => setTableStatus("cryptocurrency")}
-            className="mr-5 px-2 text-base h-5/6 active:bg-blue active:text-white focus:bg-blue focus:text-white rounded-md"
-          >
-            {" "}
-            Cryptocurrencies{" "}
-          </button>
-          <button
-            onClick={() => {
-              setTableStatus("nft");
-            }}
-            className="mr-5 px-2 text-base h-5/6 active:bg-blue active:text-white focus:bg-blue focus:text-white rounded-md"
-          >
-            {" "}
-            NFTs{" "}
-          </button>
-          <button
-            onClick={() => setTableStatus("derivative")}
-            className="mr-5 px-2 text-base h-5/6 active:bg-blue active:text-white focus:bg-blue focus:text-white rounded-md"
-          >
-            {" "}
-            Derivatives{" "}
-          </button>
+          <StatusButton status="cryptocurrency" label="Cryptocurrencies" />
+          <StatusButton status="nft" label="NFTs" />
+          <StatusButton status="derivative" label="Derivatives" />
         </nav>
       </div>
       <div>
-        <DataTable columns={col} data={tableData} />
+        <DataTable
+          data={tableData}
+          columns={col}
+          expandedRow={expandedRow}
+          tableStatus={tableStatus}
+        />
       </div>
     </>
   );

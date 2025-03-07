@@ -2,11 +2,7 @@
 
 import * as React from "react";
 
-import {
-  CryptoDetailComponent,
-  DerivativeDetailComponent,
-  NFTDetailComponent,
-} from "@/utility/lib/build-components/asset-detail-component";
+import { TableDetailComponent } from "./data-datatable-detail-popup";
 
 import {
   ColumnDef,
@@ -40,24 +36,18 @@ export function DataTable<TData, TValue>({
   const [sorting, setSorting] = React.useState<SortingState>([]);
 
   const getDetailComponent = (row: any, tableStatus: string | undefined) => {
-    if (tableStatus === "cryptocurrency") {
+    if (tableStatus !== "") {
+      const assetName =
+        tableStatus === "cryptocurrency"
+          ? data[row.id].assetabbreviation
+          : `${data[row.id].leverage}X${data[row.id].derivativename}`;
       return (
-        <CryptoDetailComponent
+        <TableDetailComponent
+          tableStatus={tableStatus}
+          assetName={assetName}
           assetId={data[row.id].assetid}
-          assetAbbr={data[row.id].assetabbreviation}
-          assetIcon={data[row.id].symbol}
-          tableStatus={data[row.id].assettype}
         />
       );
-    } else if (tableStatus === "derivative") {
-      return (
-        <DerivativeDetailComponent
-          assetId={data[row.id].assetid}
-          assetAbbr={data[row.id].derivativename}
-        />
-      );
-    } else if (tableStatus === "nft") {
-      return <NFTDetailComponent assetId={data[row.id].assetid} />;
     } else {
       return null;
     }
