@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`nft-container does not change the UI unexpected 1`] = `
+<div>
+  <div
+    class="flex flex-row w-full flex-wrap justify-start pl-5 pb-5"
+  >
+    <div
+      class="flex flex-row  mr-2 "
+    >
+      <div
+        class="flex flex-col"
+      >
+        <p
+          class="font-semibold text-black"
+        >
+          Crazy Ape...
+        </p>
+        <p
+          class="text-icongray"
+        >
+           
+          15.50
+           ETH 
+        </p>
+      </div>
+    </div>
+    <div
+      class="flex flex-row  mr-2 border-l-2 border-l-gray"
+    >
+      <div
+        class="flex flex-col"
+      >
+        <p
+          class="font-semibold text-black"
+        >
+          Ladybird
+        </p>
+        <p
+          class="text-icongray"
+        >
+           
+          20.30
+           ETH 
+        </p>
+      </div>
+    </div>
+    <div
+      class="flex flex-row  mr-2 border-l-2 border-l-gray"
+    >
+      <div
+        class="flex flex-col"
+      >
+        <p
+          class="font-semibold text-black"
+        >
+          Crazy
+        </p>
+        <p
+          class="text-icongray"
+        >
+           
+          8.70
+           ETH 
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+`;

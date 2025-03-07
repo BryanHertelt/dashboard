@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Derivative State does not do unexpected UI changes 1`] = `
+<div>
+  <div
+    class="flex flex-row h-full w-full flex-wrap"
+  >
+    <div
+      class="flex flex-row m-1 mb-2.5 p-1 pr-1 ml-3.5 rounded-md md:w-8/12 sm:w-8/12 lp:w-8/12"
+    >
+      <button
+        class="text-center md:text-xs lp:text-sm h-10 md:w-4/12 lp:w-3/12 text-white bg-blue rounded-l-md p-2 sm:text-xs sm:w-4/12"
+      >
+        Asset Group Distribution
+      </button>
+      <button
+        class="text-center md:text-xs lp:text-sm h-10 md:w-4/12 lp:w-3/12 bg-gray text-black rounded-r-md p-2 sm:text-xs  sm:w-4/12"
+      >
+        Holding Distribution
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`NFT State does not do unexpected UI changes 1`] = `
+<div>
+  <div
+    class="flex flex-row h-full w-full flex-wrap"
+  >
+    <div
+      class="flex flex-row m-1 mb-2.5 p-1 pr-1 ml-3.5 rounded-md md:w-8/12 sm:w-8/12 lp:w-8/12"
+    >
+      <button
+        class="text-center md:text-xs lp:text-sm h-10 md:w-4/12 lp:w-3/12 text-white bg-blue rounded-l-md p-2 sm:text-xs sm:w-4/12"
+      >
+        Asset Group Distribution
+      </button>
+      <button
+        class="text-center md:text-xs lp:text-sm h-10 md:w-4/12 lp:w-3/12 bg-gray text-black rounded-r-md p-2 sm:text-xs  sm:w-4/12"
+      >
+        Holding Distribution
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`TableDetailComponent Crypto State does not do unexpected UI changes 1`] = `
+<div>
+  <div
+    class="flex flex-row h-full w-full flex-wrap"
+  >
+    <div
+      class="flex flex-row m-1 mb-2.5 p-1 pr-1 ml-3.5 rounded-md md:w-8/12 sm:w-8/12 lp:w-8/12"
+    >
+      <button
+        class="text-center md:text-xs lp:text-sm h-10 md:w-4/12 lp:w-3/12 text-white bg-blue rounded-l-md p-2 sm:text-xs sm:w-4/12"
+      >
+        Details + Rebalancing
+      </button>
+      <button
+        class="text-center md:text-xs lp:text-sm h-10 md:w-4/12 lp:w-3/12 bg-gray text-black rounded-r-md p-2 sm:text-xs  sm:w-4/12"
+      >
+        Holding Distribution
+      </button>
+    </div>
+  </div>
+</div>
+`;

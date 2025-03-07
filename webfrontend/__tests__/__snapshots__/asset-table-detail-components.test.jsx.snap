@@ -1,0 +1,572 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AgDetail derivative state does not have unexpected UI changes 1`] = `
+<div>
+  <div
+    class="flex flex-col w-full justify-start flex-wrap "
+  >
+    <div
+      class="flex flex-row ml-3.5 "
+    >
+      <div
+        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20 "
+      >
+        <div
+          class="flex flex-row text-sm text-icongray mb-1"
+        >
+          DeFi Assets
+        </div>
+        <div
+          class="flex flex-row align-middle "
+        >
+          <p
+            class="font-semibold text-base mr-3"
+          >
+            5XBTCUSDT
+          </p>
+          <p
+            class="flex flex-row text-sm text-icongray mb-1 flex flex-row  pt-1"
+          >
+            ~ 
+            $14,000.00
+          </p>
+        </div>
+      </div>
+      <div
+        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20 "
+      >
+        <div
+          class="flex flex-row text-sm text-icongray mb-1"
+        >
+          Layer 1 Coins
+        </div>
+        <div
+          class="flex flex-row align-middle "
+        >
+          <p
+            class="font-semibold text-base mr-3"
+          >
+            5XBTCUSDT
+          </p>
+          <p
+            class="flex flex-row text-sm text-icongray mb-1 flex flex-row  pt-1"
+          >
+            ~ 
+            $10,000.00
+          </p>
+        </div>
+      </div>
+      <div
+        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20 "
+      >
+        <div
+          class="flex flex-row text-sm text-icongray mb-1"
+        >
+          Stablecoins
+        </div>
+        <div
+          class="flex flex-row align-middle "
+        >
+          <p
+            class="font-semibold text-base mr-3"
+          >
+            5XBTCUSDT
+          </p>
+          <p
+            class="flex flex-row text-sm text-icongray mb-1 flex flex-row  pt-1"
+          >
+            ~ 
+            $16,000.00
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AgDetail nft state does not have unexpected UI changes 1`] = `
+<div>
+  <div
+    class="flex flex-col w-full justify-start flex-wrap "
+  >
+    <div
+      class="flex flex-row ml-3.5 border-b-2 border-gray mb-5 pb-4"
+    >
+      <div
+        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20 "
+      >
+        <div
+          class="flex flex-row text-sm text-icongray mb-1"
+        >
+          Metaverse Tokens
+        </div>
+        <div
+          class="flex flex-row align-middle "
+        >
+          <p
+            class="font-semibold text-base mr-3"
+          >
+             
+            3
+             NFTs
+          </p>
+          <p
+            class="flex flex-row text-sm text-icongray mb-1 pt-1"
+          >
+             
+            ~ 
+            10.00
+             ETH
+             
+          </p>
+        </div>
+      </div>
+      <div
+        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20 border border-black"
+      >
+        <div
+          class="flex flex-row text-sm text-icongray mb-1"
+        >
+          Gaming Tokens
+        </div>
+        <div
+          class="flex flex-row align-middle "
+        >
+          <p
+            class="font-semibold text-base mr-3"
+          >
+             
+            2
+             NFTs
+          </p>
+          <p
+            class="flex flex-row text-sm text-icongray mb-1 pt-1"
+          >
+             
+            ~ 
+            1.00
+             ETH
+             
+          </p>
+        </div>
+      </div>
+      <div
+        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20 "
+      >
+        <div
+          class="flex flex-row text-sm text-icongray mb-1"
+        >
+          Ethereum Ecosystem
+        </div>
+        <div
+          class="flex flex-row align-middle "
+        >
+          <p
+            class="font-semibold text-base mr-3"
+          >
+             
+            1
+             NFTs
+          </p>
+          <p
+            class="flex flex-row text-sm text-icongray mb-1 pt-1"
+          >
+             
+            ~ 
+            2.31
+             ETH
+             
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`DrDetail does not have unexpected UI changes 1`] = `
+<div>
+  <div
+    class="flex flex-row lg:w-2/5 lp:w-3/5 justify-start flex-wrap md:w-3/5 sm:w-3/5"
+  >
+    <div
+      class="flex flex-row flex-wrap ml-1.5 h-full w-full"
+    >
+      <div
+        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20 sm:w-40 md:w-40 lg:w-52 lp:w-40 xl:w-72"
+      >
+        <p
+          class="flex flex-row text-sm text-icongray mb-1"
+        >
+           
+          Average Entry Price
+           
+        </p>
+        <p
+          class="font-semibold text-base mr-3"
+        >
+           
+          $62,420.49
+           
+        </p>
+      </div>
+      <div
+        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20 sm:w-40 md:w-40 lg:w-52 lp:w-40 xl:w-72"
+      >
+        <p
+          class="flex flex-row text-sm text-icongray mb-1"
+        >
+           
+          Market Price
+           
+        </p>
+        <p
+          class="font-semibold text-base mr-3"
+        >
+           
+          $21,334.88
+           
+        </p>
+      </div>
+      <div
+        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20 sm:w-40 md:w-40 lg:w-52 lp:w-40 xl:w-72"
+      >
+        <p
+          class="flex flex-row text-sm text-icongray mb-1"
+        >
+           
+          Average Exit Price
+           
+        </p>
+        <p
+          class="font-semibold text-base mr-3"
+        >
+           
+          $16,642.13
+           
+        </p>
+      </div>
+      <div
+        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20 sm:w-40 md:w-40 lg:w-52 lp:w-40 xl:w-72"
+      >
+        <p
+          class="flex flex-row text-sm text-icongray mb-1"
+        >
+           
+          Total Cost
+           
+        </p>
+        <p
+          class="font-semibold text-base mr-3"
+        >
+           
+          $49,811.13
+           
+        </p>
+      </div>
+    </div>
+  </div>
+  <div
+    class="lg:w-3/5 lp:w-2/5 pr-3 pt-5 pl-10 border-l-2 border-gray md:w-2/5 sm:w-2/5"
+  />
+</div>
+`;
+
+exports[`HdDetail renders all relevant data for nft state does not have unexpected UI changes 1`] = `
+<div>
+  <div
+    class="flex flex-col w-full justify-start flex-wrap"
+  >
+    <div
+      class="flex flex-row ml-3.5 border-b-2 border-gray mb-5 pb-4 flex-wrap"
+    >
+      <div
+        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20 "
+      >
+        <div
+          class="flex flex-row text-sm text-icongray mb-1"
+        >
+          <div
+            class="mr-1.5"
+          >
+             
+          </div>
+           
+          OpenSea
+        </div>
+        <div
+          class="flex flex-row align-middle"
+        >
+          <p
+            class="font-semibold text-base mr-3"
+          >
+             
+            6
+             NFTs
+             
+          </p>
+          <p
+            class="flex flex-row text-sm text-icongray mb-1 pt-1"
+          >
+            ~ 
+            120.00
+             ETH
+          </p>
+           
+        </div>
+      </div>
+      <div
+        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20 border border-black"
+      >
+        <div
+          class="flex flex-row text-sm text-icongray mb-1"
+        >
+          <div
+            class="mr-1.5"
+          >
+             
+          </div>
+           
+          Binance
+        </div>
+        <div
+          class="flex flex-row align-middle"
+        >
+          <p
+            class="font-semibold text-base mr-3"
+          >
+             
+            3
+             NFTs
+             
+          </p>
+          <p
+            class="flex flex-row text-sm text-icongray mb-1 pt-1"
+          >
+            ~ 
+            7.00
+             ETH
+          </p>
+           
+        </div>
+      </div>
+      <div
+        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20 "
+      >
+        <div
+          class="flex flex-row text-sm text-icongray mb-1"
+        >
+          <div
+            class="mr-1.5"
+          >
+             
+          </div>
+           
+          Huobi
+        </div>
+        <div
+          class="flex flex-row align-middle"
+        >
+          <p
+            class="font-semibold text-base mr-3"
+          >
+             
+            2
+             NFTs
+             
+          </p>
+          <p
+            class="flex flex-row text-sm text-icongray mb-1 pt-1"
+          >
+            ~ 
+            5.00
+             ETH
+          </p>
+           
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`HdDetail renders cryptocurrency state properly does not change unexpected 1`] = `
+<div>
+  <div
+    class="flex flex-col w-full justify-start flex-wrap"
+  >
+    <div
+      class="flex flex-row ml-3.5 border-b-2 border-gray mb-5 pb-4 flex-wrap"
+    >
+      <div
+        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20 "
+      >
+        <div
+          class="flex flex-row text-sm text-icongray mb-1"
+        >
+          <div
+            class="mr-1.5"
+          >
+             
+          </div>
+           
+          Binance
+        </div>
+        <div
+          class="flex flex-row align-middle"
+        >
+           
+          <div
+            class="flex flex-row font-semibold text-base mr-3"
+          >
+             
+            <p>
+               
+              97814.00
+               
+              BTC
+               
+            </p>
+            <p
+              class="flex flex-row text-sm text-icongray mb-1 pt-1"
+            >
+              ~ 
+              $75,655.23
+            </p>
+             
+          </div>
+           
+           
+        </div>
+      </div>
+      <div
+        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20 "
+      >
+        <div
+          class="flex flex-row text-sm text-icongray mb-1"
+        >
+          <div
+            class="mr-1.5"
+          >
+             
+          </div>
+           
+          Huobi
+        </div>
+        <div
+          class="flex flex-row align-middle"
+        >
+           
+          <div
+            class="flex flex-row font-semibold text-base mr-3"
+          >
+             
+            <p>
+               
+              4028.68
+               
+              BTC
+               
+            </p>
+            <p
+              class="flex flex-row text-sm text-icongray mb-1 pt-1"
+            >
+              ~ 
+              $10,000.00
+            </p>
+             
+          </div>
+           
+           
+        </div>
+      </div>
+      <div
+        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20 "
+      >
+        <div
+          class="flex flex-row text-sm text-icongray mb-1"
+        >
+          <div
+            class="mr-1.5"
+          >
+             
+          </div>
+           
+          Polygon
+        </div>
+        <div
+          class="flex flex-row align-middle"
+        >
+           
+          <div
+            class="flex flex-row font-semibold text-base mr-3"
+          >
+             
+            <p>
+               
+              6646.08
+               
+              BTC
+               
+            </p>
+            <p
+              class="flex flex-row text-sm text-icongray mb-1 pt-1"
+            >
+              ~ 
+              $80,443.96
+            </p>
+             
+          </div>
+           
+           
+        </div>
+      </div>
+      <div
+        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20 "
+      >
+        <div
+          class="flex flex-row text-sm text-icongray mb-1"
+        >
+          <div
+            class="mr-1.5"
+          >
+             
+          </div>
+           
+          Bybit
+        </div>
+        <div
+          class="flex flex-row align-middle"
+        >
+           
+          <div
+            class="flex flex-row font-semibold text-base mr-3"
+          >
+             
+            <p>
+               
+              4048.68
+               
+              BTC
+               
+            </p>
+            <p
+              class="flex flex-row text-sm text-icongray mb-1 pt-1"
+            >
+              ~ 
+              $10,000.00
+            </p>
+             
+          </div>
+           
+           
+        </div>
+      </div>
+    </div>
+    <div
+      class="overflow-y-scroll h-36"
+    />
+  </div>
+</div>
+`;
