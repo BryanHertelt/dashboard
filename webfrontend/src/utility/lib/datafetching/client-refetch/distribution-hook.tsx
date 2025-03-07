@@ -1,6 +1,6 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import { StructureLayer } from "../layer";
+import { getPortfolioData } from "../layer";
 import { QueryConstructorInterface } from "../../types/data-fetching-types";
 
 const useDistributionData = (queries: QueryConstructorInterface[]) => {
@@ -17,7 +17,7 @@ const useDistributionData = (queries: QueryConstructorInterface[]) => {
         staleTime: queryConstructor.staleTime,
         gcTime: queryConstructor.cacheTime,
         queryFn: async () => {
-          const processedData = await StructureLayer.getPortfolioData();
+          const processedData = await getPortfolioData();
           return processedData;
         },
         retryDelay: (attemptIndex: number): number => {

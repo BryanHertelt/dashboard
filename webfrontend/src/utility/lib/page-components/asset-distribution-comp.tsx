@@ -3,6 +3,7 @@ import AssetValueChartComponent from "../build-components/overall-value-componen
 import DistributionComponent from "../build-components/distribution-component";
 import DetailTableComponent from "../build-components/data-table-component";
 import useDistributionData from "../datafetching/client-refetch/distribution-hook";
+import { useEffect } from "react";
 
 import {
   assetLineChartData,
@@ -15,13 +16,12 @@ const AssetDistributionComponent = (props: any) => {
       qKey: ["PortfolioAD"],
       initialData: props.portfolioData,
       slug: "portfolios",
-      staleTime: 5 * 1000,
+      staleTime: 0,
       cacheTime: 0,
     },
   ]);
 
   const tableData = processedQueryData[0].data.assets;
-  const overallData = processedQueryData[0].data.timeframes;
 
   return (
     <>
