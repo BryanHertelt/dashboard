@@ -1,28 +1,29 @@
-// All Icons used for the global layout 
-export {default as SearchIcon} from "./SearchIcon.svg"
-export {default as AlarmIcon} from "./AlarmIcon.svg"
-export {default as DefiIcon} from "./DefiIcon.svg"
-export {default as PortfolioIcon} from "./PortfolioIcon.svg"
-export {default as BackArrowIcon} from "./BackArrowIcon.svg"
-export {default as LogoIcon} from "./LogoIcon.svg"
-export {default as FoldSideBarIcon} from "./FoldSidebarIcon.svg"
-export {default as TransactionIcon} from "./TransactionIcon.svg"
-export {default as AssetDistributionIcon} from "./AssetDistributionIcon.svg"
-export {default as DerivativesIcon} from "./DerivativesIcon.svg"
-export {default as ExplorerIcon} from "./ExplorerIcon.svg"
-export {default as HelpIcon} from "./HelpIcon.svg"
-export {default as NftsIcon} from "./NftsIcon.svg"
-export {default as ReportsIcon} from "./ReportsIcon.svg"
-export {default as SettingsIcon} from "./SettingsIcon.svg"
-export {default as SnapshotIcon} from "./SnapshotIcon.svg"
-export {default as WatchListIcon} from "./WatchListIcon.svg"
-export {default as DashboardIcon} from "./DashboardIcon.svg"
-export {default as SupportIcon} from "./SupportIcon.svg"
-export {default as UnfoldSideBarIcon} from "./UnfoldSidebarIcon.svg"
-export {default as BitcoinIcon} from "./BitcoinIcon.svg"
-export {default as EthereumIcon} from "./EthereumIcon.svg"
-export {default as AssetPercentageValueIcon} from "./AssetPercentageValueIcon.svg"
-export {default as SortingDataTableIcon} from "./SortingDataTableIcon.svg"
-export {default as NotesInDataTableIcon} from "./NotesInDataTableIcon.svg"
-export {default as ShowDetail} from  "./ShowDetail.svg"
-
+// All Icons used for the global layout
+export { default as SearchIcon } from "./SearchIcon.svg";
+export { default as AlarmIcon } from "./AlarmIcon.svg";
+export { default as DefiIcon } from "./DefiIcon.svg";
+export { default as PortfolioIcon } from "./PortfolioIcon.svg";
+export { default as BackArrowIcon } from "./BackArrowIcon.svg";
+export { default as LogoIcon } from "./LogoIcon.svg";
+export { default as FoldSideBarIcon } from "./FoldSidebarIcon.svg";
+export { default as TransactionIcon } from "./TransactionIcon.svg";
+export { default as AssetDistributionIcon } from "./AssetDistributionIcon.svg";
+export { default as DerivativesIcon } from "./DerivativesIcon.svg";
+export { default as ExplorerIcon } from "./ExplorerIcon.svg";
+export { default as HelpIcon } from "./HelpIcon.svg";
+export { default as NftsIcon } from "./NftsIcon.svg";
+export { default as ReportsIcon } from "./ReportsIcon.svg";
+export { default as SettingsIcon } from "./SettingsIcon.svg";
+export { default as SnapshotIcon } from "./SnapshotIcon.svg";
+export { default as WatchListIcon } from "./WatchListIcon.svg";
+export { default as DashboardIcon } from "./DashboardIcon.svg";
+export { default as SupportIcon } from "./SupportIcon.svg";
+export { default as UnfoldSideBarIcon } from "./UnfoldSidebarIcon.svg";
+export { default as BitcoinIcon } from "./BitcoinIcon.svg";
+export { default as EthereumIcon } from "./EthereumIcon.svg";
+export { default as AssetPercentageValueIcon } from "./AssetPercentageValueIcon.svg";
+export { default as SortingDataTableIcon } from "./SortingDataTableIcon.svg";
+export { default as SortingDataTableIconUp } from "./SortingDataTableIconUp.svg";
+export { default as NotesInDataTableIcon } from "./NotesInDataTableIcon.svg";
+export { default as ShowDetail } from "./ShowDetail.svg";
+export { default as HideDetail } from "./HideDetail.svg";

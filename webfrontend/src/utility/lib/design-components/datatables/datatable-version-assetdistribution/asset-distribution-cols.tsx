@@ -2,15 +2,16 @@
 
 import {
   AssetPercentageValueIcon,
-  SortingDataTableIcon,
   NotesInDataTableIcon,
-  ShowDetail,
 } from "../../../../../../public/images";
-import { Line } from "react-chartjs-2";
-import { assetDataTableLineChartData } from "@/api/distribution/chartdataformatter";
-import { assetDataTableLineChartDataOptions } from "@/api/distribution/chartdataformatter";
+import {
+  PositionDirectionIcon,
+  SortingDataTableIcon,
+  ShowDetailIcon,
+} from "../../../../../../public/images/icons";
 import { formatCurrency } from "@/utility/lib/helpers/helper-functions";
 import { prefetchDetailComponent } from "@/utility/lib/datafetching/client-refetch/prefetchQuery";
+import { TableLineChart } from "../../charts/table-line-charts";
 
 const toggleExpandedRow = (rowId: number, setExpandedRow: any) => {
   setExpandedRow((prevExpandedRow: number | null) =>
@@ -18,15 +19,20 @@ const toggleExpandedRow = (rowId: number, setExpandedRow: any) => {
   );
 };
 
+const headerdesign = "flex flex-row font-normal items-center text-black h-11";
+const celldesign = "flex flex-row justify-center items-center w-1/2";
+const firstcelldesign = "flex flex-row text-sm font-medium items-center ml-2";
+const sortingicondesgin = "bg-white h-5 w-5 ml-1 rounded-sm";
+
 export const formatDataColsCurrency = (
   parentdata: any,
-  setExpandedRow: any,
-  queryClient: any
+  queryClient: any,
+  setExpandedRow: any
 ) => {
   return [
     {
       accessorKey: "assetname",
-      header: () => <div className="text-icongray font-normal"> Asset </div>,
+      header: () => <div className="font-normal pl-10"> Asset </div>,
       cell: ({ row }: any) => {
         const rowId = row.id;
         const name = row.getValue("assetname");
@@ -34,8 +40,8 @@ export const formatDataColsCurrency = (
           for (let index = 0; index < parentdata.length; index++) {
             if (name == parentdata[index].assetname) {
               return (
-                <div className="flex flex-row text-sm font-medium items-center ml-2">
-                  <ShowDetail
+                <div className={`${firstcelldesign}`}>
+                  <div
                     className="mr-4 h-3 w-3"
                     onClick={() => toggleExpandedRow(rowId, setExpandedRow)}
                     onMouseEnter={() =>
@@ -45,7 +51,9 @@ export const formatDataColsCurrency = (
                         queryClient
                       )
                     }
-                  />
+                  >
+                    <ShowDetailIcon />
+                  </div>
                   {parentdata[index].symbol} {""}{" "}
                   <div className="flex flex-col justify-start w-1/2 ml-2">
                     {parentdata[index].assetname}
@@ -63,24 +71,29 @@ export const formatDataColsCurrency = (
     },
     {
       accessorKey: "assetamount",
-      header: () => <div className="text-icongray font-normal"> Amount </div>,
+      header: () => <div className={`${headerdesign}`}> Amount </div>,
+      cell: ({ row }: any) => {
+        const amount = row.getValue("assetamount");
+        return <div className={`${celldesign}`}>{amount}</div>;
+      },
     },
     {
       accessorKey: "assetpercentage",
       header: ({ column }: any) => {
         return (
           <button
-            className="flex flex-row text-icongray font-normal items-center"
+            className={`${headerdesign}`}
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             {" "}
-            Percentage <SortingDataTableIcon className="ml-2 h-4 w-4" />{" "}
+            Percentage{" "}
+            <SortingDataTableIcon className={`${sortingicondesgin}`} />{" "}
           </button>
         );
       },
       cell: ({ row }: any) => {
         const percentage = parseFloat(row.getValue("assetpercentage"));
-        return <div> {percentage} %</div>;
+        return <div className={`${celldesign} w-1/3`}> {percentage} %</div>;
       },
     },
     {
@@ -88,11 +101,13 @@ export const formatDataColsCurrency = (
       header: ({ column }: any) => {
         return (
           <button
-            className="flex flex-row text-icongray font-normal items-center"
+            className={`${headerdesign}`}
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             {" "}
-            Value <SortingDataTableIcon className="ml-2 h-4 w-4" />{" "}
+            Value <SortingDataTableIcon
+              className={`${sortingicondesgin}`}
+            />{" "}
           </button>
         );
       },
@@ -100,7 +115,7 @@ export const formatDataColsCurrency = (
         const amount = parseFloat(row.getValue("assetvalue"));
         const formatted = formatCurrency(amount);
 
-        return <div> {formatted} </div>;
+        return <div className={`${celldesign} w-1/3`}> {formatted} </div>;
       },
     },
     {
@@ -108,11 +123,12 @@ export const formatDataColsCurrency = (
       header: ({ column }: any) => {
         return (
           <button
-            className="flex flex-row text-icongray font-normal items-center"
+            className={`${headerdesign}`}
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             {" "}
-            Market Price <SortingDataTableIcon className="ml-2 h-4 w-4" />{" "}
+            Market Price{" "}
+            <SortingDataTableIcon className={`${sortingicondesgin}`} />{" "}
           </button>
         );
       },
@@ -120,7 +136,7 @@ export const formatDataColsCurrency = (
         const amount = parseFloat(row.getValue("assetmarketprice"));
         const formatted = formatCurrency(amount);
 
-        return <div> {formatted} </div>;
+        return <div className={`${celldesign} w-1/3`}> {formatted} </div>;
       },
     },
     {
@@ -128,11 +144,12 @@ export const formatDataColsCurrency = (
       header: ({ column }: any) => {
         return (
           <button
-            className="flex flex-row text-icongray font-normal items-center"
+            className={`${headerdesign}`}
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             {" "}
-            Change 24 h <SortingDataTableIcon className="ml-2 h-4 w-4" />{" "}
+            Change 24 h{" "}
+            <SortingDataTableIcon className={`${sortingicondesgin}`} />{" "}
           </button>
         );
       },
@@ -171,36 +188,30 @@ export const formatDataColsCurrency = (
       header: ({ column }: any) => {
         return (
           <button
-            className="flex flex-row text-icongray font-normal items-center"
+            className={`${headerdesign}`}
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             {" "}
-            Change 7d <SortingDataTableIcon className="ml-2 h-4 w-4" />{" "}
+            Change 7d{" "}
+            <SortingDataTableIcon className={`${sortingicondesgin}`} />{" "}
           </button>
         );
       },
-      cell: () => {
+      cell: ({ row }: any) => {
+        const change = row.getValue("assetchange7d");
         return (
           <div className="w-2/6 h-5">
-            <Line
-              options={assetDataTableLineChartDataOptions}
-              data={assetDataTableLineChartData}
-            />
+            <TableLineChart data={change} />
           </div>
         );
       },
     },
     {
       accessorKey: "notes",
-      header: () => (
-        <div className="flex flex-row justify-start text-icongray font-normal">
-          {" "}
-          Notes{" "}
-        </div>
-      ),
+      header: () => <div className={`${headerdesign}`}> Notes </div>,
       cell: () => {
         return (
-          <div className="flex flex-row justify-start text-3xl items-center">
+          <div className={`${celldesign} text-3xl`}>
             {" "}
             <NotesInDataTableIcon />{" "}
           </div>
@@ -212,15 +223,13 @@ export const formatDataColsCurrency = (
 
 export const formatDataColsDerivative = (
   processedQueryData: any,
-  setExpandedRow: any,
-  queryClient: any
+  queryClient: any,
+  setExpandedRow?: any
 ) => {
   return [
     {
       accessorKey: "tradedirection",
-      header: () => (
-        <div className="text-icongray font-normal"> Position Type </div>
-      ),
+      header: () => <div className=" font-normal pl-5"> Position Type </div>,
       cell: ({ row }: any) => {
         const direction = row.getValue("tradedirection");
         const directionToUpper =
@@ -232,23 +241,24 @@ export const formatDataColsDerivative = (
               const directioncolor =
                 direction < "short" ? "text-green" : "text-red";
               return (
-                <div
-                  className={`${directioncolor} flex flex-row text-xs w-1/2 items-center`}
-                >
-                  <ShowDetail
-                    className="mr-4 h-3 w-3 text-black"
+                <div className={`${directioncolor} ${firstcelldesign}`}>
+                  <div
+                    className="mr-4 h-3 w-3"
                     onClick={() => toggleExpandedRow(rowId, setExpandedRow)}
-                    onMouseEnter={() => {
+                    onMouseEnter={() =>
                       prefetchDetailComponent(
                         "derivative",
                         processedQueryData[index].assetid,
                         queryClient
-                      );
-                    }}
-                  />
-                  <div className="flex flex-col">
+                      )
+                    }
+                  >
+                    <ShowDetailIcon />
+                  </div>
+                  <div className="flex flex-row align-baseline">
                     {" "}
-                    <p>{directionToUpper} </p>
+                    <PositionDirectionIcon direction={direction} />
+                    <p className="pl-3">{directionToUpper} </p>
                   </div>{" "}
                 </div>
               );
@@ -260,14 +270,14 @@ export const formatDataColsDerivative = (
     },
     {
       accessorKey: "derivativename",
-      header: () => <div className="text-icongray font-normal"> Symbol </div>,
+      header: () => <div className={`${headerdesign}`}> Symbol </div>,
       cell: ({ row }: any) => {
         const name = row.getValue("derivativename");
         const renderNameCell = () => {
           for (let index = 0; index < processedQueryData.length; index++) {
             if (name == processedQueryData[index].derivativename) {
               return (
-                <div className="flex flex-row text-sm font-medium items-center ml-2">
+                <div className="flex flex-row text-sm items-center w-3/4">
                   {processedQueryData[index].symbol} {""}{" "}
                   <div className="flex flex-col justify-start w-1/2 ml-2">
                     <div> {processedQueryData[index].derivativename}</div>
@@ -290,11 +300,13 @@ export const formatDataColsDerivative = (
       header: ({ column }: any) => {
         return (
           <button
-            className="flex flex-row text-icongray font-normal items-center"
+            className={`${headerdesign}`}
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             {" "}
-            Entry <SortingDataTableIcon className="ml-2 h-4 w-4" />{" "}
+            Entry <SortingDataTableIcon
+              className={`${sortingicondesgin}`}
+            />{" "}
           </button>
         );
       },
@@ -302,7 +314,7 @@ export const formatDataColsDerivative = (
         const amount = parseFloat(row.getValue("entry"));
         const formatted = formatCurrency(amount);
 
-        return <div> {formatted} </div>;
+        return <div className={`${celldesign} w-1/3`}> {formatted} </div>;
       },
     },
     {
@@ -310,11 +322,12 @@ export const formatDataColsDerivative = (
       header: ({ column }: any) => {
         return (
           <button
-            className="flex flex-row text-icongray font-normal items-center"
+            className={`${headerdesign}`}
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             {" "}
-            Liq - Price <SortingDataTableIcon className="ml-2 h-4 w-4" />{" "}
+            Liq - Price{" "}
+            <SortingDataTableIcon className={`${sortingicondesgin}`} />{" "}
           </button>
         );
       },
@@ -322,7 +335,7 @@ export const formatDataColsDerivative = (
         const amount = parseFloat(row.getValue("liquidationprice"));
         const formatted = formatCurrency(amount);
 
-        return <div> {formatted} </div>;
+        return <div className={`${celldesign} w-1/3`}> {formatted} </div>;
       },
     },
     {
@@ -330,11 +343,13 @@ export const formatDataColsDerivative = (
       header: ({ column }: any) => {
         return (
           <button
-            className="flex flex-row text-icongray font-normal items-center"
+            className={`${headerdesign}`}
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             {" "}
-            Margin <SortingDataTableIcon className="ml-2 h-4 w-4" />{" "}
+            Margin <SortingDataTableIcon
+              className={`${sortingicondesgin}`}
+            />{" "}
           </button>
         );
       },
@@ -342,17 +357,13 @@ export const formatDataColsDerivative = (
         const amount = parseFloat(row.getValue("margin"));
         const formatted = formatCurrency(amount);
 
-        return <div> {formatted} </div>;
+        return <div className={`${celldesign} w-1/3`}> {formatted} </div>;
       },
     },
     {
       accessorKey: "sl",
       header: () => {
-        return (
-          <div className="flex flex-row text-icongray font-normal items-center">
-            SL/TP
-          </div>
-        );
+        return <div className={`${headerdesign}`}>SL/TP</div>;
       },
       cell: ({ row }: any) => {
         const sl = row.getValue("sl");
@@ -365,7 +376,7 @@ export const formatDataColsDerivative = (
               const checkedtp = tp == null ? "--" : tp.toString() + "%";
 
               return (
-                <div className="flex flex-row text-sm font-medium items-center ml-2">
+                <div className={`${celldesign} w-1/3`}>
                   {checkedsl}/{checkedtp}
                 </div>
               );
@@ -378,31 +389,24 @@ export const formatDataColsDerivative = (
     {
       accessorKey: "settlementdate",
       header: () => {
-        return (
-          <div className="flex flex-row text-icongray font-normal items-center">
-            Settlement Date
-          </div>
-        );
+        return <div className={`${headerdesign}`}>Settlement Date</div>;
       },
       cell: ({ row }: any) => {
         const settlementdate = row.getValue("settlementdate");
 
         const checkedsettlementdate =
           settlementdate == "" ? "--" : settlementdate.substring(0, 9);
-        return <div> {checkedsettlementdate}</div>;
+        return (
+          <div className={`${celldesign} w-1/3`}> {checkedsettlementdate}</div>
+        );
       },
     },
     {
       accessorKey: "notes",
-      header: () => (
-        <div className="flex flex-row justify-start text-icongray font-normal">
-          {" "}
-          Notes{" "}
-        </div>
-      ),
+      header: () => <div className={`${headerdesign}`}> Notes </div>,
       cell: () => {
         return (
-          <div className="flex flex-row justify-start text-3xl items-center">
+          <div className={`${celldesign} text-3xl`}>
             {" "}
             <NotesInDataTableIcon />{" "}
           </div>
@@ -414,34 +418,35 @@ export const formatDataColsDerivative = (
 
 export const formatDataColsNft = (
   processedQueryData: any,
-  setExpandedRow: any,
-  queryClient: any
+  queryClient: any,
+  setExpandedRow?: any
 ) => {
   return [
     {
       accessorKey: "collectionname",
-      header: () => (
-        <div className="text-icongray font-normal"> Collection </div>
-      ),
+      header: () => <div className=" font-normal pl-10"> Collection </div>,
       cell: ({ row }: any) => {
         const rowId = row.id;
         const name = row.getValue("collectionname");
+        console.log(processedQueryData);
         const renderNameCell = () => {
           for (let index = 0; index < processedQueryData.length; index++) {
             if (name == processedQueryData[index].collectionname) {
               return (
-                <div className="flex flex-row text-sm font-medium items-center ml-2">
-                  <ShowDetail
-                    className="mr-4 h-3 w-3 text-black"
+                <div className={` ${firstcelldesign}`}>
+                  <div
+                    className="mr-4 h-3 w-3"
                     onClick={() => toggleExpandedRow(rowId, setExpandedRow)}
-                    onMouseEnter={() => {
+                    onMouseEnter={() =>
                       prefetchDetailComponent(
                         "nft",
                         processedQueryData[index].assetid,
                         queryClient
-                      );
-                    }}
-                  />
+                      )
+                    }
+                  >
+                    <ShowDetailIcon />
+                  </div>
                   {processedQueryData[index].symbol} {""}{" "}
                   <div className="flex flex-col justify-start w-1/2 ml-2">
                     {processedQueryData[index].collectionname}
@@ -459,11 +464,13 @@ export const formatDataColsNft = (
       header: ({ column }: any) => {
         return (
           <button
-            className="flex flex-row text-icongray font-normal items-center"
+            className={`${headerdesign}`}
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             {" "}
-            Value <SortingDataTableIcon className="ml-2 h-4 w-4" />{" "}
+            Value <SortingDataTableIcon
+              className={`${sortingicondesgin}`}
+            />{" "}
           </button>
         );
       },
@@ -471,7 +478,7 @@ export const formatDataColsNft = (
         const amount = parseFloat(row.getValue("collectionvalue"));
         const formatted = formatCurrency(amount);
 
-        return <div> {formatted} </div>;
+        return <div className={`${celldesign} w-1/5`}> {formatted} </div>;
       },
     },
     {
@@ -479,34 +486,43 @@ export const formatDataColsNft = (
       header: ({ column }: any) => {
         return (
           <button
-            className="flex flex-row text-icongray font-normal items-center"
+            className={`${headerdesign}`}
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             {" "}
-            Floor Price <SortingDataTableIcon className="ml-2 h-4 w-4" />{" "}
+            Floor Price{" "}
+            <SortingDataTableIcon className={`${sortingicondesgin}`} />{" "}
           </button>
         );
       },
       cell: ({ row }: any) => {
         const amount = parseFloat(row.getValue("collectionvalue"));
-        return <div> {amount} ETH </div>;
+        return (
+          <div className={`${celldesign} w-1/3 items-center justify-center`}>
+            {amount} ETH
+          </div>
+        );
       },
     },
     {
       accessorKey: "nftcount",
-      header: "NFT-Count",
+      header: () => <div className={`${headerdesign}`}> NFT-Count </div>,
+      cell: ({ row }: any) => {
+        const count = parseFloat(row.getValue("nftcount"));
+        return (
+          <div className="flex flex-row items-center justify-center w-3/12">
+            {" "}
+            {count}{" "}
+          </div>
+        );
+      },
     },
     {
       accessorKey: "notes",
-      header: () => (
-        <div className="flex flex-row justify-start text-icongray font-normal">
-          {" "}
-          Notes{" "}
-        </div>
-      ),
+      header: () => <div className={`${headerdesign}`}> Notes </div>,
       cell: ({ row }: any) => {
         return (
-          <div className="flex flex-row justify-start text-3xl items-center">
+          <div className={`${celldesign} w-1/4 text-3xl`}>
             {" "}
             <NotesInDataTableIcon />{" "}
           </div>
