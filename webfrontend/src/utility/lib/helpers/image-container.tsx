@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 interface ImageContainerProps {
-  url: string;
+  url: string | undefined;
   alt: string;
   placeholder: string;
 }

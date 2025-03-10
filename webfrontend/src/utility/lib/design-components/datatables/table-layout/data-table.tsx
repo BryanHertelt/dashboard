@@ -3,6 +3,7 @@
 import * as React from "react";
 
 import { TableDetailComponent } from "./data-datatable-detail-popup";
+import { ErrorSkeleton } from "@/utility/lib/datafetching/loading-skeleton";
 
 import {
   ColumnDef,
@@ -24,7 +25,7 @@ import {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: any;
-  expandedRow: number | null;
+  expandedRow?: number | null;
   tableStatus?: string;
 }
 export function DataTable<TData, TValue>({
@@ -46,6 +47,7 @@ export function DataTable<TData, TValue>({
           tableStatus={tableStatus}
           assetName={assetName}
           assetId={data[row.id].assetid}
+          assetUrl={data[row.id].symbol}
         />
       );
     } else {
@@ -65,14 +67,14 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="rounded-md">
+    <div className="rounded-md h-full overflow-y-auto">
       <Table>
         <TableHeader className="bg-gray">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead key={header.id}>
+                  <TableHead key={header.id} className="text-black">
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -92,10 +94,12 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  className="border"
+                  className={`border-b-${
+                    expandedRow?.toString() === row.id ? "2" : "4"
+                  } border-gray bg-white`}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={cell.id} className="">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -104,8 +108,11 @@ export function DataTable<TData, TValue>({
                   ))}
                 </TableRow>
                 {expandedRow?.toString() === row.id && (
-                  <TableRow key={`detail${row.id}`}>
-                    <TableCell className="border" colSpan={columns.length}>
+                  <TableRow
+                    key={`detail${row.id}`}
+                    className="border-b-4 border-t-2 border-gray"
+                  >
+                    <TableCell className="" colSpan={columns.length}>
                       <div>{getDetailComponent(row, tableStatus)}</div>
                     </TableCell>
                   </TableRow>
@@ -115,7 +122,7 @@ export function DataTable<TData, TValue>({
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
+                <ErrorSkeleton />
               </TableCell>
             </TableRow>
           )}

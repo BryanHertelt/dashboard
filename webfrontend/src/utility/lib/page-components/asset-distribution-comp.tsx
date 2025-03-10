@@ -1,10 +1,8 @@
 "use client";
 import AssetValueChartComponent from "../build-components/overall-value-component";
 import DistributionComponent from "../build-components/distribution-component";
-import TableComponent from "../build-components/data-table-component";
+import AssetTableComponent from "../build-components/asset-table-component";
 import useDistributionData from "../datafetching/client-refetch/distribution-hook";
-import { useEffect } from "react";
-
 import {
   assetLineChartData,
   pieChartOptions,
@@ -41,9 +39,10 @@ const AssetDistributionComponent = (props: any) => {
         />
         */}
       </div>
-      <div className="card mt-9 p-7 w-full">
-        <TableComponent initial={tableData} />
+      <div className="card mt-9 px-7 pt-5 w-full h-5/6 mb-10">
+        <AssetTableComponent initial={tableData} />
       </div>
+      <div className="border border-backgroundchild w-full"> </div>
     </>
   );
 };

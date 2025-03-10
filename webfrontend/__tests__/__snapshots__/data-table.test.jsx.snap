@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`data-table initial render does not change UI unexpected 1`] = `
+<div>
+  <div
+    class="rounded-md h-full overflow-y-auto"
+  >
+    <div
+      class="relative w-full overflow-auto"
+    >
+      <table
+        class="w-full caption-bottom text-sm"
+      >
+        <thead
+          class="[&_tr]:border-b bg-gray"
+        >
+          <tr
+            class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+          >
+            <th
+              class="h-10 px-2 text-left align-middle font-medium [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px] text-black"
+            >
+              <button
+                variant="ghost"
+              >
+                Name
+              </button>
+            </th>
+          </tr>
+        </thead>
+        <tbody
+          class="[&_tr:last-child]:border-0"
+        >
+          <tr
+            class="transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted border-b-4 border-gray bg-white"
+            data-state="false"
+          >
+            <td
+              class="p-2 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]"
+            >
+              Alice
+            </td>
+          </tr>
+          <tr
+            class="transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted border-b-4 border-gray bg-white"
+            data-state="false"
+          >
+            <td
+              class="p-2 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]"
+            >
+              Bob
+            </td>
+          </tr>
+          <tr
+            class="transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted border-b-4 border-gray bg-white"
+            data-state="false"
+          >
+            <td
+              class="p-2 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]"
+            >
+              Charlie
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+`;
