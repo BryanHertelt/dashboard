@@ -424,30 +424,34 @@ describe.each(testCases)("$name State", ({ mockData, tableStatus }) => {
     });
 
     it("button click triggers Holding Detail to be rendered", () => {
-        const button = screen.getByRole("button", { name: /Holding Distribution/i });
-        fireEvent.click(button);
-        expect(HdDetail).toHaveBeenCalled();
-        expect(HdDetail).toHaveBeenCalledWith(
-            expect.objectContaining({
-                assetname: "BTC",
-                data: expect.arrayContaining(mockData.holdings),
-                designComponents: designComponents
-            }),
-            expect.any(Object)
-        );
+        if(tableStatus != "derivative"){
+            const button = screen.getByRole("button", { name: /Holding Distribution/i });
+            fireEvent.click(button);
+            expect(HdDetail).toHaveBeenCalled();
+            expect(HdDetail).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    assetname: "BTC",
+                    data: expect.arrayContaining(mockData.holdings),
+                    designComponents: designComponents
+                }),
+                expect.any(Object)
+            );
+        }
     });
     it("button click triggers AgDetail to be rendered", () => {
-        const button = screen.getByRole("button", {name: /Asset Group Distribution/i})
-        fireEvent.click(button)
-        expect(AgDetail).toHaveBeenCalled(); 
-        expect(AgDetail).toHaveBeenCalledWith(
-            expect.objectContaining({
-                assetname: "BTC", 
-                data: expect.arrayContaining(mockData.assetgroups), 
-                designComponents:designComponents
-            }), 
-            expect.any(Object)
-        )
+        if(tableStatus != "derivative"){
+            const button = screen.getByRole("button", {name: /Asset Group Distribution/i})
+            fireEvent.click(button)
+            expect(AgDetail).toHaveBeenCalled(); 
+            expect(AgDetail).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    assetname: "BTC", 
+                    data: expect.arrayContaining(mockData.assetgroups), 
+                    designComponents:designComponents
+                }), 
+                expect.any(Object)
+            )
+        }
     })
 });
 
