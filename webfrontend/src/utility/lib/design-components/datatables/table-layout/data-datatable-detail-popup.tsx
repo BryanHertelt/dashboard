@@ -3,7 +3,7 @@ import {
   ErrorSkeleton,
   LoadingSkeleton,
 } from "@/utility/lib/datafetching/loading-skeleton";
-import { useDetailComponent } from "@/utility/lib/datafetching/client-refetch/fetching-detail-component";
+import { useDetailComponent } from "@/utility/lib/datafetching/client-refetch/client-hooks";
 import {
   DrDetail,
   HdDetail,

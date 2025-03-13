@@ -10,7 +10,7 @@ import {
   ShowDetailIcon,
 } from "../../../../../../public/images/icons";
 import { formatCurrency } from "@/utility/lib/helpers/helper-functions";
-import { prefetchDetailComponent } from "@/utility/lib/datafetching/client-refetch/prefetchQuery";
+import { prefetchDetailComponent } from "@/utility/lib/datafetching/client-refetch/prefetch-hooks";
 import { TableLineChart } from "../../charts/table-line-charts";
 
 const toggleExpandedRow = (rowId: number, setExpandedRow: any) => {

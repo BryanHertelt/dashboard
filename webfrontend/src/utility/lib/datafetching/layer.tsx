@@ -55,3 +55,31 @@ export const getDetailAssetData = async (
     });
   }
 };
+
+export const getTimeFrames = async (timeframe: string) => {
+  try {
+    console.log("called");
+    let rawdata = await fetch(`${baseUrl}/timeframes?timeframe=${timeframe}`, {
+      cache: "no-store",
+    });
+    let data = await rawdata.json();
+    /** 
+    data.map((timebit: { x: string; y: number }) => {
+      if (typeof timebit.x != "string") {
+        throw new Error("Wrong format for timestamps");
+      }
+      if (typeof timebit.y != "number") {
+        throw new Error("Wrong Format for Values");
+      }
+    });
+    if (Object.keys(data).length === 0) {
+      throw new Error("No data provided", data);
+    }
+      */
+    return data;
+  } catch (error) {
+    throw new Error(`Error occured while fetching the timeframe`, {
+      cause: error,
+    });
+  }
+};

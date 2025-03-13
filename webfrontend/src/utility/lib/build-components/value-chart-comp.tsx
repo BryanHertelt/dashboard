@@ -1,45 +1,63 @@
 "use client";
+import "chartjs-adapter-date-fns";
 import { Line } from "react-chartjs-2";
-import { lineChartOptions } from "@/api/distribution/chartdataformatter";
 import { BitcoinIcon, EthereumIcon } from "@/../public/images";
 import { formatCurrency } from "../helpers/helper-functions";
 import { useState } from "react";
 import { formatMainLineData } from "../design-components/charts/main-chart-line-formatter";
-const AssetValueChartComponent = ({ data, portfolioResponse }: any) => {
-  const [timeframe, setTimeframe] = useState("1 day");
-  const [toggled, setToggled] = useState(true);
+import { useValueChart } from "../datafetching/client-refetch/client-hooks";
+import { getTimeFrames } from "../datafetching/layer";
+import {
+  LoadingSkeleton,
+  ErrorSkeleton,
+} from "../datafetching/loading-skeleton";
 
-  const lineData = formatMainLineData(portfolioResponse, timeframe);
+const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
+  const [timeframe, setTimeframe] = useState<{
+    timeframe: string;
+    timeunit: string;
+  }>({
+    timeframe: "7 days",
+    timeunit: "day",
+  });
+  const [toggled, setToggled] = useState<boolean>(true);
+
+  const { processedQueryData, isLoading, isError, error } = useValueChart({
+    qKey: [timeframe.timeframe.toString()],
+    initialData: initialData,
+    queryFunction: getTimeFrames,
+    searchquery: timeframe.timeframe.replace(" ", ""),
+  });
+
+  if (isError) {
+    return <ErrorSkeleton />;
+  }
+  if (isLoading) {
+    console.log("Is Loading");
+    return <LoadingSkeleton />;
+  }
+
+  const lineConfig = formatMainLineData(processedQueryData, timeframe);
 
   const dropDownDesign =
     toggled === false
       ? "hidden"
       : "card flex flex-col border-rounded w-3/12 h-3/6 overflow-auto bg-blue";
 
-  if (portfolioResponse[0] === "failed") {
-    return (
-      <div className="flex flex-row justify-center items-center h-full w-full">
-        Failed to load portfolio data...{" "}
-      </div>
-    );
-  }
   const dropDownMenuValues = [
-    "all",
-    "1 hour",
-    "4 hours",
-    "12 hours",
-    "1 day",
-    "3 days",
-    "7 days",
-    "1 month",
-    "3 months",
-    "6 months",
-    "1 year",
-    "3 years",
-    "5 years",
+    { timeframe: "all", timeunit: "year" },
+    { timeframe: "1 hour", timeunit: "minute" },
+    { timeframe: "4 hours", timeunit: "minute" },
+    { timeframe: "12 hours", timeunit: "hour" },
+    { timeframe: "1 day", timeunit: "hour" },
+    { timeframe: "7 days", timeunit: "day" },
+    { timeframe: "1 month", timeunit: "day" },
+    { timeframe: "3 months", timeunit: "week" },
+    { timeframe: "6 months", timeunit: "month" },
+    { timeframe: "1 year", timeunit: "quarter" },
+    { timeframe: "3 years", timeunit: "quarter" },
+    { timeframe: "5 years", timeunit: "year" },
   ];
-
-  const portfolioValue = portfolioResponse[0].currentvalue;
   return (
     <div className="relative w-full h-full">
       <header>
@@ -54,30 +72,30 @@ const AssetValueChartComponent = ({ data, portfolioResponse }: any) => {
               onClick={() => setToggled(!toggled)}
               className="bg-gray text-icongray text-sm h-full w-3/12 rounded-md"
             >
-              {timeframe == "12 hours"
-                ? timeframe.substring(0, 4).replace(" ", "")
-                : timeframe.substring(0, 3).replace(" ", "")}{" "}
+              {timeframe.timeframe == "12 hours"
+                ? timeframe.timeframe.substring(0, 4).replace(" ", "")
+                : timeframe.timeframe.substring(0, 3).replace(" ", "")}{" "}
             </button>
           </div>
           <div className={`${dropDownDesign} absolute top-1/4 right-1`}>
             {dropDownMenuValues.map((item: any, index: number) => {
               return (
                 <button
-                  key={index}
+                  key={item.timeframe}
                   onClick={() => {
                     setTimeframe(item);
                     setToggled(!toggled);
                   }}
                   className="border-b-2 border-solid border-gray w-full"
                 >
-                  {item}
+                  {item.timeframe}
                 </button>
               );
             })}
           </div>
         </div>
         <p className=" w-11/12 font-semibold text-2xl text-currentvaluefont">
-          {formatCurrency(portfolioValue)}
+          {formatCurrency(currentValue)}
         </p>
         <div className="flex flex-row h-10 items-center mt-5">
           <button className="mt-1 mr-2 text-3xl h-full rounded-md">
@@ -97,7 +115,7 @@ const AssetValueChartComponent = ({ data, portfolioResponse }: any) => {
       </header>
       <div className="w-full h-4/6">
         <div className="flex flex-row justify-center w-full h-full">
-          <Line options={lineChartOptions} data={lineData} />
+          <Line data={lineConfig.data} options={lineConfig.config} />
         </div>
       </div>
     </div>

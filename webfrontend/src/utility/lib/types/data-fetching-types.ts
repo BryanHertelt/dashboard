@@ -43,13 +43,31 @@ export interface AssetResponseObject {
   notes: string;
 }
 
-export interface QueryConstructorInterface {
-  qKey: string[];
-  initialData?: PortfolioResponseObject[] | AssetResponseObject[];
-  slug: string;
-  staleTime: number;
-  cacheTime?: number;
+export interface TimeFrameResponseObject{
+  x: string, 
+  y: number
 }
+
+export interface QueryConstructorInterfaceDistribution {
+  qKey: string[];
+  initialData?: PortfolioResponseObject[] | AssetResponseObject[] | TimeFrameResponseObject[] ;
+  slug: string;
+  staleTime?: number;
+  queryFunction: any; 
+  cacheTime?: number;
+  searchquery?: string;
+}
+
+export interface QueryConstructorInterfaceChart {
+  qKey: string[];
+  initialData: PortfolioResponseObject[] | AssetResponseObject[] | TimeFrameResponseObject[] ;
+  slug?: string;
+  staleTime?: number;
+  queryFunction: any; 
+  cacheTime?: number;
+  searchquery: string; 
+}
+
 export interface PortfolioDataInterface {
   portfolioid: number;
   userid: number;
