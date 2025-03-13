@@ -33,17 +33,22 @@ export const formatMainLineData = (
   timeframe: {
     timeframe: string;
     timeunit: any;
-  }
+  },
+  costbasis: boolean
 ): { data: any; config: ChartOptions<"line"> } => {
+  const portfolioData = processedQueryData[0];
+
+  const costBasisData = costbasis === false ? null : processedQueryData[1];
+
   return {
     data: {
-      labels: processedQueryData.map((x: any) => {
+      labels: portfolioData.map((x: any) => {
         return x.x;
       }),
       datasets: [
         {
           label: "networth",
-          data: processedQueryData,
+          data: portfolioData,
           borderColor: "#005BEA",
           backgroundColor: (context: any) => {
             const bgColor = [
@@ -68,6 +73,11 @@ export const formatMainLineData = (
           },
           pointRadius: 0,
           fill: true,
+        },
+        {
+          label: "invest",
+          data: costBasisData,
+          borderColor: "#005BEA",
         },
       ],
     },

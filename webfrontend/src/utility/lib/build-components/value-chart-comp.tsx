@@ -11,8 +11,14 @@ import {
   LoadingSkeleton,
   ErrorSkeleton,
 } from "../datafetching/loading-skeleton";
+import { useQueryClient } from "@tanstack/react-query";
 
 const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
+  const [comparators, setComparators] = useState({
+    costbasis: false,
+    btc: false,
+    eth: false,
+  });
   const [timeframe, setTimeframe] = useState<{
     timeframe: string;
     timeunit: string;
@@ -22,21 +28,18 @@ const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
   });
   const [toggled, setToggled] = useState<boolean>(true);
 
-  const { processedQueryData, isLoading, isError, error } = useValueChart({
-    qKey: [timeframe.timeframe.toString()],
-    initialData: initialData,
-    queryFunction: getTimeFrames,
-    searchquery: timeframe.timeframe.replace(" ", ""),
-    scope: "timeframe",
-  });
+  const { processedQueryData, isLoading, isError, error, isSuccess } =
+    useValueChart({
+      qKey: [timeframe.timeframe.toString()],
+      initialData: initialData,
+      queryFunction: getTimeFrames,
+      searchquery: timeframe.timeframe.replace(" ", ""),
+      scope: "timeframe",
+    });
 
   const handleTimeFrames = (item: any) => {
     setTimeframe(item);
     setToggled(!toggled);
-  };
-
-  const handleCostBasis = async () => {
-    const result = await fetch("localhost");
   };
 
   const dropDownDesign =
@@ -59,6 +62,7 @@ const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
     { timeframe: "3 years", timeunit: "quarter" },
     { timeframe: "5 years", timeunit: "year" },
   ];
+
   return (
     <div className="relative w-full h-full">
       <header>
@@ -67,7 +71,15 @@ const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
           <div className=" flex flex-row justify-end w-4/12 h-8">
             <button
               className="bg-gray text-icongray text-sm h-full w-6/12 mr-2.5 rounded-md"
-              onClick={() => handleCostBasis()}
+              onClick={() =>
+                setComparators((prev: any) => {
+                  return {
+                    costbasis: !prev.costbasis,
+                    btc: prev.btc,
+                    eth: prev.eth,
+                  };
+                })
+              }
             >
               {" "}
               Cost Basis{" "}
@@ -99,11 +111,33 @@ const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
           {formatCurrency(currentValue)}
         </p>
         <div className="flex flex-row h-10 items-center mt-5">
-          <button className="mt-1 mr-2 text-3xl h-full rounded-md">
+          <button
+            className="mt-1 mr-2 text-3xl h-full rounded-md"
+            onClick={() =>
+              setComparators((prev: any) => {
+                return {
+                  costbasis: prev.costbasis,
+                  btc: !prev.btc,
+                  eth: prev.eth,
+                };
+              })
+            }
+          >
             {" "}
             <BitcoinIcon />{" "}
           </button>
-          <button className="mt-1 text-3xl h-full rounded-md ">
+          <button
+            className="mt-1 text-3xl h-full rounded-md "
+            onClick={() =>
+              setComparators((prev: any) => {
+                return {
+                  costbasis: prev.costbasis,
+                  btc: prev.btc,
+                  eth: !prev.eth,
+                };
+              })
+            }
+          >
             {" "}
             <EthereumIcon />{" "}
           </button>
@@ -112,6 +146,18 @@ const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
             <div className=" bg-black rounded-sm h-3 w-3 mr-1" />
             My Assets{" "}
           </button>
+          {comparators.btc === true ? (
+            <div className="flex flex-row">
+              {" "}
+              <div className="border border-gray"> </div> Bitcoin{" "}
+            </div>
+          ) : null}
+          {comparators.eth === true ? (
+            <div>
+              {" "}
+              <div className=" border border-black"> </div> Ethereum{" "}
+            </div>
+          ) : null}
         </div>
       </header>
       <div className="w-full h-4/6">
@@ -124,6 +170,7 @@ const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
             <LineComponent
               processedQueryData={processedQueryData}
               timeframe={timeframe}
+              costbasis={comparators.costbasis}
             />
           )}
         </div>
@@ -137,7 +184,8 @@ export default AssetValueChartComponent;
 const LineComponent = (props: any) => {
   const lineConfig = formatMainLineData(
     props.processedQueryData,
-    props.timeframe
+    props.timeframe,
+    props.costbasis
   );
   return <Line data={lineConfig.data} options={lineConfig.config} />;
 };

@@ -48,9 +48,7 @@ export const useValueChart = (
       error: new Error("No queryConstructor provided"),
     };
   }
-  console.log("Key", queryConstructor.qKey);
-  console.log("Searchquery", queryConstructor.searchquery);
-  const { data, isLoading, isError, error } = useQuery({
+  const { data, isLoading, isError, error, isSuccess } = useQuery({
     queryKey: [queryConstructor.qKey],
     staleTime: 5000,
     gcTime: 5000,
@@ -68,7 +66,7 @@ export const useValueChart = (
     enabled: queryConstructor.qKey.length > 0,
   });
   const processedQueryData = data;
-  return { processedQueryData, isLoading, isError, error };
+  return { processedQueryData, isLoading, isError, error, isSuccess };
 };
 
 export const useDetailComponent = (props: any) => {

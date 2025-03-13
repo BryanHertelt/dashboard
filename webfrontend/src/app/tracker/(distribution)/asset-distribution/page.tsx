@@ -8,7 +8,7 @@ import {
 const AssetDistribution = async () => {
   const [assetDistributionResponse, initialLineLoad] = await Promise.all([
     await getPortfolioData(),
-    await getTimeFrames("7days"),
+    await getTimeFrames("timeframe", "7days"),
   ]);
 
   if (assetDistributionResponse === "failed") {
