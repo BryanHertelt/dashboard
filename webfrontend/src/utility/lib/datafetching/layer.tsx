@@ -57,13 +57,13 @@ export const getDetailAssetData = async (
 };
 
 export const getTimeFrames = async (timeframe: string) => {
+  const scope = "timeframe";
   try {
     console.log("called");
-    let rawdata = await fetch(`${baseUrl}/timeframes?timeframe=${timeframe}`, {
+    let rawdata = await fetch(`${baseUrl}/timeframes?${scope}=${timeframe}`, {
       cache: "no-store",
     });
     let data = await rawdata.json();
-
     data.map((timebit: { x: string; y: number }) => {
       if (typeof timebit.x != "string") {
         throw new Error("Wrong format for timestamps");

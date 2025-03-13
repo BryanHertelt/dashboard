@@ -42,7 +42,7 @@ export const formatMainLineData = (
       }),
       datasets: [
         {
-          label: "currentValue",
+          label: "networth",
           data: processedQueryData,
           borderColor: "#005BEA",
           backgroundColor: (context: any) => {

@@ -18,3 +18,24 @@ export const prefetchDetailComponent = async (
     },
   });
 };
+
+// not useful right now
+export const prefetchChartData = async (
+  queryClient: any,
+  qKey: string[],
+  queryFunction: any,
+  searchquery: string
+) => {
+  await queryClient.prefetchQuery({
+    queryKey: [qKey],
+    queryFn: async () => {
+      const result = await queryFunction(searchquery);
+      return result;
+    },
+    staleTime: 2000,
+    gcTime: 2000,
+    retryDelay: (attemptIndex: number): number => {
+      return Math.min(1000 * 2 * attemptIndex, 33000);
+    },
+  });
+};

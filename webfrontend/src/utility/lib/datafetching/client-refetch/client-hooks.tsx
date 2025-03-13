@@ -41,23 +41,22 @@ export const useValueChart = (
     console.error(
       "useDistributionData Hook: Refetch not possible, because there is no queryConstructor provided."
     );
-    /** 
     return {
       processedQueryData: [],
       isLoading: false,
       isError: true,
       error: new Error("No queryConstructor provided"),
     };
-    */
   }
   console.log("Key", queryConstructor.qKey);
   console.log("Searchquery", queryConstructor.searchquery);
   const { data, isLoading, isError, error } = useQuery({
     queryKey: [queryConstructor.qKey],
-    staleTime: 2000,
-    gcTime: 2000,
+    staleTime: 5000,
+    gcTime: 5000,
     queryFn: async () => {
       const result = await queryConstructor.queryFunction(
+        queryConstructor.scope,
         queryConstructor.searchquery
       );
       console.log("This is the resul ", result);

@@ -66,6 +66,7 @@ export interface QueryConstructorInterfaceChart {
   queryFunction: any; 
   cacheTime?: number;
   searchquery: string; 
+  scope: string
 }
 
 export interface PortfolioDataInterface {

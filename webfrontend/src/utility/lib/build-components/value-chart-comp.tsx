@@ -27,7 +27,17 @@ const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
     initialData: initialData,
     queryFunction: getTimeFrames,
     searchquery: timeframe.timeframe.replace(" ", ""),
+    scope: "timeframe",
   });
+
+  const handleTimeFrames = (item: any) => {
+    setTimeframe(item);
+    setToggled(!toggled);
+  };
+
+  const handleCostBasis = async () => {
+    const result = await fetch("localhost");
+  };
 
   const dropDownDesign =
     toggled === false
@@ -35,6 +45,7 @@ const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
       : "card flex flex-col border-rounded w-3/12 h-3/6 overflow-auto bg-blue";
 
   const dropDownMenuValues = [
+    { timeframe: "YTD", timeunit: "month" },
     { timeframe: "all", timeunit: "year" },
     { timeframe: "1 hour", timeunit: "minute" },
     { timeframe: "4 hours", timeunit: "minute" },
@@ -54,7 +65,10 @@ const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
         <div className=" flex flex-row justify-between">
           <h1 className="font-medium text-xl"> Assets </h1>
           <div className=" flex flex-row justify-end w-4/12 h-8">
-            <button className="bg-gray text-icongray text-sm h-full w-6/12 mr-2.5 rounded-md">
+            <button
+              className="bg-gray text-icongray text-sm h-full w-6/12 mr-2.5 rounded-md"
+              onClick={() => handleCostBasis()}
+            >
               {" "}
               Cost Basis{" "}
             </button>
@@ -72,10 +86,7 @@ const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
               return (
                 <button
                   key={item.timeframe}
-                  onClick={() => {
-                    setTimeframe(item);
-                    setToggled(!toggled);
-                  }}
+                  onClick={() => handleTimeFrames(item)}
                   className="border-b-2 border-solid border-gray w-full"
                 >
                   {item.timeframe}
