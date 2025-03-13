@@ -52,10 +52,9 @@ export const useValueChart = (
   console.log("Key", queryConstructor.qKey);
   console.log("Searchquery", queryConstructor.searchquery);
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: queryConstructor.qKey,
-    initialData: queryConstructor.initialData,
-    staleTime: 1000,
-    gcTime: 1000,
+    queryKey: [queryConstructor.qKey],
+    staleTime: 2000,
+    gcTime: 2000,
     queryFn: async () => {
       const result = await queryConstructor.queryFunction(
         queryConstructor.searchquery
@@ -66,7 +65,7 @@ export const useValueChart = (
     retryDelay: (attemptIndex: number): number => {
       return Math.min(1000 * 2 * attemptIndex, 33000);
     },
-    enabled: !!queryConstructor.qKey,
+    enabled: queryConstructor.qKey.length > 0,
   });
   const processedQueryData = data;
   return { processedQueryData, isLoading, isError, error };
