@@ -6,6 +6,7 @@ import {
   QueryConstructorInterfaceChart,
 } from "../../types/data-fetching-types";
 import { getDetailAssetData } from "../layer";
+import { formatMainLineData } from "../../design-components/charts/main-chart-line-formatter";
 
 export const useDistributionData = (
   queryConstructor: QueryConstructorInterfaceDistribution

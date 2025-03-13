@@ -29,7 +29,7 @@ ChartJS.register(
 );
 
 export const formatMainLineData = (
-  processedQueryData: { x: string; y: number }[],
+  processedQueryData: any,
   timeframe: {
     timeframe: string;
     timeunit: any;

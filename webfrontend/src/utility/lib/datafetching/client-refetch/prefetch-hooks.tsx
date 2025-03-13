@@ -1,4 +1,5 @@
 import { getDetailAssetData } from "../layer";
+import { getTimeFrame } from "../../utils";
 
 export const prefetchDetailComponent = async (
   assettype: string,

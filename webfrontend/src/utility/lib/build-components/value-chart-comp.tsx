@@ -29,16 +29,6 @@ const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
     searchquery: timeframe.timeframe.replace(" ", ""),
   });
 
-  if (isError) {
-    return <ErrorSkeleton />;
-  }
-  if (isLoading) {
-    console.log("Is Loading");
-    return <LoadingSkeleton />;
-  }
-
-  const lineConfig = formatMainLineData(processedQueryData, timeframe);
-
   const dropDownDesign =
     toggled === false
       ? "hidden"
@@ -115,7 +105,16 @@ const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
       </header>
       <div className="w-full h-4/6">
         <div className="flex flex-row justify-center w-full h-full">
-          <Line data={lineConfig.data} options={lineConfig.config} />
+          {isLoading ? (
+            <LoadingSkeleton />
+          ) : isError ? (
+            <ErrorSkeleton />
+          ) : (
+            <LineComponent
+              processedQueryData={processedQueryData}
+              timeframe={timeframe}
+            />
+          )}
         </div>
       </div>
     </div>
@@ -123,3 +122,11 @@ const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
 };
 
 export default AssetValueChartComponent;
+
+const LineComponent = (props: any) => {
+  const lineConfig = formatMainLineData(
+    props.processedQueryData,
+    props.timeframe
+  );
+  return <Line data={lineConfig.data} options={lineConfig.config} />;
+};
