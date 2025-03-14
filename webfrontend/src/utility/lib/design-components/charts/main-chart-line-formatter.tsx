@@ -34,17 +34,25 @@ export const formatMainLineData = (
     timeframe: string;
     timeunit: any;
   },
-  costbasis: boolean
+  comparators: { costbasis: boolean; btc: boolean; eth: boolean },
+  scope: string
 ): { data: any; config: ChartOptions<"line"> } => {
-  const portfolioData = processedQueryData[0];
-
-  const costBasisData = costbasis === false ? null : processedQueryData[1];
+  const secondDataSet =
+    comparators.costbasis === false
+      ? null
+      : processedQueryData.map(
+          (timestamp: { x: string; y: number[] }) => timestamp.y[1]
+        );
+  const portfolioData = processedQueryData.map(
+    (timestamp: { x: string; y: number[] }) => timestamp.y[0]
+  );
+  const timestamps = processedQueryData.map(
+    (timestamp: { x: string; y: number }) => timestamp.x
+  );
 
   return {
     data: {
-      labels: portfolioData.map((x: any) => {
-        return x.x;
-      }),
+      labels: timestamps,
       datasets: [
         {
           label: "networth",
@@ -76,7 +84,7 @@ export const formatMainLineData = (
         },
         {
           label: "invest",
-          data: costBasisData,
+          data: secondDataSet,
           borderColor: "#005BEA",
         },
       ],

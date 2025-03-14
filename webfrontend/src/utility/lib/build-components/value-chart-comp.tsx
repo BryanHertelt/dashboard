@@ -11,7 +11,6 @@ import {
   LoadingSkeleton,
   ErrorSkeleton,
 } from "../datafetching/loading-skeleton";
-import { useQueryClient } from "@tanstack/react-query";
 
 const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
   const [comparators, setComparators] = useState({
@@ -29,14 +28,13 @@ const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
   const [toggled, setToggled] = useState<boolean>(true);
   const [scope, setScope] = useState<string>("portfoliotimeframes");
 
-  const { processedQueryData, isLoading, isError, error, isSuccess } =
-    useValueChart({
-      qKey: [timeframe.timeframe.toString()],
-      initialData: initialData,
-      queryFunction: getTimeFrames,
-      searchquery: timeframe.timeframe.replace(" ", ""),
-      scope: "timeframes",
-    });
+  const { processedQueryData, isLoading, isError } = useValueChart({
+    qKey: [scope, timeframe.timeframe.toString()],
+    initialData: initialData,
+    queryFunction: getTimeFrames,
+    searchquery: timeframe.timeframe.replace(" ", ""),
+    scope: scope,
+  });
 
   const handleTimeFrames = (item: any) => {
     setComparators((prev: any) => {
@@ -50,7 +48,6 @@ const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
     setTimeframe(item);
     setToggled(!toggled);
   };
-
   const dropDownDesign =
     toggled === false
       ? "hidden"
@@ -126,7 +123,7 @@ const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
               setScope("development");
               setComparators((prev: any) => {
                 return {
-                  costbasis: prev.costbasis,
+                  costbasis: false,
                   btc: !prev.btc,
                   eth: prev.eth,
                 };
@@ -142,7 +139,7 @@ const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
               setScope("development");
               setComparators((prev: any) => {
                 return {
-                  costbasis: prev.costbasis,
+                  costbasis: false,
                   btc: prev.btc,
                   eth: !prev.eth,
                 };
@@ -181,7 +178,8 @@ const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
             <LineComponent
               processedQueryData={processedQueryData}
               timeframe={timeframe}
-              costbasis={comparators.costbasis}
+              comparators={comparators}
+              scope={scope}
             />
           )}
         </div>
@@ -196,7 +194,8 @@ const LineComponent = (props: any) => {
   const lineConfig = formatMainLineData(
     props.processedQueryData,
     props.timeframe,
-    props.costbasis
+    props.comparators,
+    props.scope
   );
   return <Line data={lineConfig.data} options={lineConfig.config} />;
 };

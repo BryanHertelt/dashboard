@@ -57,7 +57,6 @@ export const useValueChart = (
         queryConstructor.scope,
         queryConstructor.searchquery
       );
-      console.log("This is the resul ", result);
       return result;
     },
     retryDelay: (attemptIndex: number): number => {
@@ -65,6 +64,7 @@ export const useValueChart = (
     },
     enabled: queryConstructor.qKey.length > 0,
   });
+  console.log("data", data);
   const processedQueryData = data;
   return { processedQueryData, isLoading, isError, error, isSuccess };
 };

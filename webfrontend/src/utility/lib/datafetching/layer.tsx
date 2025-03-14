@@ -59,23 +59,23 @@ export const getDetailAssetData = async (
 export const getTimeFrames = async (scope: string, timeframe: string) => {
   try {
     console.log("called");
-    let rawdata = await fetch(
-      `${baseUrl}/portfoliotimeframes?${scope}=${timeframe}`,
-      {
-        cache: "no-store",
-      }
-    );
+    let rawdata = await fetch(`${baseUrl}/${scope}?timeframe=${timeframe}`, {
+      cache: "no-store",
+    });
     let data = await rawdata.json();
-    data.map((data: any) =>
-      data.map((timebit: { x: string; y: number }) => {
+
+    if (scope === "portfoliotimeframes") {
+      data.map((timebit: { x: string; y: number[] }) => {
         if (typeof timebit.x != "string") {
           throw new Error("Wrong format for timestamps");
         }
-        if (typeof timebit.y != "number") {
-          throw new Error("Wrong Format for Values");
-        }
-      })
-    );
+        timebit.y.map((y) => {
+          if (typeof y != "number") {
+            return new Error("Wrong format for values");
+          }
+        });
+      });
+    }
     return data;
   } catch (error) {
     throw new Error(`Error occured while fetching the timeframe`, {
