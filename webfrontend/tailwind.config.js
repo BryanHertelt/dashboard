@@ -25,7 +25,10 @@ module.exports = {
 		green: '#04B900', 
 		lightgreen: 'rgba(4, 185, 0, 0.1)',
 		red: '#DA0000',
-		lightred: 'rgba(218, 0, 0, 0.1)'
+		lightred: 'rgba(218, 0, 0, 0.1)', 
+		bitcoinyellow:"#FFD600" , 
+		ethereumblue: "#89C6FF ", 
+		flyzerblue: "#005BEA", 
   	},
 	screens: {
 		sm: "640px", 

@@ -1,4 +1,12 @@
 import "chartjs-adapter-date-fns";
+import {
+  icongray,
+  bitcoinYellow,
+  ethereumBlue,
+  flyzerBlue,
+  chartBgColors,
+  black,
+} from "../../helpers/colors";
 
 import {
   Chart as ChartJS,
@@ -60,6 +68,8 @@ export const formatMainLineData = (
     (timestamp: { x: string; y: number }) => timestamp.x
   );
 
+  console.log(timeframe.timeframe);
+
   return {
     data: {
       labels: timestamps,
@@ -67,40 +77,37 @@ export const formatMainLineData = (
         {
           label: "networth",
           data: portfolioData,
-          borderColor: "#005BEA",
+          borderColor: scope === "development" ? black : flyzerBlue,
           backgroundColor: (context: any) => {
-            const bgColor = [
-              "rgba(0, 91, 234, 0.3)",
-              "rgba(0, 91, 234, 0.2)",
-              "rgba(0, 91, 234, 0.01)",
-            ];
             if (!context.chart.chartArea) {
-              return "rgba(0, 91, 234, 0.1)";
+              return chartBgColors[2];
             }
             const {
               ctx,
               chartArea: { top, bottom },
             } = context.chart;
             const gradientBg = ctx.createLinearGradient(0, top, 0, bottom);
-            const colorTranches = 1 / (bgColor.length - 1);
+            const colorTranches = 1 / (chartBgColors.length - 1);
 
-            for (let i = 0; i < bgColor.length; i++) {
-              gradientBg.addColorStop(i * colorTranches, bgColor[i]);
+            for (let i = 0; i < chartBgColors.length; i++) {
+              gradientBg.addColorStop(i * colorTranches, chartBgColors[i]);
             }
             return gradientBg;
           },
           pointRadius: 0,
-          fill: true,
+          fill: scope === "development" ? false : true,
         },
         {
-          label: "invest",
+          label: scope === "development" ? "change" : "invest",
           data: secondDataSet,
-          borderColor: "#005BEA",
+          borderColor: comparators.btc === true ? bitcoinYellow : icongray,
+          pointRadius: 0,
         },
         {
-          label: "invest",
+          label: "change",
           data: thirdDataSet,
-          borderColor: "#005BEA",
+          borderColor: ethereumBlue,
+          pointRadius: 0,
         },
       ],
     },
@@ -117,6 +124,14 @@ export const formatMainLineData = (
           type: "time",
           time: {
             unit: timeframe.timeunit,
+          },
+          ticks: {
+            stepSize:
+              timeframe.timeframe === "1 hour"
+                ? 10
+                : timeframe.timeframe === "7 days"
+                ? 1
+                : 10,
           },
         },
         y: {
