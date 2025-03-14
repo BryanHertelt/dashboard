@@ -37,12 +37,22 @@ export const formatMainLineData = (
   comparators: { costbasis: boolean; btc: boolean; eth: boolean },
   scope: string
 ): { data: any; config: ChartOptions<"line"> } => {
+  const thirdDataSet =
+    comparators.eth === true && scope === "development"
+      ? processedQueryData.map(
+          (timestamp: { x: string; y: number[] }) => timestamp.y[2]
+        )
+      : null;
   const secondDataSet =
-    comparators.costbasis === false
-      ? null
-      : processedQueryData.map(
+    comparators.costbasis === true && scope === "portfoliotimeframes"
+      ? processedQueryData.map(
           (timestamp: { x: string; y: number[] }) => timestamp.y[1]
-        );
+        )
+      : comparators.btc === true && scope === "development"
+      ? processedQueryData.map(
+          (timestamp: { x: string; y: number[] }) => timestamp.y[1]
+        )
+      : null;
   const portfolioData = processedQueryData.map(
     (timestamp: { x: string; y: number[] }) => timestamp.y[0]
   );
@@ -85,6 +95,11 @@ export const formatMainLineData = (
         {
           label: "invest",
           data: secondDataSet,
+          borderColor: "#005BEA",
+        },
+        {
+          label: "invest",
+          data: thirdDataSet,
           borderColor: "#005BEA",
         },
       ],

@@ -64,7 +64,6 @@ export const useValueChart = (
     },
     enabled: queryConstructor.qKey.length > 0,
   });
-  console.log("data", data);
   const processedQueryData = data;
   return { processedQueryData, isLoading, isError, error, isSuccess };
 };

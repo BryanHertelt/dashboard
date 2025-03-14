@@ -58,7 +58,6 @@ export const getDetailAssetData = async (
 
 export const getTimeFrames = async (scope: string, timeframe: string) => {
   try {
-    console.log("called");
     let rawdata = await fetch(`${baseUrl}/${scope}?timeframe=${timeframe}`, {
       cache: "no-store",
     });

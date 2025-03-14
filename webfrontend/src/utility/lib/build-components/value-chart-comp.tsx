@@ -26,16 +26,32 @@ const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
     timeunit: "day",
   });
   const [toggled, setToggled] = useState<boolean>(true);
-  const [scope, setScope] = useState<string>("portfoliotimeframes");
+  const [scope, setScope] = useState<string>(
+    comparators.btc === false && comparators.eth === false
+      ? "portfoliotimeframes"
+      : "development"
+  );
 
   const { processedQueryData, isLoading, isError } = useValueChart({
-    qKey: [scope, timeframe.timeframe.toString()],
+    qKey: [
+      comparators.btc === false && comparators.eth === false
+        ? "portfoliotimeframes"
+        : "development",
+      timeframe.timeframe.toString(),
+    ],
     initialData: initialData,
     queryFunction: getTimeFrames,
     searchquery: timeframe.timeframe.replace(" ", ""),
-    scope: scope,
+    scope:
+      comparators.btc === false && comparators.eth === false
+        ? "portfoliotimeframes"
+        : "development",
   });
 
+  console.log(
+    "comparators states",
+    comparators.btc === false && comparators.eth === false
+  );
   const handleTimeFrames = (item: any) => {
     setComparators((prev: any) => {
       return {
@@ -68,7 +84,6 @@ const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
     { timeframe: "3 years", timeunit: "quarter" },
     { timeframe: "5 years", timeunit: "year" },
   ];
-  console.log("scope", scope);
   return (
     <div className="relative w-full h-full">
       <header>
@@ -80,7 +95,8 @@ const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
               onClick={() =>
                 setComparators((prev: any) => {
                   return {
-                    costbasis: !prev.costbasis,
+                    costbasis:
+                      scope != "development" ? !prev.costbasis : prev.costbasis,
                     btc: prev.btc,
                     eth: prev.eth,
                   };
@@ -120,7 +136,6 @@ const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
           <button
             className="mt-1 mr-2 text-3xl h-full rounded-md"
             onClick={() => {
-              setScope("development");
               setComparators((prev: any) => {
                 return {
                   costbasis: false,
@@ -136,7 +151,6 @@ const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
           <button
             className="mt-1 text-3xl h-full rounded-md "
             onClick={() => {
-              setScope("development");
               setComparators((prev: any) => {
                 return {
                   costbasis: false,
@@ -179,7 +193,11 @@ const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
               processedQueryData={processedQueryData}
               timeframe={timeframe}
               comparators={comparators}
-              scope={scope}
+              scope={
+                comparators.btc === false && comparators.eth === false
+                  ? "portfoliotimeframes"
+                  : "development"
+              }
             />
           )}
         </div>
