@@ -27,6 +27,7 @@ const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
     timeunit: "day",
   });
   const [toggled, setToggled] = useState<boolean>(true);
+  const [scope, setScope] = useState<string>("portfoliotimeframes");
 
   const { processedQueryData, isLoading, isError, error, isSuccess } =
     useValueChart({
@@ -34,10 +35,18 @@ const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
       initialData: initialData,
       queryFunction: getTimeFrames,
       searchquery: timeframe.timeframe.replace(" ", ""),
-      scope: "timeframe",
+      scope: "timeframes",
     });
 
   const handleTimeFrames = (item: any) => {
+    setComparators((prev: any) => {
+      return {
+        costbasis: prev.costbasis,
+        btc: false,
+        eth: false,
+      };
+    });
+    setScope("portfoliotimeframes");
     setTimeframe(item);
     setToggled(!toggled);
   };
@@ -62,7 +71,7 @@ const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
     { timeframe: "3 years", timeunit: "quarter" },
     { timeframe: "5 years", timeunit: "year" },
   ];
-
+  console.log("scope", scope);
   return (
     <div className="relative w-full h-full">
       <header>
@@ -113,30 +122,32 @@ const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
         <div className="flex flex-row h-10 items-center mt-5">
           <button
             className="mt-1 mr-2 text-3xl h-full rounded-md"
-            onClick={() =>
+            onClick={() => {
+              setScope("development");
               setComparators((prev: any) => {
                 return {
                   costbasis: prev.costbasis,
                   btc: !prev.btc,
                   eth: prev.eth,
                 };
-              })
-            }
+              });
+            }}
           >
             {" "}
             <BitcoinIcon />{" "}
           </button>
           <button
             className="mt-1 text-3xl h-full rounded-md "
-            onClick={() =>
+            onClick={() => {
+              setScope("development");
               setComparators((prev: any) => {
                 return {
                   costbasis: prev.costbasis,
                   btc: prev.btc,
                   eth: !prev.eth,
                 };
-              })
-            }
+              });
+            }}
           >
             {" "}
             <EthereumIcon />{" "}
@@ -147,15 +158,15 @@ const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
             My Assets{" "}
           </button>
           {comparators.btc === true ? (
-            <div className="flex flex-row">
-              {" "}
-              <div className="border border-gray"> </div> Bitcoin{" "}
+            <div className="flex flex-row items-center justify-center bg-gray text-black text-xs w-1/12 h-4/5 rounded-sm mt-1">
+              <div className=" bg-black rounded-sm h-3 w-3 mr-1" />
+              Bitcoin{" "}
             </div>
           ) : null}
           {comparators.eth === true ? (
-            <div>
-              {" "}
-              <div className=" border border-black"> </div> Ethereum{" "}
+            <div className="flex flex-row items-center justify-center bg-gray text-black text-xs w-1/12 h-4/5 rounded-sm mt-1">
+              <div className=" bg-black rounded-sm h-3 w-3 mr-1" />
+              Ethereum{" "}
             </div>
           ) : null}
         </div>
