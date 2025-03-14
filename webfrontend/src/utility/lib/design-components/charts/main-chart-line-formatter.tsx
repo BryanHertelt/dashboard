@@ -6,8 +6,9 @@ import {
   flyzerBlue,
   chartBgColors,
   black,
+  white,
 } from "../../helpers/colors";
-
+import { formatCurrency } from "../../helpers/helper-functions";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -118,6 +119,23 @@ export const formatMainLineData = (
         legend: {
           display: false,
         },
+        tooltip: {
+          callbacks: {
+            title: () => "",
+            label: (context) => {
+              console.log("context", context);
+              return [
+                `Price:       ${formatCurrency(Number(context.raw))}`,
+                `Date:        ${context.label.substring(0, 12)}`,
+                `Time:        ${context.label.substring(13, 26)}`,
+              ];
+            },
+          },
+          displayColors: false,
+          backgroundColor: white,
+          bodyColor: icongray,
+          cornerRadius: 5,
+        },
       },
       scales: {
         x: {
@@ -131,6 +149,12 @@ export const formatMainLineData = (
                 ? 10
                 : timeframe.timeframe === "7 days"
                 ? 1
+                : timeframe.timeframe === "6 months"
+                ? 1
+                : timeframe.timeframe === "1 year"
+                ? 2
+                : timeframe.timeframe === "3 years"
+                ? 6
                 : 10,
           },
         },

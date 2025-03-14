@@ -25,7 +25,7 @@ const AssetDistributionComponent = (props: any) => {
 
   return (
     <>
-      <div className="card h-4/6 w-8/12 flex-grow pl-7 py-7 pr-8">
+      <div className="card h-4/6 w-8/12 flex-grow pl-7 pt-7 pr-8">
         <AssetValueChartComponent
           currentValue={processedQueryData.currentvalue}
           initialData={props.initialLineLoad}

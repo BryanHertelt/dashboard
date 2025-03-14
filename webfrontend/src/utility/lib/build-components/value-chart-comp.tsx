@@ -11,6 +11,7 @@ import {
   LoadingSkeleton,
   ErrorSkeleton,
 } from "../datafetching/loading-skeleton";
+import { isSymbolObject } from "util/types";
 
 const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
   const [comparators, setComparators] = useState({
@@ -25,7 +26,7 @@ const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
     timeframe: "7 days",
     timeunit: "day",
   });
-  const [toggled, setToggled] = useState<boolean>(true);
+  const [toggled, setToggled] = useState<boolean>(false);
 
   const scope =
     comparators.btc === false && comparators.eth === false
@@ -54,10 +55,10 @@ const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
   const dropDownDesign =
     toggled === false
       ? "hidden"
-      : "card flex flex-col border-rounded w-3/12 h-3/6 overflow-auto bg-blue";
+      : "card flex flex-col border-rounded w-60 h-48 overflow-auto bg-blue lg:w-74";
 
   const buttonLine =
-    "flex flex-row items-center justify-center bg-gray text-black text-xs w-28 h-4/5 rounded-sm mt-1 ml-3";
+    "flex flex-row items-center justify-center bg-gray text-black text-xs w-40 h-4/5 rounded-sm mt-1 ml-3";
 
   const dropDownMenuValues = [
     { timeframe: "YTD", timeunit: "month" },
@@ -70,18 +71,25 @@ const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
     { timeframe: "1 month", timeunit: "day" },
     { timeframe: "3 months", timeunit: "week" },
     { timeframe: "6 months", timeunit: "month" },
-    { timeframe: "1 year", timeunit: "quarter" },
-    { timeframe: "3 years", timeunit: "quarter" },
+    { timeframe: "1 year", timeunit: "month" },
+    { timeframe: "3 years", timeunit: "month" },
     { timeframe: "5 years", timeunit: "year" },
   ];
+  if (isLoading) {
+    console.log("Is Loading");
+  } else {
+    console.log(processedQueryData);
+  }
   return (
     <div className="relative w-full h-full">
-      <header>
-        <div className=" flex flex-row justify-between">
+      <header className="flex-wrap">
+        <div className=" flex flex-row justify-between flex-wrap">
           <h1 className="font-medium text-xl"> Assets </h1>
           <div className=" flex flex-row justify-end w-4/12 h-8">
             <button
-              className="bg-gray text-icongray text-sm h-full w-6/12 mr-2.5 rounded-md"
+              className={`${
+                comparators.costbasis ? "border border-black" : "none"
+              } bg-gray text-black text-sm h-full w-4/12 mr-2.5 rounded-md`}
               onClick={() =>
                 setComparators((prev: any) => {
                   return {
@@ -100,20 +108,20 @@ const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
             </button>
             <button
               onClick={() => setToggled(!toggled)}
-              className="bg-gray text-icongray text-sm h-full w-3/12 rounded-md"
+              className="bg-gray text-black text-sm h-full w-2/12 rounded-md"
             >
               {timeframe.timeframe == "12 hours"
                 ? timeframe.timeframe.substring(0, 4).replace(" ", "")
                 : timeframe.timeframe.substring(0, 3).replace(" ", "")}{" "}
             </button>
           </div>
-          <div className={`${dropDownDesign} absolute top-1/4 right-1`}>
+          <div className={`${dropDownDesign} absolute top-10 right-1`}>
             {dropDownMenuValues.map((item: any, index: number) => {
               return (
                 <button
                   key={item.timeframe}
                   onClick={() => handleTimeFrames(item)}
-                  className="border-b-2 border-solid border-gray w-full"
+                  className={`flex flex-row justify-start border-b-2 border-solid border-gray w-full py-2 px-4 text-black text-sm hover:bg-gray`}
                 >
                   {item.timeframe}
                 </button>
@@ -124,62 +132,97 @@ const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
         <p className=" w-11/12 font-semibold text-2xl text-currentvaluefont">
           {formatCurrency(currentValue)}
         </p>
-        <div className="flex flex-row h-10 items-center mt-1 border border-icongray">
-          <button
-            className="mt-1 mr-2 text-3xl h-full rounded-md"
-            onClick={() => {
-              setComparators((prev: any) => {
-                return {
-                  costbasis: false,
-                  btc: !prev.btc,
-                  eth: prev.eth,
-                };
-              });
-            }}
-          >
-            {" "}
-            <BitcoinIcon />{" "}
-          </button>
-          <button
-            className="mt-1 text-3xl h-full rounded-md "
-            onClick={() => {
-              setComparators((prev: any) => {
-                return {
-                  costbasis: false,
-                  btc: prev.btc,
-                  eth: !prev.eth,
-                };
-              });
-            }}
-          >
-            {" "}
-            <EthereumIcon />{" "}
-          </button>
-          <div className="border border-left  border-gray h-4/5 w-0 mx-5 mt-1 " />
-          <button className={`${buttonLine}`}>
-            <div
-              className={`${
-                scope === "development" ? "bg-black" : "bg-flyzerblue"
-              } rounded-sm h-3 w-3 mr-1`}
-            />
-            My Assets{" "}
-          </button>
-          {comparators.btc === true ? (
-            <div className={`${buttonLine}`}>
-              <div className=" bg-bitcoinyellow rounded-sm h-3 w-3 mr-1" />
-              Bitcoin{" "}
-            </div>
-          ) : null}
-          {comparators.eth === true ? (
-            <div className={`${buttonLine}`}>
-              <div className=" bg-ethereumblue rounded-sm h-3 w-3 mr-1" />
-              Ethereum{" "}
-            </div>
-          ) : null}
+        <div className="flex flex-row">
+          <div className="flex flex-row h-10 items-center mt-1">
+            <button
+              className="mt-1 mr-2 text-3xl h-full rounded-md"
+              onClick={() => {
+                setComparators((prev: any) => {
+                  return {
+                    costbasis: false,
+                    btc: !prev.btc,
+                    eth: prev.eth,
+                  };
+                });
+              }}
+            >
+              {" "}
+              <BitcoinIcon />{" "}
+            </button>
+            <button
+              className="mt-1 text-3xl h-full rounded-md "
+              onClick={() => {
+                setComparators((prev: any) => {
+                  return {
+                    costbasis: false,
+                    btc: prev.btc,
+                    eth: !prev.eth,
+                  };
+                });
+              }}
+            >
+              {" "}
+              <EthereumIcon />{" "}
+            </button>
+            <div className="border border-left  border-gray h-4/5 w-0 mx-5 mt-1 " />
+            <button className={`${buttonLine} flex flex-row`}>
+              <div
+                className={` ${
+                  scope === "development" ? "bg-black" : "bg-flyzerblue"
+                } rounded-sm h-3 w-3 mr-2 `}
+              />
+              <p> My Assets </p>
+              {isLoading === true ? null : scope === "development" ? (
+                <>
+                  <p className="ml-1"> ≈ </p>
+                  <p className="text-xs ml-1">
+                    {processedQueryData[
+                      processedQueryData.length - 1
+                    ].y[0].toString()}{" "}
+                    %
+                  </p>
+                </>
+              ) : null}
+            </button>
+            {comparators.costbasis === true ? (
+              <div className={`${buttonLine} flex flex-row`}>
+                <div className="bg-icongray rounded-sm h-3 w-3 mr-1" />
+                <p className="ml-1"> Cost Basis </p>
+              </div>
+            ) : null}
+            {comparators.btc === true ? (
+              <div className={`${buttonLine} flex flex-row`}>
+                <div className="bg-bitcoinyellow rounded-sm h-3 w-3 mr-1" />
+                <p className="ml-1"> Bitcoin ≈ </p>
+                {isLoading === true ? null : (
+                  <p className="text-xs ml-1">
+                    {processedQueryData[
+                      processedQueryData.length - 1
+                    ].y[1].toString()}{" "}
+                    %
+                  </p>
+                )}
+              </div>
+            ) : null}
+            {comparators.eth === true ? (
+              <div className={`${buttonLine}`}>
+                <div className="bg-ethereumblue rounded-sm h-3 w-3 mr-1" />
+                <p className="ml-1"> Ethereum ≈ </p>
+                {isLoading === true ? null : (
+                  <p className="text-xs ml-1">
+                    {processedQueryData[
+                      processedQueryData.length - 1
+                    ].y[2].toString()}{" "}
+                    %
+                  </p>
+                )}
+              </div>
+            ) : null}
+          </div>
         </div>
       </header>
-      <div className="w-full h-4/6">
-        <div className="flex flex-row justify-center w-12/12 h-full border border-green">
+      <div className="w-full lg:h-72 xl:96 md:h-60 pb-5">
+        <div className="flex flex-row justify-center w-12/12 h-full">
           {isLoading ? (
             <LoadingSkeleton />
           ) : isError ? (
