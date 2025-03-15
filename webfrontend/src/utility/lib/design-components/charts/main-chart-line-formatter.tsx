@@ -256,7 +256,9 @@ export const formatMainLineData = (
                 ? 2
                 : timeframe.timeframe === "3 years"
                 ? 6
-                : 10,
+                : timeframe.timeframe === "5 years"
+                ? 1
+                : 2,
           },
         },
         y: {

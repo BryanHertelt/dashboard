@@ -41,17 +41,21 @@ const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
     scope: scope,
   });
 
-  const handleTimeFrames = (item: any) => {
-    setComparators((prev: any) => {
-      return {
-        costbasis: prev.costbasis,
-        btc: false,
-        eth: false,
-      };
-    });
-    setTimeframe(item);
-    setToggled(!toggled);
-  };
+  const comparatorsData = [
+    {
+      label: "Bitcoin",
+      color: "bg-bitcoinyellow",
+      index: 1,
+      comparator: comparators.btc,
+    },
+    {
+      label: "Ethereum",
+      color: "bg-ethereumblue",
+      index: 2,
+      comparator: comparators.eth,
+    },
+  ];
+
   const dropDownDesign =
     toggled === false
       ? "hidden"
@@ -75,11 +79,19 @@ const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
     { timeframe: "3 years", timeunit: "month" },
     { timeframe: "5 years", timeunit: "year" },
   ];
-  if (isLoading) {
-    console.log("Is Loading");
-  } else {
-    console.log(processedQueryData);
-  }
+
+  const handleTimeFrames = (item: any) => {
+    setComparators((prev: any) => {
+      return {
+        costbasis: prev.costbasis,
+        btc: false,
+        eth: false,
+      };
+    });
+    setTimeframe(item);
+    setToggled(!toggled);
+  };
+
   return (
     <div className="relative w-full h-full">
       <header className="flex-wrap">
@@ -190,34 +202,23 @@ const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
                 <p className="ml-1"> Cost Basis </p>
               </div>
             ) : null}
-            {comparators.btc === true ? (
-              <div className={`${buttonLine} flex flex-row`}>
-                <div className="bg-bitcoinyellow rounded-sm h-3 w-3 mr-1" />
-                <p className="ml-1"> Bitcoin ≈ </p>
-                {isLoading === true ? null : (
-                  <p className="text-xs ml-1">
-                    {processedQueryData[
-                      processedQueryData.length - 1
-                    ].y[1].toString()}{" "}
-                    %
-                  </p>
-                )}
-              </div>
-            ) : null}
-            {comparators.eth === true ? (
-              <div className={`${buttonLine}`}>
-                <div className="bg-ethereumblue rounded-sm h-3 w-3 mr-1" />
-                <p className="ml-1"> Ethereum ≈ </p>
-                {isLoading === true ? null : (
-                  <p className="text-xs ml-1">
-                    {processedQueryData[
-                      processedQueryData.length - 1
-                    ].y[2].toString()}{" "}
-                    %
-                  </p>
-                )}
-              </div>
-            ) : null}
+            {comparatorsData.map(
+              ({ label, color, index, comparator }) =>
+                comparator && (
+                  <div className={`${buttonLine} flex flex-row`} key={label}>
+                    <div className={`${color} rounded-sm h-3 w-3 mr-1`} />
+                    <p className="ml-1">{label} ≈ </p>
+                    {isLoading ? null : (
+                      <p className="text-xs ml-1">
+                        {processedQueryData[processedQueryData.length - 1].y[
+                          index
+                        ].toString()}{" "}
+                        %
+                      </p>
+                    )}
+                  </div>
+                )
+            )}
           </div>
         </div>
       </header>
