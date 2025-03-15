@@ -74,7 +74,7 @@ export const formatMainLineData = (
       labels: timestamps,
       datasets: [
         {
-          label: "networth",
+          label: scope === "development" ? "change" : "networth",
           data: portfolioData,
           borderColor: scope === "development" ? black : flyzerBlue,
           backgroundColor: (context: any) => {
@@ -118,21 +118,119 @@ export const formatMainLineData = (
           display: false,
         },
         tooltip: {
-          callbacks: {
-            title: () => "",
-            label: (context) => {
-              console.log("context", context);
-              return [
-                `Price:       ${formatCurrency(Number(context.raw))}`,
-                `Date:        ${context.label.substring(0, 12)}`,
-                `Time:        ${context.label.substring(13, 26)}`,
-              ];
-            },
+          enabled: false,
+          external: (context) => {
+            let tooltipEl = document.getElementById("chartjs-tooltip");
+
+            if (!tooltipEl) {
+              tooltipEl = document.createElement("div");
+              tooltipEl.id = "chartjs-tooltip";
+              tooltipEl.innerHTML = "<table></table>";
+              document.body.appendChild(tooltipEl);
+            }
+
+            const tooltipModel = context.tooltip;
+            if (tooltipModel.opacity === 0) {
+              tooltipEl.style.opacity = "0";
+              return;
+            }
+
+            tooltipEl.classList.remove("above", "below", "no-transform");
+            if (tooltipModel.yAlign) {
+              tooltipEl.classList.add(tooltipModel.yAlign);
+            } else {
+              tooltipEl.classList.add("no-transform");
+            }
+
+            function getBody(bodyItem: any) {
+              return bodyItem.lines;
+            }
+
+            if (tooltipModel.body) {
+              const titleLines = tooltipModel.title || [];
+              const bodyLines = tooltipModel.body.map(getBody);
+
+              let innerHtml = "<thead>";
+
+              titleLines.forEach(function () {
+                innerHtml += "<tr><th>" + "" + "</th></tr>";
+              });
+              innerHtml += "</thead><tbody>";
+
+              bodyLines.forEach(function (body, i) {
+                console.log("body", body);
+                console.log("context", context);
+                let keyStyle = "color:" + black;
+                let style = "background:" + white;
+                style += "; color: " + icongray + ";";
+                style +=
+                  "font-size: 12px ; display: flex; flex-direction: row; gap: 20px; justify-content: space-between;  ";
+                const dataSpan =
+                  '<span style="' +
+                  style +
+                  '">' +
+                  `${
+                    scope === "development"
+                      ? `<p style=${keyStyle}> Change: </p> <p>${body[0].substring(
+                          8,
+                          12
+                        )}%</p>`
+                      : `<p style=${keyStyle}> Networth: </p> <p>${formatCurrency(
+                          Number(body[0].substring(10, 50).replace(",", ""))
+                        )}</p>`
+                  }`;
+                ("</span>");
+                const dateSpan =
+                  '<span style="' +
+                  style +
+                  '">' +
+                  `<p style=${keyStyle}>` +
+                  ` Date: </p> <p> ${context.tooltip.title[0].substring(
+                    0,
+                    12
+                  )} </p> `;
+                ("</span>");
+                const timeSpan =
+                  '<span style="' +
+                  style +
+                  '">' +
+                  `<p style=${keyStyle}>` +
+                  ` Time: </p> <p> ${context.tooltip.title[0].substring(
+                    13,
+                    25
+                  )} </p> `;
+                ("</span>");
+
+                innerHtml += "<tr><td>" + dataSpan + "</td></tr>";
+                innerHtml += "<tr><td>" + dateSpan + "</td></tr>";
+                innerHtml += "<tr><td>" + timeSpan + "</td></tr>";
+              });
+              innerHtml += "</tbody>";
+
+              let tableRoot = tooltipEl.querySelector("table");
+
+              if (!tableRoot) {
+                tableRoot = document.createElement("table");
+                tooltipEl.appendChild(tableRoot);
+              }
+
+              tableRoot.innerHTML = innerHtml;
+
+              const position = context.chart.canvas.getBoundingClientRect();
+              tooltipEl.style.opacity = "1";
+              tooltipEl.style.position = "absolute";
+              tooltipEl.style.left =
+                position.left + window.scrollX + tooltipModel.caretX + "px";
+              tooltipEl.style.top =
+                position.top + window.scrollY + tooltipModel.caretY + "px";
+              tooltipEl.style.pointerEvents = "none";
+              tooltipEl.style.background = "white"; // White background
+              tooltipEl.style.borderRadius = "10px"; // Rounded edges
+              tooltipEl.style.padding = "8px"; // Padding inside tooltip
+              tooltipEl.style.boxShadow = "4px 4px 10px rgba(0, 0, 0, 0.3)"; // Shadow effect
+              tooltipEl.style.border = "1px solid rgba(0, 0, 0, 0.1)"; // Optional border
+            }
           },
-          displayColors: false,
-          backgroundColor: white,
-          bodyColor: icongray,
-          cornerRadius: 5,
         },
       },
       scales: {

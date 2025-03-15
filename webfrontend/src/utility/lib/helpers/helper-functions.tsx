@@ -1,7 +1,7 @@
 export const formatCurrency = (number: number): string => {
   if (isNaN(Number(number))) {
     console.error("Type error in formatCurrency");
-    return "";
+    return "/";
   }
   const formattedCurrency = new Intl.NumberFormat("en-US", {
     style: "currency",

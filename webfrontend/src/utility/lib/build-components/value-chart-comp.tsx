@@ -221,7 +221,7 @@ const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
           </div>
         </div>
       </header>
-      <div className="w-full lg:h-72 xl:h-96 md:h-60 md:pb-5 lp:pb-5">
+      <div className="w-full lg:h-72 xl:h-96 md:h-60 lp:h-72 md:pb-5 lg:pb-5">
         <div className="flex flex-row justify-center w-12/12 h-full">
           {isLoading ? (
             <LoadingSkeleton />
