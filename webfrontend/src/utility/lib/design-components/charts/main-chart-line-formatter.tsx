@@ -160,11 +160,12 @@ export const formatMainLineData = (
               bodyLines.forEach(function (body, i) {
                 console.log("body", body);
                 console.log("context", context);
-                let keyStyle = "color:" + black;
+                let keyStyle = "color:" + icongray;
+                keyStyle += ";font-weight: 300 !important";
                 let style = "background:" + white;
-                style += "; color: " + icongray + ";";
+                style += "; color: " + black + ";";
                 style +=
-                  "font-size: 12px ; display: flex; flex-direction: row; gap: 20px; justify-content: space-between;  ";
+                  "font-size: 12px ; display: flex; flex-direction: row; gap: 60px; justify-content: space-between;  ";
                 const dataSpan =
                   '<span style="' +
                   style +
@@ -197,7 +198,7 @@ export const formatMainLineData = (
                   `<p style=${keyStyle}>` +
                   ` Time: </p> <p> ${context.tooltip.title[0].substring(
                     13,
-                    25
+                    26
                   )} </p> `;
                 ("</span>");
 
@@ -223,10 +224,14 @@ export const formatMainLineData = (
                 position.left + window.scrollX + tooltipModel.caretX + "px";
               tooltipEl.style.top =
                 position.top + window.scrollY + tooltipModel.caretY + "px";
+              tooltipEl.style.display = "flex";
+              tooltipEl.style.flexDirection = "row";
+              tooltipEl.style.flexWrap = "wrap";
               tooltipEl.style.pointerEvents = "none";
               tooltipEl.style.background = "white"; // White background
               tooltipEl.style.borderRadius = "10px"; // Rounded edges
               tooltipEl.style.padding = "8px"; // Padding inside tooltip
+              tooltipEl.style.width = "200px";
               tooltipEl.style.boxShadow = "4px 4px 10px rgba(0, 0, 0, 0.3)"; // Shadow effect
               tooltipEl.style.border = "1px solid rgba(0, 0, 0, 0.1)"; // Optional border
             }
