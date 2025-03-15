@@ -69,8 +69,6 @@ export const formatMainLineData = (
     (timestamp: { x: string; y: number }) => timestamp.x
   );
 
-  console.log(timeframe.timeframe);
-
   return {
     data: {
       labels: timestamps,
