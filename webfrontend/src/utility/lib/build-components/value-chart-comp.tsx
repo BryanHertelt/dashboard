@@ -1,17 +1,14 @@
 "use client";
-import "chartjs-adapter-date-fns";
-import { Line } from "react-chartjs-2";
 import { BitcoinIcon, EthereumIcon } from "@/../public/images";
+import { LineComponent } from "../design-components/charts/chart-helpers";
 import { formatCurrency } from "../helpers/helper-functions";
 import { useState } from "react";
-import { formatMainLineData } from "../design-components/charts/main-chart-line-formatter";
 import { useValueChart } from "../datafetching/client-refetch/client-hooks";
 import { getTimeFrames } from "../datafetching/layer";
 import {
   LoadingSkeleton,
   ErrorSkeleton,
 } from "../datafetching/loading-skeleton";
-import { isSymbolObject } from "util/types";
 
 const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
   const [comparators, setComparators] = useState({
@@ -243,13 +240,3 @@ const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
 };
 
 export default AssetValueChartComponent;
-
-const LineComponent = (props: any) => {
-  const lineConfig = formatMainLineData(
-    props.processedQueryData,
-    props.timeframe,
-    props.comparators,
-    props.scope
-  );
-  return <Line data={lineConfig.data} options={lineConfig.config} />;
-};
