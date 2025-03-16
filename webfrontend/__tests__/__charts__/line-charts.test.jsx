@@ -34,18 +34,24 @@ jest.mock("../../node_modules/react-chartjs-2", () => ({
   })) 
 
 
-const generateComparator = (cb, btc, eth) => {
-    return {
-        costbasis: cb, 
-        btc: btc,
-        eth: eth
-    }
-}
-
-const mockQuery = [
+const portfolioQuery = [
     {"x": "2025-01-17T10:05:00.000Z", "y": [174, 174]},
     {"x": "2025-01-17T10:10:00.000Z", "y": [520, 520]},
 ]
+
+const devQuery = [
+    {"x": "2025-01-16T23:00:00.000Z", "y": [12, 14, 7]},
+    {"x": "2025-01-16T23:10:00.000Z", "y": [18, 19, 5]},
+]
+
+let result = {
+    dataP: [portfolioQuery[0].y[0], portfolioQuery[1].y[0]],
+    dataScnd: null, 
+    dataThd: null, 
+    labelFirst: "networth",
+    labelScnd: "invest", 
+    labelThd: "change", 
+  }
 
 
 const dropDownMenuValues = [
@@ -64,14 +70,6 @@ const dropDownMenuValues = [
     { timeframe: "5 years", timeunit: "year" },
   ];
 
-  const result = {
-    labelP: "networth", 
-    dataP: [mockQuery[0].y[0], mockQuery[1].y[0]],
-    noData: null, 
-    labelScndDataP: "invest", 
-    labelThdData: "change", 
-  }
-
   const generateTest = (dropDown, mockQueryData, comparator, scope, result) => {
     for(let i = 1; i <= dropDown.length; i++){
         render(<LineChartComponent 
@@ -81,15 +79,15 @@ const dropDownMenuValues = [
             scope= {scope}
             />)
         expect(Line).toHaveBeenCalledTimes(i)
-        expect(Line.mock.calls[i-1][0]).toEqual(expect.objectContaining({
+        expect(Line.mock.calls[i-1][0]).toMatchObject(expect.objectContaining({
             data: expect.objectContaining({
-                datasets: expect.arrayContaining([expect.objectContaining({label: "networth", data: [mockQuery[0].y[0], mockQuery[1].y[0]]}), 
-                          expect.objectContaining({label: "invest", data: null}), 
-                          expect.objectContaining({label: "change", data: null})])
+                datasets: expect.arrayContaining([
+                          expect.objectContaining({label: result.labelFirst, data: result.dataP}), 
+                          expect.objectContaining({label: result.labelScnd, data: result.dataScnd}), 
+                          expect.objectContaining({label: result.labelThd, data: result.dataThd})
+                        ])
         })
-        }), expect.any(Object))
-}
-
+        }), expect.any(Object))}
   }
 
 describe("scope == portfoliotimeframes", () => {
@@ -97,43 +95,72 @@ describe("scope == portfoliotimeframes", () => {
         jest.clearAllMocks() 
     })
 
-    it("calls with no comparators and right args", () => {
-        for(let i = 1; i <= dropDownMenuValues.length; i++){
-                render(<LineChartComponent 
-                    processedQueryData={mockQuery} 
-                    timeframe={{timeframe: dropDownMenuValues[i-1].timeframe, timeunit: dropDownMenuValues[i-1].timeunit}} 
-                    comparators={generateComparator(false, false, false)} 
-                    scope="portfoliotimeframes" 
-                    />)
-                expect(Line).toHaveBeenCalledTimes(i)
-                expect(Line.mock.calls[i-1][0]).toEqual(expect.objectContaining({
-                    data: expect.objectContaining({
-                        datasets: expect.arrayContaining([expect.objectContaining({label: "networth", data: [mockQuery[0].y[0], mockQuery[1].y[0]]}), 
-                                  expect.objectContaining({label: "invest", data: null}), 
-                                  expect.objectContaining({label: "change", data: null})])
-                })
-                }), expect.any(Object))
-        }
-    })
-    
-    it("calls with costbasis", () => {
-        for(let i = 1; i <= dropDownMenuValues.length; i++){
-            render(<LineChartComponent 
-                processedQueryData={mockQuery} 
-                timeframe={{timeframe: dropDownMenuValues[i-1].timeframe, timeunit: dropDownMenuValues[i-1].timeunit}} 
-                comparators={generateComparator(false, false, false)} 
-                scope="portfoliotimeframes" 
-                />)
-            expect(Line).toHaveBeenCalledTimes(i)
-            expect(Line.mock.calls[i-1][0]).toEqual(expect.objectContaining({
-                data: expect.objectContaining({
-                    datasets: expect.arrayContaining([expect.objectContaining({label: "networth", data: [mockQuery[0].y[0], mockQuery[1].y[0]]}), 
-                              expect.objectContaining({label: "invest", data: null}), 
-                              expect.objectContaining({label: "change", data: null})])
-            })
-            }), expect.any(Object))
-    }
+    it("no comparator", () => {
+     generateTest(dropDownMenuValues, portfolioQuery, [false, false, false], "portfoliotimeframes", result)
     })
 
+    it("costbasis enabled ", () => {
+        const updatedResult = {
+            ...result, 
+             dataP:[portfolioQuery[0].y[0], portfolioQuery[1].y[0]],
+             dataScnd:[portfolioQuery[0].y[1], portfolioQuery[1].y[1]]
+        }
+
+        generateTest(dropDownMenuValues, portfolioQuery, [true, false, false], "portfoliotimeframes", updatedResult)
+
+    })
+}) 
+
+describe("scope == development", () => {
+    afterEach(()=> {
+        jest.clearAllMocks()
+    })
+
+    it("btc enabled", () => {
+        const updatedResult = {
+            ...result, 
+             labelFirst: "change",
+             labelScnd: "change", 
+             dataP:    [devQuery[0].y[0], devQuery[1].y[0]],
+             dataScnd:[devQuery[0].y[1], devQuery[1].y[1]], 
+             dataThd: null, 
+        }
+        generateTest(dropDownMenuValues, devQuery, [false, true, false], "development", updatedResult )
+    })
+
+    it("eth enabled", () => {
+        const updatedResult = {
+            ...result, 
+             labelFirst: "change",
+             labelScnd: "change", 
+             dataP:    [devQuery[0].y[0], devQuery[1].y[0]],
+             dataScnd: null, 
+             dataThd: [devQuery[0].y[2], devQuery[1].y[2]], 
+        }
+        generateTest(dropDownMenuValues, devQuery, [false, false, true], "development", updatedResult )
+    })
+
+    it("btc and eth enabled", () => {
+        const updatedResult = {
+            ...result, 
+             labelFirst: "change",
+             labelScnd: "change", 
+             dataP:    [devQuery[0].y[0], devQuery[1].y[0]],
+             dataScnd:[devQuery[0].y[1], devQuery[1].y[1]],  
+             dataThd: [devQuery[0].y[2], devQuery[1].y[2]], 
+        }
+        generateTest(dropDownMenuValues, devQuery, [false, true, true], "development", updatedResult )
+    })
+    it("does not render cost basis when screening development", () => {
+        const updatedResult = {
+            ...result, 
+             labelFirst: "change",
+             labelScnd: "change", 
+             dataP:    [devQuery[0].y[0], devQuery[1].y[0]],
+             dataScnd:[devQuery[0].y[1], devQuery[1].y[1]],  
+             dataThd: [devQuery[0].y[2], devQuery[1].y[2]], 
+        }
+        generateTest(dropDownMenuValues, devQuery, [true, true, true], "development", updatedResult )
+    })
 })
 // npm run test line-charts.test.jsx   
