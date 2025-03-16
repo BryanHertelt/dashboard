@@ -1,6 +1,6 @@
 import ParentListComponent from "../build-components/parent-table-component";
 import DistributionComponent from "../build-components/distribution-component";
-import DetailTableComponent from "../build-components/data-table-component";
+import DetailTableComponent from "../build-components/asset-table-component";
 
 import { assetgroupdistributioncolumns } from "../design-components/datatables/datatable-version-assetdistribution/asset-group-distribution-cols";
 import { assetGroupData } from "@/api/distribution/asset-distributiontabledata";
@@ -29,6 +29,7 @@ const AssetGroupDistributionComponent = () => {
           listdata={assetGroupData}
         />{" "}
       </div>
+      {/** 
       <div className="card mt-9 p-7 w-full">
         <DetailTableComponent
           text={"You can see all your cryptocurrencies here."}
@@ -37,6 +38,7 @@ const AssetGroupDistributionComponent = () => {
           data={assetGroupData}
         />
       </div>
+      */}
     </>
   );
 };

@@ -5,7 +5,7 @@ import { ExposeNfts } from "../helpers/nft-container";
 import {
   BarChartRebalancing,
   HoldingBarChart,
-} from "../design-components/charts/barcharts";
+} from "../design-components/charts/bar-charts";
 import { useState } from "react";
 import {
   Chart as ChartJS,

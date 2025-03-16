@@ -3,7 +3,7 @@ import {HdDetail, AgDetail, DrDetail } from "../../src/utility/lib/build-compone
 import {render, screen, fireEvent} from "@testing-library/react";
 import { HoldingLogoImageContainer } from '../../src/utility/lib/helpers/image-container';
 import { formatCurrency, formatValue} from '../../src/utility/lib/helpers/helper-functions';
-import { BarChartRebalancing, HoldingBarChart } from '../../src/utility/lib/design-components/charts/barcharts';
+import { BarChartRebalancing, HoldingBarChart } from '../../src/utility/lib/design-components/charts/bar-charts';
 import { ExposeNfts } from '../../src/utility/lib/helpers/nft-container';
 
 

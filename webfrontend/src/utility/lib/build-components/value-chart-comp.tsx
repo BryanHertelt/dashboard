@@ -1,6 +1,6 @@
 "use client";
 import { BitcoinIcon, EthereumIcon } from "@/../public/images";
-import { LineComponent } from "../design-components/charts/chart-helpers";
+import { LineChartComponent } from "../design-components/charts/line-charts";
 import { formatCurrency } from "../helpers/helper-functions";
 import { useState } from "react";
 import { useValueChart } from "../datafetching/client-refetch/client-hooks";
@@ -226,7 +226,7 @@ const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
           ) : isError ? (
             <ErrorSkeleton />
           ) : (
-            <LineComponent
+            <LineChartComponent
               processedQueryData={processedQueryData}
               timeframe={timeframe}
               comparators={comparators}
