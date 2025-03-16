@@ -1,5 +1,5 @@
 import { QueryClient } from "@tanstack/react-query";
-import { prefetchDetailComponent } from "../src/utility/lib/datafetching/client-refetch/prefetchQuery"; 
+import { prefetchDetailComponent } from "../src/utility/lib/datafetching/client-refetch/prefetch-hooks"; 
 import { getDetailAssetData } from "../src/utility/lib/datafetching/layer";
 
 jest.mock("../src/utility/lib/datafetching/layer", () => ({

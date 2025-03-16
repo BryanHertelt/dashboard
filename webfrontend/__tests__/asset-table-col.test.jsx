@@ -11,7 +11,7 @@ import {
   } from "../public/images/icons";
 import { formatCurrency } from "../src/utility/lib/helpers/helper-functions";
 import { TableLineChart } from "../src/utility/lib/design-components/charts/table-line-charts";
-import {prefetchDetailComponent} from "../src/utility/lib/datafetching/client-refetch/prefetchQuery"
+import {prefetchDetailComponent} from "../src/utility/lib/datafetching/client-refetch/prefetch-hooks"
 import { DataTable } from "../src/utility/lib/design-components/datatables/table-layout/data-table";
 import { ErrorSkeleton } from "../src/utility/lib/datafetching/loading-skeleton";
 import { render,screen, within } from "@testing-library/react";
@@ -19,7 +19,7 @@ import { render,screen, within } from "@testing-library/react";
 jest.mock("../src/utility/lib/design-components/charts/table-line-charts", () => ({
     TableLineChart: jest.fn().mockImplementation(() => null)
 }))
-jest.mock("../src/utility/lib/datafetching/client-refetch/prefetchQuery", () => ({
+jest.mock("../src/utility/lib/datafetching/client-refetch/prefetch-hooks", () => ({
     prefetchDetailComponent: jest.fn().mockImplementation(() => null)
 }))
 jest.mock("../public/images/icons", () => ({

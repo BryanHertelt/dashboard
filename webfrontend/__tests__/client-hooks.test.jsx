@@ -1,12 +1,12 @@
-import { useDetailComponent } from "../src/utility/lib/datafetching/client-refetch/fetching-detail-component";
+import { useDetailComponent } from "../src/utility/lib/datafetching/client-refetch/client-hooks";
 import { useQuery } from "@tanstack/react-query";
-import { getDetailAssetData } from "@/utility/lib/datafetching/layer";
+import { getDetailAssetData } from "../src/utility/lib/datafetching/layer";
 import { renderHook} from "@testing-library/react";
 import { waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
 import { fireEvent } from "@testing-library/react";
 
-jest.mock("../src//utility/lib/datafetching/layer", () => ({
+jest.mock("../src/utility/lib/datafetching/layer", () => ({
     getDetailAssetData: jest.fn().mockImplementation(() => mock)
 }))
 

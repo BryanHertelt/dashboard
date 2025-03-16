@@ -3,6 +3,36 @@ import { DataTable } from "../src/utility/lib/design-components/datatables/table
 import { TableDetailComponent } from "../src/utility/lib/design-components/datatables/table-layout/data-datatable-detail-popup"
 import { render, screen } from "@testing-library/react"
 import { ErrorSkeleton } from '../src/utility/lib/datafetching/loading-skeleton'
+import { formatCurrency, formatValue, cn} from '../src/utility/lib/helpers/helper-functions'
+import { twMerge } from 'tailwind-merge'
+import { clsx } from "clsx";
+
+
+jest.mock("../src/utility/lib/helpers/helper-functions", () => ({
+  formatValue: jest.fn((number)=> {
+      if(isNaN(Number(number))){
+        console.error("Type error in formatValue")
+        return("")
+      }
+      const formattedValue = Number(number).toFixed(2)
+    
+      return formattedValue
+    }),
+  formatCurrency: jest.fn((number)=> {
+      if(isNaN(Number(number))){
+        console.error("Type error in formatCurrency")
+        return("")
+      }
+    const formattedCurrency = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+      }).format(Number(number)); 
+    return formattedCurrency
+    }), 
+    cn: jest.fn((...inputs) => {
+      return twMerge(clsx(inputs))})
+})) 
+
 
 jest.mock("../src/utility/lib/datafetching/loading-skeleton", () => ({
     ErrorSkeleton: jest.fn().mockImplementation(()=> null), 

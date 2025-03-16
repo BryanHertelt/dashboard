@@ -1,21 +1,60 @@
+import {TableDetailComponent} from "../src/utility/lib/design-components/datatables/table-layout/data-datatable-detail-popup"
+import { DrDetail, AgDetail, HdDetail } from "../src/utility/lib/build-components/asset-table-detail-components"
+import {useDetailComponent} from "../src/utility/lib/datafetching/client-refetch/client-hooks"
+import { render, screen, fireEvent } from "@testing-library/react"
+import {ErrorSkeleton, LoadingSkeleton} from "../src/utility/lib/datafetching/loading-skeleton"
+import { formatCurrency, formatValue, cn, isObject} from '../src/utility/lib/helpers/helper-functions'
+import { twMerge } from 'tailwind-merge'
+import { clsx } from "clsx";
+
+
+jest.mock("../src/utility/lib/helpers/helper-functions", () => ({
+  formatValue: jest.fn((number)=> {
+      if(isNaN(Number(number))){
+        console.error("Type error in formatValue")
+        return("")
+      }
+      const formattedValue = Number(number).toFixed(2)
+    
+      return formattedValue
+    }),
+  formatCurrency: jest.fn((number)=> {
+      if(isNaN(Number(number))){
+        console.error("Type error in formatCurrency")
+        return("")
+      }
+    const formattedCurrency = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+      }).format(Number(number)); 
+    return formattedCurrency
+    }), 
+    cn: jest.fn((...inputs) => {
+      return twMerge(clsx(inputs))}), 
+    isObject: jest.fn((value) => {
+        return (
+          typeof value === "object" &&
+          value !== null &&
+          !Array.isArray(value) &&
+          !(value instanceof RegExp) &&
+          !(value instanceof Date) &&
+          !(value instanceof Set) &&
+          !(value instanceof Map)
+        );
+      }) 
+})) 
+
 jest.mock("../src/utility/lib/datafetching/loading-skeleton", () => ({
     ErrorSkeleton: jest.fn().mockImplementation(()=> null), 
     LoadingSkeleton: jest.fn().mockImplementation(() => null)
 }))
-
-import {TableDetailComponent} from "../src/utility/lib/design-components/datatables/table-layout/data-datatable-detail-popup"
-import { DrDetail, AgDetail, HdDetail } from "../src/utility/lib/build-components/asset-table-detail-components"
-import {useDetailComponent} from "../src/utility/lib/datafetching/client-refetch/fetching-detail-component"
-import { render, screen, fireEvent } from "@testing-library/react"
-import {ErrorSkeleton, LoadingSkeleton} from "../src/utility/lib/datafetching/loading-skeleton"
-
 jest.mock("../src/utility/lib/build-components/asset-table-detail-components", () => ({
     DrDetail: jest.fn().mockImplementation(()=> null), 
     HdDetail: jest.fn().mockImplementation(()=> null),
     AgDetail: jest.fn().mockImplementation(()=> null),
     }))
 
-jest.mock("../src/utility/lib/datafetching/client-refetch/fetching-detail-component", () => ({
+jest.mock("../src/utility/lib/datafetching/client-refetch/client-hooks", () => ({
         useDetailComponent: jest.fn().mockImplementation(()=> mock)
         }))
 const mockNFTs={

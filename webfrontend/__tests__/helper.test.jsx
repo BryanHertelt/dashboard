@@ -1,4 +1,25 @@
 import { formatCurrency,formatValue, isObject} from "../src/utility/lib/helpers/helper-functions";
+import { cn } from "../src/utility/lib/helpers/helper-functions"
+import { twMerge } from 'tailwind-merge';
+import clsx from 'clsx';
+
+describe('cn utility function', () => {
+  it('should merge class names correctly', () => {
+    expect(cn('text-red-500', 'font-bold')).toBe('text-red-500 font-bold');
+  });
+
+  it('should handle conditional class names', () => {
+    expect(cn('text-red-500', false && 'hidden', 'font-bold')).toBe('text-red-500 font-bold');
+  });
+
+  it('should merge conflicting Tailwind classes correctly', () => {
+    expect(cn('text-red-500', 'text-blue-500')).toBe('text-blue-500');
+  });
+
+  it('should ignore falsy values', () => {
+    expect(cn(null, undefined, '', 'text-green-500')).toBe('text-green-500');
+  });
+});
 
 describe("tests for helper: formatCurrency", () => {
     it('formatCurrency should return a formatted number',() => {
@@ -11,7 +32,7 @@ describe("tests for helper: formatCurrency", () => {
     }) 
     it("formatCurrency returns an empty string, if value is neither string nor number", () => {
         const formattedCurrency = formatCurrency("1,00")
-        expect(formattedCurrency).toBe("")
+        expect(formattedCurrency).toBe("--")
     })
 })
 
@@ -26,7 +47,7 @@ describe("tests for helper: formatValue", () => {
     })
     it("formatCurrency returns an empty string, if value is neither string nor number", () => {
         const formattedCurrency = formatCurrency("1,00")
-        expect(formattedCurrency).toBe("")
+        expect(formattedCurrency).toBe("--")
     })
 })
 

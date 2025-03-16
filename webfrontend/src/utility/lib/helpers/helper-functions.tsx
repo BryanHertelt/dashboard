@@ -1,7 +1,14 @@
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+
 export const formatCurrency = (number: number): string => {
   if (isNaN(Number(number))) {
     console.error("Type error in formatCurrency");
-    return "/";
+    return "--";
   }
   const formattedCurrency = new Intl.NumberFormat("en-US", {
     style: "currency",
@@ -13,7 +20,7 @@ export const formatCurrency = (number: number): string => {
 export const formatValue = (number: number): string => {
   if (isNaN(Number(number))) {
     console.error("Type error in formatValue");
-    return "";
+    return "--";
   }
   const formattedValue = Number(number).toFixed(2);
 
