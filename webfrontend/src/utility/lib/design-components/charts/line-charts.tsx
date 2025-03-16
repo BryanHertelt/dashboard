@@ -46,9 +46,16 @@ export const LineChartComponent = (props: {
   scope: string;
 }) => {
   const processedQueryData = props.processedQueryData;
-  const timeframe = props.timeframe;
-  const comparators = props.comparators;
-  const scope = props.scope;
+  const timeframe =
+    props.timeframe != undefined
+      ? props.timeframe
+      : { timeframe: "7days", timeunit: "day" };
+  const comparators =
+    props.comparators != undefined
+      ? props.comparators
+      : { costbasis: false, btc: false, eth: false };
+  const scope = props.scope != undefined ? props.scope : "portfoliotimeframes";
+
   const thirdDataSet =
     comparators.eth === true && scope === "development"
       ? processedQueryData.map(
@@ -122,6 +129,7 @@ export const LineChartComponent = (props: {
       tooltip: {
         enabled: false,
         external: (context: any) => {
+          console.log("context", context);
           let tooltipEl = document.getElementById("chartjs-tooltip");
 
           if (!tooltipEl) {

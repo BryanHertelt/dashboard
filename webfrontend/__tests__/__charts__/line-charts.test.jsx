@@ -70,25 +70,18 @@ const dropDownMenuValues = [
     { timeframe: "5 years", timeunit: "year" },
   ];
 
-  const generateTest = (dropDown, mockQueryData, comparator, scope, result) => {
-    for(let i = 1; i <= dropDown.length; i++){
-        render(<LineChartComponent 
-            processedQueryData={mockQueryData} 
-            timeframe={{timeframe: dropDown[i-1].timeframe, timeunit: dropDown[i-1].timeunit}} 
-            comparators={{ costbasis: comparator[0], btc: comparator[1], eth: comparator[2]}} 
-            scope= {scope}
-            />)
+  const generateTest = (result, i) => {
         expect(Line).toHaveBeenCalledTimes(i)
         expect(Line.mock.calls[i-1][0]).toMatchObject(expect.objectContaining({
             data: expect.objectContaining({
                 datasets: expect.arrayContaining([
                           expect.objectContaining({label: result.labelFirst, data: result.dataP}), 
                           expect.objectContaining({label: result.labelScnd, data: result.dataScnd}), 
-                          expect.objectContaining({label: result.labelThd, data: result.dataThd})
-                        ])
+                          expect.objectContaining({label: result.labelThd, data: result.dataThd}),
+                        ]),
+                        
         })
         }), expect.any(Object))}
-  }
 
 describe("scope == portfoliotimeframes", () => {
     afterEach(()=> {
@@ -96,7 +89,15 @@ describe("scope == portfoliotimeframes", () => {
     })
 
     it("no comparator", () => {
-     generateTest(dropDownMenuValues, portfolioQuery, [false, false, false], "portfoliotimeframes", result)
+        for(let i = 1; i <= dropDownMenuValues.length; i++){
+            render(<LineChartComponent 
+                processedQueryData={portfolioQuery} 
+                timeframe={{timeframe: dropDownMenuValues[i-1].timeframe, timeunit: dropDownMenuValues[i-1].timeunit}} 
+                comparators={{ costbasis: false, btc:false, eth: false}} 
+                scope= "portfoliotimeframes"
+                />)
+            generateTest(result, i)
+            }
     })
 
     it("costbasis enabled ", () => {
@@ -105,8 +106,15 @@ describe("scope == portfoliotimeframes", () => {
              dataP:[portfolioQuery[0].y[0], portfolioQuery[1].y[0]],
              dataScnd:[portfolioQuery[0].y[1], portfolioQuery[1].y[1]]
         }
-
-        generateTest(dropDownMenuValues, portfolioQuery, [true, false, false], "portfoliotimeframes", updatedResult)
+        for(let i = 1; i <= dropDownMenuValues.length; i++){
+            render(<LineChartComponent 
+                processedQueryData={portfolioQuery} 
+                timeframe={{timeframe: dropDownMenuValues[i-1].timeframe, timeunit: dropDownMenuValues[i-1].timeunit}} 
+                comparators={{ costbasis: true, btc:false, eth: false}} 
+                scope= "portfoliotimeframes"
+                />)
+            generateTest(updatedResult, i)
+            }
 
     })
 }) 
@@ -125,7 +133,15 @@ describe("scope == development", () => {
              dataScnd:[devQuery[0].y[1], devQuery[1].y[1]], 
              dataThd: null, 
         }
-        generateTest(dropDownMenuValues, devQuery, [false, true, false], "development", updatedResult )
+        for(let i = 1; i <= dropDownMenuValues.length; i++){
+            render(<LineChartComponent 
+                processedQueryData={devQuery} 
+                timeframe={{timeframe: dropDownMenuValues[i-1].timeframe, timeunit: dropDownMenuValues[i-1].timeunit}} 
+                comparators={{ costbasis: false, btc:true, eth: false}} 
+                scope= "development"
+                />)
+            generateTest(updatedResult, i)
+            }
     })
 
     it("eth enabled", () => {
@@ -137,7 +153,15 @@ describe("scope == development", () => {
              dataScnd: null, 
              dataThd: [devQuery[0].y[2], devQuery[1].y[2]], 
         }
-        generateTest(dropDownMenuValues, devQuery, [false, false, true], "development", updatedResult )
+        for(let i = 1; i <= dropDownMenuValues.length; i++){
+            render(<LineChartComponent 
+                processedQueryData={devQuery} 
+                timeframe={{timeframe: dropDownMenuValues[i-1].timeframe, timeunit: dropDownMenuValues[i-1].timeunit}} 
+                comparators={{ costbasis: false, btc:false, eth: true}} 
+                scope= "development"
+                />)
+            generateTest(updatedResult, i)
+            }
     })
 
     it("btc and eth enabled", () => {
@@ -149,7 +173,15 @@ describe("scope == development", () => {
              dataScnd:[devQuery[0].y[1], devQuery[1].y[1]],  
              dataThd: [devQuery[0].y[2], devQuery[1].y[2]], 
         }
-        generateTest(dropDownMenuValues, devQuery, [false, true, true], "development", updatedResult )
+        for(let i = 1; i <= dropDownMenuValues.length; i++){
+            render(<LineChartComponent 
+                processedQueryData={devQuery} 
+                timeframe={{timeframe: dropDownMenuValues[i-1].timeframe, timeunit: dropDownMenuValues[i-1].timeunit}} 
+                comparators={{ costbasis: false, btc:true, eth: true}} 
+                scope= "development"
+                />)
+            generateTest(updatedResult, i)
+            }
     })
     it("does not render cost basis when screening development", () => {
         const updatedResult = {
@@ -160,7 +192,41 @@ describe("scope == development", () => {
              dataScnd:[devQuery[0].y[1], devQuery[1].y[1]],  
              dataThd: [devQuery[0].y[2], devQuery[1].y[2]], 
         }
-        generateTest(dropDownMenuValues, devQuery, [true, true, true], "development", updatedResult )
+        for(let i = 1; i <= dropDownMenuValues.length; i++){
+            render(<LineChartComponent 
+                processedQueryData={devQuery} 
+                timeframe={{timeframe: dropDownMenuValues[i-1].timeframe, timeunit: dropDownMenuValues[i-1].timeunit}} 
+                comparators={{ costbasis: true, btc:true, eth: true}} 
+                scope= "development"
+                />)
+            generateTest(updatedResult, i)
+            }
+    })
+})
+
+describe("edge cases", () => {
+    afterEach(()=> {
+        jest.clearAllMocks()
+    })
+
+    it("does not receive props", () => {
+        const updatedResult = {
+            ...result, 
+             labelFirst: "networth",
+             labelScnd: "invest", 
+             dataP:    [portfolioQuery[0].y[0], portfolioQuery[1].y[0]],
+             dataScnd:null,  
+             dataThd: null, 
+        }
+        for(let i = 1; i <= dropDownMenuValues.length; i++){
+            render(<LineChartComponent 
+                processedQueryData={portfolioQuery} 
+                timeframe={undefined} 
+                comparators={undefined} 
+                scope= {undefined}
+                />)
+            generateTest(updatedResult, i)
+            }
     })
 })
 // npm run test line-charts.test.jsx   
