@@ -1,21 +1,21 @@
 import '@testing-library/jest-dom'
-import { DataTable } from "../src/utility/lib/design-components/datatables/table-layout/data-table"
-import AssetTableComponent from "../src/utility/lib/build-components/asset-table-component"
+import { DataTable } from "../../src/utility/lib/design-components/datatables/table-layout/data-table"
+import AssetTableComponent from "../../src/utility/lib/build-components/asset-table-component"
 import { render, screen, fireEvent } from "@testing-library/react"
-import { ErrorSkeleton } from '../src/utility/lib/datafetching/loading-skeleton'
+import { ErrorSkeleton } from '../../src/utility/lib/datafetching/loading-skeleton'
 import { QueryClient, QueryClientProvider, useQueryClient } from '@tanstack/react-query'
-import { LoadingSkeleton } from '../src/utility/lib/datafetching/loading-skeleton'
-import {formatDataColsCurrency, formatDataColsNft, formatDataColsDerivative} from "../src/utility/lib/design-components/datatables/datatable-version-assetdistribution/asset-distribution-cols"
+import { LoadingSkeleton } from '../../src/utility/lib/datafetching/loading-skeleton'
+import {formatDataColsCurrency, formatDataColsNft, formatDataColsDerivative} from "../../src/utility/lib/design-components/datatables/datatable-version-assetdistribution/asset-distribution-cols"
 
-jest.mock("../src/utility/lib/design-components/datatables/table-layout/data-table", () => ({
+jest.mock("../../src/utility/lib/design-components/datatables/table-layout/data-table", () => ({
     DataTable: jest.fn().mockImplementation(()=> null), 
 }))
 
-jest.mock("../src/utility/lib/datafetching/loading-skeleton", () => ({
+jest.mock("../../src/utility/lib/datafetching/loading-skeleton", () => ({
     LoadingSkeleton: jest.fn().mockImplementation(()=> null), 
 }))
 
-jest.mock("../src/utility/lib/design-components/datatables/datatable-version-assetdistribution/asset-distribution-cols", () => ({
+jest.mock("../../src/utility/lib/design-components/datatables/datatable-version-assetdistribution/asset-distribution-cols", () => ({
     formatDataColsCurrency: jest.fn().mockImplementation(()=> null), 
     formatDataColsNft: jest.fn().mockImplementation(()=> null), 
     formatDataColsDerivative: jest.fn().mockImplementation(()=> null)

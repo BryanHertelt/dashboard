@@ -1,24 +1,24 @@
 import '@testing-library/jest-dom'
-import {HdDetail, AgDetail, DrDetail } from "../src/utility/lib/build-components/asset-table-detail-components";
+import {HdDetail, AgDetail, DrDetail } from "../../src/utility/lib/build-components/asset-table-detail-components";
 import {render, screen, fireEvent} from "@testing-library/react";
-import { HoldingLogoImageContainer } from '../src/utility/lib/helpers/image-container';
-import { formatCurrency, formatValue} from '../src/utility/lib/helpers/helper-functions';
-import { BarChartRebalancing, HoldingBarChart } from '../src/utility/lib/design-components/charts/barcharts';
-import { ExposeNfts } from '../src/utility/lib/helpers/nft-container';
+import { HoldingLogoImageContainer } from '../../src/utility/lib/helpers/image-container';
+import { formatCurrency, formatValue} from '../../src/utility/lib/helpers/helper-functions';
+import { BarChartRebalancing, HoldingBarChart } from '../../src/utility/lib/design-components/charts/barcharts';
+import { ExposeNfts } from '../../src/utility/lib/helpers/nft-container';
 
 
 
-jest.mock("../src/utility/lib/helpers/image-container", () => ({
+jest.mock("../../src/utility/lib/helpers/image-container", () => ({
 HoldingLogoImageContainer: jest.fn(),
 NftDetailImageContainer: jest.fn().mockImplementation(() => null)
 }))
 
-jest.mock("../src/utility/lib/helpers/nft-container", () => ({
+jest.mock("../../src/utility/lib/helpers/nft-container", () => ({
   ExposeNfts: jest.fn().mockImplementation(() => null),
   }))
 
 
-jest.mock("../src/utility/lib/helpers/helper-functions", () => ({
+jest.mock("../../src/utility/lib/helpers/helper-functions", () => ({
     formatValue: jest.fn((number)=> {
         if(isNaN(Number(number))){
           console.error("Type error in formatValue")
@@ -42,7 +42,7 @@ jest.mock("../src/utility/lib/helpers/helper-functions", () => ({
 })) 
 
 
-jest.mock("../src/utility/lib/design-components/charts/barcharts", () => ({
+jest.mock("../../src/utility/lib/design-components/charts/barcharts", () => ({
 HoldingBarChart: jest.fn().mockImplementation(()=> null),
 BarChartRebalancing: jest.fn().mockImplementation(()=> null)
 }))

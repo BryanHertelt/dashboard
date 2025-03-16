@@ -1,14 +1,14 @@
-import {TableDetailComponent} from "../src/utility/lib/design-components/datatables/table-layout/data-datatable-detail-popup"
-import { DrDetail, AgDetail, HdDetail } from "../src/utility/lib/build-components/asset-table-detail-components"
-import {useDetailComponent} from "../src/utility/lib/datafetching/client-refetch/client-hooks"
+import {TableDetailComponent} from "../../src/utility/lib/design-components/datatables/table-layout/data-datatable-detail-popup"
+import { DrDetail, AgDetail, HdDetail } from "../../src/utility/lib/build-components/asset-table-detail-components"
+import {useDetailComponent} from "../../src/utility/lib/datafetching/client-refetch/client-hooks"
 import { render, screen, fireEvent } from "@testing-library/react"
-import {ErrorSkeleton, LoadingSkeleton} from "../src/utility/lib/datafetching/loading-skeleton"
-import { formatCurrency, formatValue, cn, isObject} from '../src/utility/lib/helpers/helper-functions'
+import {ErrorSkeleton, LoadingSkeleton} from "../../src/utility/lib/datafetching/loading-skeleton"
+import { formatCurrency, formatValue, cn, isObject} from '../../src/utility/lib/helpers/helper-functions'
 import { twMerge } from 'tailwind-merge'
 import { clsx } from "clsx";
 
 
-jest.mock("../src/utility/lib/helpers/helper-functions", () => ({
+jest.mock("../../src/utility/lib/helpers/helper-functions", () => ({
   formatValue: jest.fn((number)=> {
       if(isNaN(Number(number))){
         console.error("Type error in formatValue")
@@ -44,17 +44,17 @@ jest.mock("../src/utility/lib/helpers/helper-functions", () => ({
       }) 
 })) 
 
-jest.mock("../src/utility/lib/datafetching/loading-skeleton", () => ({
+jest.mock("../../src/utility/lib/datafetching/loading-skeleton", () => ({
     ErrorSkeleton: jest.fn().mockImplementation(()=> null), 
     LoadingSkeleton: jest.fn().mockImplementation(() => null)
 }))
-jest.mock("../src/utility/lib/build-components/asset-table-detail-components", () => ({
+jest.mock("../../src/utility/lib/build-components/asset-table-detail-components", () => ({
     DrDetail: jest.fn().mockImplementation(()=> null), 
     HdDetail: jest.fn().mockImplementation(()=> null),
     AgDetail: jest.fn().mockImplementation(()=> null),
     }))
 
-jest.mock("../src/utility/lib/datafetching/client-refetch/client-hooks", () => ({
+jest.mock("../../src/utility/lib/datafetching/client-refetch/client-hooks", () => ({
         useDetailComponent: jest.fn().mockImplementation(()=> mock)
         }))
 const mockNFTs={

@@ -1,7 +1,6 @@
-import { formatCurrency,formatValue, isObject} from "../src/utility/lib/helpers/helper-functions";
-import { cn } from "../src/utility/lib/helpers/helper-functions"
-import { twMerge } from 'tailwind-merge';
-import clsx from 'clsx';
+import { formatCurrency,formatValue, isObject, cn} from "../../src/utility/lib/helpers/helper-functions";
+import { twMerge } from "tailwind-merge";
+import clsx from "clsx";
 
 describe('cn utility function', () => {
   it('should merge class names correctly', () => {

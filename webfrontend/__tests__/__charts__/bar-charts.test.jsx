@@ -1,14 +1,14 @@
 import { BarChartRebalancing, HoldingBarChart } from "@/utility/lib/design-components/charts/barcharts";
 import {render, screen } from "@testing-library/react";
-import {formatValue, formatCurrency} from "../src/utility/lib/helpers/helper-functions"
+import {formatValue, formatCurrency} from "../../src/utility/lib/helpers/helper-functions"
 import '@testing-library/jest-dom'
 import { Bar } from "react-chartjs-2";
 
-jest.mock("../node_modules/react-chartjs-2", () => ({
+jest.mock("../../node_modules/react-chartjs-2", () => ({
   Bar: jest.fn().mockImplementation(()=> null)
 })) 
 
-jest.mock("../src/utility/lib/helpers/helper-functions", () => ({
+jest.mock("../../src/utility/lib/helpers/helper-functions", () => ({
   formatValue: jest.fn((number)=> {
     if(isNaN(Number(number))){
       console.error("Type error in formatValue")

@@ -1,33 +1,62 @@
 import '@testing-library/jest-dom'
-import { formatDataColsCurrency, formatDataColsDerivative, formatDataColsNft } from "../src/utility/lib/design-components/datatables/datatable-version-assetdistribution/asset-distribution-cols";
+import { formatDataColsCurrency, formatDataColsDerivative, formatDataColsNft } from "../../src/utility/lib/design-components/datatables/datatable-version-assetdistribution/asset-distribution-cols";
 import {
     AssetPercentageValueIcon,
     NotesInDataTableIcon,
-  } from "../public/images/index";
+  } from "../../public/images/index";
   import {
     PositionDirectionIcon,
     SortingDataTableIcon,
     ShowDetailIcon,
-  } from "../public/images/icons";
-import { formatCurrency } from "../src/utility/lib/helpers/helper-functions";
-import { TableLineChart } from "../src/utility/lib/design-components/charts/table-line-charts";
-import {prefetchDetailComponent} from "../src/utility/lib/datafetching/client-refetch/prefetch-hooks"
-import { DataTable } from "../src/utility/lib/design-components/datatables/table-layout/data-table";
-import { ErrorSkeleton } from "../src/utility/lib/datafetching/loading-skeleton";
+  } from "../../public/images/icons";
+import { formatCurrency } from "../../src/utility/lib/helpers/helper-functions";
+import { TableLineChart } from "../../src/utility/lib/design-components/charts/table-line-charts";
+import {prefetchDetailComponent} from "../../src/utility/lib/datafetching/client-refetch/prefetch-hooks"
+import { DataTable } from "../../src/utility/lib/design-components/datatables/table-layout/data-table";
+import { ErrorSkeleton } from "../../src/utility/lib/datafetching/loading-skeleton";
 import { render,screen, within } from "@testing-library/react";
+import { formatCurrency, formatValue, cn} from '../../src/utility/lib/helpers/helper-functions'
+import { twMerge } from 'tailwind-merge'
+import { clsx } from "clsx";
 
-jest.mock("../src/utility/lib/design-components/charts/table-line-charts", () => ({
+
+jest.mock("../../src/utility/lib/helpers/helper-functions", () => ({
+  formatValue: jest.fn((number)=> {
+      if(isNaN(Number(number))){
+        console.error("Type error in formatValue")
+        return("")
+      }
+      const formattedValue = Number(number).toFixed(2)
+    
+      return formattedValue
+    }),
+  formatCurrency: jest.fn((number)=> {
+      if(isNaN(Number(number))){
+        console.error("Type error in formatCurrency")
+        return("")
+      }
+    const formattedCurrency = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+      }).format(Number(number)); 
+    return formattedCurrency
+    }), 
+    cn: jest.fn((...inputs) => {
+      return twMerge(clsx(inputs))})
+})) 
+
+jest.mock("../../src/utility/lib/design-components/charts/table-line-charts", () => ({
     TableLineChart: jest.fn().mockImplementation(() => null)
 }))
-jest.mock("../src/utility/lib/datafetching/client-refetch/prefetch-hooks", () => ({
+jest.mock("../../src/utility/lib/datafetching/client-refetch/prefetch-hooks", () => ({
     prefetchDetailComponent: jest.fn().mockImplementation(() => null)
 }))
-jest.mock("../public/images/icons", () => ({
+jest.mock("../../public/images/icons", () => ({
     PositionDirectionIcon: jest.fn().mockImplementation(() => null),
     SortingDataTableIcon: jest.fn().mockImplementation(() => null),
     ShowDetailIcon: jest.fn().mockImplementation(() => null)
 }))
-jest.mock("../public/images/index", () => ({
+jest.mock("../../public/images/index", () => ({
     AssetPercentageValueIcon: jest.fn().mockImplementation(() => null),
     NotesInDataTableIcon: jest.fn().mockImplementation(() => null),
 }))
@@ -122,12 +151,12 @@ const mockInitial = [
  ]
 
 
-jest.mock("../src/utility/lib/datafetching/loading-skeleton", () => ({
+jest.mock("../../src/utility/lib/datafetching/loading-skeleton", () => ({
     ErrorSkeleton: jest.fn().mockImplementation(()=> null), 
 }))
 
 
-jest.mock("../src/utility/lib/design-components/datatables/table-layout/data-datatable-detail-popup", () => ({
+jest.mock("../../src/utility/lib/design-components/datatables/table-layout/data-datatable-detail-popup", () => ({
     TableDetailComponent: jest.fn().mockImplementation(()=> null), 
     }))
 

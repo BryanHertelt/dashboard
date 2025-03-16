@@ -1,14 +1,14 @@
 import '@testing-library/jest-dom'
-import { DataTable } from "../src/utility/lib/design-components/datatables/table-layout/data-table"
-import { TableDetailComponent } from "../src/utility/lib/design-components/datatables/table-layout/data-datatable-detail-popup"
+import { DataTable } from "../../src/utility/lib/design-components/datatables/table-layout/data-table"
+import { TableDetailComponent } from "../../src/utility/lib/design-components/datatables/table-layout/data-datatable-detail-popup"
 import { render, screen } from "@testing-library/react"
-import { ErrorSkeleton } from '../src/utility/lib/datafetching/loading-skeleton'
-import { formatCurrency, formatValue, cn} from '../src/utility/lib/helpers/helper-functions'
+import { ErrorSkeleton } from '../../src/utility/lib/datafetching/loading-skeleton'
+import { formatCurrency, formatValue, cn} from '../../src/utility/lib/helpers/helper-functions'
 import { twMerge } from 'tailwind-merge'
 import { clsx } from "clsx";
 
 
-jest.mock("../src/utility/lib/helpers/helper-functions", () => ({
+jest.mock("../../src/utility/lib/helpers/helper-functions", () => ({
   formatValue: jest.fn((number)=> {
       if(isNaN(Number(number))){
         console.error("Type error in formatValue")
@@ -34,12 +34,12 @@ jest.mock("../src/utility/lib/helpers/helper-functions", () => ({
 })) 
 
 
-jest.mock("../src/utility/lib/datafetching/loading-skeleton", () => ({
+jest.mock("../../src/utility/lib/datafetching/loading-skeleton", () => ({
     ErrorSkeleton: jest.fn().mockImplementation(()=> null), 
 }))
 
 
-jest.mock("../src/utility/lib/design-components/datatables/table-layout/data-datatable-detail-popup", () => ({
+jest.mock("../../src/utility/lib/design-components/datatables/table-layout/data-datatable-detail-popup", () => ({
     TableDetailComponent: jest.fn().mockImplementation(()=> null), 
     }))
 

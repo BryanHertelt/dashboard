@@ -1,15 +1,15 @@
-import { ExposeNfts } from "../src/utility/lib/helpers/nft-container";
-import { NftDetailImageContainer } from "../src/utility/lib/helpers/image-container";
-import { formatValue } from "../src/utility/lib/helpers/helper-functions";
+import { ExposeNfts } from "../../src/utility/lib/helpers/nft-container";
+import { NftDetailImageContainer } from "../../src/utility/lib/helpers/image-container";
+import { formatValue } from "../../src/utility/lib/helpers/helper-functions";
 import { render, screen } from "@testing-library/react";
 import '@testing-library/jest-dom'
 
-jest.mock("../src/utility/lib/helpers/image-container", () => ({
+jest.mock("../../src/utility/lib/helpers/image-container", () => ({
     NftDetailImageContainer: jest.fn().mockImplementation(() => null)
     }))
 
 
-    jest.mock("../src/utility/lib/helpers/helper-functions", () => ({
+    jest.mock("../../src/utility/lib/helpers/helper-functions", () => ({
         formatValue: jest.fn((number)=> {
             if(isNaN(Number(number))){
               console.error("Type error in formatValue")
