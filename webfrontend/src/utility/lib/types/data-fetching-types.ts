@@ -62,8 +62,7 @@ export interface QueryConstructorInterfaceChart {
   qKey: string[];
   initialData: PortfolioResponseObject[] | AssetResponseObject[] | TimeFrameResponseObject[] ;
   slug?: string;
-  staleTime?: number;
-  queryFunction: any; 
+  staleTime?: number
   cacheTime?: number;
   searchquery: string; 
   scope: string

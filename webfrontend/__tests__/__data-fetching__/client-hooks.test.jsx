@@ -57,7 +57,7 @@ describe("useValueChart ", ()=> {
   
       const { result } = renderHook(({qKey}) => useValueChart({qKey}), {initialProps:{qKey: ["portfoliotimeframes", "7 days"], queryFn: async () => await getTimeFrames(), scope: "portfoliotimeframes", searchquery: "7 days"}, wrapper });
   
-      await waitForNextUpdate(() => {
+      await waitFor(() => {
         expect(getTimeFrames).toHaveBeenCalledTimes(1); 
           expect(result.current.data).toBe("fetched data");
       });
@@ -67,7 +67,7 @@ describe("useValueChart ", ()=> {
       queryClient.setQueryData(["portfoliotimeframes", "7 days"], "fetched data");
   
       const { result } = renderHook(({qKey}) => useValueChart({qKey}), {initialProps:{qKey: ["portfoliotimeframes", "7 days"], queryFn: async () => await getTimeFrames(), scope: "portfoliotimeframes", searchquery: "7 days"}, wrapper })
-        await waitForNextUpdate(); 
+        await waitFor(); 
         expect(result.current.data).toBe("fetched data");
     });
   

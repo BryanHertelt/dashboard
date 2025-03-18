@@ -4,7 +4,6 @@ import { LineChartComponent } from "../design-components/charts/line-charts";
 import { formatCurrency } from "../helpers/helper-functions";
 import { useState } from "react";
 import { useValueChart } from "../datafetching/client-refetch/client-hooks";
-import { getTimeFrames } from "../datafetching/layer";
 import {
   LoadingSkeleton,
   ErrorSkeleton,
@@ -33,7 +32,6 @@ const AssetValueChartComponent = ({ currentValue, initialData }: any) => {
   const { processedQueryData, isLoading, isError } = useValueChart({
     qKey: [scope, timeframe.timeframe.toString()],
     initialData: initialData,
-    queryFunction: getTimeFrames,
     searchquery: timeframe.timeframe.replace(" ", ""),
     scope: scope,
   });

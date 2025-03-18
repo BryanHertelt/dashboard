@@ -1,6 +1,6 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import { getPortfolioData } from "../layer";
+import { getPortfolioData, getTimeFrames } from "../layer";
 import {
   QueryConstructorInterfaceDistribution,
   QueryConstructorInterfaceChart,
@@ -52,7 +52,7 @@ export const useValueChart = (
     staleTime: 5000,
     gcTime: 5000,
     queryFn: async () => {
-      const result = await queryConstructor.queryFunction(
+      const result = await getTimeFrames(
         queryConstructor.scope,
         queryConstructor.searchquery
       );
