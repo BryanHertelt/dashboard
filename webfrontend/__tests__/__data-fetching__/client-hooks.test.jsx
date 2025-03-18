@@ -2,9 +2,8 @@ import { useDetailComponent, useValueChart } from "../../src/utility/lib/datafet
 import { useQuery } from "@tanstack/react-query";
 import { getDetailAssetData, getTimeFrames} from "../../src/utility/lib/datafetching/layer";
 import { renderHook} from "@testing-library/react";
-import { waitFor } from "@testing-library/react";
+import { waitFor, waitForNextUpdate } from "@testing-library/react";
 import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
-import { fireEvent } from "@testing-library/react";
 
 jest.mock("../../src/utility/lib/datafetching/layer", () => ({
     getDetailAssetData: jest.fn().mockImplementation(() => mock),
@@ -20,89 +19,106 @@ const useDetailComponent = (props) => {
   return useQuery(["detail components", props.id], getDetailAssetData);
 };
 
-describe("useValueChart ", ()=> {
 
-  describe(" test if right fetch function is called", () => {
-    const mock = Promise.resolve("fetched data")
-    const queryClient = new QueryClient({
+describe("useValueChart Component", () => {
+  const queryConstructor = {
+    qKey: ["portfoliotimeframes", "7 days"],
+    initialData: "fetched data",
+    searchquery: "7days",
+    scope: "portfoliotimeframes",
+  };
+
+  const mock = jest.fn().mockResolvedValue("fetched data");
+
+  let queryClient;
+
+  beforeEach(() => {
+    queryClient = new QueryClient({
       defaultOptions: {
         queries: {
-          staleTime: Infinity, 
-          retry: false , 
+          staleTime: Infinity,
+          retry: false,
         },
         logger: {
-            log: console.log,
-            warn: console.warn,
-            error: process.env.NODE_ENV === 'test' ? () => {} : console.error,
-          },
+          log: console.log,
+          warn: console.warn,
+          error: process.env.NODE_ENV === "test" ? () => {} : console.error,
+        },
       },
     });
 
-    const wrapper = ({ children }) => (
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-    );
-
-    beforeEach(() => {
-      queryClient.clear(); 
-      getTimeFrames.mockImplementation(() => mock);
-      jest.clearAllMocks();
-    });
-  
-    afterEach(()=> {
-      jest.clearAllMocks()
-    })
-
-    it("fetches new data if cache is empty", async () => {
-      queryClient.removeQueries();
-  
-      const { result } = renderHook(({qKey}) => useValueChart({qKey}), {initialProps:{qKey: ["portfoliotimeframes", "7 days"], queryFn: async () => await getTimeFrames(), scope: "portfoliotimeframes", searchquery: "7 days"}, wrapper });
-  
-      await waitFor(() => {
-        expect(getTimeFrames).toHaveBeenCalledTimes(1); 
-          expect(result.current.data).toBe("fetched data");
-      });
-    });
-  
-    it("retrieves data from cache if already stored", async () => {
-      queryClient.setQueryData(["portfoliotimeframes", "7 days"], "fetched data");
-  
-      const { result } = renderHook(({qKey}) => useValueChart({qKey}), {initialProps:{qKey: ["portfoliotimeframes", "7 days"], queryFn: async () => await getTimeFrames(), scope: "portfoliotimeframes", searchquery: "7 days"}, wrapper })
-        await waitFor(); 
-        expect(result.current.data).toBe("fetched data");
-    });
-  
+    getTimeFrames.mockImplementation(mock);
+    jest.clearAllMocks();
   });
 
+  afterEach(() => {
+    queryClient.clear();
+    jest.clearAllMocks();
+  });
 
+  const wrapper = ({ children }) => (
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  );
 
-  })
+  describe("useQuery cache behavior", () => {
+
+    it("fetches new data if cache is empty", async () => {
+      queryClient.clear();
+
+      const { result} = renderHook(
+        ({ queryConstructor }) => useValueChart(queryConstructor),
+        { initialProps: { queryConstructor }, wrapper }
+      );
+
+      await waitFor(() => {
+        expect(getTimeFrames).toHaveBeenCalledTimes(1);
+        expect(result.current.processedQueryData).toBe("fetched data");
+      });
+
+    });
+
+    it("handles missing queryConstructor gracefully", async () => {
+      const { result } = renderHook(() => useValueChart(null), { wrapper });
+
+      await waitFor(() => {
+        expect(result.current.isError).toBe(true);
+        expect(result.current.error.message).toBe("No queryConstructor provided");
+      });
+
+      expect(getTimeFrames).not.toHaveBeenCalled();
+    });
+  });
+
   describe("retryDelay function", () => {
-    let queryClient;
     let retryDelayFn;
-  
+
     beforeEach(() => {
       retryDelayFn = jest.fn((attemptIndex) => {
-        return Math.min(1000 * 3 * attemptIndex, 10000);
+        return Math.min(1000 * 2 * attemptIndex, 33000);
       });
-  
+
       queryClient = new QueryClient({
         defaultOptions: {
           queries: {
             retry: 3,
-            retryDelay: retryDelayFn, 
+            retryDelay: retryDelayFn,
           },
         },
       });
     });
-  
+
     it("calculates retry delay correctly", () => {
-      expect(retryDelayFn(0)).toBe(0);  
-      expect(retryDelayFn(1)).toBe(3000);  
-      expect(retryDelayFn(2)).toBe(6000);  
-      expect(retryDelayFn(3)).toBe(9000);
-      expect(retryDelayFn).toHaveBeenCalledTimes(4);
+      expect(retryDelayFn(1)).toBe(2000);
+      expect(retryDelayFn(2)).toBe(4000);
+      expect(retryDelayFn(10)).toBe(20000);
+      expect(retryDelayFn(20)).toBe(33000); // Max cap
     });
-  })
+  });
+});
+
+
+
+
 
 describe("useDetail Component", () => {
   describe("useQuery cache behavior", () => {

@@ -61,7 +61,6 @@ export const useValueChart = (
     retryDelay: (attemptIndex: number): number => {
       return Math.min(1000 * 2 * attemptIndex, 33000);
     },
-    enabled: queryConstructor.qKey.length > 0,
   });
   const processedQueryData = data;
   return { processedQueryData, isLoading, isError, error, isSuccess };
