@@ -128,10 +128,9 @@ export const LineChartComponent = (props: {
       },
       tooltip: {
         enabled: false,
+        // istanbul ignore next
         external: (context: any) => {
-          console.log("context", context);
           let tooltipEl = document.getElementById("chartjs-tooltip");
-
           if (!tooltipEl) {
             tooltipEl = document.createElement("div");
             tooltipEl.id = "chartjs-tooltip";

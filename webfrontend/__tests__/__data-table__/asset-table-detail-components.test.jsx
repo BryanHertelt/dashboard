@@ -42,7 +42,7 @@ jest.mock("../../src/utility/lib/helpers/helper-functions", () => ({
 })) 
 
 
-jest.mock("../../src/utility/lib/design-components/charts/barcharts", () => ({
+jest.mock("../../src/utility/lib/design-components/charts/bar-charts", () => ({
 HoldingBarChart: jest.fn().mockImplementation(()=> null),
 BarChartRebalancing: jest.fn().mockImplementation(()=> null)
 }))
