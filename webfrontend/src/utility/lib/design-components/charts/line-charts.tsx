@@ -133,6 +133,7 @@ export const LineChartComponent = (props: {
           if (!tooltipEl) {
             tooltipEl = document.createElement("div");
             tooltipEl.id = "chartjs-tooltip";
+            tooltipEl.role = "tooltip";
             tooltipEl.innerHTML = "<table></table>";
             document.body.appendChild(tooltipEl);
           }
@@ -236,12 +237,12 @@ export const LineChartComponent = (props: {
             tooltipEl.style.flexDirection = "row";
             tooltipEl.style.flexWrap = "wrap";
             tooltipEl.style.pointerEvents = "none";
-            tooltipEl.style.background = "white"; // White background
-            tooltipEl.style.borderRadius = "10px"; // Rounded edges
-            tooltipEl.style.padding = "8px"; // Padding inside tooltip
+            tooltipEl.style.background = "white";
+            tooltipEl.style.borderRadius = "10px";
+            tooltipEl.style.padding = "8px";
             tooltipEl.style.width = "200px";
-            tooltipEl.style.boxShadow = "4px 4px 10px rgba(0, 0, 0, 0.3)"; // Shadow effect
-            tooltipEl.style.border = "1px solid rgba(0, 0, 0, 0.1)"; // Optional border
+            tooltipEl.style.boxShadow = "4px 4px 10px rgba(0, 0, 0, 0.3)";
+            tooltipEl.style.border = "1px solid rgba(0, 0, 0, 0.1)";
           }
         },
       },

@@ -1,8 +1,11 @@
+import '@testing-library/jest-dom'
 import {LineChartComponent} from "../../src/utility/lib/design-components/charts/line-charts"
 import { formatCurrency, formatValue} from '../../src/utility/lib/helpers/helper-functions'
 import { Line } from 'react-chartjs-2'
-import { render, screen } from '@testing-library/react'
-import { mock } from "node:test"
+import { Chart } from 'chart.js'
+import userEvent from "@testing-library/user-event";
+import { render, screen, waitFor, fireEvent } from '@testing-library/react'
+import { act } from "react";
 
 
 jest.mock("../../src/utility/lib/helpers/helper-functions", () => ({
@@ -29,11 +32,6 @@ jest.mock("../../src/utility/lib/helpers/helper-functions", () => ({
 })) 
 
 
-jest.mock("../../node_modules/react-chartjs-2", () => ({
-    Line: jest.fn().mockImplementation(()=> null)
-  })) 
-
-
 const portfolioQuery = [
     {"x": "2025-01-17T10:05:00.000Z", "y": [174, 174]},
     {"x": "2025-01-17T10:10:00.000Z", "y": [520, 520]},
@@ -43,6 +41,10 @@ const devQuery = [
     {"x": "2025-01-16T23:00:00.000Z", "y": [12, 14, 7]},
     {"x": "2025-01-16T23:10:00.000Z", "y": [18, 19, 5]},
 ]
+
+jest.mock("../../node_modules/react-chartjs-2", () => ({
+    Line: jest.fn().mockImplementation(()=> null)
+  })) 
 
 let result = {
     dataP: [portfolioQuery[0].y[0], portfolioQuery[1].y[0]],
@@ -99,7 +101,6 @@ describe("scope == portfoliotimeframes", () => {
             generateTest(result, i)
             }
     })
-
     it("costbasis enabled ", () => {
         const updatedResult = {
             ...result, 
@@ -229,4 +230,34 @@ describe("edge cases", () => {
             }
     })
 })
-// npm run test line-charts.test.jsx   
+
+
+describe("renders tooltip", () => {
+    test("renders tooltip when hovering over a data point", async () => {
+        render(<LineChartComponent 
+            processedQueryData={portfolioQuery} 
+            timeframe={{timeframe: "7 days", timeunit:"day"}} 
+            comparators={{ costbasis: false, btc:false, eth: false}} 
+            scope= "portfoliotimeframes"
+            />);
+      
+            const canvas = document.querySelector("canvas"); // Assuming canvas gets an img role
+        const chartInstance = Chart.getChart(canvas);
+      
+        expect(chartInstance).toBeDefined();
+      
+        // Spy on the Chart.js method
+        const spy = jest.spyOn(chartInstance, "setActiveElements");
+      
+        // Simulate a hover over a data point
+        chartInstance.setActiveElements([{ datasetIndex: 0, index: 2 }]);
+        chartInstance.update();
+      
+        // Verify that `setActiveElements` was called
+        expect(spy).toHaveBeenCalledWith([{ datasetIndex: 0, index: 2 }]);
+      
+        // Optional: Check if tooltip content appears
+        const tooltip = await screen.findByText(/expected tooltip content/i);
+        expect(tooltip).toBeInTheDocument();
+      });
+})
