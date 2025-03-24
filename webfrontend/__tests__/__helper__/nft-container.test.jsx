@@ -1,5 +1,5 @@
 import { ExposeNfts } from "../../src/utility/lib/helpers/nft-container";
-import { NftDetailImageContainer } from "../../src/utility/lib/helpers/image-container";
+import { NftDetailImageContainer} from "../../src/utility/lib/helpers/image-container";
 import { formatValue } from "../../src/utility/lib/helpers/helper-functions";
 import { render, screen } from "@testing-library/react";
 import '@testing-library/jest-dom'

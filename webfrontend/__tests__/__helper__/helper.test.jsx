@@ -45,7 +45,7 @@ describe("tests for helper: formatValue", () => {
         expect(formattedString).toBe("1.24")
     })
     it("formatCurrency returns an empty string, if value is neither string nor number", () => {
-        const formattedCurrency = formatCurrency("1,00")
+        const formattedCurrency = formatValue("1,00")
         expect(formattedCurrency).toBe("--")
     })
 })
