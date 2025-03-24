@@ -24,7 +24,6 @@ import {
   Filler,
   TimeScale,
 } from "chart.js";
-import { JSX } from "react";
 
 ChartJS.register(
   CategoryScale,
