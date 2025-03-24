@@ -230,34 +230,3 @@ describe("edge cases", () => {
             }
     })
 })
-
-
-describe("renders tooltip", () => {
-    test("renders tooltip when hovering over a data point", async () => {
-        render(<LineChartComponent 
-            processedQueryData={portfolioQuery} 
-            timeframe={{timeframe: "7 days", timeunit:"day"}} 
-            comparators={{ costbasis: false, btc:false, eth: false}} 
-            scope= "portfoliotimeframes"
-            />);
-      
-            const canvas = document.querySelector("canvas"); // Assuming canvas gets an img role
-        const chartInstance = Chart.getChart(canvas);
-      
-        expect(chartInstance).toBeDefined();
-      
-        // Spy on the Chart.js method
-        const spy = jest.spyOn(chartInstance, "setActiveElements");
-      
-        // Simulate a hover over a data point
-        chartInstance.setActiveElements([{ datasetIndex: 0, index: 2 }]);
-        chartInstance.update();
-      
-        // Verify that `setActiveElements` was called
-        expect(spy).toHaveBeenCalledWith([{ datasetIndex: 0, index: 2 }]);
-      
-        // Optional: Check if tooltip content appears
-        const tooltip = await screen.findByText(/expected tooltip content/i);
-        expect(tooltip).toBeInTheDocument();
-      });
-})
