@@ -19,6 +19,17 @@ interface TableDetailProps {
   assetUrl?: string;
 }
 
+/**
+ * The component handles the user interaction inside of the detailled pop up, when expanding the datatable row.
+ * It also handles loading and error states for the detailled pop up.
+ * All parameters are given as props from the parent component.
+ * @param tableStatus
+ * @param assetId
+ * @param assetName
+ * @param assetSymbol
+ * @param assetUrl
+ * @returns The detailled popup, when expanding a datatable row.
+ */
 export const TableDetailComponent = (props: TableDetailProps) => {
   const [detail, setDetail] = useState<string>(
     props.tableStatus === "cryptocurrency" ? "DR" : "AG"

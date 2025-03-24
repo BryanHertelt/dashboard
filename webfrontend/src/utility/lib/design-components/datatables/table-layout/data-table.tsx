@@ -28,6 +28,17 @@ interface DataTableProps<TData, TValue> {
   expandedRow?: number | null;
   tableStatus?: string;
 }
+
+/**
+ * The component renders a data table based on the data and columns passed.
+ * The basic structure is taken from shadcn/ui.
+ * I added the extra feature to expand a detail component of the selected row. This feature is currently just usable for the Crypto/NFT/Derivative data table.
+ * @param data
+ * @param columns
+ * @param expandedRow Optional: takes the expanded row and passed it down to the detail component. This is necessary for the detail component to make the right api call.
+ * @param tableStatus Optional: Takes the status of the datatable from the wrapping data handler.
+ * @returns The data table.
+ */
 export function DataTable<TData, TValue>({
   data,
   columns,
@@ -36,8 +47,14 @@ export function DataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
 
+  /**
+   * This function is triggered, when a row is clicked. It`s purpose is to render the related detail component.
+   * @param row An object holding all related data for the selected row (made up by tanstack query.)
+   * @param tableStatus The status determines which table detail component is rendered.
+   * @returns The TableDetailComponent related to the table status.
+   */
   const getDetailComponent = (row: any, tableStatus: string | undefined) => {
-    if (tableStatus !== "") {
+    if (tableStatus !== "" || undefined) {
       const assetName =
         tableStatus === "cryptocurrency"
           ? data[row.id].assetabbreviation

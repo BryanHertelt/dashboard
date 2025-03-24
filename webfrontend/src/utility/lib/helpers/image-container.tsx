@@ -6,17 +6,39 @@ interface ImageContainerProps {
   placeholder: string;
 }
 
-export const HoldingLogoImageContainer = (props: ImageContainerProps) => {
+/**
+ * Acts as a component to format and display all pictures related to holding icons.
+ * @param url The source for the holding logo image.
+ * @param alt
+ * @param placeholder A placeholder as long as no source is known, or the source is not reachable.
+ * @returns
+ */
+export const HoldingLogoImageContainer = ({
+  url,
+  alt,
+  placeholder,
+}: ImageContainerProps) => {
   /*<Image src={props.url} width={props.width} height={props.height} alt={props.alt}/> */
-  return <div> {props.placeholder} </div>;
+  return <div> {placeholder} </div>;
 };
 
-export const NftDetailImageContainer = (props: ImageContainerProps) => {
+/**
+ * Acts as a component to format and display small nfts.
+ * @param url The source for the holding logo image.
+ * @param alt
+ * @param placeholder A placeholder as long as no source is known, or the source is not reachable.
+ * @returns
+ */
+export const NftDetailImageContainer = ({
+  url,
+  alt,
+  placeholder,
+}: ImageContainerProps) => {
   /*<Image src={props.url} width={props.width} height={props.height} alt={props.alt}/> */
   return (
     <div className="flex flex-row card h-11 w-11 justify-center items-center m-l border border-black mr-3 ml-5 ">
       {" "}
-      {props.placeholder}
+      {placeholder}
     </div>
   );
 };

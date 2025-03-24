@@ -167,8 +167,6 @@ export const LineChartComponent = (props: {
             innerHtml += "</thead><tbody>";
 
             bodyLines.forEach(function (body: string[], i: number) {
-              console.log("body", body);
-              console.log("context", context);
               let keyStyle = "color:" + icongray;
               keyStyle += ";font-weight: 300 !important";
               let style = "background:" + white;
