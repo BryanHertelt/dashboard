@@ -269,18 +269,18 @@ export const formatDataColsDerivative = (
       },
     },
     {
-      accessorKey: "derivativename",
+      accessorKey: "assetname",
       header: () => <div className={`${headerdesign}`}> Symbol </div>,
       cell: ({ row }: any) => {
-        const name = row.getValue("derivativename");
+        const name = row.getValue("assetname");
         const renderNameCell = () => {
           for (let index = 0; index < processedQueryData.length; index++) {
-            if (name == processedQueryData[index].derivativename) {
+            if (name == processedQueryData[index].assetname) {
               return (
                 <div className="flex flex-row text-sm items-center w-3/4">
                   {processedQueryData[index].symbol} {""}{" "}
                   <div className="flex flex-col justify-start w-1/2 ml-2">
-                    <div> {processedQueryData[index].derivativename}</div>
+                    <div> {processedQueryData[index].assetname}</div>
                     <div>
                       {" "}
                       {processedQueryData[index].leverage}x{" "}
@@ -423,15 +423,15 @@ export const formatDataColsNft = (
 ) => {
   return [
     {
-      accessorKey: "collectionname",
+      accessorKey: "assetname",
       header: () => <div className=" font-normal pl-10"> Collection </div>,
       cell: ({ row }: any) => {
         const rowId = row.id;
-        const name = row.getValue("collectionname");
+        const name = row.getValue("assetname");
         console.log(processedQueryData);
         const renderNameCell = () => {
           for (let index = 0; index < processedQueryData.length; index++) {
-            if (name == processedQueryData[index].collectionname) {
+            if (name == processedQueryData[index].assetname) {
               return (
                 <div className={` ${firstcelldesign}`}>
                   <div
@@ -449,7 +449,7 @@ export const formatDataColsNft = (
                   </div>
                   {processedQueryData[index].symbol} {""}{" "}
                   <div className="flex flex-col justify-start w-1/2 ml-2">
-                    {processedQueryData[index].collectionname}
+                    {processedQueryData[index].assetname}
                   </div>
                 </div>
               );

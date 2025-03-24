@@ -58,7 +58,7 @@ export function DataTable<TData, TValue>({
       const assetName =
         tableStatus === "cryptocurrency"
           ? data[row.id].assetabbreviation
-          : `${data[row.id].leverage}X${data[row.id].derivativename}`;
+          : `${data[row.id].leverage}X${data[row.id].assetname}`;
       return (
         <TableDetailComponent
           tableStatus={tableStatus}
