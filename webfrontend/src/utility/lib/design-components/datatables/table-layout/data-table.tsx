@@ -24,7 +24,7 @@ import {
 } from "./table";
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
+  columns: ColumnDef<any, TValue>[];
   data: any;
   expandedRow?: number | null;
   tableStatus?: string;
@@ -47,8 +47,8 @@ export function DataTable<TData, TValue>({
   tableStatus,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [isOpen, setIsOpen] = useState(false);
-
+  const [rowName, setRowName] = React.useState<string>("");
+  const [isOpen, setIsOpen] = React.useState<boolean>(false);
   /**
    * This function is triggered, when a row is clicked. It`s purpose is to render the related detail component.
    * @param row An object holding all related data for the selected row (made up by tanstack query.)
@@ -132,6 +132,7 @@ export function DataTable<TData, TValue>({
                   <TableCell className="flex flex-row justify-center items-center w-full h-full text-3xl mt-1">
                     <NotesInDataTableIcon
                       onClick={() => {
+                        setRowName(row.original.assetname);
                         setIsOpen(true);
                       }}
                     />
@@ -158,11 +159,7 @@ export function DataTable<TData, TValue>({
           )}
         </TableBody>
       </Table>
-      <Modal
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        title={tableStatus}
-      />
+      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} title={rowName} />
     </div>
   );
 }
