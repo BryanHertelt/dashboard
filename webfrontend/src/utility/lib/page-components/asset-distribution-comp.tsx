@@ -4,6 +4,7 @@ import DistributionComponent from "../build-components/distribution-component";
 import AssetTableComponent from "../build-components/asset-table-component";
 import { useDistributionData } from "../datafetching/client-refetch/client-hooks";
 import { getPortfolioData } from "../datafetching/layer";
+import { formatValue } from "../helpers/helper-functions";
 import { CryptocurrencyDataInterface } from "../types/data-fetching-types";
 
 const AssetDistributionComponent = (props: any) => {
@@ -17,8 +18,23 @@ const AssetDistributionComponent = (props: any) => {
       cacheTime: 0,
     }
   );
+  const tableData = processedQueryData.assets.map((asset: any) => {
+    asset = {
+      ...asset,
+      assetpercentage:
+        asset.assettype === "cryptocurrency"
+          ? formatValue(
+              (asset.assetvalue / processedQueryData.currentvalue) * 100
+            )
+          : asset.assettype === "derivative"
+          ? formatValue((asset.size / processedQueryData.currentvalue) * 100)
+          : formatValue(
+              (asset.collectionvalue / processedQueryData.currentvalue) * 100
+            ),
+    };
+    return asset;
+  });
 
-  const tableData = processedQueryData.assets;
   const pieData = {
     assetData: processedQueryData.assets.map((asset: any) => {
       return {
@@ -51,7 +67,10 @@ const AssetDistributionComponent = (props: any) => {
         />
       </div>
       <div className="card mt-9 px-7 pt-5 w-full h-5/6 mb-10">
-        <AssetTableComponent initial={tableData} />
+        <AssetTableComponent
+          initial={tableData}
+          currentValue={processedQueryData.currentvalue}
+        />
       </div>
       <div className="border border-backgroundchild w-full"> </div>
     </>

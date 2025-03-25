@@ -92,7 +92,7 @@ export const formatDataColsCurrency = (
         );
       },
       cell: ({ row }: any) => {
-        const percentage = parseFloat(row.getValue("assetpercentage"));
+        const percentage = row.getValue("assetpercentage");
         return <div className={`${celldesign} w-1/3`}> {percentage} %</div>;
       },
     },
@@ -428,7 +428,6 @@ export const formatDataColsNft = (
       cell: ({ row }: any) => {
         const rowId = row.id;
         const name = row.getValue("assetname");
-        console.log(processedQueryData);
         const renderNameCell = () => {
           for (let index = 0; index < processedQueryData.length; index++) {
             if (name == processedQueryData[index].assetname) {

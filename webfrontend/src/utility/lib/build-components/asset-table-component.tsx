@@ -12,7 +12,13 @@ import { LoadingSkeleton } from "../datafetching/loading-skeleton";
 
 type TableStatus = "nft" | "cryptocurrency" | "derivative";
 
-const AssetTableComponent = ({ initial }: { initial: any[] }) => {
+const AssetTableComponent = ({
+  initial,
+  currentValue,
+}: {
+  initial: any[];
+  currentValue: number;
+}) => {
   const [tableStatus, setTableStatus] = useState<TableStatus>("cryptocurrency");
   const [tableData, setTableData] = useState(initial);
   const [expandedRow, setExpandedRow] = useState<number | null>(null);

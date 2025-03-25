@@ -132,10 +132,6 @@ export const DistributionChart = ({ pieData }: any) => {
       ? mainAssets.push({ value: asset.assetvalue, label: asset.assetname })
       : treshold.push({ value: asset.assetvalue, label: asset.assetname });
   });
-
-  console.log("treshold", treshold);
-  console.log("maiAssets", mainAssets);
-
   const formattedPieData = {
     labels: mainAssets.map((labelconstructor) => labelconstructor.label),
     datasets: [

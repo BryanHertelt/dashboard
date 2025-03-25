@@ -90,7 +90,7 @@ const mockInitial = [
       "assetpercentage": 3,
       "assettype": "derivative",
       "assetid": 12,
-      "derivativename": "BTCUSDT",
+      "assetname": "BTCUSDT",
       "derivateexchange":"Bybit" ,
       "positiontype": "open",
       "tradedirection": "long", 
@@ -116,7 +116,7 @@ const mockInitial = [
         "assetpercentage": 3,
         "assettype": "derivative",
         "assetid": 18,
-        "derivativename": "LTCUSDT",
+        "assetname": "LTCUSDT",
         "derivateexchange":"Bybit" ,
         "positiontype": "open",
         "tradedirection": "short", 
@@ -142,7 +142,7 @@ const mockInitial = [
       "assetpercentage": 3,
       "assettype": "nft",
       "assetid": 312,
-      "collectionname": "Bored Ape Yacht Club",
+      "assetname": "Bored Ape Yacht Club",
       "collectionvalue": 1200,
       "collectionfloorprice": 1200,
       "nftcount": 20,
@@ -226,8 +226,8 @@ expect(screen.getByText("NFT-Count")).toBeInTheDocument()
 expect(screen.getByText("Notes")).toBeInTheDocument()
     })
     it("renders table body", () => {
-        const collection = screen.getByText(mockInitial[3].collectionname).closest("td");
-        expect(within(collection).getByText(mockInitial[3].collectionname)).toBeInTheDocument(); 
+        const collection = screen.getByText(mockInitial[3].assetname).closest("td");
+        expect(within(collection).getByText(mockInitial[3].assetname)).toBeInTheDocument(); 
 
         const value = screen.getByText(formatCurrency(mockInitial[3].collectionvalue)).closest("td"); 
         expect(within(value).getByText(formatCurrency(mockInitial[3].collectionvalue))).toBeInTheDocument(); 
@@ -268,7 +268,7 @@ expect(screen.getByText("Notes")).toBeInTheDocument()
         expect(within(tradeDirection).getByText("Long")).toBeInTheDocument(); 
 
         const symbol = screen.getByText("BTCUSDT").closest("td");
-        expect(within(symbol).getByText("BTCUSDT")).toBeInTheDocument(); 
+        expect(within(symbol).getByText("BTCUSDT")) .toBeInTheDocument(); 
 
         const entry = screen.getByText(formatCurrency(mockInitial[1].entry)).closest("td");
         expect(within(entry).getByText(formatCurrency(mockInitial[1].entry))).toBeInTheDocument(); 
