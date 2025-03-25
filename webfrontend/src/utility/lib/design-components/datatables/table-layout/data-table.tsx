@@ -1,10 +1,11 @@
 "use client";
 
 import * as React from "react";
-
+import { useState } from "react";
 import { TableDetailComponent } from "./data-datatable-detail-popup";
 import { ErrorSkeleton } from "@/utility/lib/datafetching/loading-skeleton";
-
+import { NotesInDataTableIcon } from "../../../../../../public/images";
+import Modal from "@/utility/lib/build-components/pop-ups/modal";
 import {
   ColumnDef,
   SortingState,
@@ -46,6 +47,7 @@ export function DataTable<TData, TValue>({
   tableStatus,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [isOpen, setIsOpen] = useState(false);
 
   /**
    * This function is triggered, when a row is clicked. It`s purpose is to render the related detail component.
@@ -101,6 +103,10 @@ export function DataTable<TData, TValue>({
                   </TableHead>
                 );
               })}
+              <TableHead className="flex flex-row font-normal items-center justify-center text-black h-11">
+                {" "}
+                Notes
+              </TableHead>
             </TableRow>
           ))}
         </TableHeader>
@@ -123,6 +129,13 @@ export function DataTable<TData, TValue>({
                       )}
                     </TableCell>
                   ))}
+                  <TableCell className="flex flex-row justify-center items-center w-full h-full text-3xl mt-1">
+                    <NotesInDataTableIcon
+                      onClick={() => {
+                        setIsOpen(true);
+                      }}
+                    />
+                  </TableCell>
                 </TableRow>
                 {expandedRow?.toString() === row.id && (
                   <TableRow
@@ -145,6 +158,11 @@ export function DataTable<TData, TValue>({
           )}
         </TableBody>
       </Table>
+      <Modal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        title={tableStatus}
+      />
     </div>
   );
 }

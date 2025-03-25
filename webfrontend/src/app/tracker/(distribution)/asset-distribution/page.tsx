@@ -10,7 +10,6 @@ const AssetDistribution = async () => {
     await getPortfolioData(),
     await getTimeFrames("portfoliotimeframes", "7days"),
   ]);
-
   if (assetDistributionResponse === "failed") {
     return <p> We will be right back for you!</p>;
   } else if (assetDistributionResponse.assets.length === 0) {

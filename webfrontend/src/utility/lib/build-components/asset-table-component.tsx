@@ -14,7 +14,6 @@ type TableStatus = "nft" | "cryptocurrency" | "derivative";
 
 const AssetTableComponent = ({
   initial,
-  currentValue,
 }: {
   initial: any[];
   currentValue: number;
@@ -106,6 +105,7 @@ const AssetTableComponent = ({
       return <LoadingSkeleton />;
     }
   }
+
   return (
     <>
       <div className="flex flex-row justify-between mb-4 h-9">

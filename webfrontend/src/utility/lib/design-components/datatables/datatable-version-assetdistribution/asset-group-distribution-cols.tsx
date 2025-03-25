@@ -7,13 +7,11 @@ import {
 } from "@/api/distribution/asset-distributiontabledata";
 import {
   AssetPercentageValueIcon,
-  NotesInDataTableIcon,
   SortingDataTableIcon,
 } from "../../../../../../public/images";
 import { Line } from "react-chartjs-2";
 import { assetDataTableLineChartDataOptions } from "@/api/distribution/chartdataformatter";
 import { assetDataTableLineChartData } from "@/api/distribution/chartdataformatter";
-
 export const assetgrouplistcolumns: ColumnDef<AssetGroupResponseObject>[] = [
   {
     accessorKey: "groupname",
@@ -142,23 +140,6 @@ export const assetgroupdistributioncolumns: ColumnDef<AssetGroupResponseObject>[
               options={assetDataTableLineChartDataOptions}
               data={assetDataTableLineChartData}
             />
-          </div>
-        );
-      },
-    },
-    {
-      accessorKey: "notes",
-      header: () => (
-        <div className="flex flex-row justify-start text-icongray font-normal">
-          {" "}
-          Notes{" "}
-        </div>
-      ),
-      cell: ({ row }) => {
-        return (
-          <div className="flex flex-row justify-start text-3xl items-center">
-            {" "}
-            <NotesInDataTableIcon />{" "}
           </div>
         );
       },

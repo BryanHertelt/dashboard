@@ -206,18 +206,6 @@ export const formatDataColsCurrency = (
         );
       },
     },
-    {
-      accessorKey: "notes",
-      header: () => <div className={`${headerdesign}`}> Notes </div>,
-      cell: () => {
-        return (
-          <div className={`${celldesign} text-3xl`}>
-            {" "}
-            <NotesInDataTableIcon />{" "}
-          </div>
-        );
-      },
-    },
   ];
 };
 
@@ -401,18 +389,6 @@ export const formatDataColsDerivative = (
         );
       },
     },
-    {
-      accessorKey: "notes",
-      header: () => <div className={`${headerdesign}`}> Notes </div>,
-      cell: () => {
-        return (
-          <div className={`${celldesign} text-3xl`}>
-            {" "}
-            <NotesInDataTableIcon />{" "}
-          </div>
-        );
-      },
-    },
   ];
 };
 
@@ -512,18 +488,6 @@ export const formatDataColsNft = (
           <div className="flex flex-row items-center justify-center w-3/12">
             {" "}
             {count}{" "}
-          </div>
-        );
-      },
-    },
-    {
-      accessorKey: "notes",
-      header: () => <div className={`${headerdesign}`}> Notes </div>,
-      cell: ({ row }: any) => {
-        return (
-          <div className={`${celldesign} w-1/4 text-3xl`}>
-            {" "}
-            <NotesInDataTableIcon />{" "}
           </div>
         );
       },

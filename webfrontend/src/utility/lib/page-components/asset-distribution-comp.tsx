@@ -59,6 +59,7 @@ const AssetDistributionComponent = (props: any) => {
           initialData={props.initialLineLoad}
         />
       </div>
+      <div id="note-overlay"> </div>
       <div className="card p-7 h-4/6 ml-7 w-3/12">
         <DistributionComponent
           text={"You can see your Asset Distribution here."}
