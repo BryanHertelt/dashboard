@@ -19,19 +19,21 @@ const AssetDistributionComponent = (props: any) => {
   );
 
   const tableData = processedQueryData.assets;
-  const pieData = processedQueryData.assets.map((asset: any) => {
-    return {
-      symbol: asset.symbol,
-      assetname: asset.assetname,
-      assetvalue:
-        asset.assettype === "cryptocurrency"
-          ? asset.assetvalue
-          : asset.assettype === "derivative"
-          ? asset.size
-          : asset.collectionvalue,
-      distribution: asset.assetpercentage,
-    };
-  });
+  const pieData = {
+    assetData: processedQueryData.assets.map((asset: any) => {
+      return {
+        symbol: asset.symbol,
+        assetname: asset.assetname,
+        assetvalue:
+          asset.assettype === "cryptocurrency"
+            ? asset.assetvalue
+            : asset.assettype === "derivative"
+            ? asset.size
+            : asset.collectionvalue,
+      };
+    }),
+    total: processedQueryData.currentvalue,
+  };
 
   return (
     <>

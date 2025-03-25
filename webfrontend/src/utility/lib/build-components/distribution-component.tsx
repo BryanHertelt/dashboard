@@ -8,7 +8,6 @@ interface pieDataInterface {
   symbol: string;
   assetname: string;
   assetvalue: number | undefined;
-  distribution: number;
 }
 const DistributionComponent = ({
   title,
@@ -19,7 +18,6 @@ const DistributionComponent = ({
   text: string;
   piedata: any;
 }) => {
-  console.log("pie Data in distirbution ", piedata);
   return (
     <>
       <header>
@@ -27,8 +25,8 @@ const DistributionComponent = ({
         <p className="text-icongray mb-3">{text}</p>
       </header>
       <hr />
-      <div className=" flex flex-row justify-center align-middle w-full h-full my-11">
-        <div className="flex flex-row justify-center w-10/12 h-4/6">
+      <div className=" flex flex-row justify-center align-middle w-full h-full my-5 ">
+        <div className="flex flex-row justify-center w-full h-5/6 ">
           <DistributionChart pieData={piedata} />
         </div>
       </div>
