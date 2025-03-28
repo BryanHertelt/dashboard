@@ -42,6 +42,7 @@ export const RangeSlider = ({
     desiredbalancenumber,
     currentbalancenumber,
   } = data;
+  const [balance, setBalance] = useState<number | string>(desiredbalancenumber);
 
   if (desiredbalance === null || desiredbalancenumber === null) {
     return (
@@ -65,14 +66,14 @@ export const RangeSlider = ({
         label: `Desired: ${formatValue(desiredbalance)}% ~ ${formatCurrency(
           desiredbalancenumber
         )}`,
-        data: [desiredbalancenumber],
+        data: [Number(balance)],
         backgroundColor: "rgba(122, 122, 122, 1)",
         borderColor: "rgba(122, 122, 122, 1)",
         borderWidth: 1,
       },
       {
         label: `Portfolio Balance`,
-        data: [currentValue],
+        data: [currentValue - Math.max(Number(balance), currentbalancenumber)],
         borderRadius: 7,
       },
     ],
@@ -95,9 +96,6 @@ export const RangeSlider = ({
     plugins: {
       legend: {
         position: "bottom",
-        labels: {
-          boxWidth: 15,
-        },
         align: "start",
         display: false,
       },
@@ -109,7 +107,10 @@ export const RangeSlider = ({
       <div>
         <input
           type="text"
-          placeholder="type something"
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            setBalance(e.target.value);
+          }}
+          value={balance}
           className="border border-black"
         />
       </div>
