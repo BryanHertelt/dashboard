@@ -103,10 +103,6 @@ export function DataTable<TData, TValue>({
                   </TableHead>
                 );
               })}
-              <TableHead className="flex flex-row font-normal items-center justify-center text-black h-11">
-                {" "}
-                Notes
-              </TableHead>
             </TableRow>
           ))}
         </TableHeader>
@@ -129,14 +125,6 @@ export function DataTable<TData, TValue>({
                       )}
                     </TableCell>
                   ))}
-                  <TableCell className="flex flex-row justify-center items-center w-full h-full text-3xl mt-1">
-                    <NotesInDataTableIcon
-                      onClick={() => {
-                        setRowName(row.original.assetname);
-                        setIsOpen(true);
-                      }}
-                    />
-                  </TableCell>
                 </TableRow>
                 {expandedRow?.toString() === row.id && (
                   <TableRow
