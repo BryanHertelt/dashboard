@@ -26,6 +26,7 @@ import {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<any, TValue>[];
   data: any;
+  currentValue: number;
   expandedRow?: number | null;
   tableStatus?: string;
 }
@@ -45,6 +46,7 @@ export function DataTable<TData, TValue>({
   columns,
   expandedRow,
   tableStatus,
+  currentValue,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [rowName, setRowName] = React.useState<string>("");
@@ -64,6 +66,7 @@ export function DataTable<TData, TValue>({
       return (
         <TableDetailComponent
           tableStatus={tableStatus}
+          currentValue={currentValue}
           assetName={assetName}
           assetId={data[row.id].assetid}
           assetUrl={data[row.id].symbol}

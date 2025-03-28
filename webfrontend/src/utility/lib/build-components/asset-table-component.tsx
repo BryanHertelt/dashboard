@@ -14,6 +14,7 @@ type TableStatus = "nft" | "cryptocurrency" | "derivative";
 
 const AssetTableComponent = ({
   initial,
+  currentValue,
 }: {
   initial: any[];
   currentValue: number;
@@ -169,6 +170,7 @@ const AssetTableComponent = ({
           columns={col}
           expandedRow={expandedRow}
           tableStatus={tableStatus}
+          currentValue={currentValue}
         />
       </div>
     </>

@@ -14,6 +14,7 @@ import { HoldingLogoImageContainer } from "@/utility/lib/helpers/image-container
 interface TableDetailProps {
   tableStatus: string | undefined;
   assetId: number;
+  currentValue: number;
   assetName?: string;
   assetSymbol?: string;
   assetUrl?: string;
@@ -107,7 +108,11 @@ export const TableDetailComponent = (props: TableDetailProps) => {
           </>
         )}
         {detail === "DR" ? (
-          <DrDetail designComponents={designComponents} data={data} />
+          <DrDetail
+            designComponents={designComponents}
+            data={data}
+            currentValue={props.currentValue}
+          />
         ) : detail === "AG" ? (
           <AgDetail
             data={data.assetgroups}

@@ -153,6 +153,7 @@ export const HoldingBarChart = (props: any) => {
 };
 
 export const BarChartRebalancing = (props: any) => {
+  console.log("props", props);
   const {
     desiredbalance,
     currentbalance,

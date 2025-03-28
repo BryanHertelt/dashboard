@@ -7,6 +7,7 @@ import {
   HoldingBarChart,
 } from "../design-components/charts/bar-charts";
 import { useState } from "react";
+import { RangeSlider } from "../design-components/range-slider/range-slider";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -27,20 +28,33 @@ ChartJS.register(
   Legend
 );
 
-export const DrDetail = (props: any) => {
+export const DrDetail = ({
+  designComponents,
+  data,
+  currentValue,
+}: {
+  designComponents: {
+    carddesign: string;
+    headerdesign: string;
+    valuedesign: string;
+  };
+  data: any;
+  currentValue: number;
+}) => {
   //props: designComponents, detailData
+  console.log("data", data);
   const portfolioRebalancingData = [
-    { header: "Average Entry Price", data: props.data.averageentryprice },
-    { header: "Market Price", data: props.data.marketprice },
-    { header: "Average Exit Price", data: props.data.averageexitprice },
-    { header: "Total Cost", data: props.data.totalcost },
+    { header: "Average Entry Price", data: data.averageentryprice },
+    { header: "Market Price", data: data.marketprice },
+    { header: "Average Exit Price", data: data.averageexitprice },
+    { header: "Total Cost", data: data.totalcost },
   ];
 
   const barchartData = {
-    desiredbalance: props.data.desiredbalance,
-    currentbalance: props.data.currentbalance,
-    desiredbalancenumber: props.data.desiredbalancenumber,
-    currentbalancenumber: props.data.currentbalancenumber,
+    desiredbalance: data.desiredbalance,
+    currentbalance: data.currentbalance,
+    desiredbalancenumber: data.desiredbalancenumber,
+    currentbalancenumber: data.currentbalancenumber,
   };
 
   return (
@@ -50,14 +64,14 @@ export const DrDetail = (props: any) => {
           {portfolioRebalancingData.map((cards: any) => {
             return (
               <div
-                className={`${props.designComponents.carddesign} sm:w-40 md:w-40 lg:w-52 lp:w-40 xl:w-72`}
+                className={`${designComponents.carddesign} sm:w-40 md:w-40 lg:w-52 lp:w-40 xl:w-72`}
                 key={cards.header}
               >
-                <p className={props.designComponents.headerdesign}>
+                <p className={designComponents.headerdesign}>
                   {" "}
                   {cards.header}{" "}
                 </p>
-                <p className={props.designComponents.valuedesign}>
+                <p className={designComponents.valuedesign}>
                   {" "}
                   {formatCurrency(cards.data)}{" "}
                 </p>
@@ -67,7 +81,11 @@ export const DrDetail = (props: any) => {
         </div>
       </div>
       <div className="lg:w-3/5 lp:w-2/5 pr-3 pt-5 pl-10 border-l-2 border-gray md:w-2/5 sm:w-2/5">
-        <BarChartRebalancing data={barchartData} theme={"details"} />
+        <RangeSlider
+          data={barchartData}
+          theme={"details"}
+          currentValue={currentValue}
+        />
       </div>
     </>
   );
