@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  AssetPercentageValueIcon,
-  NotesInDataTableIcon,
-} from "../../../../../../public/images";
+import { AssetPercentageValueIcon } from "../../../../../../public/images";
 import {
   PositionDirectionIcon,
   SortingDataTableIcon,

@@ -1,4 +1,6 @@
 import Portal from "./note-pop-up";
+import { useState } from "react";
+import axios from "axios";
 
 const Modal = ({
   isOpen,
@@ -11,6 +13,25 @@ const Modal = ({
 }) => {
   if (!isOpen) return null;
 
+  const [note, setNote] = useState<string>("");
+
+  const handleNoteChange = (event: any) => {
+    setNote(event.target.value);
+  };
+
+  const postNote = async () => {
+    try {
+      console.log("This is a note", note);
+      const response = await axios.patch(`http://localhost:3001/notes`, {
+        notes: note,
+      });
+      console.log("Server response:", response);
+    } catch (error) {
+      console.error("Error during request:", error);
+    }
+  };
+
+  console.log("This is the note", note);
   return (
     <Portal>
       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
@@ -22,15 +43,24 @@ const Modal = ({
             </h2>
             <div className="flex justify-end pr-3 w-1/2 rounded">
               <button
-                onClick={onClose}
+                onClick={() => {
+                  onClose();
+                  postNote();
+                }}
                 className="  bg-blue text-white rounded-md px-3"
               >
                 Save
               </button>
             </div>
           </div>
-          <div className="pl-3">
-            <input className="pl-1" placeholder="Write..." />
+          <div className="pl-3 mr-3 ">
+            <input
+              className="pl-1 w-full h-8"
+              type="text"
+              value={note}
+              onChange={handleNoteChange}
+              placeholder="Write..."
+            />
           </div>
         </div>
       </div>
