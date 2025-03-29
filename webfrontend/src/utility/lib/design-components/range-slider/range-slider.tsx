@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect, useRef } from "react";
 import { formatCurrency, formatValue } from "../../helpers/helper-functions";
 import { Bar } from "react-chartjs-2";
@@ -12,6 +14,8 @@ import {
   ChartOptions,
   ChartData,
 } from "chart.js";
+
+import { postBalance } from "../../datafetching/layer";
 
 ChartJS.register(
   CategoryScale,
@@ -42,7 +46,11 @@ export const RangeSlider = ({
     desiredbalancenumber,
     currentbalancenumber,
   } = data;
-  const [balance, setBalance] = useState<number | string>(desiredbalancenumber);
+  const [balance, setBalance] = useState<number>(desiredbalancenumber);
+  const [toast, setToast] = useState<{
+    active: boolean;
+    title: string;
+  }>({ active: false, title: "" });
 
   if (desiredbalance === null || desiredbalancenumber === null) {
     return (
@@ -57,35 +65,44 @@ export const RangeSlider = ({
         label: `Current: ${formatValue(currentbalance)}% ~ ${formatCurrency(
           currentbalancenumber
         )}`,
-        data: [currentbalancenumber],
+        data: [currentbalance],
         backgroundColor: "rgba(0, 26, 66, 1)",
         borderColor: "rgba(0, 26, 66, 1)",
-        borderWidth: 1,
+        borderRadius: 7,
+        order: currentbalancenumber > balance ? 2 : 1,
       },
       {
-        label: `Desired: ${formatValue(desiredbalance)}% ~ ${formatCurrency(
-          desiredbalancenumber
-        )}`,
-        data: [Number(balance)],
+        label: `Desired: ${formatValue(
+          Math.round((Number(balance) / currentValue) * 10000) / 100
+        )}% ~ ${formatCurrency(Math.round(Number(balance) * 100) / 100)}`,
+        data: [(Number(balance) / currentValue) * 100],
         backgroundColor: "rgba(122, 122, 122, 1)",
         borderColor: "rgba(122, 122, 122, 1)",
-        borderWidth: 1,
+        borderRadius: 7,
+        order: currentbalancenumber > balance ? 1 : 2,
       },
       {
         label: `Portfolio Balance`,
-        data: [currentValue - Math.max(Number(balance), currentbalancenumber)],
+        data: [100],
         borderRadius: 7,
+        order: 3,
       },
     ],
   };
-
+  console.log(
+    "balance",
+    100 - Math.max((Number(balance) / currentValue) * 100, currentbalance)
+  );
   const options: ChartOptions<"bar"> = {
     responsive: true,
     indexAxis: "y",
     maintainAspectRatio: false,
+    animation: {
+      duration: 400,
+    },
     scales: {
       x: {
-        stacked: true,
+        stacked: false,
         display: false,
       },
       y: {
@@ -99,20 +116,60 @@ export const RangeSlider = ({
         align: "start",
         display: false,
       },
+      tooltip: {
+        enabled: false,
+      },
     },
   };
   return (
     <div className="w-full h-11 flex justify-center items-center mr-5 flex-wrap">
       <Bar data={barData} options={options} />
-      <div>
-        <input
-          type="text"
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            setBalance(e.target.value);
-          }}
-          value={balance}
-          className="border border-black"
-        />
+      <div className="flex flex-row justify-end items-end w-full mr-20">
+        {toast.active === true ? (
+          <div className="rounded-md text-red text-xs ml-1.5 h-7  ">
+            {" "}
+            {toast.title}
+          </div>
+        ) : null}
+        <form className="flex flex-col">
+          <input
+            type="text"
+            step="any"
+            onBlur={postBalance}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              if (Number(e.target.value) > currentValue) {
+                setToast({
+                  active: true,
+                  title:
+                    "Your desired balance cannot be larger than the portfolio size",
+                });
+              } else {
+                setToast({ active: false, title: "" });
+                setBalance(Number(e.target.value));
+              }
+            }}
+            value={Math.round(Number(balance) * 100) / 100}
+            className="border border-black"
+          />
+          <input
+            type="text"
+            step="any"
+            onBlur={postBalance}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              if (Number(e.target.value) > 100) {
+                setToast({
+                  active: true,
+                  title: "The desired value cannot be more than 100 percent",
+                });
+              } else {
+                setToast({ active: false, title: "" });
+                setBalance((Number(e.target.value) / 100) * currentValue);
+              }
+            }}
+            value={Math.round((Number(balance) / currentValue) * 10000) / 100}
+            className="border border-black"
+          />
+        </form>
       </div>
       <div className="flex flex-col justify-start w-full">
         <div className="flex flex-col text-center mt-2">

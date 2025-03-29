@@ -80,3 +80,5 @@ export const getTimeFrames = async (scope: string, timeframe: string) => {
     });
   }
 };
+
+export const postBalance = () => {};
