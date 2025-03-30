@@ -269,7 +269,98 @@ exports[`DrDetail does not have unexpected UI changes 1`] = `
   </div>
   <div
     class="lg:w-3/5 lp:w-2/5 pr-3 pt-5 pl-10 border-l-2 border-gray md:w-2/5 sm:w-2/5"
-  />
+  >
+    <div
+      class="w-full h-11 flex justify-center items-center mr-5 flex-wrap"
+    >
+      <canvas
+        height="150"
+        role="img"
+        width="300"
+      />
+      <div
+        class="flex flex-col justify-start w-full"
+      >
+        <div
+          class="flex flex-row"
+        >
+          <div
+            class="flex flex-col text-center mt-2 w-1/2"
+          >
+            <div
+              class="flex items-center space-x-2"
+            >
+              <span
+                class="w-4 h-4 rounded-sm mb-3"
+                style="background-color: rgb(0, 26, 66);"
+              />
+              <span
+                class="text-xs md:text-xs text-icongray mb-3"
+              >
+                Current: 63.31% ~ $12,233.00
+              </span>
+            </div>
+            <div
+              class="flex items-center space-x-2"
+            >
+              <span
+                class="w-4 h-4 rounded-sm mb-3"
+                style="background-color: rgb(122, 122, 122);"
+              />
+              <span
+                class="text-xs md:text-xs text-icongray mb-3"
+              >
+                Desired: 36.69% ~ 
+              </span>
+            </div>
+            <div
+              class="flex items-center space-x-2"
+            >
+              <span
+                class="w-4 h-4 rounded-sm mb-3"
+                style="background-color: rgb(211, 211, 211);"
+              />
+              <span
+                class="text-xs md:text-xs text-icongray mb-3"
+              >
+                Portfolio Balance: 100%  ~  
+              </span>
+            </div>
+          </div>
+          <div
+            class="flex flex-row justify-end w-1/2 "
+          >
+            <div
+              class="flex items-center w-14 h-8 bg-gray rounded-full transition-all duration-500"
+            >
+              <span
+                class="flex h-6 w-6 p-2 ml-1 bg-white rounded-full transition-all duration-500 justify-center items-center font-semibold text-xs"
+              >
+                [%]
+              </span>
+               
+            </div>
+            <div
+              class="flex flex-col items-end w-2/5 ml-2.5"
+            >
+              <input
+                class="bg-gray w-full rounded-md pl-2 h-7"
+                step="any"
+                type="text"
+                value="36.69"
+              />
+              <p
+                class="flex flex-row justify-end h-7 w-32 items-center text-icongray"
+              >
+                ≈
+                 
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 `;
 

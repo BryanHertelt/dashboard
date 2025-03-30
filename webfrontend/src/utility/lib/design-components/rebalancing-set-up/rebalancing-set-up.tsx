@@ -26,7 +26,7 @@ ChartJS.register(
   Legend
 );
 
-export const RangeSlider = ({
+export const RebalancingSetUp = ({
   data,
   theme,
   currentValue,

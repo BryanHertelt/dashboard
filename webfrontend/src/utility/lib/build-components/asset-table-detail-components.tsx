@@ -7,7 +7,7 @@ import {
   HoldingBarChart,
 } from "../design-components/charts/bar-charts";
 import { useState } from "react";
-import { RangeSlider } from "../design-components/range-slider/range-slider";
+import { RebalancingSetUp } from "../design-components/rebalancing-set-up/rebalancing-set-up";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -81,7 +81,7 @@ export const DrDetail = ({
         </div>
       </div>
       <div className="lg:w-3/5 lp:w-2/5 pr-3 pt-5 pl-10 border-l-2 border-gray md:w-2/5 sm:w-2/5">
-        <RangeSlider
+        <RebalancingSetUp
           data={barchartData}
           assetId={data.assetId}
           theme={"details"}
