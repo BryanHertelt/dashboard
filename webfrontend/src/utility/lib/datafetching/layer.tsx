@@ -1,5 +1,5 @@
 import { isObject } from "../helpers/helper-functions";
-import { Axios } from "axios";
+import axios from "axios";
 
 export const portfolioId = "1";
 export const baseUrl = `http://localhost:3001/${portfolioId}`;
@@ -81,4 +81,17 @@ export const getTimeFrames = async (scope: string, timeframe: string) => {
   }
 };
 
-export const postBalance = () => {};
+export const postRebalancing = async (
+  assetId: string | number,
+  balance: number
+) => {
+  try {
+    const response = await axios.post(`${baseUrl}/detailtype`, {
+      assetId,
+      desiredbalance: balance,
+    });
+    console.log("response", response);
+  } catch (error) {
+    console.error("Error updating desired balance", error);
+  }
+};

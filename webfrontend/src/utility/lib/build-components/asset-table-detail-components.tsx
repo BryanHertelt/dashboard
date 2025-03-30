@@ -83,6 +83,7 @@ export const DrDetail = ({
       <div className="lg:w-3/5 lp:w-2/5 pr-3 pt-5 pl-10 border-l-2 border-gray md:w-2/5 sm:w-2/5">
         <RangeSlider
           data={barchartData}
+          assetId={data.assetId}
           theme={"details"}
           currentValue={currentValue}
         />
