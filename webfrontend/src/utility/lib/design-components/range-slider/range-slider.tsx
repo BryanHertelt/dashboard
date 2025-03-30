@@ -48,12 +48,14 @@ export const RangeSlider = ({
     desiredbalancenumber,
     currentbalancenumber,
   } = data;
-  const [balance, setBalance] = useState<number>(desiredbalancenumber);
+  const [balance, setBalance] = useState<number>(desiredbalance);
   const [toast, setToast] = useState<{
     active: boolean;
     title: string;
   }>({ active: false, title: "" });
+
   const [isToggled, setToggled] = useState<boolean>(false);
+  const [inputValue, setInputValue] = useState<string>(balance.toString());
 
   if (desiredbalance === null || desiredbalancenumber === null) {
     return (
@@ -63,10 +65,44 @@ export const RangeSlider = ({
 
   const handleSubmit = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    postRebalancing(
-      assetId,
-      Math.round((Number(balance) / currentValue) * 10000) / 100
-    );
+    postRebalancing(assetId, Math.round(Number(balance) * 100) / 100);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(",", ".");
+
+    const numericValue =
+      value === "" || value === "." ? NaN : parseFloat(value);
+
+    if (!/^\d*\.?\d*$/.test(value)) {
+      setToast({ active: true, title: "Please type in a number" });
+      return;
+    } else if (Number(numericValue) > currentValue) {
+      setToast({
+        active: true,
+        title: "Your desired balance cannot be larger than the portfolio size.",
+      });
+    } else if (isToggled === false && Number(numericValue) > 100) {
+      setToast({
+        active: true,
+        title: "Your desired balance cannot be larger then 100 percent.",
+      });
+    } else if (isToggled === true && e.target.value === "") {
+      setBalance(0);
+    } else if (value.includes(".")) {
+      setToast({
+        active: true,
+        title: "Please assign just natural numbers",
+      });
+    } else {
+      setToast({ active: false, title: "" });
+      setBalance(
+        isToggled
+          ? (Number(numericValue) / currentValue) * 100
+          : Math.round(Number(value) * 100) / 100
+      );
+    }
+    setInputValue("");
   };
 
   const barData: ChartData<"bar"> = {
@@ -83,14 +119,14 @@ export const RangeSlider = ({
         order: currentbalancenumber > balance ? 2 : 1,
       },
       {
-        label: `Desired: ${formatValue(
-          Math.round((Number(balance) / currentValue) * 10000) / 100
-        )}% ~ ${formatCurrency(Math.round(Number(balance) * 100) / 100)}`,
-        data: [(Number(balance) / currentValue) * 100],
+        label: `Desired: ${formatValue(Number(balance))}% ~ ${formatCurrency(
+          Math.round(Number(currentValue * balance)) / 100
+        )}`,
+        data: [balance],
         backgroundColor: "rgba(122, 122, 122, 1)",
         borderColor: "rgba(122, 122, 122, 1)",
         borderRadius: 7,
-        order: currentbalancenumber > balance ? 1 : 2,
+        order: currentbalance > balance ? 1 : 2,
       },
       {
         label: `Portfolio Balance: 100%  ~ ${formatCurrency(currentValue)} `,
@@ -141,82 +177,55 @@ export const RangeSlider = ({
                   className="w-4 h-4 rounded-sm mb-3"
                   style={{ backgroundColor: dataset.backgroundColor as string }}
                 ></span>
-                <span className="text-xs text-icongray mb-3">
+                <span className="text-xs md:text-xs text-icongray mb-3">
                   {dataset.label}
                 </span>
               </div>
             ))}
           </div>
-          <div
-            className={`flex items-center w-14 h-8 bg-gray rounded-full transition-all duration-500`}
-          >
-            <span
-              onClick={() => setToggled(!isToggled)}
-              className={`flex h-8 w-8 ${
-                isToggled ? "ml-6" : "ml-0"
-              } bg-white rounded-full transition-all duration-500 justify-center items-center font-semibold`}
+          <div className="flex flex-row justify-end w-1/2 ">
+            <div
+              className={`flex items-center w-14 h-8 bg-gray rounded-full transition-all duration-500`}
             >
-              {isToggled ? "[x]" : "[%]"}
-            </span>{" "}
-          </div>
-          <div className="flex flex-row justify-end w-1/2">
-            {toast.active === true ? (
-              <div className="rounded-md text-red text-xs ml-1.5 h-7  ">
-                {" "}
-                {toast.title}
-              </div>
-            ) : null}
-            <form className="flex flex-col items-end">
-              <div className="flex flex-row justify-end">
-                <p className="pr-3 text-icongray"> Value: </p>
-                <input
-                  type="text"
-                  step="any"
-                  onBlur={handleSubmit}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    if (Number(e.target.value) > currentValue) {
-                      setToast({
-                        active: true,
-                        title:
-                          "Your desired balance cannot be larger than the portfolio size",
-                      });
-                    } else {
-                      setToast({ active: false, title: "" });
-                      setBalance(Number(e.target.value));
-                    }
-                  }}
-                  value={Math.round(Number(balance) * 100) / 100}
-                  className="bg-gray w-1/2 rounded-md pl-2"
-                />
-              </div>
-              <div className="flex flex-row justify-end">
-                <p className="pr-3 text-icongray"> Balance: </p>
-                <input
-                  type="text"
-                  step="any"
-                  onBlur={handleSubmit}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    if (Number(e.target.value) > 100) {
-                      setToast({
-                        active: true,
-                        title:
-                          "The desired value cannot be more than 100 percent",
-                      });
-                    } else {
-                      setToast({ active: false, title: "" });
-                      setBalance((Number(e.target.value) / 100) * currentValue);
-                    }
-                  }}
-                  value={
-                    Math.round((Number(balance) / currentValue) * 10000) / 100
-                  }
-                  className="bg-gray w-1/2 rounded-md mt-3 pl-2"
-                />
-              </div>
-            </form>
+              <span
+                onClick={() => setToggled(!isToggled)}
+                className={`flex h-6 w-6 p-2 ${
+                  isToggled ? "ml-7" : "ml-1"
+                } bg-white rounded-full transition-all duration-500 justify-center items-center font-semibold text-xs`}
+              >
+                {isToggled ? "[x]" : "[%]"}
+              </span>{" "}
+            </div>
+            <div className="flex flex-col items-end w-2/5 ml-2.5">
+              <input
+                type="text"
+                step="any"
+                onBlur={handleSubmit}
+                onChange={(e) => handleChange(e)}
+                value={
+                  isToggled
+                    ? Math.round(Number((balance / 100) * currentValue * 100)) /
+                      100
+                    : Math.round(Number(balance) * 100) / 100
+                }
+                className="bg-gray w-full rounded-md pl-2 h-7"
+              />
+              <p className="flex flex-row justify-end h-7 w-32 items-center text-icongray">
+                ≈{" "}
+                {isToggled
+                  ? `${formatValue(balance)} %`
+                  : formatCurrency((balance / 100) * currentValue)}
+              </p>
+            </div>
           </div>
         </div>
       </div>
+      {toast.active === true ? (
+        <div className="rounded-md text-red text-xs ml-1.5 h-7  ">
+          {" "}
+          {toast.title}
+        </div>
+      ) : null}
     </div>
   );
 };
