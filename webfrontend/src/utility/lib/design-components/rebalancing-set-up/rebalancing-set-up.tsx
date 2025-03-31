@@ -65,44 +65,52 @@ export const RebalancingSetUp = ({
 
   const handleSubmit = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
+    setToast({ active: false, title: "" });
     postRebalancing(assetId, Math.round(Number(balance) * 100) / 100);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(",", ".");
+    let value = e.target.value;
 
-    const numericValue =
-      value === "" || value === "." ? NaN : parseFloat(value);
-
+    // Check if input is a valid number or empty
     if (!/^\d*\.?\d*$/.test(value)) {
       setToast({ active: true, title: "Please type in a number" });
       return;
-    } else if (Number(numericValue) > currentValue) {
+    }
+
+    // Prevent immediate rounding when input ends with "."
+    if (value.endsWith(".")) {
+      console.log("Waiting for more input...");
+      setInputValue(value); // Store as string to allow further input
+      return;
+    }
+
+    // Convert to number and apply rounding if input is a valid numeric value
+    const numericValue = Number(value);
+
+    if (numericValue > currentValue) {
       setToast({
         active: true,
         title: "Your desired balance cannot be larger than the portfolio size.",
       });
-    } else if (isToggled === false && Number(numericValue) > 100) {
+    } else if (value.endsWith(".")) {
+      setInputValue(value);
+    } else if (!isToggled && numericValue > 100) {
       setToast({
         active: true,
-        title: "Your desired balance cannot be larger then 100 percent.",
+        title: "Your desired balance cannot be larger than 100 percent.",
       });
-    } else if (isToggled === true && e.target.value === "") {
+    } else if (isToggled && value === "") {
       setBalance(0);
-    } else if (value.includes(".")) {
-      setToast({
-        active: true,
-        title: "Please assign just natural numbers",
-      });
     } else {
       setToast({ active: false, title: "" });
+      setInputValue("");
       setBalance(
         isToggled
-          ? (Number(numericValue) / currentValue) * 100
-          : Math.round(Number(value) * 100) / 100
+          ? (numericValue / currentValue) * 100
+          : Math.round(numericValue * 100) / 100
       );
     }
-    setInputValue("");
   };
 
   const barData: ChartData<"bar"> = {
@@ -203,7 +211,9 @@ export const RebalancingSetUp = ({
                 onBlur={handleSubmit}
                 onChange={(e) => handleChange(e)}
                 value={
-                  isToggled
+                  inputValue != ""
+                    ? inputValue
+                    : isToggled
                     ? Math.round(Number((balance / 100) * currentValue * 100)) /
                       100
                     : Math.round(Number(balance) * 100) / 100
