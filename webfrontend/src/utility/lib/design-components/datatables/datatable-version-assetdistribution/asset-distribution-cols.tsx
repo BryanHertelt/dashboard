@@ -24,7 +24,7 @@ const sortingicondesgin = "bg-white h-5 w-5 ml-1 rounded-sm";
 export const formatDataColsCurrency = (
   parentdata: any,
   queryClient: any,
-  setExpandedRow: any
+  setExpandedRow?: any
 ) => {
   return [
     {
@@ -421,7 +421,8 @@ export const formatDataColsNft = (
                   </div>
                   {processedQueryData[index].symbol} {""}{" "}
                   <div className="flex flex-col justify-start w-1/2 ml-2">
-                    {processedQueryData[index].assetname}
+                    <p> {processedQueryData[index].assetname} </p>
+                    <p className="text-icongray"> ETH </p>
                   </div>
                 </div>
               );

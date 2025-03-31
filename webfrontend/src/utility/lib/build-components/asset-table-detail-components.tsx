@@ -95,7 +95,7 @@ export const DrDetail = ({
 export const AgDetail = (props: any) => {
   // props: designComponents, tableStatus, assetname
   const [activeGroup, setActiveGroup] = useState<any>(
-    props.tableStatus === "nft" ? props.data[1] : null
+    props.tableStatus === "nft" ? props.data[0] : null
   );
 
   return (
@@ -164,7 +164,7 @@ export const HdDetail = (props: any) => {
    * Props needed: 1. data object containing: assetname(assetabbr), holdingdata , 2. tableStatus
    */
   const [activeHolding, setActiveHolding] = useState<any>(
-    props.tableStatus === "nft" ? props.data[1] : null
+    props.tableStatus === "nft" ? props.data[0] : null
   );
 
   return (

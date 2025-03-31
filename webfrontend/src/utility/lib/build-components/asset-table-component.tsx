@@ -21,6 +21,7 @@ const AssetTableComponent = ({
 }) => {
   const [tableStatus, setTableStatus] = useState<TableStatus>("cryptocurrency");
   const [tableData, setTableData] = useState(initial);
+  const [isToggled, setIsToggled] = useState<boolean>(true);
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
   const [derivativeType, setDerivativeType] = useState<any>({
     perp: false,
@@ -93,7 +94,9 @@ const AssetTableComponent = ({
         setTableStatus(status);
         setExpandedRow(null);
       }}
-      className={` px-3 text-base h-full  ${getButtonClass(status)} rounded-md`}
+      className={` px-3 text-base h-full transition-all duration-300 ${getButtonClass(
+        status
+      )} rounded-md `}
     >
       {label}
     </button>
@@ -118,13 +121,13 @@ const AssetTableComponent = ({
         </header>
         <nav className="flex flex-row ">
           {tableStatus === "derivative" ? (
-            <div className="flex flex-row justify-center items-center mr-5">
+            <div className="flex flex-row justify-center items-center mr-5 w-40">
               <button
                 className={`${
                   derivativeType.perp === true
                     ? "border-2 px-2 border-black"
-                    : ""
-                } mr-3`}
+                    : "px-2 border-2 border-white"
+                } flex mr-3 items-center justify-center`}
                 onClick={() => {
                   setDerivativeType((prevState: any) => {
                     return {
@@ -141,7 +144,7 @@ const AssetTableComponent = ({
                 className={`${
                   derivativeType.future === true
                     ? "border-2 px-2 border-black"
-                    : ""
+                    : "px-2 w-20 border-2 border-white "
                 }`}
                 onClick={() => {
                   setDerivativeType((prevState: any) => {
@@ -157,7 +160,7 @@ const AssetTableComponent = ({
               </button>
             </div>
           ) : null}
-          <div className="bg-gray rounded-md">
+          <div className=" flex flex-row bg-gray rounded-md">
             <StatusButton status="cryptocurrency" label="Cryptocurrencies" />
             <StatusButton status="nft" label="NFTs" />
             <StatusButton status="derivative" label="Derivatives" />

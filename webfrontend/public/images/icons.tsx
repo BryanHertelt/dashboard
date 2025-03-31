@@ -4,7 +4,7 @@ const green = "#04B900";
 const white = "#FFFFFF";
 const gray = "#7A7A7A";
 
-export const PositionDirectionIcon = (props: any) => {
+export const PositionDirectionIcon = ({ direction }: { direction: string }) => {
   return (
     <svg
       width="16"
@@ -13,12 +13,12 @@ export const PositionDirectionIcon = (props: any) => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g transform={`${props.direction === "long" ? "" : "rotate(180, 9, 9)"}`}>
+      <g transform={`${direction === "long" ? "" : "rotate(180, 8, 8)"}`}>
         <rect
           width="16"
           height="16"
           rx="3"
-          fill={`${props.direction === "long" ? green : red}`}
+          fill={`${direction === "long" ? green : red}`}
         />
         <path
           fillRule="evenodd"
@@ -31,7 +31,7 @@ export const PositionDirectionIcon = (props: any) => {
   );
 };
 
-export const ShowDetailIcon = (props: any) => {
+export const ShowDetailIcon = () => {
   const [isRotated, setIsRotated] = useState(false);
 
   const handleClick = () => {
