@@ -134,7 +134,7 @@ export function DataTable<TData, TValue>({
                     key={`detail${row.id}`}
                     className="border-b-4 border-t-2 border-gray"
                   >
-                    <TableCell className="" colSpan={columns.length}>
+                    <TableCell colSpan={columns.length}>
                       <div>{getDetailComponent(row, tableStatus)}</div>
                     </TableCell>
                   </TableRow>

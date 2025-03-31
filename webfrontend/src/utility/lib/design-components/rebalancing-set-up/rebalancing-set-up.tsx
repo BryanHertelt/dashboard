@@ -72,20 +72,15 @@ export const RebalancingSetUp = ({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value;
 
-    // Check if input is a valid number or empty
     if (!/^\d*\.?\d*$/.test(value)) {
       setToast({ active: true, title: "Please type in a number" });
       return;
     }
-
-    // Prevent immediate rounding when input ends with "."
     if (value.endsWith(".")) {
-      console.log("Waiting for more input...");
-      setInputValue(value); // Store as string to allow further input
+      setInputValue(value);
       return;
     }
 
-    // Convert to number and apply rounding if input is a valid numeric value
     const numericValue = Number(value);
 
     if (numericValue > currentValue) {
@@ -211,7 +206,7 @@ export const RebalancingSetUp = ({
                 onBlur={handleSubmit}
                 onChange={(e) => handleChange(e)}
                 value={
-                  inputValue != ""
+                  inputValue != "" && inputValue != desiredbalance.toString()
                     ? inputValue
                     : isToggled
                     ? Math.round(Number((balance / 100) * currentValue * 100)) /
