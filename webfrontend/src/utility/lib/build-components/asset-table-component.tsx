@@ -94,7 +94,7 @@ const AssetTableComponent = ({
         setTableStatus(status);
         setExpandedRow(null);
       }}
-      className={` px-3 text-base h-full transition-all duration-300 ${getButtonClass(
+      className={` px-3 text-base h-full transition-all duration-500 ease-in-out ${getButtonClass(
         status
       )} rounded-md `}
     >

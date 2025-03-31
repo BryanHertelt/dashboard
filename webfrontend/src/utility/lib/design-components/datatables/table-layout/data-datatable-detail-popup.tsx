@@ -47,14 +47,6 @@ export const TableDetailComponent = (props: TableDetailProps) => {
     []
   );
 
-  const toggledStyles = useMemo(
-    () => ({
-      first: active ? "text-white bg-blue" : "bg-gray text-black",
-      second: !active ? "text-white bg-blue" : "bg-gray text-black",
-    }),
-    [active]
-  );
-
   if (isLoading) {
     return <LoadingSkeleton />;
   }
@@ -75,8 +67,19 @@ export const TableDetailComponent = (props: TableDetailProps) => {
         ) : (
           <>
             <div className="flex flex-row m-1 mb-2.5 p-1 pr-1 ml-3.5 rounded-md md:w-8/12 sm:w-8/12 lp:w-8/12">
+              <div
+                className={`absolute flex bg-blue w-10 h-10 ${
+                  active ? "ml-1" : "ml-48"
+                } transition-all duration-300 rounded-md h-10 md:w-3/12 lp:w-52 text-white items-center justify-center`}
+              >
+                {props.tableStatus === "cryptocurrency" && detail === "DR"
+                  ? "Details + Rebalancing"
+                  : detail === "HD"
+                  ? "Holding Distribution"
+                  : "Asset Group Distribution"}
+              </div>
               <button
-                className={`text-center md:text-xs lp:text-sm h-10 md:w-4/12 lp:w-3/12 ${toggledStyles.first} rounded-l-md p-2 sm:text-xs sm:w-4/12`}
+                className={`text-center md:text-xs lp:text-sm h-10 md:w-4/12 lp:w-3/12 bg-gray text-black rounded-l-md p-2 sm:text-xs sm:w-4/12`}
                 onClick={() => {
                   setDetail(
                     props.tableStatus === "cryptocurrency" ? "DR" : "AG"
@@ -84,12 +87,14 @@ export const TableDetailComponent = (props: TableDetailProps) => {
                   setActive((prev) => !prev);
                 }}
               >
-                {props.tableStatus === "cryptocurrency"
-                  ? "Details + Rebalancing"
-                  : "Asset Group Distribution"}
+                <p>
+                  {props.tableStatus === "cryptocurrency"
+                    ? "Details + Rebalancing"
+                    : "Asset Group Distribution"}
+                </p>
               </button>
               <button
-                className={`text-center md:text-xs lp:text-sm h-10 md:w-4/12 lp:w-3/12 ${toggledStyles.second} rounded-r-md p-2 sm:text-xs  sm:w-4/12`}
+                className={` text-center  md:text-xs lp:text-sm h-10 md:w-4/12 lp:w-3/12 bg-gray text-black rounded-r-md p-2 sm:text-xs  sm:w-4/12`}
                 onClick={() => {
                   setDetail("HD");
                   setActive((prev) => !prev);
