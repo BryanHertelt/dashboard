@@ -64,7 +64,8 @@ export const DrDetail = ({
           {portfolioRebalancingData.map((cards: any) => {
             return (
               <div
-                className={`${designComponents.carddesign} sm:w-40 md:w-40 lg:w-52 lp:w-40 xl:w-72`}
+                role="Detail Rebalancing Cards"
+                className={`${designComponents.carddesign} transition-opacity duration-300 sm:w-40 md:w-40 lg:w-52 lp:w-40 xl:w-72`}
                 key={cards.header}
               >
                 <p className={designComponents.headerdesign}>

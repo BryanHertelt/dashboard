@@ -22,8 +22,6 @@ export { default as UnfoldSideBarIcon } from "./UnfoldSidebarIcon.svg";
 export { default as BitcoinIcon } from "./BitcoinIcon.svg";
 export { default as EthereumIcon } from "./EthereumIcon.svg";
 export { default as AssetPercentageValueIcon } from "./AssetPercentageValueIcon.svg";
-export { default as SortingDataTableIcon } from "./SortingDataTableIcon.svg";
-export { default as SortingDataTableIconUp } from "./SortingDataTableIconUp.svg";
 export { default as NotesInDataTableIcon } from "./NotesInDataTableIcon.svg";
 export { default as ShowDetail } from "./ShowDetail.svg";
 export { default as HideDetail } from "./HideDetail.svg";

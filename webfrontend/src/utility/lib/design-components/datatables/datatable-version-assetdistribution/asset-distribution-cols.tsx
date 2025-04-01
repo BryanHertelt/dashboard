@@ -19,7 +19,7 @@ const toggleExpandedRow = (rowId: number, setExpandedRow: any) => {
 const headerdesign = "flex flex-row font-normal items-center text-black h-11";
 const celldesign = "flex flex-row justify-center items-center w-1/2";
 const firstcelldesign = "flex flex-row text-sm font-medium items-center ml-2";
-const sortingicondesgin = "bg-white h-5 w-5 ml-1 rounded-sm";
+const sortingicondesgin = "bg-red h-5 w-1 ml-1 rounded-sm";
 
 export const formatDataColsCurrency = (
   parentdata: any,
