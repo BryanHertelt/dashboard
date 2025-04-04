@@ -6,7 +6,10 @@ import {
   SortingDataTableIcon,
   ShowDetailIcon,
 } from "../../../../../../public/images/icons";
-import { formatCurrency } from "@/utility/lib/helpers/helper-functions";
+import {
+  formatCurrency,
+  formatValue,
+} from "@/utility/lib/helpers/helper-functions";
 import { prefetchDetailComponent } from "@/utility/lib/datafetching/client-refetch/prefetch-hooks";
 import { TableLineChart } from "../../charts/table-line-charts";
 
@@ -16,8 +19,9 @@ const toggleExpandedRow = (rowId: number, setExpandedRow: any) => {
   );
 };
 
-const headerdesign = "flex flex-row font-normal items-center text-black h-11";
-const celldesign = "flex flex-row justify-center items-center w-1/2";
+const headerdesign =
+  "flex flex-row font-normal items-center justify-end text-black h-11  w-full";
+const celldesign = "flex flex-row justify-end items-center w-1/2 w-full";
 const firstcelldesign = "flex flex-row text-sm font-medium items-center ml-2";
 const sortingicondesgin = "bg-red h-5 w-1 ml-1 rounded-sm";
 
@@ -29,7 +33,14 @@ export const formatDataColsCurrency = (
   return [
     {
       accessorKey: "assetname",
-      header: () => <div className="font-normal pl-10"> Asset </div>,
+      header: () => (
+        <div
+          className={`flex flex-row justify-start items-center pl-10 text-black h-11 w-full`}
+        >
+          {" "}
+          Asset{" "}
+        </div>
+      ),
       cell: ({ row }: any) => {
         const rowId = row.id;
         const name = row.getValue("assetname");
@@ -68,10 +79,13 @@ export const formatDataColsCurrency = (
     },
     {
       accessorKey: "assetamount",
-      header: () => <div className={`${headerdesign}`}> Amount </div>,
+      header: () => <div className={`${headerdesign} pl-2`}> Amount </div>,
       cell: ({ row }: any) => {
         const amount = row.getValue("assetamount");
-        return <div className={`${celldesign}`}>{amount}</div>;
+
+        return (
+          <div className={`${celldesign}`}>{formatValue(Number(amount))}</div>
+        );
       },
     },
     {
@@ -82,9 +96,8 @@ export const formatDataColsCurrency = (
             className={`${headerdesign}`}
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            {" "}
+            <SortingDataTableIcon className={`${sortingicondesgin}`} />
             Percentage{" "}
-            <SortingDataTableIcon className={`${sortingicondesgin}`} />{" "}
           </button>
         );
       },
@@ -101,10 +114,7 @@ export const formatDataColsCurrency = (
             className={`${headerdesign}`}
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            {" "}
-            Value <SortingDataTableIcon
-              className={`${sortingicondesgin}`}
-            />{" "}
+            <SortingDataTableIcon className={`${sortingicondesgin}`} /> Value
           </button>
         );
       },
@@ -161,17 +171,19 @@ export const formatDataColsCurrency = (
               const percentagecolor = percentage < 0 ? "negative" : "positive";
               const iconcolor = percentage < 0 ? "text-red" : "text-green";
               return (
-                <div
-                  className={`${percentagecolor} flex flex-row text-xs w-1/2 items-center`}
-                >
-                  <div className={`${iconcolor} flex flex-row mx-1`}>
-                    <AssetPercentageValueIcon />
+                <div className={`${celldesign}`}>
+                  <div
+                    className={`${percentagecolor} flex flex-row text-xs w-1/2 items-center justify-center`}
+                  >
+                    <div className={`${iconcolor} flex flex-row mx-1`}>
+                      <AssetPercentageValueIcon />
+                    </div>
+                    <div className="flex flex-col">
+                      {" "}
+                      <p>{percentage}% </p>
+                      <p> {formattedPercentageValue} </p>
+                    </div>{" "}
                   </div>
-                  <div className="flex flex-col">
-                    {" "}
-                    <p>{percentage}% </p>
-                    <p> {formattedPercentageValue} </p>
-                  </div>{" "}
                 </div>
               );
             }
@@ -197,8 +209,10 @@ export const formatDataColsCurrency = (
       cell: ({ row }: any) => {
         const change = row.getValue("assetchange7d");
         return (
-          <div className="w-2/6 h-5">
-            <TableLineChart data={change} />
+          <div className={`${celldesign}`}>
+            <div className="w-2/6 h-5">
+              <TableLineChart data={change} />
+            </div>
           </div>
         );
       },
@@ -262,7 +276,7 @@ export const formatDataColsDerivative = (
           for (let index = 0; index < processedQueryData.length; index++) {
             if (name == processedQueryData[index].assetname) {
               return (
-                <div className="flex flex-row text-sm items-center w-3/4">
+                <div className={`${celldesign}`}>
                   {processedQueryData[index].symbol} {""}{" "}
                   <div className="flex flex-col justify-start w-1/2 ml-2">
                     <div> {processedQueryData[index].assetname}</div>
@@ -482,12 +496,7 @@ export const formatDataColsNft = (
       header: () => <div className={`${headerdesign}`}> NFT-Count </div>,
       cell: ({ row }: any) => {
         const count = parseFloat(row.getValue("nftcount"));
-        return (
-          <div className="flex flex-row items-center justify-center w-3/12">
-            {" "}
-            {count}{" "}
-          </div>
-        );
+        return <div className={`${celldesign}`}> {count} </div>;
       },
     },
   ];

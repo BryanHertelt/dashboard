@@ -67,13 +67,13 @@ const AssetDistributionComponent = (props: any) => {
           piedata={pieData}
         />
       </div>
-      <div className="card mt-9 px-7 pt-5 w-full h-5/6 mb-10">
+      <div className="card mt-9 border border-none pt-5 w-full h-5/6 mb-10">
         <AssetTableComponent
           initial={tableData}
           currentValue={processedQueryData.currentvalue}
         />
       </div>
-      <div className="border border-backgroundchild w-full"> </div>
+      <div className="border border-backgroundchild w-full opacity-0 " />
     </>
   );
 };

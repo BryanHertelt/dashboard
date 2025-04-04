@@ -114,12 +114,12 @@ const AssetTableComponent = ({
     <>
       <div className="flex flex-row justify-between mb-4 h-9">
         <header>
-          <h1 className=" flex flex-row justify-cente h-full items-center text-1xl font-normal pl-2">
+          <h1 className=" flex flex-row justify-cente h-full items-center text-1xl font-normal px-7">
             {" "}
             Assets{" "}
           </h1>
         </header>
-        <nav className="flex flex-row ">
+        <nav className="flex flex-row px-7">
           {tableStatus === "derivative" ? (
             <div className="flex flex-row justify-center items-center mr-5 w-40">
               <button
@@ -167,7 +167,7 @@ const AssetTableComponent = ({
           </div>
         </nav>
       </div>
-      <div className="h-5/6">
+      <div className="h-full drop-shadow-md mb-5 overflow-scroll">
         <DataTable
           data={tableData}
           columns={col}
@@ -176,6 +176,7 @@ const AssetTableComponent = ({
           currentValue={currentValue}
         />
       </div>
+      <div className="w-full opacity-0 border border-b-4" />
     </>
   );
 };
