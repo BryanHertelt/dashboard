@@ -1,4 +1,5 @@
 import { clsx, type ClassValue } from "clsx";
+import { format } from "path";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -15,10 +16,19 @@ export const formatCurrency = (number: number): string => {
     console.error("Type error in formatCurrency");
     return "--";
   }
+
+  let num = Number(number.toString().replace(",", "."));
+  const roundedNumber = Number(num.toFixed(2));
+
+  if (num > 0 && num < 1) {
+    const formattedDecimals = formatDecimals(num, roundedNumber);
+    return `$${formattedDecimals} `;
+  }
+
   const formattedCurrency = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
-  }).format(Number(number));
+  }).format(Number(num));
   return formattedCurrency;
 };
 
@@ -27,14 +37,29 @@ export const formatCurrency = (number: number): string => {
  * @param number
  * @returns A value with a maximum of two digits.
  */
-export const formatValue = (number: number): string => {
-  if (isNaN(Number(number))) {
+export const formatValue = (number: number): string | undefined => {
+  if (isNaN(Number(number.toString().replace(",", ".")))) {
     console.error("Type error in formatValue");
     return "--";
   }
-  const formattedValue = Number(number).toFixed(2);
 
-  return formattedValue;
+  const num = Number(number.toString().replace(",", "."));
+  const roundedNumber = Number(num.toFixed(2));
+
+  if (num > 0 && num < 1) {
+    const formattedDecimals = formatDecimals(num, roundedNumber);
+    return formattedDecimals;
+  }
+
+  if (roundedNumber < 1000000) {
+    return roundedNumber.toFixed(2);
+  } else if (roundedNumber >= 1000000 && roundedNumber < 1000000000) {
+    return `${(roundedNumber / 1000000).toFixed(2)} M`;
+  } else if (roundedNumber >= 1000000000 && roundedNumber < 1000000000000) {
+    return `${(roundedNumber / 1000000000).toFixed(2)} B`;
+  } else if (roundedNumber >= 1000000000000) {
+    return `${(roundedNumber / 1000000000000).toFixed(2)} T`;
+  }
 };
 
 /**
@@ -52,4 +77,43 @@ export const isObject = (value: any) => {
     !(value instanceof Set) &&
     !(value instanceof Map)
   );
+};
+
+const formatDecimals = (num: number, roundedNumber: number) => {
+  let numStr = num.toString();
+  if (numStr.indexOf("e") !== -1) {
+    const exponent = parseInt(numStr.split("-")[1], 10);
+    const result = num.toFixed(exponent);
+    numStr = result;
+  }
+  const decimalPart = numStr.split(".")[1];
+  const leadingZeros = decimalPart.match(/^0+/)?.[0].length || 0;
+
+  if (leadingZeros >= 3) {
+    const trimmedDecimals = decimalPart.replace(/^0+/, "");
+    const noTrailingZeros = trimmedDecimals.replace(/0+$/, "");
+    const firstDigits = noTrailingZeros.slice(0, 2);
+
+    const subscriptMap: any = {
+      "0": "\u2080",
+      "1": "\u2081",
+      "2": "\u2082",
+      "3": "\u2083",
+      "4": "\u2084",
+      "5": "\u2085",
+      "6": "\u2086",
+      "7": "\u2087",
+      "8": "\u2088",
+      "9": "\u2089",
+    };
+
+    const subscriptZeros = leadingZeros
+      .toString()
+      .split("")
+      .map((digit) => subscriptMap[digit])
+      .join("");
+
+    return `0.0${subscriptZeros} ${firstDigits}`;
+  }
+  return roundedNumber.toString();
 };
