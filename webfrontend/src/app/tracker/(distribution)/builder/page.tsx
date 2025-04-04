@@ -16,6 +16,9 @@ export default function BuilderPage() {
       >
         Other
       </button>
+      <div className="shadow-flyzerShadow p-6 bg-white rounded-lg">
+        Custom Shadow Effect
+      </div>
       <button
         className={`mr-5 px-4 py-2 rounded-md ${
           isSwitch === "crypto"

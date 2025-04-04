@@ -13,6 +13,9 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+	boxShadow: {
+		flyzerShadow: "0px 0px 10px rgba(0,0,0,0.05),0px 0px 10px rgba(0,0,0,0.05)"
+	}, 
   	colors: {
   		current: 'currentColor',
   		black: '#000000',
