@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useState } from "react";
-import { TableDetailComponent } from "./data-datatable-detail-popup";
+import { TableDetailComponent } from "./datatable-detail-popup";
 import { ErrorSkeleton } from "@/utility/lib/datafetching/loading-skeleton";
 import { NotesInDataTableIcon } from "../../../../../../public/images";
 import Modal from "@/utility/lib/build-components/pop-ups/modal";
@@ -89,9 +89,9 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="rounded-md h-full border border-black overflow-y-auto">
+    <div className="sticky top-0 h-full overflow-y-auto">
       <Table>
-        <TableHeader className="bg-gray">
+        <TableHeader className="bg-gray sticky">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
@@ -109,7 +109,7 @@ export function DataTable<TData, TValue>({
             </TableRow>
           ))}
         </TableHeader>
-        <TableBody>
+        <TableBody className="h-full overflow-scroll ">
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
               <React.Fragment key={row.id}>

@@ -1,4 +1,4 @@
-import {TableDetailComponent} from "../../src/utility/lib/design-components/datatables/table-layout/data-datatable-detail-popup"
+import {TableDetailComponent} from "../../src/utility/lib/design-components/datatables/table-layout/datatable-detail-popup"
 import { DrDetail, AgDetail, HdDetail } from "../../src/utility/lib/build-components/asset-table-detail-components"
 import {useDetailComponent} from "../../src/utility/lib/datafetching/client-refetch/client-hooks"
 import { render, screen, fireEvent } from "@testing-library/react"
