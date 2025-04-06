@@ -69,11 +69,3 @@
 .card {
   @apply bg-white shadow-flyzerShadow rounded-md;
 }
-
-.positive {
-  @apply bg-lightgreen text-green text-xs rounded-md;
-}
-
-.negative {
-  @apply bg-lightred text-red rounded-md;
-}

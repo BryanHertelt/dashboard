@@ -23,5 +23,4 @@ export { default as BitcoinIcon } from "./BitcoinIcon.svg";
 export { default as EthereumIcon } from "./EthereumIcon.svg";
 export { default as AssetPercentageValueIcon } from "./AssetPercentageValueIcon.svg";
 export { default as NotesInDataTableIcon } from "./NotesInDataTableIcon.svg";
-export { default as ShowDetail } from "./ShowDetail.svg";
 export { default as HideDetail } from "./HideDetail.svg";

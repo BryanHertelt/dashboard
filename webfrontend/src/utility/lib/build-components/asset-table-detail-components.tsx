@@ -65,7 +65,7 @@ export const DrDetail = ({
             return (
               <div
                 role="Detail Rebalancing Cards"
-                className={`${designComponents.carddesign} transition-opacity duration-300 sm:w-40 md:w-40 lg:w-52 lp:w-40 xl:w-72`}
+                className={`${designComponents.carddesign} sm:w-40 md:w-40 lg:w-52 lp:w-40 xl:w-72 justify-center`}
                 key={cards.header}
               >
                 <p className={designComponents.headerdesign}>

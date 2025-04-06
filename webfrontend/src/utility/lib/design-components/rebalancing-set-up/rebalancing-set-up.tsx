@@ -188,12 +188,12 @@ export const RebalancingSetUp = ({
           </div>
           <div className="flex flex-row justify-end w-1/2 ">
             <div
-              className={`flex items-center w-14 h-8 bg-gray rounded-full transition-all duration-500`}
+              className={`flex items-center w-12 h-7 bg-gray rounded-full transition-all duration-500`}
             >
               <span
                 onClick={() => setToggled(!isToggled)}
                 className={`flex h-6 w-6 p-2 ${
-                  isToggled ? "ml-7" : "ml-1"
+                  isToggled ? "xl:ml-5" : "ml-1"
                 } bg-white rounded-full transition-all duration-500 justify-center items-center font-semibold text-xs`}
               >
                 {isToggled ? "[x]" : "[%]"}

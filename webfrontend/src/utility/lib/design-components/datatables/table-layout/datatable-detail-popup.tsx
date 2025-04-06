@@ -36,11 +36,14 @@ export const TableDetailComponent = (props: TableDetailProps) => {
     props.tableStatus === "cryptocurrency" ? "DR" : "AG"
   );
 
+  console.log(props.assetId);
+
   const { data, isLoading, isError } = useDetailComponent(props);
   const designComponents = useMemo(
     () => ({
-      carddesign: "flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20",
-      headerdesign: "flex flex-row text-sm text-icongray mb-1",
+      carddesign:
+        "flex flex-col justify-center card mb-2.5 ml-3.5 py-3 px-3 w-64 h-20",
+      headerdesign: "flex flex-row text-sm text-icongray",
       valuedesign: "font-semibold text-base mr-3",
     }),
     []
@@ -65,7 +68,7 @@ export const TableDetailComponent = (props: TableDetailProps) => {
           <p className="p-4 ml-4 text-icongray">Asset Group Distribution</p>
         ) : (
           <>
-            <div className="relative flex flex-row m-1 mb-2.5 p-1 pr-1 ml-3.5 rounded-md md:w-8/12 sm:w-8/12 lp:w-8/12">
+            <div className="relative flex flex-row m-1 mb-2.5 p-1 pr-1 ml-3.5 rounded-md md:w-8/12 sm:w-8/12 lp:w-4/12">
               {/* Blue switcher div */}
               <div
                 role="Rebalancing-Switcher"
@@ -76,12 +79,12 @@ export const TableDetailComponent = (props: TableDetailProps) => {
                 {props.tableStatus === "cryptocurrency" && detail === "DR"
                   ? "Details"
                   : detail === "HD"
-                  ? "Holding Distribution"
-                  : "Asset Group Distribution"}
+                  ? "Holdings"
+                  : "Asset Groups"}
               </div>
               {/* Left button */}
               <button
-                className="relative z-0 bg-gray text-center sm:w-4/12 md:w-4/12 lp:w-3/12 md:text-xs lp:text-sm h-10 text-black rounded-l-md p-2 sm:text-xs"
+                className="relative z-0 bg-gray text-center sm:w-4/12 md:w-4/12 lp:w-3/12 md:text-xs lp:text-sm h-9 text-black rounded-l-md p-2 sm:text-xs"
                 onClick={() => {
                   setDetail(
                     props.tableStatus === "cryptocurrency" ? "DR" : "AG"
@@ -91,7 +94,7 @@ export const TableDetailComponent = (props: TableDetailProps) => {
                 <p>
                   {props.tableStatus === "cryptocurrency"
                     ? "Details"
-                    : "Asset Group Distribution"}
+                    : "Asset Groups"}
                 </p>
               </button>
               {/* Right button */}
@@ -101,7 +104,7 @@ export const TableDetailComponent = (props: TableDetailProps) => {
                   setDetail("HD");
                 }}
               >
-                <p>Holding Distribution</p>
+                <p>Holdings</p>
               </button>
             </div>
             <div className="h-12 md:w-10 sm:w-10 lp:w-1/4 lp:ml-12 xl:w-1/4 xl:ml-20 lg:p-2 lg:items-center flex flex-row justify-end items-center p-1 m-1">

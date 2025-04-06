@@ -1,10 +1,10 @@
 "use client";
 
-import { AssetPercentageValueIcon } from "../../../../../../public/images";
 import {
   PositionDirectionIcon,
   SortingDataTableIcon,
   ShowDetailIcon,
+  AssetPercentageValueIcon,
 } from "../../../../../../public/images/icons";
 import {
   formatCurrency,
@@ -48,7 +48,9 @@ export const formatDataColsCurrency = (
           for (let index = 0; index < parentdata.length; index++) {
             if (name == parentdata[index].assetname) {
               return (
-                <div className={`${firstcelldesign}`}>
+                <div
+                  className={`${firstcelldesign} border border-black w-full`}
+                >
                   <div
                     className="mr-4 h-3 w-3"
                     onClick={() => toggleExpandedRow(rowId, setExpandedRow)}
@@ -63,7 +65,7 @@ export const formatDataColsCurrency = (
                     <ShowDetailIcon />
                   </div>
                   {parentdata[index].symbol} {""}{" "}
-                  <div className="flex flex-col justify-start w-1/2 ml-2">
+                  <div className="flex flex-col justify-start w-full ml-2">
                     {parentdata[index].assetname}
                     <div className="text-xs text-icongray w-2/5 justify-start">
                       {parentdata[index].assetabbreviation}
@@ -169,20 +171,33 @@ export const formatDataColsCurrency = (
               const formattedPercentageValue = formatCurrency(
                 parentdata[index].assetchange24hourvalue
               );
-              const percentagecolor = percentage < 0 ? "negative" : "positive";
+              const percentagecolor =
+                percentage < 0
+                  ? " bg-lightred text-red text-xs rounded-md"
+                  : " bg-lightgreen text-green text-xs rounded-md;";
               const iconcolor = percentage < 0 ? "text-red" : "text-green";
               return (
                 <div className={`${celldesign}`}>
                   <div
-                    className={`${percentagecolor} flex flex-row text-xs w-1/2 items-center justify-center`}
+                    className={`${percentagecolor}  flex flex-row text-xs w-32 items-center justify-between px-2  rounded-md`}
                   >
-                    <div className={`${iconcolor} flex flex-row mx-1`}>
-                      <AssetPercentageValueIcon />
+                    <div className={`${iconcolor} flex flex-row mx-1 `}>
+                      <AssetPercentageValueIcon percentage={percentage < 0} />
                     </div>
                     <div className="flex flex-col">
                       {" "}
-                      <p>{percentage}% </p>
-                      <p> {formattedPercentageValue} </p>
+                      <p>
+                        {percentage < 0
+                          ? percentage.toString().replace("-", "")
+                          : percentage}
+                        %{" "}
+                      </p>
+                      <p>
+                        {" "}
+                        {percentage < 0
+                          ? formattedPercentageValue.replace("-", "")
+                          : formattedPercentageValue}{" "}
+                      </p>
                     </div>{" "}
                   </div>
                 </div>
@@ -240,6 +255,7 @@ export const formatDataColsDerivative = (
       ),
       cell: ({ row }: any) => {
         const direction = row.getValue("tradedirection");
+        console.log("direction", direction);
         const directionToUpper =
           direction.charAt(0).toUpperCase() + direction.substring(1, 5);
         const rowId = row.id;
@@ -287,8 +303,11 @@ export const formatDataColsDerivative = (
       ),
       cell: ({ row }: any) => {
         const name = row.getValue("assetname");
+
+        console.log("called");
         const renderNameCell = () => {
           for (let index = 0; index < processedQueryData.length; index++) {
+            console.log("processedQueryData", processedQueryData);
             if (name == processedQueryData[index].assetname) {
               return (
                 <div
@@ -323,7 +342,7 @@ export const formatDataColsDerivative = (
       header: ({ column }: any) => {
         return (
           <button
-            className={`flex flex-row font-normal items-center justify-end text-black h-11 w-2/3`}
+            className={`flex flex-row font-normal items-center justify-end text-black h-11 w-full`}
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             {" "}
@@ -497,7 +516,7 @@ export const formatDataColsNft = (
       header: ({ column }: any) => {
         return (
           <button
-            className={`${headerdesign}`}
+            className={`${headerdesign}w-1/2`}
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             {" "}
@@ -508,19 +527,15 @@ export const formatDataColsNft = (
       },
       cell: ({ row }: any) => {
         const amount = parseFloat(row.getValue("collectionvalue"));
-        return (
-          <div className={`${celldesign} w-1/3 items-center justify-center`}>
-            {amount} ETH
-          </div>
-        );
+        return <div className={`${celldesign}`}>{amount} ETH</div>;
       },
     },
     {
       accessorKey: "nftcount",
-      header: () => <div className={`${headerdesign}`}> NFT-Count </div>,
+      header: () => <div className={`${headerdesign} pr-5`}> NFT-Count </div>,
       cell: ({ row }: any) => {
         const count = parseFloat(row.getValue("nftcount"));
-        return <div className={`${celldesign}`}> {count} </div>;
+        return <div className={`${celldesign} pr-5`}> {count} </div>;
       },
     },
   ];
