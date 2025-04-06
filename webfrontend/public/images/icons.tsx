@@ -13,7 +13,7 @@ export const PositionDirectionIcon = ({ direction }: { direction: string }) => {
   return (
     <svg
       width="16"
-      height="16"
+      height="20"
       viewBox="0 0 16 16"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -53,8 +53,8 @@ export const ShowDetailIcon = () => {
       onClick={handleClick}
       style={{
         cursor: "pointer",
-        transition: "transform 0.6s ease",
-        transform: isRotated ? "rotateY(180deg)" : "rotateY(0deg)",
+        transition: "transform 0.4s ease",
+        transform: isRotated ? "rotateZ(90deg)" : "rotateY(0deg)",
       }}
     >
       <path

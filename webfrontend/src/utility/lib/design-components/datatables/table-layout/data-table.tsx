@@ -89,9 +89,9 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="sticky top-0 h-full overflow-y-auto">
+    <div className="h-full">
       <Table>
-        <TableHeader className="bg-gray sticky">
+        <TableHeader className="bg-gray sticky top-0">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
@@ -109,7 +109,7 @@ export function DataTable<TData, TValue>({
             </TableRow>
           ))}
         </TableHeader>
-        <TableBody className="h-full overflow-scroll ">
+        <TableBody className="border border-blue h-1/2">
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
               <React.Fragment key={row.id}>

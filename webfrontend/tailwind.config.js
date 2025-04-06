@@ -41,9 +41,6 @@ module.exports = {
 		xl:"1600px"
 	},
   	extend: {
-		boxShadow: {
-			'even': '0 0 10px rgba(0, 0, 0, 0.15)', 
-		},
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',

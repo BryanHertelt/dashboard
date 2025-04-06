@@ -21,7 +21,6 @@ const AssetTableComponent = ({
 }) => {
   const [tableStatus, setTableStatus] = useState<TableStatus>("cryptocurrency");
   const [tableData, setTableData] = useState(initial);
-  const [isToggled, setIsToggled] = useState<boolean>(true);
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
   const [derivativeType, setDerivativeType] = useState<any>({
     perp: false,
@@ -167,7 +166,7 @@ const AssetTableComponent = ({
           </div>
         </nav>
       </div>
-      <div className="h-full drop-shadow-md mb-5 overflow-scroll">
+      <div className="shadow-flyzerShadow mb-5 h-full">
         <DataTable
           data={tableData}
           columns={col}

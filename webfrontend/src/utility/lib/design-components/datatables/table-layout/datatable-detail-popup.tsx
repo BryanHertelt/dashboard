@@ -35,7 +35,6 @@ export const TableDetailComponent = (props: TableDetailProps) => {
   const [detail, setDetail] = useState<string>(
     props.tableStatus === "cryptocurrency" ? "DR" : "AG"
   );
-  const [active, setActive] = useState<boolean>(true);
 
   const { data, isLoading, isError } = useDetailComponent(props);
   const designComponents = useMemo(

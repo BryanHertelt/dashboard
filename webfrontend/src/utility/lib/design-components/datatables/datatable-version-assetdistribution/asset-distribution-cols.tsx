@@ -21,7 +21,7 @@ const toggleExpandedRow = (rowId: number, setExpandedRow: any) => {
 
 const headerdesign =
   "flex flex-row font-normal items-center justify-end text-black h-11  w-full";
-const celldesign = "flex flex-row justify-end items-center w-1/2 w-full";
+const celldesign = "flex flex-row justify-end items-center w-1/2 w-full pr-2";
 const firstcelldesign = "flex flex-row text-sm font-medium items-center ml-2";
 const sortingicondesgin = "bg-red h-5 w-1 ml-1 rounded-sm";
 
@@ -96,8 +96,8 @@ export const formatDataColsCurrency = (
             className={`${headerdesign}`}
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            <SortingDataTableIcon className={`${sortingicondesgin}`} />
             Percentage{" "}
+            <SortingDataTableIcon className={`${sortingicondesgin}`} />
           </button>
         );
       },
@@ -114,7 +114,8 @@ export const formatDataColsCurrency = (
             className={`${headerdesign}`}
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            <SortingDataTableIcon className={`${sortingicondesgin}`} /> Value
+            Value
+            <SortingDataTableIcon className={`${sortingicondesgin}`} />
           </button>
         );
       },
@@ -228,7 +229,18 @@ export const formatDataColsDerivative = (
   return [
     {
       accessorKey: "tradedirection",
-      header: () => <div className=" font-normal pl-5"> Position Type </div>,
+      header: () => (
+        <div className=" flex flex-row items-center font-normal ml-2 pl-2 h-full w-2/3  ">
+          {" "}
+          <p className="w-5"> </p>
+          <div className=" flex flex-row   w-full">
+            <p className="w-1/2 "> Position Type </p>{" "}
+            <div className="w-1/2 ">
+              <p className="w-full text-start"> Symbol </p>
+            </div>
+          </div>
+        </div>
+      ),
       cell: ({ row }: any) => {
         const direction = row.getValue("tradedirection");
         const directionToUpper =
@@ -240,9 +252,9 @@ export const formatDataColsDerivative = (
               const directioncolor =
                 direction < "short" ? "text-green" : "text-red";
               return (
-                <div className={`${directioncolor} ${firstcelldesign}`}>
+                <div className={`${directioncolor} ${firstcelldesign} w-2/3`}>
                   <div
-                    className="mr-4 h-3 w-3"
+                    className="mr-2 h-3 w-5"
                     onClick={() => toggleExpandedRow(rowId, setExpandedRow)}
                     onMouseEnter={() =>
                       prefetchDetailComponent(
@@ -254,36 +266,24 @@ export const formatDataColsDerivative = (
                   >
                     <ShowDetailIcon />
                   </div>
-                  <div className="flex flex-row align-baseline">
-                    {" "}
-                    <PositionDirectionIcon direction={direction} />
-                    <p className="pl-3">{directionToUpper} </p>
-                  </div>{" "}
-                </div>
-              );
-            }
-          }
-        };
-        return renderPercentageCell();
-      },
-    },
-    {
-      accessorKey: "assetname",
-      header: () => <div className={`${headerdesign}`}> Symbol </div>,
-      cell: ({ row }: any) => {
-        const name = row.getValue("assetname");
-        const renderNameCell = () => {
-          for (let index = 0; index < processedQueryData.length; index++) {
-            if (name == processedQueryData[index].assetname) {
-              return (
-                <div className={`${celldesign}`}>
-                  {processedQueryData[index].symbol} {""}{" "}
-                  <div className="flex flex-col justify-start w-1/2 ml-2">
-                    <div> {processedQueryData[index].assetname}</div>
-                    <div>
+                  <div className="flex flex-row  justify-between items-center w-full">
+                    <div className="flex flex-row align-baseline justify-start w-1/2">
                       {" "}
-                      {processedQueryData[index].leverage}x{" "}
-                      {processedQueryData[index].derivateexchange}{" "}
+                      <PositionDirectionIcon direction={direction} />
+                      <p className="pl-3">{directionToUpper} </p>
+                    </div>{" "}
+                    <div
+                      className={`flex flex-row justify-start items-center w-1/2  text-black font-normal`}
+                    >
+                      {processedQueryData[index].symbol} {""}{" "}
+                      <div className="flex flex-col justify-start w-1/2 ml-2">
+                        <div> {processedQueryData[index].assetname}</div>
+                        <div>
+                          {" "}
+                          {processedQueryData[index].leverage}x{" "}
+                          {processedQueryData[index].derivateexchange}{" "}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -291,7 +291,7 @@ export const formatDataColsDerivative = (
             }
           }
         };
-        return renderNameCell();
+        return renderPercentageCell();
       },
     },
     {
@@ -388,7 +388,7 @@ export const formatDataColsDerivative = (
     {
       accessorKey: "settlementdate",
       header: () => {
-        return <div className={`${headerdesign}`}>Settlement Date</div>;
+        return <div className={`${headerdesign} pr-2`}>Settlement Date</div>;
       },
       cell: ({ row }: any) => {
         const settlementdate = row.getValue("settlementdate");

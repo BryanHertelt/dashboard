@@ -67,7 +67,7 @@
 }
 
 .card {
-  @apply bg-white shadow-even rounded-md;
+  @apply bg-white shadow-flyzerShadow rounded-md;
 }
 
 .positive {
