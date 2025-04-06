@@ -20,8 +20,8 @@ const toggleExpandedRow = (rowId: number, setExpandedRow: any) => {
 };
 
 const headerdesign =
-  "flex flex-row font-normal items-center justify-end text-black h-11  w-full";
-const celldesign = "flex flex-row justify-end items-center w-1/2 w-full pr-2";
+  "flex flex-row font-normal items-center justify-end text-black h-11  w-full ";
+const celldesign = "flex flex-row justify-end items-center w-1/2 w-full pr-2 ";
 const firstcelldesign = "flex flex-row text-sm font-medium items-center ml-2";
 const sortingicondesgin = "bg-red h-5 w-1 ml-1 rounded-sm";
 
@@ -230,14 +230,11 @@ export const formatDataColsDerivative = (
     {
       accessorKey: "tradedirection",
       header: () => (
-        <div className=" flex flex-row items-center font-normal ml-2 pl-2 h-full w-2/3  ">
+        <div className=" flex flex-row items-center font-normal ml-2 pl-2 h-full w-full ">
           {" "}
           <p className="w-5"> </p>
           <div className=" flex flex-row   w-full">
-            <p className="w-1/2 "> Position Type </p>{" "}
-            <div className="w-1/2 ">
-              <p className="w-full text-start"> Symbol </p>
-            </div>
+            <p className="w-1/2 "> Trade Direction </p>{" "}
           </div>
         </div>
       ),
@@ -252,7 +249,7 @@ export const formatDataColsDerivative = (
               const directioncolor =
                 direction < "short" ? "text-green" : "text-red";
               return (
-                <div className={`${directioncolor} ${firstcelldesign} w-2/3`}>
+                <div className={`${directioncolor} ${firstcelldesign} w-full`}>
                   <div
                     className="mr-2 h-3 w-5"
                     onClick={() => toggleExpandedRow(rowId, setExpandedRow)}
@@ -267,24 +264,11 @@ export const formatDataColsDerivative = (
                     <ShowDetailIcon />
                   </div>
                   <div className="flex flex-row  justify-between items-center w-full">
-                    <div className="flex flex-row align-baseline justify-start w-1/2">
+                    <div className="flex flex-row align-baseline justify-start">
                       {" "}
                       <PositionDirectionIcon direction={direction} />
                       <p className="pl-3">{directionToUpper} </p>
                     </div>{" "}
-                    <div
-                      className={`flex flex-row justify-start items-center w-1/2  text-black font-normal`}
-                    >
-                      {processedQueryData[index].symbol} {""}{" "}
-                      <div className="flex flex-col justify-start w-1/2 ml-2">
-                        <div> {processedQueryData[index].assetname}</div>
-                        <div>
-                          {" "}
-                          {processedQueryData[index].leverage}x{" "}
-                          {processedQueryData[index].derivateexchange}{" "}
-                        </div>
-                      </div>
-                    </div>
                   </div>
                 </div>
               );
@@ -295,11 +279,51 @@ export const formatDataColsDerivative = (
       },
     },
     {
+      accessorKey: "assetname",
+      header: () => (
+        <div className="flex flex-row font-normal items-center justify-start text-black h-11  w-full ">
+          Symbol
+        </div>
+      ),
+      cell: ({ row }: any) => {
+        const name = row.getValue("assetname");
+        const renderNameCell = () => {
+          for (let index = 0; index < processedQueryData.length; index++) {
+            if (name == processedQueryData[index].assetname) {
+              return (
+                <div
+                  className={`flex flex-row justify-start items-center w-full  text-black font-normal `}
+                >
+                  <div className="flex flex-col items-start w-full ml-2">
+                    <div> {processedQueryData[index].assetname}</div>
+                    <div className="flex flex-row justify-start items-center">
+                      {" "}
+                      <div className="flex justify-center items-center mr-1 text-xs items text-center text-blue bg-lightblue rounded-sm h-4 p-1">
+                        {" "}
+                        x{processedQueryData[index].leverage}{" "}
+                      </div>
+                      <div className="flex flex-row">
+                        {" "}
+                        {processedQueryData[index].symbol} {""}{" "}
+                        {processedQueryData[index].derivateexchange}{" "}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            }
+          }
+        };
+        return renderNameCell();
+      },
+    },
+
+    {
       accessorKey: "entry",
       header: ({ column }: any) => {
         return (
           <button
-            className={`${headerdesign}`}
+            className={`flex flex-row font-normal items-center justify-end text-black h-11 w-2/3`}
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             {" "}
@@ -313,7 +337,7 @@ export const formatDataColsDerivative = (
         const amount = parseFloat(row.getValue("entry"));
         const formatted = formatCurrency(amount);
 
-        return <div className={`${celldesign} w-1/3`}> {formatted} </div>;
+        return <div className={`${celldesign} w-2/3`}> {formatted} </div>;
       },
     },
     {
@@ -362,7 +386,7 @@ export const formatDataColsDerivative = (
     {
       accessorKey: "sl",
       header: () => {
-        return <div className={`${headerdesign}`}>SL/TP</div>;
+        return <div className={`${headerdesign} pr-2`}>SL/TP</div>;
       },
       cell: ({ row }: any) => {
         const sl = row.getValue("sl");

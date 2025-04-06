@@ -32,6 +32,7 @@ module.exports = {
 		bitcoinyellow:"#FFD600" , 
 		ethereumblue: "#89C6FF ", 
 		flyzerblue: "#005BEA", 
+		lightblue: "#CCDEFB"
   	},
 	screens: {
 		sm: "640px", 

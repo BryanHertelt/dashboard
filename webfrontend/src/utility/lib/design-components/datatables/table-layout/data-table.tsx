@@ -89,67 +89,79 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="h-full">
-      <Table>
-        <TableHeader className="bg-gray sticky top-0">
+    <div className="h-full flex flex-col">
+      {/* Header stays outside the scrollable div */}
+      <Table className="table-fixed">
+        <TableHeader className="sticky top-0 z-10 bg-gray rounded-md">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                return (
-                  <TableHead key={header.id} className="text-black">
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </TableHead>
-                );
-              })}
+              {headerGroup.headers.map((header) => (
+                <TableHead key={header.id} className="text-black">
+                  {header.isPlaceholder
+                    ? null
+                    : flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                </TableHead>
+              ))}
             </TableRow>
           ))}
         </TableHeader>
-        <TableBody className="border border-blue h-1/2">
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <React.Fragment key={row.id}>
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                  className={`border-b-${
-                    expandedRow?.toString() === row.id ? "2" : "4"
-                  } border-gray bg-white`}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="">
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-                {expandedRow?.toString() === row.id && (
-                  <TableRow
-                    key={`detail${row.id}`}
-                    className="border-b-4 border-t-2 border-gray"
-                  >
-                    <TableCell colSpan={columns.length}>
-                      <div>{getDetailComponent(row, tableStatus)}</div>
-                    </TableCell>
-                  </TableRow>
-                )}
-              </React.Fragment>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                <ErrorSkeleton />
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
       </Table>
+
+      <div
+        className="overflow-y-auto rounded-md"
+        style={{ maxHeight: "550px" }}
+      >
+        <Table className="table-fixed">
+          <TableBody>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <React.Fragment key={row.id}>
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                    className={`border-b-${
+                      expandedRow?.toString() === row.id ? "2" : "4"
+                    } border-gray bg-white`}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+
+                  {expandedRow?.toString() === row.id && (
+                    <TableRow
+                      key={`detail${row.id}`}
+                      className="border-b-4 border-t-2 border-gray"
+                    >
+                      <TableCell colSpan={columns.length}>
+                        <div>{getDetailComponent(row, tableStatus)}</div>
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </React.Fragment>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  <ErrorSkeleton />
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} title={rowName} />
     </div>
   );
