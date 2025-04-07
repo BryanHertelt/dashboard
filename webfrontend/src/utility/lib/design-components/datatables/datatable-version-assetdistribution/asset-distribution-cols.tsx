@@ -48,9 +48,7 @@ export const formatDataColsCurrency = (
           for (let index = 0; index < parentdata.length; index++) {
             if (name == parentdata[index].assetname) {
               return (
-                <div
-                  className={`${firstcelldesign} border border-black w-full`}
-                >
+                <div className={`${firstcelldesign} w-full`}>
                   <div
                     className="mr-4 h-3 w-3"
                     onClick={() => toggleExpandedRow(rowId, setExpandedRow)}

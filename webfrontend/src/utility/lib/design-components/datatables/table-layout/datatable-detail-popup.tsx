@@ -72,26 +72,26 @@ export const TableDetailComponent = (props: TableDetailProps) => {
               {/* Blue switcher div */}
               <div
                 role="Rebalancing-Switcher"
-                className={`absolute bg-blue z-50 transition-transform duration-500 ease-in-out rounded-md text-white flex items-center justify-center ${
+                className={`absolute bg-blue z-10 transition-transform duration-200 ease-in-out rounded-md text-white flex items-center justify-center ${
                   detail === "HD" ? "translate-x-full" : "translate-x-0"
                 } sm:w-4/12 md:w-4/12 lp:w-3/12 h-10`}
-              >
-                {props.tableStatus === "cryptocurrency" && detail === "DR"
-                  ? "Details"
-                  : detail === "HD"
-                  ? "Holdings"
-                  : "Asset Groups"}
-              </div>
+              />
               {/* Left button */}
               <button
-                className="relative z-0 bg-gray text-center sm:w-4/12 md:w-4/12 lp:w-3/12 md:text-xs lp:text-sm h-9 text-black rounded-l-md p-2 sm:text-xs"
+                className="relative z-5 bg-gray text-center sm:w-4/12 md:w-4/12 lp:w-3/12 md:text-xs lp:text-sm h-10 rounded-l-md p-2 sm:text-xs"
                 onClick={() => {
                   setDetail(
                     props.tableStatus === "cryptocurrency" ? "DR" : "AG"
                   );
                 }}
               >
-                <p>
+                <p
+                  className={`relative z-10 ${
+                    detail === "DR" || detail === "AG"
+                      ? "text-white"
+                      : "text-black"
+                  }`}
+                >
                   {props.tableStatus === "cryptocurrency"
                     ? "Details"
                     : "Asset Groups"}
@@ -99,12 +99,18 @@ export const TableDetailComponent = (props: TableDetailProps) => {
               </button>
               {/* Right button */}
               <button
-                className="relative z-0 text-center md:text-xs lp:text-sm h-10 bg-gray text-black rounded-r-md p-2 sm:text-xs sm:w-4/12 md:w-4/12 lp:w-3/12"
+                className="relative z-5 text-center md:text-xs lp:text-sm h-10 bg-gray rounded-r-md p-2 sm:text-xs sm:w-4/12 md:w-4/12 lp:w-3/12"
                 onClick={() => {
                   setDetail("HD");
                 }}
               >
-                <p>Holdings</p>
+                <p
+                  className={`relative z-10 ${
+                    detail === "HD" ? "text-white" : "text-black"
+                  }`}
+                >
+                  Holdings
+                </p>
               </button>
             </div>
             <div className="h-12 md:w-10 sm:w-10 lp:w-1/4 lp:ml-12 xl:w-1/4 xl:ml-20 lg:p-2 lg:items-center flex flex-row justify-end items-center p-1 m-1">

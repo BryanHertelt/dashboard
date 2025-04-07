@@ -90,10 +90,8 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="h-full flex flex-col">
-      {/* Scroll wrapper for the full table */}
       <div className="w-full overflow-x-auto">
         <div className="min-w-[800px]">
-          {/* Table Header */}
           <Table className="table-fixed w-full">
             <TableHeader className="sticky top-0 z-10 bg-gray rounded-md">
               {table.getHeaderGroups().map((headerGroup) => (
@@ -112,8 +110,6 @@ export function DataTable<TData, TValue>({
               ))}
             </TableHeader>
           </Table>
-
-          {/* Table Body with vertical scroll */}
           <div
             className="overflow-y-auto rounded-md"
             style={{ maxHeight: "550px" }}
@@ -167,8 +163,6 @@ export function DataTable<TData, TValue>({
           </div>
         </div>
       </div>
-
-      {/* Optional Modal */}
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} title={rowName} />
     </div>
   );

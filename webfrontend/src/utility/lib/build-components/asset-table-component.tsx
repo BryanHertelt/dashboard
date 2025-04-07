@@ -1,15 +1,5 @@
-"use client";
-import { DataTable } from "@/utility/lib/design-components/datatables/table-layout/data-table";
-import {
-  formatDataColsCurrency,
-  formatDataColsNft,
-  formatDataColsDerivative,
-} from "@/utility/lib/design-components/datatables/datatable-version-assetdistribution/asset-distribution-cols";
-import { useState, useEffect } from "react";
-import { useQueryClient } from "@tanstack/react-query";
-import { useMemo } from "react";
-import { LoadingSkeleton } from "../datafetching/loading-skeleton";
-
+import AssetTableController from "./asset-table-controller";
+import { useState, useRef } from "react";
 type TableStatus = "nft" | "cryptocurrency" | "derivative";
 
 const AssetTableComponent = ({
@@ -20,67 +10,11 @@ const AssetTableComponent = ({
   currentValue: number;
 }) => {
   const [tableStatus, setTableStatus] = useState<TableStatus>("cryptocurrency");
-  const [tableData, setTableData] = useState(initial);
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
   const [derivativeType, setDerivativeType] = useState<any>({
     perp: true,
     future: true,
   });
-  const queryClient = useQueryClient();
-
-  const getFilteredData = (status: TableStatus) => {
-    const tableOptions = {
-      nft: {
-        data: initial.filter((asset) => asset.assettype === "nft"),
-        format: formatDataColsNft,
-      },
-      cryptocurrency: {
-        data: initial.filter((asset) => asset.assettype === "cryptocurrency"),
-        format: formatDataColsCurrency,
-      },
-      derivative: {
-        data: initial.filter((asset) => {
-          if (derivativeType.perp === true && derivativeType.future === true) {
-            return asset.assettype === "derivative";
-          } else if (
-            derivativeType.perp === true &&
-            derivativeType.future === false
-          ) {
-            return (
-              asset.assettype === "derivative" &&
-              asset.derivativetype === "perpetual"
-            );
-          } else if (
-            derivativeType.perp === false &&
-            derivativeType.future === true
-          ) {
-            return (
-              asset.assettype === "derivative" &&
-              asset.derivativetype === "future"
-            );
-          } else {
-            return asset.assettype === "derivative";
-          }
-        }),
-        format: formatDataColsDerivative,
-      },
-    };
-    return tableOptions[status];
-  };
-
-  useEffect(() => {
-    const { data } = getFilteredData(tableStatus);
-    setTableData(data);
-  }, [tableStatus, derivativeType]);
-
-  console.log("expandedRow", expandedRow);
-  const col = useMemo(() => {
-    const { data, format } = getFilteredData(tableStatus);
-    return format(data, queryClient, setExpandedRow);
-  }, [tableStatus, derivativeType]);
-
-  const getButtonClass = (status: string) =>
-    tableStatus === status ? "bg-blue text-white" : "text-black";
 
   const StatusButton = ({
     status,
@@ -94,29 +28,17 @@ const AssetTableComponent = ({
         setTableStatus(status);
         setExpandedRow(null);
       }}
-      className={` px-3 text-base h-full transition-all duration-500 ease-in-out ${getButtonClass(
-        status
-      )} rounded-md `}
+      className={`relative px-3 text-base h-full text-black rounded-md `}
     >
       {label}
     </button>
   );
 
-  const realStatus = tableData.map((asset) => asset.assettype);
-
-  for (let i = 0; i < tableData.length; i++) {
-    if (tableStatus != realStatus[i]) {
-      return <LoadingSkeleton />;
-    }
-  }
-
-  console.log("table data", tableData);
-
   return (
     <div className="card pt-5">
       <div className="flex flex-row justify-between mb-4 h-9">
         <header>
-          <h1 className=" flex flex-row justify-cente h-full items-center text-1xl font-normal px-7">
+          <h1 className=" flex flex-row justify-center h-full items-center text-1xl font-normal px-7">
             {" "}
             Assets{" "}
           </h1>
@@ -169,22 +91,19 @@ const AssetTableComponent = ({
               </button>
             </div>
           ) : null}
-          <div className=" flex flex-row bg-gray rounded-md">
+          <div className=" relative flex flex-row bg-gray rounded-md">
             <StatusButton status="cryptocurrency" label="Cryptocurrencies" />
             <StatusButton status="nft" label="NFTs" />
             <StatusButton status="derivative" label="Derivatives" />
           </div>
         </nav>
       </div>
-      <div className="shadow-flyzerShadow rounded-md ">
-        <DataTable
-          data={tableData}
-          columns={col}
-          expandedRow={expandedRow}
-          tableStatus={tableStatus}
-          currentValue={currentValue}
-        />
-      </div>
+      <AssetTableController
+        initial={initial}
+        currentValue={currentValue}
+        tableStatus={tableStatus}
+        derivativeType={derivativeType}
+      />
     </div>
   );
 };
