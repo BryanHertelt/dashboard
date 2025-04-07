@@ -27,7 +27,7 @@ const AssetTableController = ({
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
   const queryClient = useQueryClient();
 
-  const getFilteredData = (status: TableStatus) => {
+  const getFilteredData = (status: "nft" | "cryptocurrency" | "derivative") => {
     const tableOptions = {
       nft: {
         data: initial.filter((asset) => asset.assettype === "nft"),
