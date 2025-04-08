@@ -6,6 +6,11 @@ import { useDistributionData } from "../datafetching/client-refetch/client-hooks
 import { getPortfolioData } from "../datafetching/layer";
 import { formatValue } from "../helpers/helper-functions";
 import { CryptocurrencyDataInterface } from "../types/data-fetching-types";
+import {
+  formatDataColsCurrency,
+  formatDataColsDerivative,
+  formatDataColsNft,
+} from "../design-components/datatables/datatable-version-assetdistribution/asset-distribution-cols";
 
 const AssetDistributionComponent = (props: any) => {
   const { processedQueryData, isLoading, isError, error } = useDistributionData(
@@ -51,6 +56,43 @@ const AssetDistributionComponent = (props: any) => {
     total: processedQueryData.currentvalue,
   };
 
+  const tableConfig = {
+    title: "Assets",
+    initial: tableData,
+    detail: true,
+    statusFilter: "assettype",
+    status: [
+      {
+        status: "cryptocurrency",
+        statusTitle: "Cryptocurrencies",
+        columns: formatDataColsCurrency,
+      },
+      {
+        status: "nft",
+        statusTitle: "NFTs",
+        columns: formatDataColsNft,
+      },
+      {
+        status: "derivative",
+        statusTitle: "Derivatives",
+        columns: formatDataColsDerivative,
+      },
+    ],
+    filter: [
+      {
+        filter: "perp",
+        filterTitle: "Perpetual",
+        filterStatus: "derivative",
+      },
+      {
+        filter: "future",
+        filterTitle: "Future",
+        filterStatus: "derivative",
+      },
+    ],
+    currentValue: processedQueryData.currentvalue,
+  };
+
   return (
     <>
       <div className="card h-4/6 w-8/12 flex-grow pl-7 pt-7 pr-8">
@@ -67,11 +109,8 @@ const AssetDistributionComponent = (props: any) => {
           piedata={pieData}
         />
       </div>
-      <div className="mt-9 border border-none w-full mb-10 h-5/6">
-        <AssetTableComponent
-          initial={tableData}
-          currentValue={processedQueryData.currentvalue}
-        />
+      <div className="mt-9 border border-none w-full mb-44 h-5/6">
+        <AssetTableComponent config={tableConfig} />
       </div>
       <div className="border border-backgroundchild w-full opacity-0 " />
     </>

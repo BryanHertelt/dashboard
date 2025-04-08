@@ -90,7 +90,7 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-2/6 flex flex-col">
       <div className="w-full overflow-x-auto">
         <div className="min-w-[800px]">
           <Table className="table-fixed w-full">
