@@ -64,7 +64,7 @@ const AssetDistributionComponent = (props: any) => {
     status: [
       {
         status: "cryptocurrency",
-        statusTitle: "Cryptocurrencies",
+        statusTitle: "Currencies",
         columns: formatDataColsCurrency,
       },
       {

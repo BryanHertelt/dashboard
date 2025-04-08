@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useRef, useEffect } from "react";
 import AssetTableController from "./asset-table-controller";
 
 type StatusItem<StatusKey extends string> = {
@@ -40,6 +40,31 @@ const AssetTableComponent = <StatusKey extends string>({
     config.status[0].status
   );
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
+  const tabRef = useRef<HTMLDivElement | null>(null);
+  const [tabWidth, setTabWidth] = useState(0);
+  const [currentTab, setCurrentTab] = useState(0);
+
+  const updateWidth = () => {
+    if (tabRef.current) {
+      const parentWidth = tabRef.current.getBoundingClientRect().width;
+      const numberOfButtons = config.status.length;
+      const newButtonWidth = parentWidth / numberOfButtons;
+      setTabWidth(newButtonWidth);
+    }
+  };
+
+  useEffect(() => {
+    const resizeObserver = new ResizeObserver(updateWidth);
+    if (tabRef.current) {
+      resizeObserver.observe(tabRef.current);
+    }
+
+    return () => {
+      if (tabRef.current) {
+        resizeObserver.unobserve(tabRef.current);
+      }
+    };
+  }, [config.status.length]);
 
   const defaultFilterObject = useMemo(() => {
     return config.filter.reduce((acc, curr) => {
@@ -59,12 +84,27 @@ const AssetTableComponent = <StatusKey extends string>({
     label: string;
   }) => (
     <button
+      style={{
+        width: tabWidth,
+      }}
       onClick={() => {
+        const foundStatus = config.status.find(
+          (object) => object.status === status
+        );
+        if (foundStatus) {
+          setCurrentTab(config.status.indexOf(foundStatus));
+        } else {
+          // Handle the case where the status is not found
+          console.error(`Status "${status}" not found.`);
+        }
         setTableStatus(status);
         setExpandedRow(null);
       }}
-      className="relative px-3 text-base h-full text-black rounded-md"
+      className={`${
+        tableStatus === status ? "text-white" : "text-black"
+      } z-50 relative px-3 text-base h-full text-black rounded-md`}
     >
+      {" "}
       {label}
     </button>
   );
@@ -115,11 +155,14 @@ const AssetTableComponent = <StatusKey extends string>({
             {config.title}
           </h1>
         </header>
-        <nav className="flex flex-row px-7">
-          <div className="flex items-center mr-2 w-full">
+        <nav className="relative flex flex-row pr-7 w-3/4 justify-end ">
+          <div className="flex items-end mr-2">
             <FilterButtons />
           </div>
-          <div className="relative flex flex-row bg-gray rounded-md">
+          <div
+            className="relative flex flex-row bg-gray rounded-md w-1/4 "
+            ref={tabRef}
+          >
             {config.status.map((statusConfig) => (
               <div key={statusConfig.status}>
                 <StatusButtons
@@ -128,6 +171,13 @@ const AssetTableComponent = <StatusKey extends string>({
                 />
               </div>
             ))}
+            <div
+              className="absolute z-5 inset-0 bg-blue rounded-md transition-all "
+              style={{
+                width: tabWidth,
+                translate: `${currentTab * tabWidth}px 0px`,
+              }}
+            />
           </div>
         </nav>
       </div>

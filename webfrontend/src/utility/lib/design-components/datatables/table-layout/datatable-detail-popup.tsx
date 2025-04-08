@@ -69,14 +69,12 @@ export const TableDetailComponent = (props: TableDetailProps) => {
         ) : (
           <>
             <div className="relative flex flex-row m-1 mb-2.5 p-1 pr-1 ml-3.5 rounded-md md:w-8/12 sm:w-8/12 lp:w-4/12">
-              {/* Blue switcher div */}
               <div
                 role="Rebalancing-Switcher"
                 className={`absolute bg-blue z-10 transition-transform duration-200 ease-in-out rounded-md text-white flex items-center justify-center ${
                   detail === "HD" ? "translate-x-full" : "translate-x-0"
                 } sm:w-4/12 md:w-4/12 lp:w-3/12 h-10`}
               />
-              {/* Left button */}
               <button
                 className="relative z-5 bg-gray text-center sm:w-4/12 md:w-4/12 lp:w-3/12 md:text-xs lp:text-sm h-10 rounded-l-md p-2 sm:text-xs"
                 onClick={() => {
