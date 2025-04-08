@@ -253,7 +253,6 @@ export const formatDataColsDerivative = (
       ),
       cell: ({ row }: any) => {
         const direction = row.getValue("tradedirection");
-        console.log("direction", direction);
         const directionToUpper =
           direction.charAt(0).toUpperCase() + direction.substring(1, 5);
         const rowId = row.id;
@@ -302,10 +301,8 @@ export const formatDataColsDerivative = (
       cell: ({ row }: any) => {
         const name = row.getValue("assetname");
 
-        console.log("called");
         const renderNameCell = () => {
           for (let index = 0; index < processedQueryData.length; index++) {
-            console.log("processedQueryData", processedQueryData);
             if (name == processedQueryData[index].assetname) {
               return (
                 <div

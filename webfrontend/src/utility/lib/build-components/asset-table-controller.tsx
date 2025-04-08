@@ -71,8 +71,6 @@ const AssetTableController = ({
     const { data } = getFilteredData(tableStatus);
     setTableData(data);
   }, [tableStatus, derivativeType]);
-
-  console.log("expandedRow", expandedRow);
   const col = useMemo(() => {
     const { data, format } = getFilteredData(tableStatus);
     return format(data, queryClient, setExpandedRow);
@@ -85,8 +83,6 @@ const AssetTableController = ({
       return <LoadingSkeleton />;
     }
   }
-
-  console.log("table data", tableData);
 
   return (
     <div>

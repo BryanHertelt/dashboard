@@ -51,6 +51,7 @@ export function DataTable<TData, TValue>({
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [rowName, setRowName] = React.useState<string>("");
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
+
   /**
    * This function is triggered, when a row is clicked. It`s purpose is to render the related detail component.
    * @param row An object holding all related data for the selected row (made up by tanstack query.)

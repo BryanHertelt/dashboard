@@ -1,11 +1,41 @@
 "use client";
 import { useState, useMemo, useEffect } from "react";
 import { DataTable } from "@/utility/lib/design-components/datatables/table-layout/data-table";
-import AssetTableController from "@/utility/lib/build-components/asset-table-controller";
 import LoadingSkeleton from "../loading";
 import { useQueryClient } from "@tanstack/react-query";
+import {
+  formatDataColsCurrency,
+  formatDataColsDerivative,
+  formatDataColsNft,
+} from "@/utility/lib/design-components/datatables/datatable-version-assetdistribution/asset-distribution-cols";
 
 const initialData = [
+  {
+    symbol: "C",
+    portfolioid: 1,
+    userid: 1,
+    groupid: 2,
+    holdingid: 7,
+    assetpercentage: 3,
+    assettype: "derivative",
+    assetid: 13,
+    assetname: "ETHUSDT",
+    derivateexchange: "Binance",
+    positiontype: "open",
+    tradedirection: "long",
+    derivativetype: "perpetual",
+    leverage: 10,
+    size: 10000,
+    entry: 2000,
+    unrealizedpl: -500,
+    price: 1900,
+    liquidationprice: 1800,
+    margin: 50,
+    tp: 21,
+    sl: 18.5,
+    settlementdate: "",
+    notes: "Notes",
+  },
   {
     symbol: "A",
     portfolioid: 1,
@@ -67,25 +97,99 @@ const initialData = [
   },
 ];
 
+type StatusItem<StatusKey extends string> = {
+  status: StatusKey;
+  statusTitle: string;
+};
+
+type FilterItem<StatusKey extends string> = {
+  filter: string;
+  filterTitle: string;
+  filterStatus: StatusKey;
+};
+
+type AssetTableConfig<StatusKey extends string> = {
+  title: string;
+  initial: any[];
+  currentValue: number;
+  status: StatusItem<StatusKey>[];
+  filter: FilterItem<StatusKey>[];
+};
+
+type AssetTableComponentProps<StatusKey extends string> = {
+  config: AssetTableConfig<StatusKey>;
+};
+
+const formatAgeCols = (initial: any) => {
+  return [
+    {
+      accessorKey: "age",
+      header: "Some other age",
+    },
+    {
+      accessorKey: "name",
+      header: "Some other name",
+    },
+  ];
+};
+
+const initial = [
+  {
+    age: 1,
+    name: "fritz",
+    dog: "Martin",
+    cat: "Fat Cat",
+  },
+  {
+    age: 2,
+    name: "peter",
+    dog: "Martin",
+    cat: "Thin Cat",
+  },
+  {
+    age: 3,
+    name: "sam",
+    dog: "Marting",
+    cat: "Sick cat",
+  },
+];
+
+const formatCatCols = (initial: any) => {
+  return [
+    {
+      accessorKey: "cat",
+      header: "Stupid Cat",
+    },
+    {
+      accessorKey: "dog",
+      header: "Stupid dog",
+    },
+  ];
+};
+
 export default function BuilderPage() {
-  const currentValue = 5000;
+  const currentValue = 70000;
 
   const tableConfig = {
     title: "Assets",
     initial: initialData,
-    currentValue: currentValue,
+    detail: true,
+    statusFilter: "assettype",
     status: [
       {
         status: "cryptocurrency",
         statusTitle: "Cryptocurrencies",
+        columns: formatDataColsCurrency,
       },
       {
         status: "nft",
         statusTitle: "NFTs",
+        columns: formatDataColsNft,
       },
       {
         status: "derivative",
         statusTitle: "Derivatives",
+        columns: formatDataColsDerivative,
       },
     ],
     filter: [
@@ -100,7 +204,9 @@ export default function BuilderPage() {
         filterStatus: "derivative",
       },
     ],
+    currentValue: currentValue,
   };
+
   return (
     <div className="mt-9 border border-none w-full mb-10 h-5/6">
       <AssetTableComponent config={tableConfig} />
@@ -108,18 +214,25 @@ export default function BuilderPage() {
   );
 }
 
-const AssetTableComponent = ({
+const AssetTableComponent = <StatusKey extends string>({
   config,
 }: {
   config: {
     title: string;
     initial: any;
-    currentValue: number;
-    status: { status: string; statusTitle: string }[];
-    filter: { filter: string; filterTitle: string; filterStatus: string }[];
+    detail: boolean;
+    status: { status: string; statusTitle: string; columns: Function }[];
+    filter: {
+      filter: string;
+      filterTitle: string;
+      filterStatus: string;
+    }[];
+    currentValue?: number;
   };
 }) => {
-  const [tableStatus, setTableStatus] = useState<string>("cryptocurrency");
+  const [tableStatus, setTableStatus] = useState<string>(
+    config.status[0].status
+  );
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
 
   const filterObject: Record<string, boolean> = config.filter.reduce(
@@ -129,10 +242,9 @@ const AssetTableComponent = ({
     },
     {} as Record<string, boolean>
   );
-  console.log("filterObject", filterObject);
-  const [filter, setFilter] = useState<any>(filterObject);
+  const [filter, setFilter] = useState<Record<string, boolean>>(filterObject);
 
-  const StatusButton = ({
+  const StatusButtons = ({
     status,
     label,
   }: {
@@ -191,6 +303,8 @@ const AssetTableComponent = ({
     );
   };
 
+  console.log("config", config.initial);
+
   return (
     <div className="card pt-5">
       <div className="flex flex-row justify-between mb-4 h-9">
@@ -207,7 +321,7 @@ const AssetTableComponent = ({
             {config.status.map((statusConfig) => {
               return (
                 <div key={statusConfig.status}>
-                  <StatusButton
+                  <StatusButtons
                     status={statusConfig.status}
                     label={statusConfig.statusTitle}
                   />
@@ -218,11 +332,100 @@ const AssetTableComponent = ({
         </nav>
       </div>
       <AssetTableController
-        initial={config.initial}
-        currentValue={config.currentValue}
         tableStatus={tableStatus}
-        derivativeType={filter}
+        tableConfig={config}
+        filterType={filter}
       />
+    </div>
+  );
+};
+
+const AssetTableController = ({
+  tableStatus,
+  tableConfig,
+  filterType,
+}: {
+  tableStatus: string;
+  tableConfig: any;
+  filterType: Record<string, boolean>;
+}) => {
+  const [tableData, setTableData] = useState(tableConfig.initial);
+  const [expandedRow, setExpandedRow] = useState<number | null>(null);
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    let filtered = tableConfig.initial.filter((asset: any) => {
+      return asset[tableConfig.statusFilter] === tableStatus;
+    });
+
+    console.log("filtered", filtered);
+
+    if (tableStatus === "derivative") {
+      if (filterType.perp && filterType.future) {
+        // both active, no need to filter further
+        filtered = tableConfig.initial.filter(
+          (asset: any) => asset.assettype === "derivative"
+        );
+      } else if (filterType.perp && !filterType.future) {
+        filtered = tableConfig.initial.filter(
+          (asset: any) =>
+            asset.assettype === "derivative" &&
+            asset.derivativetype === "perpetual"
+        );
+      } else if (!filterType.perp && filterType.future) {
+        filtered = tableConfig.initial.filter(
+          (asset: any) =>
+            asset.assettype === "derivative" &&
+            asset.derivativetype === "future"
+        );
+      }
+    }
+
+    setTableData(filtered);
+    setExpandedRow(null);
+  }, [tableStatus, filterType, tableConfig.initial]);
+
+  console.log("filtered after", tableData);
+
+  const col = useMemo(() => {
+    const statusConfig = tableConfig.status.find(
+      (s: any) => s.status === tableStatus
+    );
+    if (!statusConfig) return [];
+    if (tableConfig.detail === true) {
+      console.log("CALLED");
+      return statusConfig.columns(tableData, queryClient, setExpandedRow);
+    } else {
+      console.log("called");
+      return statusConfig.columns(tableData);
+    }
+  }, [tableStatus, tableData, queryClient]);
+
+  console.log("col", col);
+
+  const realStatus = tableData.map(
+    (asset: any) => asset[tableConfig.statusFilter]
+  );
+
+  for (let i = 0; i < tableData.length; i++) {
+    if (tableStatus != realStatus[i]) {
+      return <LoadingSkeleton />;
+    }
+  }
+
+  console.log("tableData", tableData);
+
+  return (
+    <div>
+      <div className="shadow-flyzerShadow rounded-md ">
+        <DataTable
+          data={tableData}
+          columns={col}
+          expandedRow={expandedRow}
+          tableStatus={tableStatus}
+          currentValue={tableConfig.currentValue}
+        />
+      </div>
     </div>
   );
 };
