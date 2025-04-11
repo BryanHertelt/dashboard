@@ -42,9 +42,11 @@ export const TableDetailComponent = (props: TableDetailProps) => {
   const designComponents = useMemo(
     () => ({
       carddesign:
-        "flex flex-col justify-center card mb-2.5 ml-3.5 py-3 px-3 w-64 h-20",
-      headerdesign: "flex flex-row text-sm text-icongray",
-      valuedesign: "font-semibold text-base mr-3",
+        "flex flex-col justify-around card mb-2.5 py-3 px-3 w-64 sm:h-20 md:h-20 lp:h-16 lg:h-16 xl:h-16",
+      headerdesign:
+        "flex flex-row text-sm sm:text-xs md:text-xs lp:text-xs text-icongray",
+      valuedesign:
+        "font-semibold text-base mr-3 text-sm sm:text-xs md:text-xs lp:text-xs",
     }),
     []
   );
@@ -67,16 +69,16 @@ export const TableDetailComponent = (props: TableDetailProps) => {
         {props.tableStatus === "derivative" ? (
           <p className="p-4 ml-4 text-icongray">Asset Group Distribution</p>
         ) : (
-          <>
+          <nav className="flex flex-row justify-between items-center w-full">
             <div className="relative flex flex-row m-1 mb-2.5 p-1 pr-1 ml-3.5 rounded-md md:w-8/12 sm:w-8/12 lp:w-4/12">
               <div
                 role="Rebalancing-Switcher"
                 className={`absolute bg-blue z-10 transition-transform duration-200 ease-in-out rounded-md text-white flex items-center justify-center ${
                   detail === "HD" ? "translate-x-full" : "translate-x-0"
-                } sm:w-4/12 md:w-4/12 lp:w-3/12 h-10`}
+                } sm:w-3/12 md:w-3/12 lp:w-4/12 h-10`}
               />
               <button
-                className="relative z-5 bg-gray text-center sm:w-4/12 md:w-4/12 lp:w-3/12 md:text-xs lp:text-sm h-10 rounded-l-md p-2 sm:text-xs"
+                className="relative z-5 bg-gray text-center sm:w-3/12 md:w-3/12 lp:w-4/12 md:text-xs lp:text-xs h-10 rounded-l-md p-2 sm:text-xs"
                 onClick={() => {
                   setDetail(
                     props.tableStatus === "cryptocurrency" ? "DR" : "AG"
@@ -97,7 +99,7 @@ export const TableDetailComponent = (props: TableDetailProps) => {
               </button>
               {/* Right button */}
               <button
-                className="relative z-5 text-center md:text-xs lp:text-sm h-10 bg-gray rounded-r-md p-2 sm:text-xs sm:w-4/12 md:w-4/12 lp:w-3/12"
+                className="relative z-5 text-center md:text-xs lp:text-xs h-10 bg-gray rounded-r-md p-2 sm:text-xs sm:w-3/12 md:w-3/12 lp:w-4/12"
                 onClick={() => {
                   setDetail("HD");
                 }}
@@ -111,36 +113,38 @@ export const TableDetailComponent = (props: TableDetailProps) => {
                 </p>
               </button>
             </div>
-            <div className="h-12 md:w-10 sm:w-10 lp:w-1/4 lp:ml-12 xl:w-1/4 xl:ml-20 lg:p-2 lg:items-center flex flex-row justify-end items-center p-1 m-1">
+            <div className="h-12 md:w-10 sm:w-10 lp:w-1/4 lp:ml-12 xl:w-1/4 xl:ml-20 lg:p-2 lg:items-center flex flex-row justify-end items-end p-1 m-1">
               <HoldingLogoImageContainer
                 url={props.assetUrl}
                 alt="Collection icon"
                 placeholder="CP"
               />
             </div>
-          </>
+          </nav>
         )}
-        {detail === "DR" ? (
-          <DrDetail
-            designComponents={designComponents}
-            data={data}
-            currentValue={props.currentValue}
-          />
-        ) : detail === "AG" ? (
-          <AgDetail
-            data={data.assetgroups}
-            tableStatus={props.tableStatus}
-            assetname={props.assetName}
-            designComponents={designComponents}
-          />
-        ) : (
-          <HdDetail
-            data={data.holdings}
-            tableStatus={props.tableStatus}
-            assetname={props.assetName}
-            designComponents={designComponents}
-          />
-        )}
+        <div className=" w-full ">
+          {detail === "DR" ? (
+            <DrDetail
+              designComponents={designComponents}
+              data={data}
+              currentValue={props.currentValue}
+            />
+          ) : detail === "AG" ? (
+            <AgDetail
+              data={data.assetgroups}
+              tableStatus={props.tableStatus}
+              assetname={props.assetName}
+              designComponents={designComponents}
+            />
+          ) : (
+            <HdDetail
+              data={data.holdings}
+              tableStatus={props.tableStatus}
+              assetname={props.assetName}
+              designComponents={designComponents}
+            />
+          )}
+        </div>
       </div>
     );
   }

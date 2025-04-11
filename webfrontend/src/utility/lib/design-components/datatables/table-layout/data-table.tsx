@@ -111,10 +111,7 @@ export function DataTable<TData, TValue>({
               ))}
             </TableHeader>
           </Table>
-          <div
-            className="overflow-y-auto rounded-md"
-            style={{ maxHeight: "550px" }}
-          >
+          <div className="overflow-y-auto rounded-md sm:max-h-[66vh] md:max-h-[66vh] lp:max-h-[66vh] lg:max-h-[66vh] lg xl:max-h-[65vh]">
             <Table className="table-fixed w-full">
               <TableBody>
                 {table.getRowModel().rows?.length ? (

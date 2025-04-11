@@ -102,7 +102,7 @@ const AssetTableComponent = <StatusKey extends string>({
       }}
       className={`${
         tableStatus === status ? "text-white" : "text-black"
-      } z-50 relative px-3 text-base h-full text-black rounded-md`}
+      } z-50 relative px-3 text-xs overflow-hidden md:text-xs text-center h-full text-black rounded-md`}
     >
       {" "}
       {label}
@@ -160,7 +160,7 @@ const AssetTableComponent = <StatusKey extends string>({
             <FilterButtons />
           </div>
           <div
-            className="relative flex flex-row bg-gray rounded-md w-1/4 "
+            className="relative flex flex-row bg-gray rounded-md lg:w-2/6 lp:w-2/6 xl:w-1/4 md:w-3/6  sm:w-4/6"
             ref={tabRef}
           >
             {config.status.map((statusConfig) => (
@@ -182,7 +182,7 @@ const AssetTableComponent = <StatusKey extends string>({
         </nav>
       </div>
       <div>
-        <div className="h-96">
+        <div className="h-full">
           <AssetTableController
             tableStatus={tableStatus}
             tableConfig={config}

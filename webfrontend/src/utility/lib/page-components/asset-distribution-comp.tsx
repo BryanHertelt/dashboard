@@ -109,10 +109,9 @@ const AssetDistributionComponent = (props: any) => {
           piedata={pieData}
         />
       </div>
-      <div className="mt-9 border border-none w-full mb-44 h-5/6">
+      <div className="mt-9 w-full h-full">
         <AssetTableComponent config={tableConfig} />
       </div>
-      <div className="border border-backgroundchild w-full opacity-0 " />
     </>
   );
 };

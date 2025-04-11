@@ -58,14 +58,14 @@ export const DrDetail = ({
   };
 
   return (
-    <>
-      <div className="flex flex-row lg:w-2/5 lp:w-3/5 justify-start flex-wrap md:w-3/5 sm:w-3/5">
-        <div className="flex flex-row flex-wrap ml-1.5 h-full w-full">
+    <div className="flex flex-row flex-wrap w-full">
+      <div className="flex flex-row  justify-start md:w-2/5 sm:w-2/5 lg:w-2/5 lp:w-2/5 border-r-2 border-gray ">
+        <div className="flex flex-row flex-wrap h-full w-full ">
           {portfolioRebalancingData.map((cards: any) => {
             return (
               <div
                 role="Detail Rebalancing Cards"
-                className={`${designComponents.carddesign} sm:w-40 md:w-40 lg:w-52 lp:w-40 xl:w-72 justify-center`}
+                className={`${designComponents.carddesign} ml-3.5 sm:w-2/5 md:w-2/5 lg:w-2/5 lp:w-2/5 xl:w-2/5 justify-center`}
                 key={cards.header}
               >
                 <p className={designComponents.headerdesign}>
@@ -81,7 +81,7 @@ export const DrDetail = ({
           })}
         </div>
       </div>
-      <div className="lg:w-3/5 lp:w-2/5 pr-3 pt-5 pl-10 border-l-2 border-gray md:w-2/5 sm:w-2/5">
+      <div className=" pr-3 pt-5 pl-10 md:w-3/5 sm:w-3/5 lg:w-3/5 lp:w-3/5 h-full">
         <RebalancingSetUp
           data={barchartData}
           assetId={data.assetId}
@@ -89,7 +89,7 @@ export const DrDetail = ({
           currentValue={currentValue}
         />
       </div>
-    </>
+    </div>
   );
 };
 
@@ -116,7 +116,7 @@ export const AgDetail = (props: any) => {
                   activeGroup === group && props.tableStatus === "nft"
                     ? "border border-black"
                     : ""
-                }`}
+                } mr-3.5`}
                 key={group.id}
                 onClick={() => setActiveGroup(group)}
               >
@@ -170,7 +170,7 @@ export const HdDetail = (props: any) => {
 
   return (
     <>
-      <div className="flex flex-col w-full justify-start flex-wrap">
+      <div className="flex flex-col justify-start">
         <div className="flex flex-row ml-3.5 border-b-2 border-gray mb-5 pb-4 flex-wrap">
           {props.data.map((holding: any) => {
             return (
@@ -179,7 +179,7 @@ export const HdDetail = (props: any) => {
                   activeHolding === holding && props.tableStatus === "nft"
                     ? "border border-black"
                     : ""
-                }`}
+                } mr-3.5`}
                 key={holding.id}
                 onClick={() => setActiveHolding(holding)}
               >
@@ -206,9 +206,7 @@ export const HdDetail = (props: any) => {
                           {" "}
                           {formatValue(holding.assetvalue)} {props.assetname}{" "}
                         </p>
-                        <p
-                          className={`${props.designComponents.headerdesign} pt-1`}
-                        >
+                        <p className={`${props.designComponents.headerdesign}`}>
                           ~ {formatCurrency(holding.currencyvalue)}
                         </p>{" "}
                       </div>{" "}

@@ -173,14 +173,14 @@ export const RebalancingSetUp = ({
       <Bar data={barData} options={options} />
       <div className="flex flex-col justify-start w-full">
         <div className="flex flex-row">
-          <div className="flex flex-col text-center mt-2 w-1/2">
+          <div className="flex flex-col text-center mt-2 w-3/5">
             {barData.datasets.map((dataset, index) => (
               <div key={index} className="flex items-center space-x-2">
                 <span
                   className="w-4 h-4 rounded-sm mb-3"
                   style={{ backgroundColor: dataset.backgroundColor as string }}
                 ></span>
-                <span className="text-xs md:text-xs text-icongray mb-3">
+                <span className="text-xs text-icongray mb-3 text-start">
                   {dataset.label}
                 </span>
               </div>
@@ -188,15 +188,15 @@ export const RebalancingSetUp = ({
           </div>
           <div className="flex flex-row justify-end w-1/2 ">
             <div
-              className={`flex items-center w-12 h-7 bg-gray rounded-full transition-all duration-500`}
+              className={`flex items-center w-12 h-6 bg-gray rounded-full transition-all duration-500 pl-1`}
             >
               <span
                 onClick={() => setToggled(!isToggled)}
-                className={`flex h-6 w-6 p-2 ${
-                  isToggled ? "xl:ml-5" : "ml-1"
+                className={`flex h-5 w-5 p-2 ${
+                  isToggled ? "translate-x-full" : "translate-x-0"
                 } bg-white rounded-full transition-all duration-500 justify-center items-center font-semibold text-xs`}
               >
-                {isToggled ? "[x]" : "[%]"}
+                {isToggled ? "x" : "%"}
               </span>{" "}
             </div>
             <div className="flex flex-col items-end w-2/5 ml-2.5">
@@ -213,7 +213,7 @@ export const RebalancingSetUp = ({
                       100
                     : Math.round(Number(balance) * 100) / 100
                 }
-                className="bg-gray w-full rounded-md pl-2 h-7"
+                className="bg-gray w-full rounded-md pl-2 p1 h-6"
               />
               <p className="flex flex-row justify-end h-7 w-32 items-center text-icongray">
                 ≈{" "}
