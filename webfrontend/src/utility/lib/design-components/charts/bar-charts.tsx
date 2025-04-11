@@ -21,17 +21,10 @@ ChartJS.register(
   Legend
 );
 
+import { chartColors, darkerGray } from "../../helpers/colors";
+
 export const HoldingBarChart = (props: any) => {
-  const backgroundColors = [
-    "rgba(0, 92, 211, 1)",
-    "rgba(54, 134, 220, 1)",
-    "rgba(18, 152, 230, 1)",
-    "rgba(0, 176, 247, 1)",
-    "rgba(0, 198, 251, 1)",
-    "rgba(113, 225, 255, 1)",
-    "rgba(162, 220, 255, 1)",
-    "rgba(203, 235, 255, 1)",
-  ];
+  const backgroundColors = chartColors;
 
   const mainHoldings: any[] = [];
   const otherHoldings: any[] = [];
@@ -76,8 +69,7 @@ export const HoldingBarChart = (props: any) => {
         )
       ),
     ],
-    backgroundColor: "#7A7A7A",
-    borderWidth: 0,
+    backgroundColor: darkerGray,
     borderRadius: 7,
   };
 
@@ -146,99 +138,6 @@ export const HoldingBarChart = (props: any) => {
               </div>
             );
           })}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export const BarChartRebalancing = (props: any) => {
-  console.log("props", props);
-  const {
-    desiredbalance,
-    currentbalance,
-    desiredbalancenumber,
-    currentbalancenumber,
-  } = props.data;
-
-  if (desiredbalance === null || desiredbalancenumber === null) {
-    return (
-      <p> Set desired balancing to see your rebalancing statistics here.</p>
-    );
-  }
-
-  const data: ChartData<"bar"> = {
-    labels: [""],
-    datasets: [
-      {
-        label: `Current: ${formatValue(currentbalance)}% ~ ${formatCurrency(
-          currentbalancenumber
-        )}`,
-        data: [currentbalance],
-        backgroundColor: "rgba(0, 26, 66, 1)",
-        borderColor: "rgba(0, 26, 66, 1)",
-        borderWidth: 1,
-        borderRadius: 7,
-      },
-      {
-        label: `Desired: ${formatValue(desiredbalance)}% ~ ${formatCurrency(
-          desiredbalancenumber
-        )}`,
-        data: [desiredbalance],
-        backgroundColor: "rgba(122, 122, 122, 1)",
-        borderColor: "rgba(122, 122, 122, 1)",
-        borderWidth: 1,
-        borderRadius: {
-          topLeft: 7,
-          topRight: 7,
-          bottomLeft: 7,
-          bottomRight: 7,
-        },
-      },
-    ],
-  };
-
-  const options: ChartOptions<"bar"> = {
-    responsive: true,
-    indexAxis: "y",
-    maintainAspectRatio: false,
-    scales: {
-      x: {
-        stacked: true,
-        display: false,
-      },
-      y: {
-        stacked: true,
-        display: false,
-      },
-    },
-    plugins: {
-      legend: {
-        position: "bottom",
-        labels: {
-          boxWidth: 15,
-        },
-        align: "start",
-        display: false,
-      },
-    },
-  };
-  return (
-    <div className="w-full h-11 flex justify-center items-center mr-5 flex-wrap">
-      <Bar data={data} options={options} />
-      <div className="flex flex-col justify-start w-full">
-        <div className="flex flex-col text-center mt-2">
-          {data.datasets.map((dataset, index) => (
-            <div key={index} className="flex items-center space-x-2">
-              <span
-                className="w-4 h-4 rounded-sm mb-3"
-                style={{ backgroundColor: dataset.backgroundColor as string }}
-              ></span>
-              <span className="text-xs text-icongray mb-3">
-                {dataset.label}
-              </span>
-            </div>
-          ))}
         </div>
       </div>
     </div>

@@ -1,12 +1,27 @@
 export const icongray = "#7A7A7A"
 export const bitcoinYellow = "#FFD600"
 export const ethereumBlue = "#89C6FF "
-export const flyzerBlue = "#005BEA"
+export const flyzerBlue = "#001A42"
+export const lightBlue = "#CBEBFF"
 export const black = "#000000"
 export const green = "#04B900"
 export const red = "#DA0000"
 export const gray = "#EFEEF3"
+export const darkerGray = "#D9D9D9"
 export const white = '#FFFFFF'
+
+export const chartColors = [
+  "#CBEBFF", 
+  "#A2DCFF", 
+  "#71E1FF", 
+  "#00C6FB", 
+  "#00B0F7", 
+  "#1298E6", 
+  "#3686DC", 
+  "#005CD3", 
+  "#0042AB", 
+]
+
 
 export const chartBgColors =  [
     "rgba(0, 91, 234, 0.3)",

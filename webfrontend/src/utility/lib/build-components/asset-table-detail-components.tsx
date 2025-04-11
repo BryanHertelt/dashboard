@@ -2,10 +2,7 @@
 
 import { formatCurrency, formatValue } from "../helpers/helper-functions";
 import { ExposeNfts } from "../helpers/nft-container";
-import {
-  BarChartRebalancing,
-  HoldingBarChart,
-} from "../design-components/charts/bar-charts";
+import { HoldingBarChart } from "../design-components/charts/bar-charts";
 import { useState } from "react";
 import { RebalancingSetUp } from "../design-components/rebalancing-set-up/rebalancing-set-up";
 import {
@@ -135,9 +132,7 @@ export const AgDetail = (props: any) => {
                     </p>
                   )}
                   {props.tableStatus === "nft" ? (
-                    <p
-                      className={`${props.designComponents.headerdesign} pt-1`}
-                    >
+                    <p className={`${props.designComponents.headerdesign}`}>
                       {" "}
                       ~ {formatValue(group.assetvalue)} ETH{" "}
                     </p>

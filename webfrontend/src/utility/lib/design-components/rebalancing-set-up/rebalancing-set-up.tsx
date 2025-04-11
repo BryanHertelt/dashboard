@@ -16,6 +16,7 @@ import {
 } from "chart.js";
 
 import { postRebalancing } from "../../datafetching/layer";
+import { flyzerBlue, lightBlue, darkerGray } from "../../helpers/colors";
 
 ChartJS.register(
   CategoryScale,
@@ -116,8 +117,8 @@ export const RebalancingSetUp = ({
           currentbalancenumber
         )}`,
         data: [currentbalance],
-        backgroundColor: "rgba(0, 26, 66, 1)",
-        borderColor: "rgba(0, 26, 66, 1)",
+        backgroundColor: flyzerBlue,
+        borderWidth: 0,
         borderRadius: 7,
         order: currentbalancenumber > balance ? 2 : 1,
       },
@@ -126,14 +127,15 @@ export const RebalancingSetUp = ({
           Math.round(Number(currentValue * balance)) / 100
         )}`,
         data: [balance],
-        backgroundColor: "rgba(122, 122, 122, 1)",
-        borderColor: "rgba(122, 122, 122, 1)",
+        backgroundColor: lightBlue,
+        borderWidth: 0,
         borderRadius: 7,
         order: currentbalance > balance ? 1 : 2,
       },
       {
         label: `Portfolio Balance: 100%  ~ ${formatCurrency(currentValue)} `,
-        backgroundColor: "#D3D3D3",
+        backgroundColor: darkerGray,
+        borderWidth: 0,
         data: [100],
         borderRadius: 7,
         order: 3,

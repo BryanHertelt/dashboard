@@ -22,7 +22,8 @@ module.exports = {
   		white: '#FFFFFF',
   		gray: '#EFEEF3',
 		currentvaluefont: '4A4A4A',
-  		blue: '#00327F',
+  		blue: '#001A42',
+		flyzerblue: "#001A42", 
   		icongray: '#7A7A7A',
   		backgroundchild: '#EFEEF3',
 		green: '#04B900', 
@@ -31,7 +32,6 @@ module.exports = {
 		lightred: 'rgba(218, 0, 0, 0.1)', 
 		bitcoinyellow:"#FFD600" , 
 		ethereumblue: "#89C6FF ", 
-		flyzerblue: "#005BEA", 
 		lightblue: "#CCDEFB"
   	},
 	screens: {

@@ -6,7 +6,7 @@ export const ExposeNfts = (props: any) => {
   return (
     <div
       key={distributionElement.id}
-      className="flex flex-row w-full flex-wrap justify-start pl-5 pb-5"
+      className="flex flex-row w-full flex-wrap justify-start pb-5"
     >
       {distributionElement.nfts.map((nft: any) => {
         return (
