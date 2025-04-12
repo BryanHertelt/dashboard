@@ -1,6 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
 import LoadingSkeleton from "@/app/tracker/(distribution)/loading";
-import { useQueryClient } from "@tanstack/react-query";
 import { DataTable } from "../design-components/datatables/table-layout/data-table";
 
 const AssetTableController = ({
@@ -14,7 +13,6 @@ const AssetTableController = ({
 }) => {
   const [tableData, setTableData] = useState(tableConfig.initial);
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
-  const queryClient = useQueryClient();
 
   useEffect(() => {
     let filtered = tableConfig.initial.filter((asset: any) => {
@@ -50,17 +48,9 @@ const AssetTableController = ({
       (s: any) => s.status === tableStatus
     );
     if (!statusConfig) return [];
-    if (tableConfig.detail === true) {
-      return statusConfig.columns(
-        tableData,
-        queryClient,
-        expandedRow,
-        setExpandedRow
-      );
-    } else {
-      return statusConfig.columns(tableData);
-    }
-  }, [tableStatus, tableData, queryClient, expandedRow]);
+
+    return statusConfig.columns(tableData);
+  }, [tableStatus, tableData]);
 
   const realStatus = tableData.map(
     (asset: any) => asset[tableConfig.statusFilter]
@@ -72,6 +62,8 @@ const AssetTableController = ({
     }
   }
 
+  console.log("expandedRow in asset table controller", expandedRow);
+
   return (
     <div className="shadow-flyzerShadow rounded-md">
       <DataTable
@@ -80,6 +72,7 @@ const AssetTableController = ({
         expandedRow={expandedRow}
         tableStatus={tableStatus}
         currentValue={tableConfig.currentValue}
+        setExpandedRow={setExpandedRow}
       />
     </div>
   );

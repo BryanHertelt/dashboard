@@ -41,10 +41,9 @@ export const ShowDetailIcon = ({
   expandedRow,
 }: {
   rowId: number;
-  expandedRow: number;
+  expandedRow: number | null | undefined;
 }) => {
-  const [isRotated, setIsRotated] = useState<boolean>(false);
-
+  console.log("expandedRow in icon", expandedRow);
   return (
     <svg
       width="9"
@@ -52,11 +51,10 @@ export const ShowDetailIcon = ({
       viewBox="0 0 9 12"
       fill={icongray}
       xmlns="http://www.w3.org/2000/svg"
-      onClick={() => setIsRotated(!isRotated)}
       style={{
         cursor: "pointer",
         transition: "transform 0.4s ease",
-        transform: expandedRow === rowId ? "rotate(90deg)" : "rotate(0deg)",
+        transform: rowId === expandedRow ? "rotate(90deg)" : "rotate(0deg)",
       }}
     >
       <path

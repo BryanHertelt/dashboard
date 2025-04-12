@@ -22,7 +22,7 @@ const toggleExpandedRow = (rowId: number, setExpandedRow: any) => {
 const headerdesign =
   "flex flex-row font-normal items-center justify-end text-black h-11  w-full ";
 const celldesign = "flex flex-row justify-end items-center w-1/2 w-full pr-2 ";
-const firstcelldesign = "flex flex-row text-sm font-medium items-center ml-2";
+const firstcelldesign = "flex flex-row text-sm font-medium items-center";
 const sortingicondesgin = "bg-red h-5 w-1 ml-1 rounded-sm";
 
 /**
@@ -33,44 +33,25 @@ const sortingicondesgin = "bg-red h-5 w-1 ml-1 rounded-sm";
  * @param setExpandedRow
  * @returns
  */
-export const formatDataColsCurrency = (
-  parentdata: any,
-  queryClient: any,
-  expandedRow: number,
-  setExpandedRow?: any
-) => {
+export const formatDataColsCurrency = (parentdata: any) => {
   return [
     {
       accessorKey: "assetname",
       header: () => (
         <div
-          className={`flex flex-row justify-start items-center pl-10 text-black h-11 w-full`}
+          className={`flex flex-row justify-start items-center pl-1 text-black h-11 w-full`}
         >
           {" "}
           Asset{" "}
         </div>
       ),
       cell: ({ row }: any) => {
-        const rowId = row.id;
         const name = row.getValue("assetname");
         const renderNameCell = () => {
           for (let index = 0; index < parentdata.length; index++) {
             if (name == parentdata[index].assetname) {
               return (
                 <div className={`${firstcelldesign} w-full`}>
-                  <div
-                    className="mr-4 h-3 w-3"
-                    onClick={() => toggleExpandedRow(rowId, setExpandedRow)}
-                    onMouseEnter={() =>
-                      prefetchDetailComponent(
-                        "cryptocurrency",
-                        parentdata[index].assetid,
-                        queryClient
-                      )
-                    }
-                  >
-                    <ShowDetailIcon rowId={rowId} expandedRow={expandedRow} />
-                  </div>
                   {parentdata[index].symbol} {""}{" "}
                   <div className="flex flex-col justify-start w-full ml-2">
                     {parentdata[index].assetname}
@@ -243,12 +224,7 @@ export const formatDataColsCurrency = (
   ];
 };
 
-export const formatDataColsDerivative = (
-  processedQueryData: any,
-  queryClient: any,
-  expandedRow: number,
-  setExpandedRow?: any
-) => {
+export const formatDataColsDerivative = (processedQueryData: any) => {
   return [
     {
       accessorKey: "tradedirection",
@@ -273,19 +249,6 @@ export const formatDataColsDerivative = (
                 direction < "short" ? "text-green" : "text-red";
               return (
                 <div className={`${directioncolor} ${firstcelldesign} w-full`}>
-                  <div
-                    className="mr-2 h-3 w-5"
-                    onClick={() => toggleExpandedRow(rowId, setExpandedRow)}
-                    onMouseEnter={() =>
-                      prefetchDetailComponent(
-                        "derivative",
-                        processedQueryData[index].assetid,
-                        queryClient
-                      )
-                    }
-                  >
-                    <ShowDetailIcon rowId={rowId} expandedRow={expandedRow} />
-                  </div>
                   <div className="flex flex-row  justify-between items-center w-full">
                     <div className="flex flex-row align-baseline justify-start">
                       {" "}
@@ -451,37 +414,18 @@ export const formatDataColsDerivative = (
   ];
 };
 
-export const formatDataColsNft = (
-  processedQueryData: any,
-  queryClient: any,
-  expandedRow: number,
-  setExpandedRow?: any
-) => {
+export const formatDataColsNft = (processedQueryData: any) => {
   return [
     {
       accessorKey: "assetname",
       header: () => <div className=" font-normal pl-10"> Collection </div>,
       cell: ({ row }: any) => {
-        const rowId = row.id;
         const name = row.getValue("assetname");
         const renderNameCell = () => {
           for (let index = 0; index < processedQueryData.length; index++) {
             if (name == processedQueryData[index].assetname) {
               return (
                 <div className={` ${firstcelldesign}`}>
-                  <div
-                    className="mr-4 h-3 w-3"
-                    onClick={() => toggleExpandedRow(rowId, setExpandedRow)}
-                    onMouseEnter={() =>
-                      prefetchDetailComponent(
-                        "nft",
-                        processedQueryData[index].assetid,
-                        queryClient
-                      )
-                    }
-                  >
-                    <ShowDetailIcon rowId={rowId} expandedRow={expandedRow} />
-                  </div>
                   {processedQueryData[index].symbol} {""}{" "}
                   <div className="flex flex-col justify-start w-1/2 ml-2">
                     <p> {processedQueryData[index].assetname} </p>

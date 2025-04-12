@@ -39,7 +39,6 @@ const AssetTableComponent = <StatusKey extends string>({
   const [tableStatus, setTableStatus] = useState<string>(
     config.status[0].status
   );
-  const [expandedRow, setExpandedRow] = useState<number | null>(null);
   const tabRef = useRef<HTMLDivElement | null>(null);
   const [tabWidth, setTabWidth] = useState(0);
   const [currentTab, setCurrentTab] = useState(0);
@@ -98,7 +97,6 @@ const AssetTableComponent = <StatusKey extends string>({
           console.error(`Status "${status}" not found.`);
         }
         setTableStatus(status);
-        setExpandedRow(null);
       }}
       className={`${
         tableStatus === status ? "text-white" : "text-black"

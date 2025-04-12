@@ -1,10 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { TableDetailComponent } from "./datatable-detail-popup";
 import { ErrorSkeleton } from "@/utility/lib/datafetching/loading-skeleton";
-import { NotesInDataTableIcon } from "../../../../../../public/images";
+import { prefetchDetailComponent } from "@/utility/lib/datafetching/client-refetch/prefetch-hooks";
 import Modal from "@/utility/lib/build-components/pop-ups/modal";
 import {
   ColumnDef,
@@ -22,12 +22,14 @@ import {
   TableHeader,
   TableRow,
 } from "./table";
+import { ShowDetailIcon } from "../../../../../../public/images/icons";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<any, TValue>[];
   data: any;
   currentValue: number;
   expandedRow?: number | null;
+  setExpandedRow?: any;
   tableStatus?: string;
 }
 
@@ -44,13 +46,38 @@ interface DataTableProps<TData, TValue> {
 export function DataTable<TData, TValue>({
   data,
   columns,
-  expandedRow,
   tableStatus,
   currentValue,
+  expandedRow,
+  setExpandedRow,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [rowName, setRowName] = React.useState<string>("");
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
+
+  /**
+   *   className="mr-4 h-3 w-3"
+                    onClick={() => toggleExpandedRow(rowId, setExpandedRow)}
+                    onMouseEnter={() =>
+                      prefetchDetailComponent(
+                        "cryptocurrency",
+                        parentdata[index].assetid,
+                        queryClient
+                      )
+                    }
+
+const toggleExpandedRow = (rowId: number, setExpandedRow: any) => {
+  setExpandedRow((prevExpandedRow: number | null) =>
+    prevExpandedRow === rowId ? null : rowId
+  );
+};
+   */
+  const toggleExpandedRow = (rowId: number) => {
+    setExpandedRow((prevExpandedRow: number | null) =>
+      prevExpandedRow === rowId ? null : rowId
+    );
+  };
+  const queryClient = useQueryClient();
 
   /**
    * This function is triggered, when a row is clicked. It`s purpose is to render the related detail component.
@@ -58,6 +85,7 @@ export function DataTable<TData, TValue>({
    * @param tableStatus The status determines which table detail component is rendered.
    * @returns The TableDetailComponent related to the table status.
    */
+
   const getDetailComponent = (row: any, tableStatus: string | undefined) => {
     if (tableStatus !== "" || undefined) {
       const assetName =
@@ -89,6 +117,8 @@ export function DataTable<TData, TValue>({
     },
   });
 
+  console.log("expanded row", expandedRow);
+
   return (
     <div className="h-2/6 flex flex-col">
       <div className="w-full overflow-x-auto">
@@ -97,6 +127,7 @@ export function DataTable<TData, TValue>({
             <TableHeader className="sticky top-0 z-10 bg-gray rounded-md">
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
+                  <TableHead className="w-6 pl-3"></TableHead>
                   {headerGroup.headers.map((header) => (
                     <TableHead key={header.id} className="text-black">
                       {header.isPlaceholder
@@ -124,6 +155,24 @@ export function DataTable<TData, TValue>({
                           expandedRow?.toString() === row.id ? "2" : "4"
                         } border-gray bg-white`}
                       >
+                        <TableCell
+                          className="w-6 pl-3"
+                          onClick={() => {
+                            toggleExpandedRow(Number(row.id));
+                          }}
+                          onMouseEnter={() => {
+                            prefetchDetailComponent(
+                              row.original.assettype,
+                              row.original.assetid,
+                              queryClient
+                            );
+                          }}
+                        >
+                          <ShowDetailIcon
+                            rowId={Number(row.id)}
+                            expandedRow={expandedRow}
+                          />
+                        </TableCell>
                         {row.getVisibleCells().map((cell) => (
                           <TableCell key={cell.id}>
                             {flexRender(
@@ -137,9 +186,12 @@ export function DataTable<TData, TValue>({
                       {expandedRow?.toString() === row.id && (
                         <TableRow
                           key={`detail${row.id}`}
-                          className="border-b-4 border-t-2 border-gray"
+                          className="border-b-4 border-t-2 border-gray "
                         >
-                          <TableCell colSpan={columns.length}>
+                          <TableCell
+                            colSpan={columns.length + 1}
+                            className="w-full"
+                          >
                             <div>{getDetailComponent(row, tableStatus)}</div>
                           </TableCell>
                         </TableRow>
@@ -149,7 +201,7 @@ export function DataTable<TData, TValue>({
                 ) : (
                   <TableRow>
                     <TableCell
-                      colSpan={columns.length}
+                      colSpan={columns.length + 1}
                       className="h-24 text-center"
                     >
                       <ErrorSkeleton />
