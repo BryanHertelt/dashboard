@@ -39,7 +39,6 @@ export const DrDetail = ({
   currentValue: number;
 }) => {
   //props: designComponents, detailData
-  console.log("data", data);
   const portfolioRebalancingData = [
     { header: "Average Entry Price", data: data.averageentryprice },
     { header: "Market Price", data: data.marketprice },

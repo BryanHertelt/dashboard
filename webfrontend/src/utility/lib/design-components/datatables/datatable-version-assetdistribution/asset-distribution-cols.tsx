@@ -25,9 +25,18 @@ const celldesign = "flex flex-row justify-end items-center w-1/2 w-full pr-2 ";
 const firstcelldesign = "flex flex-row text-sm font-medium items-center ml-2";
 const sortingicondesgin = "bg-red h-5 w-1 ml-1 rounded-sm";
 
+/**
+ *
+ * @param parentdata Passes the data, fetched from the page component down to the data table component.
+ * @param queryClient Initialized in asset-table-controller. Necessary for prefetching the data.
+ * @param expandedRow Passes the expanded row down to the showDetailIcon
+ * @param setExpandedRow
+ * @returns
+ */
 export const formatDataColsCurrency = (
   parentdata: any,
   queryClient: any,
+  expandedRow: number,
   setExpandedRow?: any
 ) => {
   return [
@@ -60,7 +69,7 @@ export const formatDataColsCurrency = (
                       )
                     }
                   >
-                    <ShowDetailIcon />
+                    <ShowDetailIcon rowId={rowId} expandedRow={expandedRow} />
                   </div>
                   {parentdata[index].symbol} {""}{" "}
                   <div className="flex flex-col justify-start w-full ml-2">
@@ -237,6 +246,7 @@ export const formatDataColsCurrency = (
 export const formatDataColsDerivative = (
   processedQueryData: any,
   queryClient: any,
+  expandedRow: number,
   setExpandedRow?: any
 ) => {
   return [
@@ -274,7 +284,7 @@ export const formatDataColsDerivative = (
                       )
                     }
                   >
-                    <ShowDetailIcon />
+                    <ShowDetailIcon rowId={rowId} expandedRow={expandedRow} />
                   </div>
                   <div className="flex flex-row  justify-between items-center w-full">
                     <div className="flex flex-row align-baseline justify-start">
@@ -444,6 +454,7 @@ export const formatDataColsDerivative = (
 export const formatDataColsNft = (
   processedQueryData: any,
   queryClient: any,
+  expandedRow: number,
   setExpandedRow?: any
 ) => {
   return [
@@ -469,7 +480,7 @@ export const formatDataColsNft = (
                       )
                     }
                   >
-                    <ShowDetailIcon />
+                    <ShowDetailIcon rowId={rowId} expandedRow={expandedRow} />
                   </div>
                   {processedQueryData[index].symbol} {""}{" "}
                   <div className="flex flex-col justify-start w-1/2 ml-2">

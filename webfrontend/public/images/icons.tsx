@@ -36,12 +36,14 @@ export const PositionDirectionIcon = ({ direction }: { direction: string }) => {
   );
 };
 
-export const ShowDetailIcon = () => {
-  const [isRotated, setIsRotated] = useState(false);
-
-  const handleClick = () => {
-    setIsRotated(!isRotated);
-  };
+export const ShowDetailIcon = ({
+  rowId,
+  expandedRow,
+}: {
+  rowId: number;
+  expandedRow: number;
+}) => {
+  const [isRotated, setIsRotated] = useState<boolean>(false);
 
   return (
     <svg
@@ -50,11 +52,11 @@ export const ShowDetailIcon = () => {
       viewBox="0 0 9 12"
       fill={icongray}
       xmlns="http://www.w3.org/2000/svg"
-      onClick={handleClick}
+      onClick={() => setIsRotated(!isRotated)}
       style={{
         cursor: "pointer",
         transition: "transform 0.4s ease",
-        transform: isRotated ? "rotateZ(90deg)" : "rotateY(0deg)",
+        transform: expandedRow === rowId ? "rotate(90deg)" : "rotate(0deg)",
       }}
     >
       <path

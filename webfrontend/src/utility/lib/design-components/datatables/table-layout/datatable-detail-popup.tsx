@@ -36,8 +36,6 @@ export const TableDetailComponent = (props: TableDetailProps) => {
     props.tableStatus === "cryptocurrency" ? "DR" : "AG"
   );
 
-  console.log(props.assetId);
-
   const { data, isLoading, isError } = useDetailComponent(props);
   const designComponents = useMemo(
     () => ({

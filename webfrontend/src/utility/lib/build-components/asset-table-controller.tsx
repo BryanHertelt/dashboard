@@ -51,11 +51,16 @@ const AssetTableController = ({
     );
     if (!statusConfig) return [];
     if (tableConfig.detail === true) {
-      return statusConfig.columns(tableData, queryClient, setExpandedRow);
+      return statusConfig.columns(
+        tableData,
+        queryClient,
+        expandedRow,
+        setExpandedRow
+      );
     } else {
       return statusConfig.columns(tableData);
     }
-  }, [tableStatus, tableData, queryClient]);
+  }, [tableStatus, tableData, queryClient, expandedRow]);
 
   const realStatus = tableData.map(
     (asset: any) => asset[tableConfig.statusFilter]
