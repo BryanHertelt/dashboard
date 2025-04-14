@@ -62,8 +62,6 @@ const AssetTableController = ({
     }
   }
 
-  console.log("expandedRow in asset table controller", expandedRow);
-
   return (
     <div className="shadow-flyzerShadow rounded-md">
       <DataTable

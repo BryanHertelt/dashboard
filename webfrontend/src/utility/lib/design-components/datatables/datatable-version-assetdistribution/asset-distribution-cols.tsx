@@ -3,25 +3,17 @@
 import {
   PositionDirectionIcon,
   SortingDataTableIcon,
-  ShowDetailIcon,
   AssetPercentageValueIcon,
 } from "../../../../../../public/images/icons";
+import Modal from "@/utility/lib/build-components/pop-ups/modal";
 import {
   formatCurrency,
   formatValue,
 } from "@/utility/lib/helpers/helper-functions";
-import { prefetchDetailComponent } from "@/utility/lib/datafetching/client-refetch/prefetch-hooks";
-import { TableLineChart } from "../../charts/table-line-charts";
-
-const toggleExpandedRow = (rowId: number, setExpandedRow: any) => {
-  setExpandedRow((prevExpandedRow: number | null) =>
-    prevExpandedRow === rowId ? null : rowId
-  );
-};
 
 const headerdesign =
-  "flex flex-row font-normal items-center justify-end text-black h-11  w-full ";
-const celldesign = "flex flex-row justify-end items-center w-1/2 w-full pr-2 ";
+  "flex flex-row font-normal items-center justify-end text-black h-11  w-5/6  ";
+const celldesign = "flex flex-row justify-end items-center w-5/6 pr-1 ";
 const firstcelldesign = "flex flex-row text-sm font-medium items-center";
 const sortingicondesgin = "bg-red h-5 w-1 ml-1 rounded-sm";
 
@@ -197,28 +189,27 @@ export const formatDataColsCurrency = (parentdata: any) => {
       },
     },
     {
-      accessorKey: "assetchange7d",
-      header: ({ column }: any) => {
-        return (
-          <button
-            className={`${headerdesign}`}
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            {" "}
-            Change 7d{" "}
-            <SortingDataTableIcon className={`${sortingicondesgin}`} />{" "}
-          </button>
-        );
+      accessorKey: "profitloss",
+      header: () => {
+        return <div className={`${headerdesign} pr-1`}>P/L</div>;
       },
       cell: ({ row }: any) => {
-        const change = row.getValue("assetchange7d");
-        return (
-          <div className={`${celldesign}`}>
-            <div className="w-2/6 h-5">
-              <TableLineChart data={change} />
+        const profitloss = row.getValue("profitloss");
+        const renderProfitCell = () => {
+          return (
+            <div className={`${celldesign}`}>
+              {" "}
+              <p className={`${profitloss < 0 ? " text-red" : "text-green"}`}>
+                {formatCurrency(
+                  profitloss < 0
+                    ? Number(profitloss.toString().replace("-", ""))
+                    : profitloss
+                )}
+              </p>
             </div>
-          </div>
-        );
+          );
+        };
+        return renderProfitCell();
       },
     },
   ];
@@ -226,44 +217,6 @@ export const formatDataColsCurrency = (parentdata: any) => {
 
 export const formatDataColsDerivative = (processedQueryData: any) => {
   return [
-    {
-      accessorKey: "tradedirection",
-      header: () => (
-        <div className=" flex flex-row items-center font-normal ml-2 pl-2 h-full w-full ">
-          {" "}
-          <p className="w-5"> </p>
-          <div className=" flex flex-row   w-full">
-            <p className="w-1/2 "> Trade Direction </p>{" "}
-          </div>
-        </div>
-      ),
-      cell: ({ row }: any) => {
-        const direction = row.getValue("tradedirection");
-        const directionToUpper =
-          direction.charAt(0).toUpperCase() + direction.substring(1, 5);
-        const rowId = row.id;
-        const renderPercentageCell = () => {
-          for (let index = 0; index < processedQueryData.length; index++) {
-            if (direction == processedQueryData[index].tradedirection) {
-              const directioncolor =
-                direction < "short" ? "text-green" : "text-red";
-              return (
-                <div className={`${directioncolor} ${firstcelldesign} w-full`}>
-                  <div className="flex flex-row  justify-between items-center w-full">
-                    <div className="flex flex-row align-baseline justify-start">
-                      {" "}
-                      <PositionDirectionIcon direction={direction} />
-                      <p className="pl-3">{directionToUpper} </p>
-                    </div>{" "}
-                  </div>
-                </div>
-              );
-            }
-          }
-        };
-        return renderPercentageCell();
-      },
-    },
     {
       accessorKey: "assetname",
       header: () => (
@@ -277,10 +230,12 @@ export const formatDataColsDerivative = (processedQueryData: any) => {
         const renderNameCell = () => {
           for (let index = 0; index < processedQueryData.length; index++) {
             if (name == processedQueryData[index].assetname) {
+              let direction = processedQueryData[index].tradedirection;
               return (
                 <div
-                  className={`flex flex-row justify-start items-center w-full  text-black font-normal `}
+                  className={`flex flex-row justify-start items-center  text-black font-normal `}
                 >
+                  <PositionDirectionIcon direction={direction} />
                   <div className="flex flex-col items-start w-full ml-2">
                     <div> {processedQueryData[index].assetname}</div>
                     <div className="flex flex-row justify-start items-center">
@@ -310,7 +265,7 @@ export const formatDataColsDerivative = (processedQueryData: any) => {
       header: ({ column }: any) => {
         return (
           <button
-            className={`flex flex-row font-normal items-center justify-end text-black h-11 w-full`}
+            className={`flex flex-row font-normal items-center justify-end text-black h-11 w-5/6`}
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             {" "}
@@ -324,7 +279,7 @@ export const formatDataColsDerivative = (processedQueryData: any) => {
         const amount = parseFloat(row.getValue("entry"));
         const formatted = formatCurrency(amount);
 
-        return <div className={`${celldesign} w-2/3`}> {formatted} </div>;
+        return <div className={`${celldesign}`}> {formatted} </div>;
       },
     },
     {
@@ -336,7 +291,7 @@ export const formatDataColsDerivative = (processedQueryData: any) => {
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             {" "}
-            Liq - Price{" "}
+            Liq. Price{" "}
             <SortingDataTableIcon className={`${sortingicondesgin}`} />{" "}
           </button>
         );
@@ -371,44 +326,27 @@ export const formatDataColsDerivative = (processedQueryData: any) => {
       },
     },
     {
-      accessorKey: "sl",
+      accessorKey: "profitloss",
       header: () => {
-        return <div className={`${headerdesign} pr-2`}>SL/TP</div>;
+        return <div className={`${headerdesign}  pr-1`}>P/L</div>;
       },
       cell: ({ row }: any) => {
-        const sl = row.getValue("sl");
-
-        const renderNameCell = () => {
-          for (let index = 0; index < processedQueryData.length; index++) {
-            if (sl == processedQueryData[index].sl) {
-              const tp = processedQueryData[index].tp;
-              const checkedsl = sl == null ? "--" : sl.toString() + "%";
-              const checkedtp = tp == null ? "--" : tp.toString() + "%";
-
-              return (
-                <div className={`${celldesign} w-1/3`}>
-                  {checkedsl}/{checkedtp}
-                </div>
-              );
-            }
-          }
+        const profitloss = row.getValue("profitloss");
+        const renderProfitCell = () => {
+          return (
+            <div className={`${celldesign}`}>
+              {" "}
+              <p className={`${profitloss < 0 ? " text-red" : "text-green"}`}>
+                {formatCurrency(
+                  profitloss < 0
+                    ? Number(profitloss.toString().replace("-", ""))
+                    : profitloss
+                )}
+              </p>
+            </div>
+          );
         };
-        return renderNameCell();
-      },
-    },
-    {
-      accessorKey: "settlementdate",
-      header: () => {
-        return <div className={`${headerdesign} pr-2`}>Settlement Date</div>;
-      },
-      cell: ({ row }: any) => {
-        const settlementdate = row.getValue("settlementdate");
-
-        const checkedsettlementdate =
-          settlementdate == "" ? "--" : settlementdate.substring(0, 9);
-        return (
-          <div className={`${celldesign} w-1/3`}> {checkedsettlementdate}</div>
-        );
+        return renderProfitCell();
       },
     },
   ];
@@ -481,8 +419,32 @@ export const formatDataColsNft = (processedQueryData: any) => {
       },
     },
     {
+      accessorKey: "profitloss",
+      header: () => {
+        return <div className={`${headerdesign}  pr-1`}>P/L</div>;
+      },
+      cell: ({ row }: any) => {
+        const profitloss = row.getValue("profitloss");
+        const renderProfitCell = () => {
+          return (
+            <div className={`${celldesign}`}>
+              {" "}
+              <p className={`${profitloss < 0 ? " text-red" : "text-green"}`}>
+                {formatCurrency(
+                  profitloss < 0
+                    ? Number(profitloss.toString().replace("-", ""))
+                    : profitloss
+                )}
+              </p>
+            </div>
+          );
+        };
+        return renderProfitCell();
+      },
+    },
+    {
       accessorKey: "nftcount",
-      header: () => <div className={`${headerdesign} pr-5`}> NFT-Count </div>,
+      header: () => <div className={`${headerdesign} pr-5`}>Amount </div>,
       cell: ({ row }: any) => {
         const count = parseFloat(row.getValue("nftcount"));
         return <div className={`${celldesign} pr-5`}> {count} </div>;

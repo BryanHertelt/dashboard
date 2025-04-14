@@ -9,7 +9,7 @@ exports[`AgDetail derivative state does not have unexpected UI changes 1`] = `
       class="flex flex-row ml-3.5 "
     >
       <div
-        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20 "
+        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20  mr-3.5"
       >
         <div
           class="flex flex-row text-sm text-icongray mb-1"
@@ -33,7 +33,7 @@ exports[`AgDetail derivative state does not have unexpected UI changes 1`] = `
         </div>
       </div>
       <div
-        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20 "
+        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20  mr-3.5"
       >
         <div
           class="flex flex-row text-sm text-icongray mb-1"
@@ -57,7 +57,7 @@ exports[`AgDetail derivative state does not have unexpected UI changes 1`] = `
         </div>
       </div>
       <div
-        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20 "
+        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20  mr-3.5"
       >
         <div
           class="flex flex-row text-sm text-icongray mb-1"
@@ -94,7 +94,7 @@ exports[`AgDetail nft state does not have unexpected UI changes 1`] = `
       class="flex flex-row ml-3.5 border-b-2 border-gray mb-5 pb-4"
     >
       <div
-        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20 "
+        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20 border border-black mr-3.5"
       >
         <div
           class="flex flex-row text-sm text-icongray mb-1"
@@ -112,7 +112,7 @@ exports[`AgDetail nft state does not have unexpected UI changes 1`] = `
              NFTs
           </p>
           <p
-            class="flex flex-row text-sm text-icongray mb-1 pt-1"
+            class="flex flex-row text-sm text-icongray mb-1"
           >
              
             ~ 
@@ -123,7 +123,7 @@ exports[`AgDetail nft state does not have unexpected UI changes 1`] = `
         </div>
       </div>
       <div
-        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20 border border-black"
+        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20  mr-3.5"
       >
         <div
           class="flex flex-row text-sm text-icongray mb-1"
@@ -141,7 +141,7 @@ exports[`AgDetail nft state does not have unexpected UI changes 1`] = `
              NFTs
           </p>
           <p
-            class="flex flex-row text-sm text-icongray mb-1 pt-1"
+            class="flex flex-row text-sm text-icongray mb-1"
           >
              
             ~ 
@@ -152,7 +152,7 @@ exports[`AgDetail nft state does not have unexpected UI changes 1`] = `
         </div>
       </div>
       <div
-        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20 "
+        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20  mr-3.5"
       >
         <div
           class="flex flex-row text-sm text-icongray mb-1"
@@ -170,7 +170,7 @@ exports[`AgDetail nft state does not have unexpected UI changes 1`] = `
              NFTs
           </p>
           <p
-            class="flex flex-row text-sm text-icongray mb-1 pt-1"
+            class="flex flex-row text-sm text-icongray mb-1"
           >
              
             ~ 
@@ -188,173 +188,181 @@ exports[`AgDetail nft state does not have unexpected UI changes 1`] = `
 exports[`DrDetail does not have unexpected UI changes 1`] = `
 <div>
   <div
-    class="flex flex-row lg:w-2/5 lp:w-3/5 justify-start flex-wrap md:w-3/5 sm:w-3/5"
+    class="flex flex-row flex-wrap w-full"
   >
     <div
-      class="flex flex-row flex-wrap ml-1.5 h-full w-full"
+      class="flex flex-row  justify-start md:w-2/5 sm:w-2/5 lg:w-2/5 lp:w-2/5 border-r-2 border-gray "
     >
       <div
-        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20 sm:w-40 md:w-40 lg:w-52 lp:w-40 xl:w-72"
-      >
-        <p
-          class="flex flex-row text-sm text-icongray mb-1"
-        >
-           
-          Average Entry Price
-           
-        </p>
-        <p
-          class="font-semibold text-base mr-3"
-        >
-           
-          $62,420.49
-           
-        </p>
-      </div>
-      <div
-        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20 sm:w-40 md:w-40 lg:w-52 lp:w-40 xl:w-72"
-      >
-        <p
-          class="flex flex-row text-sm text-icongray mb-1"
-        >
-           
-          Market Price
-           
-        </p>
-        <p
-          class="font-semibold text-base mr-3"
-        >
-           
-          $21,334.88
-           
-        </p>
-      </div>
-      <div
-        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20 sm:w-40 md:w-40 lg:w-52 lp:w-40 xl:w-72"
-      >
-        <p
-          class="flex flex-row text-sm text-icongray mb-1"
-        >
-           
-          Average Exit Price
-           
-        </p>
-        <p
-          class="font-semibold text-base mr-3"
-        >
-           
-          $16,642.13
-           
-        </p>
-      </div>
-      <div
-        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20 sm:w-40 md:w-40 lg:w-52 lp:w-40 xl:w-72"
-      >
-        <p
-          class="flex flex-row text-sm text-icongray mb-1"
-        >
-           
-          Total Cost
-           
-        </p>
-        <p
-          class="font-semibold text-base mr-3"
-        >
-           
-          $49,811.13
-           
-        </p>
-      </div>
-    </div>
-  </div>
-  <div
-    class="lg:w-3/5 lp:w-2/5 pr-3 pt-5 pl-10 border-l-2 border-gray md:w-2/5 sm:w-2/5"
-  >
-    <div
-      class="w-full h-11 flex justify-center items-center mr-5 flex-wrap"
-    >
-      <canvas
-        height="150"
-        role="img"
-        width="300"
-      />
-      <div
-        class="flex flex-col justify-start w-full"
+        class="flex flex-row flex-wrap h-full w-full "
       >
         <div
-          class="flex flex-row"
+          class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20 ml-3.5 sm:w-2/5 md:w-2/5 lg:w-2/5 lp:w-2/5 xl:w-2/5 justify-center"
+          role="Detail Rebalancing Cards"
+        >
+          <p
+            class="flex flex-row text-sm text-icongray mb-1"
+          >
+             
+            Average Entry Price
+             
+          </p>
+          <p
+            class="font-semibold text-base mr-3"
+          >
+             
+            $62,420.49
+             
+          </p>
+        </div>
+        <div
+          class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20 ml-3.5 sm:w-2/5 md:w-2/5 lg:w-2/5 lp:w-2/5 xl:w-2/5 justify-center"
+          role="Detail Rebalancing Cards"
+        >
+          <p
+            class="flex flex-row text-sm text-icongray mb-1"
+          >
+             
+            Market Price
+             
+          </p>
+          <p
+            class="font-semibold text-base mr-3"
+          >
+             
+            $21,334.88
+             
+          </p>
+        </div>
+        <div
+          class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20 ml-3.5 sm:w-2/5 md:w-2/5 lg:w-2/5 lp:w-2/5 xl:w-2/5 justify-center"
+          role="Detail Rebalancing Cards"
+        >
+          <p
+            class="flex flex-row text-sm text-icongray mb-1"
+          >
+             
+            Average Exit Price
+             
+          </p>
+          <p
+            class="font-semibold text-base mr-3"
+          >
+             
+            $16,642.13
+             
+          </p>
+        </div>
+        <div
+          class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20 ml-3.5 sm:w-2/5 md:w-2/5 lg:w-2/5 lp:w-2/5 xl:w-2/5 justify-center"
+          role="Detail Rebalancing Cards"
+        >
+          <p
+            class="flex flex-row text-sm text-icongray mb-1"
+          >
+             
+            Total Cost
+             
+          </p>
+          <p
+            class="font-semibold text-base mr-3"
+          >
+             
+            $49,811.13
+             
+          </p>
+        </div>
+      </div>
+    </div>
+    <div
+      class=" pr-3 pt-5 pl-10 md:w-3/5 sm:w-3/5 lg:w-3/5 lp:w-3/5 h-full"
+    >
+      <div
+        class="w-full h-11 flex justify-center items-center mr-5 flex-wrap"
+      >
+        <canvas
+          height="150"
+          role="img"
+          width="300"
+        />
+        <div
+          class="flex flex-col justify-start w-full"
         >
           <div
-            class="flex flex-col text-center mt-2 w-1/2"
+            class="flex flex-row"
           >
             <div
-              class="flex items-center space-x-2"
+              class="flex flex-col text-center mt-2 w-3/5"
             >
-              <span
-                class="w-4 h-4 rounded-sm mb-3"
-                style="background-color: rgb(0, 26, 66);"
-              />
-              <span
-                class="text-xs md:text-xs text-icongray mb-3"
+              <div
+                class="flex items-center space-x-2"
               >
-                Current: 63.31% ~ $12,233.00
-              </span>
+                <span
+                  class="w-4 h-4 rounded-sm mb-3"
+                  style="background-color: rgb(0, 26, 66);"
+                />
+                <span
+                  class="text-xs text-icongray mb-3 text-start"
+                >
+                  Current: 63.31% ~ $12,233.00
+                </span>
+              </div>
+              <div
+                class="flex items-center space-x-2"
+              >
+                <span
+                  class="w-4 h-4 rounded-sm mb-3"
+                  style="background-color: rgb(203, 235, 255);"
+                />
+                <span
+                  class="text-xs text-icongray mb-3 text-start"
+                >
+                  Desired: 36.69% ~ 
+                </span>
+              </div>
+              <div
+                class="flex items-center space-x-2"
+              >
+                <span
+                  class="w-4 h-4 rounded-sm mb-3"
+                  style="background-color: rgb(217, 217, 217);"
+                />
+                <span
+                  class="text-xs text-icongray mb-3 text-start"
+                >
+                  Portfolio Balance: 100%  ~  
+                </span>
+              </div>
             </div>
             <div
-              class="flex items-center space-x-2"
+              class="flex flex-row justify-end w-1/2 "
             >
-              <span
-                class="w-4 h-4 rounded-sm mb-3"
-                style="background-color: rgb(122, 122, 122);"
-              />
-              <span
-                class="text-xs md:text-xs text-icongray mb-3"
+              <div
+                class="flex items-center w-12 h-6 bg-gray rounded-full transition-all duration-500 pl-1"
               >
-                Desired: 36.69% ~ 
-              </span>
-            </div>
-            <div
-              class="flex items-center space-x-2"
-            >
-              <span
-                class="w-4 h-4 rounded-sm mb-3"
-                style="background-color: rgb(211, 211, 211);"
-              />
-              <span
-                class="text-xs md:text-xs text-icongray mb-3"
-              >
-                Portfolio Balance: 100%  ~  
-              </span>
-            </div>
-          </div>
-          <div
-            class="flex flex-row justify-end w-1/2 "
-          >
-            <div
-              class="flex items-center w-14 h-8 bg-gray rounded-full transition-all duration-500"
-            >
-              <span
-                class="flex h-6 w-6 p-2 ml-1 bg-white rounded-full transition-all duration-500 justify-center items-center font-semibold text-xs"
-              >
-                [%]
-              </span>
-               
-            </div>
-            <div
-              class="flex flex-col items-end w-2/5 ml-2.5"
-            >
-              <input
-                class="bg-gray w-full rounded-md pl-2 h-7"
-                step="any"
-                type="text"
-                value="36.69"
-              />
-              <p
-                class="flex flex-row justify-end h-7 w-32 items-center text-icongray"
-              >
-                ≈
+                <span
+                  class="flex h-5 w-5 p-2 translate-x-0 bg-white rounded-full transition-all duration-500 justify-center items-center font-semibold text-xs"
+                >
+                  %
+                </span>
                  
-              </p>
+              </div>
+              <div
+                class="flex flex-col items-end w-2/5 ml-2.5"
+              >
+                <input
+                  class="bg-gray w-full rounded-md pl-2 p1 h-6"
+                  step="any"
+                  type="text"
+                  value="36.69"
+                />
+                <p
+                  class="flex flex-row justify-end h-7 w-32 items-center text-icongray"
+                >
+                  ≈
+                   
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -367,13 +375,13 @@ exports[`DrDetail does not have unexpected UI changes 1`] = `
 exports[`HdDetail renders all relevant data for nft state does not have unexpected UI changes 1`] = `
 <div>
   <div
-    class="flex flex-col w-full justify-start flex-wrap"
+    class="flex flex-col justify-start"
   >
     <div
       class="flex flex-row ml-3.5 border-b-2 border-gray mb-5 pb-4 flex-wrap"
     >
       <div
-        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20 "
+        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20 border border-black mr-3.5"
       >
         <div
           class="flex flex-row text-sm text-icongray mb-1"
@@ -408,7 +416,7 @@ exports[`HdDetail renders all relevant data for nft state does not have unexpect
         </div>
       </div>
       <div
-        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20 border border-black"
+        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20  mr-3.5"
       >
         <div
           class="flex flex-row text-sm text-icongray mb-1"
@@ -443,7 +451,7 @@ exports[`HdDetail renders all relevant data for nft state does not have unexpect
         </div>
       </div>
       <div
-        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20 "
+        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20  mr-3.5"
       >
         <div
           class="flex flex-row text-sm text-icongray mb-1"
@@ -485,13 +493,13 @@ exports[`HdDetail renders all relevant data for nft state does not have unexpect
 exports[`HdDetail renders cryptocurrency state properly does not change unexpected 1`] = `
 <div>
   <div
-    class="flex flex-col w-full justify-start flex-wrap"
+    class="flex flex-col justify-start"
   >
     <div
       class="flex flex-row ml-3.5 border-b-2 border-gray mb-5 pb-4 flex-wrap"
     >
       <div
-        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20 "
+        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20  mr-3.5"
       >
         <div
           class="flex flex-row text-sm text-icongray mb-1"
@@ -520,7 +528,7 @@ exports[`HdDetail renders cryptocurrency state properly does not change unexpect
                
             </p>
             <p
-              class="flex flex-row text-sm text-icongray mb-1 pt-1"
+              class="flex flex-row text-sm text-icongray mb-1"
             >
               ~ 
               $75,655.23
@@ -532,7 +540,7 @@ exports[`HdDetail renders cryptocurrency state properly does not change unexpect
         </div>
       </div>
       <div
-        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20 "
+        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20  mr-3.5"
       >
         <div
           class="flex flex-row text-sm text-icongray mb-1"
@@ -561,7 +569,7 @@ exports[`HdDetail renders cryptocurrency state properly does not change unexpect
                
             </p>
             <p
-              class="flex flex-row text-sm text-icongray mb-1 pt-1"
+              class="flex flex-row text-sm text-icongray mb-1"
             >
               ~ 
               $10,000.00
@@ -573,7 +581,7 @@ exports[`HdDetail renders cryptocurrency state properly does not change unexpect
         </div>
       </div>
       <div
-        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20 "
+        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20  mr-3.5"
       >
         <div
           class="flex flex-row text-sm text-icongray mb-1"
@@ -602,7 +610,7 @@ exports[`HdDetail renders cryptocurrency state properly does not change unexpect
                
             </p>
             <p
-              class="flex flex-row text-sm text-icongray mb-1 pt-1"
+              class="flex flex-row text-sm text-icongray mb-1"
             >
               ~ 
               $80,443.96
@@ -614,7 +622,7 @@ exports[`HdDetail renders cryptocurrency state properly does not change unexpect
         </div>
       </div>
       <div
-        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20 "
+        class="flex flex-col card mb-2.5 ml-3.5 p-3 pr-3 w-64 h-20  mr-3.5"
       >
         <div
           class="flex flex-row text-sm text-icongray mb-1"
@@ -643,7 +651,7 @@ exports[`HdDetail renders cryptocurrency state properly does not change unexpect
                
             </p>
             <p
-              class="flex flex-row text-sm text-icongray mb-1 pt-1"
+              class="flex flex-row text-sm text-icongray mb-1"
             >
               ~ 
               $10,000.00

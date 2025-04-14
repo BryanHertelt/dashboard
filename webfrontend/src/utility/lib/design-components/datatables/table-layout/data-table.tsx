@@ -117,8 +117,6 @@ const toggleExpandedRow = (rowId: number, setExpandedRow: any) => {
     },
   });
 
-  console.log("expanded row", expandedRow);
-
   return (
     <div className="h-2/6 flex flex-col">
       <div className="w-full overflow-x-auto">

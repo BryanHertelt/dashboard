@@ -8,8 +8,11 @@ exports[`Derivative State does not do unexpected UI changes 1`] = `
     <p
       class="p-4 ml-4 text-icongray"
     >
-       Asset Group Distribution
+      Asset Group Distribution
     </p>
+    <div
+      class=" w-full "
+    />
   </div>
 </div>
 `;
@@ -19,29 +22,48 @@ exports[`NFT State does not do unexpected UI changes 1`] = `
   <div
     class="flex flex-row h-full w-full flex-wrap"
   >
-    <div
-      class="flex flex-row m-1 mb-2.5 p-1 pr-1 ml-3.5 rounded-md md:w-8/12 sm:w-8/12 lp:w-8/12"
+    <nav
+      class="flex flex-row justify-between items-center w-full"
     >
-      <button
-        class="text-center md:text-xs lp:text-sm h-10 md:w-4/12 lp:w-3/12 text-white bg-blue rounded-l-md p-2 sm:text-xs sm:w-4/12"
+      <div
+        class="relative flex flex-row m-1 mb-2.5 p-1 pr-1 ml-3.5 rounded-md md:w-8/12 sm:w-8/12 lp:w-4/12"
       >
-        Asset Group Distribution
-      </button>
-      <button
-        class="text-center md:text-xs lp:text-sm h-10 md:w-4/12 lp:w-3/12 bg-gray text-black rounded-r-md p-2 sm:text-xs  sm:w-4/12"
-      >
-        Holding Distribution
-      </button>
-    </div>
-    <div
-      class="h-12 md:w-10 sm:w-10 lp:w-1/4 lp:ml-12 xl:w-1/4 xl:ml-20 lg:p-2 lg:items-center flex flex-row justify-end items-centerp-1 m-1"
-    >
-      <div>
-         
-        CP
-         
+        <div
+          class="absolute bg-blue z-10 transition-transform duration-200 ease-in-out rounded-md text-white flex items-center justify-center translate-x-0 sm:w-3/12 md:w-3/12 lp:w-4/12 h-10"
+          role="Rebalancing-Switcher"
+        />
+        <button
+          class="relative z-5 bg-gray text-center sm:w-3/12 md:w-3/12 lp:w-4/12 md:text-xs lp:text-xs h-10 rounded-l-md p-2 sm:text-xs"
+        >
+          <p
+            class="relative z-10 text-white"
+          >
+            Asset Groups
+          </p>
+        </button>
+        <button
+          class="relative z-5 text-center md:text-xs lp:text-xs h-10 bg-gray rounded-r-md p-2 sm:text-xs sm:w-3/12 md:w-3/12 lp:w-4/12"
+        >
+          <p
+            class="relative z-10 text-black"
+          >
+            Holdings
+          </p>
+        </button>
       </div>
-    </div>
+      <div
+        class="h-12 md:w-10 sm:w-10 lp:w-1/4 lp:ml-12 xl:w-1/4 xl:ml-20 lg:p-2 lg:items-center flex flex-row justify-end items-end p-1 m-1"
+      >
+        <div>
+           
+          CP
+           
+        </div>
+      </div>
+    </nav>
+    <div
+      class=" w-full "
+    />
   </div>
 </div>
 `;
@@ -51,29 +73,48 @@ exports[`TableDetailComponent Crypto State does not do unexpected UI changes 1`]
   <div
     class="flex flex-row h-full w-full flex-wrap"
   >
-    <div
-      class="flex flex-row m-1 mb-2.5 p-1 pr-1 ml-3.5 rounded-md md:w-8/12 sm:w-8/12 lp:w-8/12"
+    <nav
+      class="flex flex-row justify-between items-center w-full"
     >
-      <button
-        class="text-center md:text-xs lp:text-sm h-10 md:w-4/12 lp:w-3/12 text-white bg-blue rounded-l-md p-2 sm:text-xs sm:w-4/12"
+      <div
+        class="relative flex flex-row m-1 mb-2.5 p-1 pr-1 ml-3.5 rounded-md md:w-8/12 sm:w-8/12 lp:w-4/12"
       >
-        Details + Rebalancing
-      </button>
-      <button
-        class="text-center md:text-xs lp:text-sm h-10 md:w-4/12 lp:w-3/12 bg-gray text-black rounded-r-md p-2 sm:text-xs  sm:w-4/12"
-      >
-        Holding Distribution
-      </button>
-    </div>
-    <div
-      class="h-12 md:w-10 sm:w-10 lp:w-1/4 lp:ml-12 xl:w-1/4 xl:ml-20 lg:p-2 lg:items-center flex flex-row justify-end items-centerp-1 m-1"
-    >
-      <div>
-         
-        CP
-         
+        <div
+          class="absolute bg-blue z-10 transition-transform duration-200 ease-in-out rounded-md text-white flex items-center justify-center translate-x-0 sm:w-3/12 md:w-3/12 lp:w-4/12 h-10"
+          role="Rebalancing-Switcher"
+        />
+        <button
+          class="relative z-5 bg-gray text-center sm:w-3/12 md:w-3/12 lp:w-4/12 md:text-xs lp:text-xs h-10 rounded-l-md p-2 sm:text-xs"
+        >
+          <p
+            class="relative z-10 text-white"
+          >
+            Details
+          </p>
+        </button>
+        <button
+          class="relative z-5 text-center md:text-xs lp:text-xs h-10 bg-gray rounded-r-md p-2 sm:text-xs sm:w-3/12 md:w-3/12 lp:w-4/12"
+        >
+          <p
+            class="relative z-10 text-black"
+          >
+            Holdings
+          </p>
+        </button>
       </div>
-    </div>
+      <div
+        class="h-12 md:w-10 sm:w-10 lp:w-1/4 lp:ml-12 xl:w-1/4 xl:ml-20 lg:p-2 lg:items-center flex flex-row justify-end items-end p-1 m-1"
+      >
+        <div>
+           
+          CP
+           
+        </div>
+      </div>
+    </nav>
+    <div
+      class=" w-full "
+    />
   </div>
 </div>
 `;

@@ -43,7 +43,6 @@ export const ShowDetailIcon = ({
   rowId: number;
   expandedRow: number | null | undefined;
 }) => {
-  console.log("expandedRow in icon", expandedRow);
   return (
     <svg
       width="9"

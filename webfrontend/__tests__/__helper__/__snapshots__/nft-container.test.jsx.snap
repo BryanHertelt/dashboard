@@ -3,7 +3,7 @@
 exports[`nft-container does not change the UI unexpected 1`] = `
 <div>
   <div
-    class="flex flex-row w-full flex-wrap justify-start pl-5 pb-5"
+    class="flex flex-row w-full flex-wrap justify-start pb-5"
   >
     <div
       class="flex flex-row  mr-2 "
