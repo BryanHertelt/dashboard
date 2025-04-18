@@ -5,7 +5,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { TableDetailComponent } from "./datatable-detail-popup";
 import { ErrorSkeleton } from "@/utility/lib/datafetching/loading-skeleton";
 import { prefetchDetailComponent } from "@/utility/lib/datafetching/client-refetch/prefetch-hooks";
-import Modal from "@/utility/lib/build-components/pop-ups/modal";
+
 import {
   ColumnDef,
   SortingState,
@@ -55,23 +55,8 @@ export function DataTable<TData, TValue>({
   const [rowName, setRowName] = React.useState<string>("");
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
 
-  /**
-   *   className="mr-4 h-3 w-3"
-                    onClick={() => toggleExpandedRow(rowId, setExpandedRow)}
-                    onMouseEnter={() =>
-                      prefetchDetailComponent(
-                        "cryptocurrency",
-                        parentdata[index].assetid,
-                        queryClient
-                      )
-                    }
+  console.log("props", data, columns, tableStatus, currentValue, expandedRow);
 
-const toggleExpandedRow = (rowId: number, setExpandedRow: any) => {
-  setExpandedRow((prevExpandedRow: number | null) =>
-    prevExpandedRow === rowId ? null : rowId
-  );
-};
-   */
   const toggleExpandedRow = (rowId: number) => {
     setExpandedRow((prevExpandedRow: number | null) =>
       prevExpandedRow === rowId ? null : rowId
@@ -87,23 +72,19 @@ const toggleExpandedRow = (rowId: number, setExpandedRow: any) => {
    */
 
   const getDetailComponent = (row: any, tableStatus: string | undefined) => {
-    if (tableStatus !== "" || undefined) {
-      const assetName =
-        tableStatus === "cryptocurrency"
-          ? data[row.id].assetabbreviation
-          : `${data[row.id].leverage}X${data[row.id].assetname}`;
-      return (
-        <TableDetailComponent
-          tableStatus={tableStatus}
-          currentValue={currentValue}
-          assetName={assetName}
-          assetId={data[row.id].assetid}
-          assetUrl={data[row.id].symbol}
-        />
-      );
-    } else {
-      return null;
-    }
+    const assetName =
+      tableStatus === "cryptocurrency"
+        ? data[row.id].assetabbreviation
+        : `${data[row.id].leverage}X${data[row.id].assetname}`;
+    return (
+      <TableDetailComponent
+        tableStatus={tableStatus}
+        currentValue={currentValue}
+        assetName={assetName}
+        assetId={data[row.id].assetid}
+        assetUrl={data[row.id].symbol}
+      />
+    );
   };
 
   const table = useReactTable({
@@ -211,7 +192,6 @@ const toggleExpandedRow = (rowId: number, setExpandedRow: any) => {
           </div>
         </div>
       </div>
-      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} title={rowName} />
     </div>
   );
 }

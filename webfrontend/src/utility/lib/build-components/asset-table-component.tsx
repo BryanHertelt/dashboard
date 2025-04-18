@@ -40,8 +40,8 @@ const AssetTableComponent = <StatusKey extends string>({
     config.status[0].status
   );
   const tabRef = useRef<HTMLDivElement | null>(null);
-  const [tabWidth, setTabWidth] = useState(0);
-  const [currentTab, setCurrentTab] = useState(0);
+  const [tabWidth, setTabWidth] = useState<number>(0);
+  const [currentTab, setCurrentTab] = useState<number>(0);
 
   const updateWidth = () => {
     if (tabRef.current) {
@@ -115,9 +115,9 @@ const AssetTableComponent = <StatusKey extends string>({
             const otherKeys = config.filter
               .filter(({ filterStatus }) => filterStatus === tableStatus)
               .map(({ filter }) => filter)
-              .filter((k) => k !== key);
+              .filter((keys) => keys !== key);
 
-            const otherActive = otherKeys.some((k) => filter[k]);
+            const otherActive = otherKeys.some((keys) => filter[keys]);
 
             return (
               <button

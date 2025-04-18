@@ -20,9 +20,6 @@ const sortingicondesgin = "bg-red h-5 w-1 ml-1 rounded-sm";
 /**
  *
  * @param parentdata Passes the data, fetched from the page component down to the data table component.
- * @param queryClient Initialized in asset-table-controller. Necessary for prefetching the data.
- * @param expandedRow Passes the expanded row down to the showDetailIcon
- * @param setExpandedRow
  * @returns
  */
 export const formatDataColsCurrency = (parentdata: any) => {

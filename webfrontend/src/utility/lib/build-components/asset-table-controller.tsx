@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
-import LoadingSkeleton from "@/app/tracker/(distribution)/loading";
+import { LoadingSkeleton } from "../datafetching/loading-skeleton";
 import { DataTable } from "../design-components/datatables/table-layout/data-table";
 
 const AssetTableController = ({
