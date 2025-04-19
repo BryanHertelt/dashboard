@@ -108,6 +108,7 @@ jest.mock("../../src/utility/lib/design-components/datatables/table-layout/datat
     TableDetailComponent: jest.fn().mockImplementation(()=> null), 
     }))
 
+
 describe("renders crypto cols as expected", () => {
 
 

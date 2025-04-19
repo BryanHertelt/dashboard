@@ -3,9 +3,7 @@
 import {
   PositionDirectionIcon,
   SortingDataTableIcon,
-  AssetPercentageValueIcon,
 } from "../../../../../../public/images/icons";
-import Modal from "@/utility/lib/build-components/pop-ups/modal";
 import {
   formatCurrency,
   formatValue,
@@ -17,7 +15,6 @@ import {
   celldesign,
   sortingicondesgin,
 } from "@/utility/lib/helpers/colors";
-import { DerivativesIcon } from "../../../../../../public/images";
 
 interface nftDataInterface {
   assetid: number;
@@ -233,7 +230,7 @@ export const dataColsCurrency = [
             </p>
             <p className={`${profitloss < 0 ? " text-red" : "text-green"}`}>
               (
-              {formatCurrency(
+              {formatValue(
                 profitLossChange < 0
                   ? Number(profitLossChange.toString().replace("-", ""))
                   : profitLossChange
@@ -397,7 +394,7 @@ export const dataColsDerivative = [
             </p>
             <p className={`${profitloss < 0 ? " text-red" : "text-green"}`}>
               (
-              {formatCurrency(
+              {formatValue(
                 profitLossChange < 0
                   ? Number(profitLossChange.toString().replace("-", ""))
                   : profitLossChange
@@ -525,7 +522,7 @@ export const dataColsNft = [
             </p>
             <p className={`${profitloss < 0 ? " text-red" : "text-green"}`}>
               (
-              {formatCurrency(
+              {formatValue(
                 profitLossChange < 0
                   ? Number(profitLossChange.toString().replace("-", ""))
                   : profitLossChange

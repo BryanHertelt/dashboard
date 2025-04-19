@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom'
 import AssetTableComponent from "../../src/utility/lib/build-components/asset-table-component"
 import { render, screen, fireEvent, waitFor} from "@testing-library/react"
-import { formatDataColsCurrency, formatDataColsDerivative, formatDataColsNft } from "../../src/utility/lib/design-components/datatables/datatable-version-assetdistribution/asset-distribution-cols"
+import { dataColsCurrency, dataColsDerivative, dataColsNft } from '../../src/utility/lib/design-components/datatables/datatable-version-assetdistribution/asset-distribution-cols'
 
 import AssetTableController from '../../src/utility/lib/build-components/asset-table-controller'
 
@@ -19,12 +19,6 @@ global.ResizeObserver = MockResizeObserver;
 jest.mock("../../src/utility/lib/build-components/asset-table-controller", () => ({
   __esModule: true,
   default: jest.fn(()=> <div data-test-id="mock-assettable-controller"> Mock </div>)
-}));
-
-jest.mock("../../src/utility/lib/design-components/datatables/datatable-version-assetdistribution/asset-distribution-cols", () => ({
-  formatDataColsCurrency: jest.fn().mockImplementation(() => <div> test </div>),
-  formatDataColsDerivative: jest.fn().mockImplementation(() => <div> test </div>),
-  formatDataColsNft: jest.fn().mockImplementation(() => <div> test </div>),
 }));
 
 const mockInitial = [
@@ -126,17 +120,17 @@ const tableConfig = {
       {
         status: "cryptocurrency",
         statusTitle: "Currencies",
-        columns: formatDataColsCurrency,
+        columns: dataColsCurrency
       },
       {
         status: "nft",
         statusTitle: "NFTs",
-        columns: formatDataColsNft,
+        columns: dataColsNft
       },
       {
         status: "derivative",
         statusTitle: "Derivatives",
-        columns: formatDataColsDerivative,
+        columns: dataColsDerivative
       },
     ],
     filter: [
