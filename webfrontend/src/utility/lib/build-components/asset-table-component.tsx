@@ -27,7 +27,7 @@ const AssetTableComponent = <StatusKey extends string>({
     title: string;
     initial: any;
     detail: boolean;
-    status: { status: string; statusTitle: string; columns: Function }[];
+    status: { status: string; statusTitle: string; columns: Object }[];
     filter: {
       filter: string;
       filterTitle: string;
@@ -146,17 +146,9 @@ const AssetTableComponent = <StatusKey extends string>({
   };
 
   return (
-    <div className="card pt-5">
-      <div className="flex flex-row justify-between mb-4 h-9">
-        <header>
-          <h1 className="flex items-center text-1xl font-normal px-7">
-            {config.title}
-          </h1>
-        </header>
-        <nav className="relative flex flex-row pr-7 w-3/4 justify-end ">
-          <div className="flex items-end mr-2">
-            <FilterButtons />
-          </div>
+    <div className="pt-5">
+      <header className="flex flex-row justify-between mb-4 h-9">
+        <nav className="relative flex flex-row pl-7 w-3/4  justify-start ">
           <div
             className="relative flex flex-row bg-gray rounded-md lg:w-2/6 lp:w-2/6 xl:w-1/4 md:w-3/6  sm:w-4/6"
             ref={tabRef}
@@ -178,9 +170,12 @@ const AssetTableComponent = <StatusKey extends string>({
             />
           </div>
         </nav>
-      </div>
+        <div className=" flex flex-row w-1/4  justify-end">
+          <FilterButtons />
+        </div>
+      </header>
       <div>
-        <div className="h-full">
+        <div className="h-full card">
           <AssetTableController
             tableStatus={tableStatus}
             tableConfig={config}

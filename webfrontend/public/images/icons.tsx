@@ -65,36 +65,34 @@ export const ShowDetailIcon = ({
   );
 };
 
-export const SortingDataTableIcon = (props: any) => {
-  const [isRotated, setIsRotated] = useState(false);
+export const SortingDataTableIcon = ({
+  sorted,
+  className = "",
+}: {
+  sorted: "asc" | "desc" | false;
+  className?: string;
+}) => {
+  if (!sorted) return null;
 
-  const handleClick = () => {
-    setIsRotated((prev) => !prev);
-  };
+  const rotation = sorted === "asc" ? 180 : 0;
 
   return (
     <svg
+      className={className}
       width="18"
       height="18"
       viewBox="0 0 18 18"
-      fill={gray}
+      fill="black"
       xmlns="http://www.w3.org/2000/svg"
-      onClick={handleClick}
       style={{
-        transform: `rotate(${isRotated ? 180 : 0}deg)`,
+        transform: `rotate(${rotation}deg)`,
         transition: "transform 0.3s ease-in-out",
-        cursor: "pointer",
         height: "1.25rem",
         width: "1.25rem",
         marginLeft: "0.25rem",
-        borderRadius: "0.125rem",
       }}
     >
-      <rect x="0.785156" y="1" width="16" height="16" rx="1.5" />
-      <path
-        d="M12.3477 10.3548H9.51432L9.51432 4.03648L8.09057 4.01523L8.09057 10.3548L5.26432 10.3548L8.80599 13.8965L12.3477 10.3548Z"
-        fill="#7A7A7A"
-      />
+      <polygon points="9,12 4.5,6 13.5,6" fill="black" />
     </svg>
   );
 };

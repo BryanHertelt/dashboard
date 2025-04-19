@@ -5,11 +5,10 @@ import AssetTableComponent from "../build-components/asset-table-component";
 import { useDistributionData } from "../datafetching/client-refetch/client-hooks";
 import { getPortfolioData } from "../datafetching/layer";
 import { formatValue } from "../helpers/helper-functions";
-import { CryptocurrencyDataInterface } from "../types/data-fetching-types";
 import {
-  formatDataColsCurrency,
-  formatDataColsDerivative,
-  formatDataColsNft,
+  dataColsCurrency,
+  dataColsDerivative,
+  dataColsNft,
 } from "../design-components/datatables/datatable-version-assetdistribution/asset-distribution-cols";
 
 const AssetDistributionComponent = (props: any) => {
@@ -65,17 +64,17 @@ const AssetDistributionComponent = (props: any) => {
       {
         status: "cryptocurrency",
         statusTitle: "Currencies",
-        columns: formatDataColsCurrency,
+        columns: dataColsCurrency,
       },
       {
         status: "nft",
         statusTitle: "NFTs",
-        columns: formatDataColsNft,
+        columns: dataColsNft,
       },
       {
         status: "derivative",
         statusTitle: "Derivatives",
-        columns: formatDataColsDerivative,
+        columns: dataColsDerivative,
       },
     ],
     filter: [
@@ -94,7 +93,8 @@ const AssetDistributionComponent = (props: any) => {
   };
 
   return (
-    <>
+    <div className="h-full">
+      {/**
       <div className="card h-4/6 w-8/12 flex-grow pl-7 pt-7 pr-8">
         <AssetValueChartComponent
           currentValue={processedQueryData.currentvalue}
@@ -109,10 +109,11 @@ const AssetDistributionComponent = (props: any) => {
           piedata={pieData}
         />
       </div>
-      <div className="mt-9 w-full h-full">
+      */}
+      <div className="w-full h-1/5 mb-10 card">
         <AssetTableComponent config={tableConfig} />
       </div>
-    </>
+    </div>
   );
 };
 

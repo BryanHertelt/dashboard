@@ -14,6 +14,7 @@ import { formatCurrency, formatValue, cn} from '../../src/utility/lib/helpers/he
 import { twMerge } from 'tailwind-merge'
 import { clsx } from "clsx";
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
+import { dataColsNft, dataColsCurrency, dataColsDerivative } from '../../src/utility/lib/design-components/datatables/datatable-version-assetdistribution/asset-distribution-cols';
 
 jest.mock("../../public/images/icons", () => ({
     PositionDirectionIcon: jest.fn().mockImplementation(() => null),
@@ -45,6 +46,7 @@ const cryptodata = [
     "assetchange24hourvalue": 1000,
     "assetchange7d": [680000, 690000, 710000, 695000, 700000],
     "profitloss": 486953,
+    "profitlosschange": 20, 
     "notes": "Notes"
 },
  ]
@@ -109,14 +111,12 @@ jest.mock("../../src/utility/lib/design-components/datatables/table-layout/datat
 describe("renders crypto cols as expected", () => {
 
 
-  const columns = formatDataColsCurrency(cryptodata)
-
 beforeEach(()=> {
     jest.clearAllMocks()
     renderWithClient(
       <DataTable
         data={cryptodata}
-        columns={columns}
+        columns={dataColsCurrency}
         currentValue={1}
         tableStatus="cryptocurrency"
         expandedRow={null}
@@ -128,10 +128,8 @@ afterEach(()=> jest.clearAllMocks())
 
 it("renders the header", () => {
 expect(screen.getByText("Asset")).toBeInTheDocument()
-expect(screen.getByText("Amount")).toBeInTheDocument()
+expect(screen.getByText("Value/Amount")).toBeInTheDocument()
 expect(screen.getByText("Percentage")).toBeInTheDocument()
-expect(screen.getByText("Value")).toBeInTheDocument()
-expect(screen.getByText("Market Price")).toBeInTheDocument()
 expect(screen.getByText("Change 24 h")).toBeInTheDocument()
 expect(screen.getByText("P/L")).toBeInTheDocument()
 })
@@ -141,24 +139,17 @@ it("renders the body", () => {
 
     const amount = screen.getByText(cryptodata[0].assetamount).closest("td");
     expect(within(amount).getByText(cryptodata[0].assetamount)).toBeInTheDocument(); 
+    expect(within(amount).getByText(cryptodata[0].assetvalue)).toBeInTheDocument()
 
     const percentage = screen.getByText(`${cryptodata[0].assetpercentage}%`).closest("td");
     expect(within(percentage).getByText(`${cryptodata[0].assetpercentage}%`)).toBeInTheDocument(); 
 
-    const value = screen.getByText(formatCurrency(cryptodata[0].assetvalue)).closest("td");
-    expect(within(value).getByText(formatCurrency(cryptodata[0].assetvalue))).toBeInTheDocument(); 
-
-    const marketPrice = screen.getByText("$1,400,000.00").closest("td");
-    expect(within(marketPrice).getByText("$1,400,000.00")).toBeInTheDocument(); 
-
     const change24 = screen.getByText(`${cryptodata[0].assetchange24h}%`).closest("td");
     expect(within(change24).getByText(`${cryptodata[0].assetchange24h}%`)).toBeInTheDocument(); 
 
-    const change24Value = screen.getByText(formatCurrency(cryptodata[0].assetchange24hourvalue)).closest("td");
-    expect(within(change24Value).getByText(formatCurrency(cryptodata[0].assetchange24hourvalue))).toBeInTheDocument(); 
-
     const profitloss = screen.getByText(formatCurrency(cryptodata[0].profitloss)).closest("td");
     expect(within(profitloss).getByText(formatCurrency(cryptodata[0].profitloss))).toBeInTheDocument(); 
+    expect(within(profitloss).getByText(formatValue(cryptodata[0].profitloss)))
 
 
 })
@@ -171,7 +162,7 @@ describe("renders nft cols as expected", () => {
         renderWithClient(
           <DataTable
             data={nftdata}
-            columns={formatDataColsNft(nftdata)}
+            columns={dataColsNft}
             currentValue={1}
             tableStatus="nft"
             expandedRow={null}
@@ -214,7 +205,7 @@ describe("renders derivative cols as expected", () => {
         renderWithClient(
           <DataTable
             data={derivativedata}
-            columns={formatDataColsDerivative(derivativedata)}
+            columns={dataColsDerivative}
             currentValue={1}
             tableStatus="derivatives"
             expandedRow={null}

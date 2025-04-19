@@ -49,7 +49,7 @@ const AssetTableController = ({
     );
     if (!statusConfig) return [];
 
-    return statusConfig.columns(tableData);
+    return statusConfig.columns;
   }, [tableStatus, tableData]);
 
   const realStatus = tableData.map(
@@ -63,7 +63,7 @@ const AssetTableController = ({
   }
 
   return (
-    <div className="shadow-flyzerShadow rounded-md">
+    <div>
       <DataTable
         data={tableData}
         columns={col}

@@ -28,3 +28,10 @@ export const chartBgColors =  [
     "rgba(0, 91, 234, 0.2)",
     "rgba(0, 91, 234, 0.01)",
   ]
+
+export const headerdesign =
+  "flex flex-row font-medium items-center justify-end text-black h-11  w-full ";
+export const celldesign =
+  "flex flex-row justify-end items-center w-full pr-1 text-black font-light";
+export const firstcelldesign = "flex flex-row text-sm font-medium items-center";
+export const sortingicondesgin = "h-5 w-1 ml-1 rounded-sm";

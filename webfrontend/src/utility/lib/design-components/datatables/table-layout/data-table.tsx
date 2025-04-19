@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { TableDetailComponent } from "./datatable-detail-popup";
 import { ErrorSkeleton } from "@/utility/lib/datafetching/loading-skeleton";
@@ -51,11 +52,8 @@ export function DataTable<TData, TValue>({
   expandedRow,
   setExpandedRow,
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [rowName, setRowName] = React.useState<string>("");
-  const [isOpen, setIsOpen] = React.useState<boolean>(false);
-
-  console.log("props", data, columns, tableStatus, currentValue, expandedRow);
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [rowName, setRowName] = useState<string>("");
 
   const toggleExpandedRow = (rowId: number) => {
     setExpandedRow((prevExpandedRow: number | null) =>
@@ -76,6 +74,7 @@ export function DataTable<TData, TValue>({
       tableStatus === "cryptocurrency"
         ? data[row.id].assetabbreviation
         : `${data[row.id].leverage}X${data[row.id].assetname}`;
+
     return (
       <TableDetailComponent
         tableStatus={tableStatus}
@@ -121,7 +120,7 @@ export function DataTable<TData, TValue>({
               ))}
             </TableHeader>
           </Table>
-          <div className="overflow-y-auto rounded-md sm:max-h-[66vh] md:max-h-[66vh] lp:max-h-[66vh] lg:max-h-[66vh] lg xl:max-h-[65vh]">
+          <div className="overflow-y-auto rounded-md max-h-[55vh]">
             <Table className="table-fixed w-full">
               <TableBody>
                 {table.getRowModel().rows?.length ? (

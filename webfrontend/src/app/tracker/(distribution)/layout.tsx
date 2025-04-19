@@ -6,7 +6,7 @@ const AssetDistributionLayout = ({
   children: React.ReactNode;
 }) => {
   return (
-    <section className="flex flex-col flex-wrap w-full h-full px-12">
+    <section className="flex flex-col flex-wrap w-full px-12 mt-10">
       <header className="flex flex-col justify-center w-full h-1/6">
         <h1 className="text-3xl font-light"> Asset-Distribution </h1>
         <nav className="flex flex-row justify-between rounded-md shadow-even bg-white w-1/6 my-6 py-3 px-2 text-icongray">
