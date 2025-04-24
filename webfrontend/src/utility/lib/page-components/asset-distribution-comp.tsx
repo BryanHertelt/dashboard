@@ -27,14 +27,12 @@ const AssetDistributionComponent = (props: any) => {
       ...asset,
       assetpercentage:
         asset.assettype === "cryptocurrency"
-          ? formatValue(
-              (asset.assetvalue / processedQueryData.currentvalue) * 100
+          ? Number(
+              formatValue(
+                (asset.assetvalue / processedQueryData.currentvalue) * 100
+              )
             )
-          : asset.assettype === "derivative"
-          ? formatValue((asset.size / processedQueryData.currentvalue) * 100)
-          : formatValue(
-              (asset.collectionvalue / processedQueryData.currentvalue) * 100
-            ),
+          : null,
     };
     return asset;
   });

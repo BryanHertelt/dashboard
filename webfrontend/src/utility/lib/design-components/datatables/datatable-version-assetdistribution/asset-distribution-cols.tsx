@@ -111,12 +111,11 @@ export const dataColsCurrency = [
       );
     },
     cell: ({ row }: any) => {
-      const percentage = row.getValue("assetpercentage");
+      const percentage = parseFloat(row.getValue("assetpercentage"));
+      console.log("row", row);
+      const formattedPercentage = formatValue(Number(percentage));
       return (
-        <div className={`${celldesign} w-1/3`}>
-          {" "}
-          {formatValue(percentage)} %
-        </div>
+        <div className={`${celldesign} w-1/3`}> {formattedPercentage} %</div>
       );
     },
   },
