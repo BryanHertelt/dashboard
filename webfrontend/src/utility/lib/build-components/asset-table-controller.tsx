@@ -57,12 +57,6 @@ const AssetTableController = ({
     (asset: any) => asset[tableConfig.statusFilter]
   );
 
-  for (let i = 0; i < tableData.length; i++) {
-    if (tableStatus != realStatus[i]) {
-      return <LoadingSkeleton />;
-    }
-  }
-
   return (
     <div>
       <DataTable
