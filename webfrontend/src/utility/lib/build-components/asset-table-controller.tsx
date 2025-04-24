@@ -47,6 +47,7 @@ const AssetTableController = ({
     const statusConfig = tableConfig.status.find(
       (s: any) => s.status === tableStatus
     );
+
     if (!statusConfig) return [];
 
     return statusConfig.columns;

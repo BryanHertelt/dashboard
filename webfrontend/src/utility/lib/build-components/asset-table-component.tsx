@@ -57,7 +57,6 @@ const AssetTableComponent = <StatusKey extends string>({
     if (tabRef.current) {
       resizeObserver.observe(tabRef.current);
     }
-
     return () => {
       if (tabRef.current) {
         resizeObserver.unobserve(tabRef.current);
@@ -90,11 +89,9 @@ const AssetTableComponent = <StatusKey extends string>({
         const foundStatus = config.status.find(
           (object) => object.status === status
         );
+
         if (foundStatus) {
           setCurrentTab(config.status.indexOf(foundStatus));
-        } else {
-          // Handle the case where the status is not found
-          console.error(`Status "${status}" not found.`);
         }
         setTableStatus(status);
       }}

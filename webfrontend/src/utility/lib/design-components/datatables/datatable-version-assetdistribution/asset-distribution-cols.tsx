@@ -112,7 +112,12 @@ export const dataColsCurrency = [
     },
     cell: ({ row }: any) => {
       const percentage = row.getValue("assetpercentage");
-      return <div className={`${celldesign} w-1/3`}> {percentage} %</div>;
+      return (
+        <div className={`${celldesign} w-1/3`}>
+          {" "}
+          {formatValue(percentage)} %
+        </div>
+      );
     },
   },
   {
@@ -160,9 +165,7 @@ export const dataColsCurrency = [
       return (
         <button
           className={`${headerdesign}`}
-          onClick={() => {
-            column.toggleSorting(column.getIsSorted() === "asc");
-          }}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           <SortingDataTableIcon
             className={`${sortingicondesgin}`}
@@ -186,10 +189,12 @@ export const dataColsCurrency = [
           >
             {" "}
             <p>
-              {percentage < 0
-                ? percentage.toString().replace("-", "")
-                : percentage}
-              %{" "}
+              {formatValue(
+                percentage < 0
+                  ? Number(percentage.toString().replace("-", ""))
+                  : percentage
+              )}{" "}
+              %
             </p>
           </div>
         </div>
