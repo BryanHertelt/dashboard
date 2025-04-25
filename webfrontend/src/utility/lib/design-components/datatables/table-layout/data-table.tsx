@@ -164,13 +164,15 @@ export function DataTable<TData, TValue>({
                       {expandedRow?.toString() === row.id && (
                         <TableRow
                           key={`detail${row.id}`}
-                          className="border-b-4 border-t-2 border-gray "
+                          className="border-b-4 border-t-2 border-gray"
                         >
                           <TableCell
                             colSpan={columns.length + 1}
                             className="w-full"
                           >
-                            <div>{getDetailComponent(row, tableStatus)}</div>
+                            <div className="h-[200px] sm:h-[250px] md:h-[300px] lg:h-[480px]">
+                              {getDetailComponent(row, tableStatus)}
+                            </div>
                           </TableCell>
                         </TableRow>
                       )}

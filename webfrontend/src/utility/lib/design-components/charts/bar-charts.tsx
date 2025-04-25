@@ -25,6 +25,7 @@ import { chartColors, darkerGray } from "../../helpers/colors";
 
 export const HoldingBarChart = (props: any) => {
   const backgroundColors = chartColors;
+  console.log("props data", props.data);
 
   const mainHoldings: any[] = [];
   const otherHoldings: any[] = [];

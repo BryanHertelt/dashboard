@@ -54,7 +54,7 @@ export const DrDetail = ({
   };
 
   return (
-    <div className="flex flex-row flex-wrap w-full">
+    <div className="flex flex-col w-full border border-red h-full">
       <div className="flex flex-row  justify-start md:w-2/5 sm:w-2/5 lg:w-2/5 lp:w-2/5 border-r-2 border-gray ">
         <div className="flex flex-row flex-wrap h-full w-full ">
           {portfolioRebalancingData.map((cards: any) => {
@@ -191,13 +191,10 @@ export const HdDetail = (props: any) => {
                   {props.tableStatus === "cryptocurrency" ||
                   props.tableStatus === "derivative" ? (
                     <>
-                      {" "}
                       <div
                         className={`flex flex-row ${props.designComponents.valuedesign}`}
                       >
-                        {" "}
                         <p>
-                          {" "}
                           {formatValue(holding.assetvalue)} {props.assetname}{" "}
                         </p>
                         <p className={`${props.designComponents.headerdesign}`}>
@@ -223,13 +220,13 @@ export const HdDetail = (props: any) => {
             );
           })}
         </div>
-        {props.tableStatus === "nft" ? (
-          <ExposeNfts data={activeHolding} />
-        ) : null}
         {props.tableStatus === "cryptocurrency" ? (
           <div className="overflow-y-scroll h-36">
             <HoldingBarChart data={props.data} />
           </div>
+        ) : null}
+        {props.tableStatus === "nft" ? (
+          <ExposeNfts data={activeHolding} />
         ) : null}
       </div>
     </>

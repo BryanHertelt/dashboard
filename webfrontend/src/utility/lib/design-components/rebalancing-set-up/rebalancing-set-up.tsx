@@ -49,14 +49,19 @@ export const RebalancingSetUp = ({
     desiredbalancenumber,
     currentbalancenumber,
   } = data;
-  const [balance, setBalance] = useState<number>(desiredbalance);
+  const [calcV, setCalcV] = useState<any[]>([
+    Math.round(desiredbalance),
+    Math.round(Number((desiredbalance / 100) * currentValue * 100)) / 100,
+  ]);
+  const [printV, setPrintV] = useState<string[]>([
+    `${formatValue(calcV[0])}%`,
+    `${formatCurrency(calcV[1])}`,
+  ]);
   const [toast, setToast] = useState<{
     active: boolean;
     title: string;
   }>({ active: false, title: "" });
-
-  const [isToggled, setToggled] = useState<boolean>(false);
-  const [inputValue, setInputValue] = useState<string>(balance.toString());
+  const [isToggled, setToggled] = useState<string>("none");
 
   if (desiredbalance === null || desiredbalancenumber === null) {
     return (
@@ -64,10 +69,16 @@ export const RebalancingSetUp = ({
     );
   }
 
+  useEffect(() => {
+    setPrintV([`${formatValue(calcV[0])}%`, formatCurrency(calcV[1])]);
+  }, [calcV]);
+
   const handleSubmit = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     setToast({ active: false, title: "" });
-    postRebalancing(assetId, Math.round(Number(balance) * 100) / 100);
+    setToggled("none");
+    //Change
+    postRebalancing(assetId, calcV[0]);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,34 +89,58 @@ export const RebalancingSetUp = ({
       return;
     }
     if (value.endsWith(".")) {
-      setInputValue(value);
+      isToggled === "value"
+        ? setCalcV([
+            Math.round((Number(value) / currentValue) * 100 * 100) / 100,
+            value,
+          ])
+        : setCalcV([
+            value,
+            Math.round(Number((Number(value) / 100) * currentValue * 100)) /
+              100,
+          ]);
       return;
     }
 
     const numericValue = Number(value);
+    const roundedValue = Math.round(numericValue * 100) / 100;
+    console.log("rounded value", roundedValue);
+    console.log("calcV", calcV);
 
-    if (numericValue > currentValue) {
+    if (roundedValue > currentValue) {
       setToast({
         active: true,
         title: "Your desired balance cannot be larger than the portfolio size.",
       });
     } else if (value.endsWith(".")) {
-      setInputValue(value);
-    } else if (!isToggled && numericValue > 100) {
+      isToggled === "value"
+        ? setCalcV([
+            Math.round((roundedValue / currentValue) * 100 * 100) / 100,
+            roundedValue,
+          ])
+        : setCalcV([
+            roundedValue,
+            Math.round(Number((Number(value) / 100) * currentValue * 100)) /
+              100,
+          ]);
+    } else if (isToggled === "percentage" && roundedValue > 100) {
       setToast({
         active: true,
         title: "Your desired balance cannot be larger than 100 percent.",
       });
-    } else if (isToggled && value === "") {
-      setBalance(0);
+    } else if (isToggled === "value" && value === "") {
+      setCalcV([0, 0]);
     } else {
       setToast({ active: false, title: "" });
-      setInputValue("");
-      setBalance(
-        isToggled
-          ? (numericValue / currentValue) * 100
-          : Math.round(numericValue * 100) / 100
-      );
+      isToggled === "value"
+        ? setCalcV([
+            Math.round((roundedValue / currentValue) * 100 * 100) / 100,
+            roundedValue,
+          ])
+        : setCalcV([
+            roundedValue,
+            Math.round(Number((roundedValue / 100) * currentValue * 100)) / 100,
+          ]);
     }
   };
 
@@ -120,17 +155,15 @@ export const RebalancingSetUp = ({
         backgroundColor: flyzerBlue,
         borderWidth: 0,
         borderRadius: 7,
-        order: currentbalancenumber > balance ? 2 : 1,
+        order: currentbalancenumber > calcV[0] ? 2 : 1,
       },
       {
-        label: `Desired: ${formatValue(Number(balance))}% ~ ${formatCurrency(
-          Math.round(Number(currentValue * balance)) / 100
-        )}`,
-        data: [balance],
+        label: `Desired: ${printV[0]} ~ ${printV[1]}`,
+        data: [calcV[0]],
         backgroundColor: lightBlue,
         borderWidth: 0,
         borderRadius: 7,
-        order: currentbalance > balance ? 1 : 2,
+        order: currentbalance > calcV[0] ? 1 : 2,
       },
       {
         label: `Portfolio Balance: 100%  ~ ${formatCurrency(currentValue)} `,
@@ -189,40 +222,23 @@ export const RebalancingSetUp = ({
             ))}
           </div>
           <div className="flex flex-row justify-end w-1/2 ">
-            <div
-              className={`flex items-center w-12 h-6 bg-gray rounded-full transition-all duration-500 pl-1`}
-            >
-              <span
-                onClick={() => setToggled(!isToggled)}
-                className={`flex h-5 w-5 p-2 ${
-                  isToggled ? "translate-x-full" : "translate-x-0"
-                } bg-white rounded-full transition-all duration-500 justify-center items-center font-semibold text-xs`}
-              >
-                {isToggled ? "x" : "%"}
-              </span>{" "}
-            </div>
-            <div className="flex flex-col items-end w-2/5 ml-2.5">
+            <div className="flex justify-end w-full">
               <input
                 type="text"
                 step="any"
                 onBlur={handleSubmit}
                 onChange={(e) => handleChange(e)}
-                value={
-                  inputValue != "" && inputValue != desiredbalance.toString()
-                    ? inputValue
-                    : isToggled
-                    ? Math.round(Number((balance / 100) * currentValue * 100)) /
-                      100
-                    : Math.round(Number(balance) * 100) / 100
-                }
+                onClick={() => setToggled("percentage")}
+                value={isToggled === "percentage" ? calcV[0] : printV[0]}
                 className="bg-gray w-full rounded-md pl-2 p1 h-6"
               />
-              <p className="flex flex-row justify-end h-7 w-32 items-center text-icongray">
-                ≈{" "}
-                {isToggled
-                  ? `${formatValue(balance)} %`
-                  : formatCurrency((balance / 100) * currentValue)}
-              </p>
+              <input
+                onBlur={handleSubmit}
+                onChange={(e) => handleChange(e)}
+                onClick={() => setToggled("value")}
+                value={isToggled === "value" ? calcV[1] : printV[1]}
+                className="bg-gray w-full rounded-md pl-2 p1 h-6"
+              />
             </div>
           </div>
         </div>
