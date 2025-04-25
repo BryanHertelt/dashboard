@@ -98,7 +98,7 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="h-2/6 flex flex-col">
+    <div className="h-2/6 flex flex-col  mb-10">
       <div className="w-full overflow-x-auto">
         <div className="min-w-[800px]">
           <Table className="table-fixed w-full">
@@ -120,8 +120,8 @@ export function DataTable<TData, TValue>({
               ))}
             </TableHeader>
           </Table>
-          <div className="overflow-y-auto rounded-md max-h-[55vh]">
-            <Table className="table-fixed w-full">
+          <div className="overflow-y-auto rounded-md max-h-[75vh]">
+            <Table className="table-fixed w-full ">
               <TableBody>
                 {table.getRowModel().rows?.length ? (
                   table.getRowModel().rows.map((row) => (
@@ -170,7 +170,7 @@ export function DataTable<TData, TValue>({
                             colSpan={columns.length + 1}
                             className="w-full"
                           >
-                            <div className="h-[200px] sm:h-[250px] md:h-[300px] lg:h-[480px]">
+                            <div className="h-[75vh]">
                               {getDetailComponent(row, tableStatus)}
                             </div>
                           </TableCell>

@@ -40,7 +40,7 @@ export const TableDetailComponent = (props: TableDetailProps) => {
   const designComponents = useMemo(
     () => ({
       carddesign:
-        "flex flex-col justify-around card mb-2.5 py-3 px-3 w-64 sm:h-20 md:h-20 lp:h-16 lg:h-16 xl:h-16",
+        "flex flex-col justify-around card mb-2.5 py-3 px-3 w-full sm:h-20 md:h-20 lp:h-16 lg:h-16 xl:h-16",
       headerdesign:
         "flex flex-row text-sm sm:text-xs md:text-xs lp:text-xs text-icongray",
       valuedesign:
@@ -63,11 +63,11 @@ export const TableDetailComponent = (props: TableDetailProps) => {
     return <ErrorSkeleton />;
   } else {
     return (
-      <div className="flex flex-row h-full w-full flex-wrap">
+      <div className="flex flex-row h-full w-full flex-wrap p-7">
         {props.tableStatus === "derivative" ? (
           <p className="p-4 ml-4 text-icongray">Asset Group Distribution</p>
         ) : (
-          <nav className="flex flex-row justify-between items-center w-full">
+          <nav className="flex flex-row justify-start items-center w-full border border-blue h-12">
             <div className="relative flex flex-row m-1 mb-2.5 p-1 pr-1 ml-3.5 rounded-md md:w-8/12 sm:w-8/12 lp:w-4/12">
               <div
                 role="Rebalancing-Switcher"
@@ -111,16 +111,9 @@ export const TableDetailComponent = (props: TableDetailProps) => {
                 </p>
               </button>
             </div>
-            <div className="h-12 md:w-10 sm:w-10 lp:w-1/4 lp:ml-12 xl:w-1/4 xl:ml-20 lg:p-2 lg:items-center flex flex-row justify-end items-end p-1 m-1">
-              <HoldingLogoImageContainer
-                url={props.assetUrl}
-                alt="Collection icon"
-                placeholder="CP"
-              />
-            </div>
           </nav>
         )}
-        <div className=" w-full ">
+        <div className=" w-full h-full">
           {detail === "DR" ? (
             <DrDetail
               designComponents={designComponents}

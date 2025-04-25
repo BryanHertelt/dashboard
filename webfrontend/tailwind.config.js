@@ -17,6 +17,7 @@ module.exports = {
 		flyzerShadow: "0px 0px 10px rgba(0,0,0,0.05),0px 0px 10px rgba(0,0,0,0.05)"
 	}, 
   	colors: {
+		transparent: "transparent", 
   		current: 'currentColor',
   		black: '#000000',
   		white: '#FFFFFF',

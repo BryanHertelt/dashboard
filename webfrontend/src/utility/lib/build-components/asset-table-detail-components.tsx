@@ -54,14 +54,15 @@ export const DrDetail = ({
   };
 
   return (
-    <div className="flex flex-col w-full border border-red h-full">
-      <div className="flex flex-row  justify-start md:w-2/5 sm:w-2/5 lg:w-2/5 lp:w-2/5 border-r-2 border-gray ">
-        <div className="flex flex-row flex-wrap h-full w-full ">
+    <div className="flex flex-col w-full h-full">
+      <div className="flex flex-row w-full h-4/6  ">
+        <div className=" card h-full w-5/6"> </div>
+        <div className="flex flex-col h-full w-1/6">
           {portfolioRebalancingData.map((cards: any) => {
             return (
               <div
                 role="Detail Rebalancing Cards"
-                className={`${designComponents.carddesign} ml-3.5 sm:w-2/5 md:w-2/5 lg:w-2/5 lp:w-2/5 xl:w-2/5 justify-center`}
+                className={`${designComponents.carddesign} ml-3.5 justify-center`}
                 key={cards.header}
               >
                 <p className={designComponents.headerdesign}>
@@ -77,7 +78,7 @@ export const DrDetail = ({
           })}
         </div>
       </div>
-      <div className=" pr-3 pt-5 pl-10 md:w-3/5 sm:w-3/5 lg:w-3/5 lp:w-3/5 h-full">
+      <div className=" pr-3 pt-5 md:w-1/2 sm:w-1/2 lg:w-1/2 lp:w-1/2 h-2/6">
         <RebalancingSetUp
           data={barchartData}
           assetId={data.assetId}

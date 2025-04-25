@@ -58,7 +58,7 @@ const AssetTableController = ({
   );
 
   return (
-    <div>
+    <div className="">
       <DataTable
         data={tableData}
         columns={col}

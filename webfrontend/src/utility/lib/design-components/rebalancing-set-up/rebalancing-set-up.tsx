@@ -204,8 +204,40 @@ export const RebalancingSetUp = ({
     },
   };
   return (
-    <div className="w-full h-11 flex justify-center items-center mr-5 flex-wrap">
-      <Bar data={barData} options={options} />
+    <div className="flex justify-center items-center flex-wrap">
+      <div className="flex flex-row w-full justify-start h-11 items-center">
+        <div className="h-9 w-7/12">
+          <Bar data={barData} options={options} />
+        </div>
+        <div className="flex flex-row justify-end w-4/12 items-center ml-5">
+          <div className="flex justify-end w-full">
+            <input
+              type="text"
+              step="any"
+              onBlur={handleSubmit}
+              onChange={(e) => handleChange(e)}
+              onClick={() => setToggled("percentage")}
+              value={isToggled === "percentage" ? calcV[0] : printV[0]}
+              className={`${
+                isToggled === "percentage"
+                  ? "bg-gray text-black"
+                  : "text-icongray bg-transparent"
+              } w-5/12 rounded-md pl-2 p1 h-6 text-xs focus:outline-none focus:ring-0 focus:border-transparent`}
+            />
+            <input
+              onBlur={handleSubmit}
+              onChange={(e) => handleChange(e)}
+              onClick={() => setToggled("value")}
+              value={isToggled === "value" ? calcV[1] : printV[1]}
+              className={`${
+                isToggled === "value"
+                  ? "bg-gray text-black"
+                  : "text-icongray bg-transparent"
+              } w-full rounded-md pl-2 p1 h-6 text-xs focus:outline-none focus:ring-0 focus:border-transparent`}
+            />
+          </div>
+        </div>
+      </div>
       <div className="flex flex-col justify-start w-full">
         <div className="flex flex-row">
           <div className="flex flex-col text-center mt-2 w-3/5">
@@ -213,7 +245,9 @@ export const RebalancingSetUp = ({
               <div key={index} className="flex items-center space-x-2">
                 <span
                   className="w-4 h-4 rounded-sm mb-3"
-                  style={{ backgroundColor: dataset.backgroundColor as string }}
+                  style={{
+                    backgroundColor: dataset.backgroundColor as string,
+                  }}
                 ></span>
                 <span className="text-xs text-icongray mb-3 text-start">
                   {dataset.label}
@@ -221,34 +255,14 @@ export const RebalancingSetUp = ({
               </div>
             ))}
           </div>
-          <div className="flex flex-row justify-end w-1/2 ">
-            <div className="flex justify-end w-full">
-              <input
-                type="text"
-                step="any"
-                onBlur={handleSubmit}
-                onChange={(e) => handleChange(e)}
-                onClick={() => setToggled("percentage")}
-                value={isToggled === "percentage" ? calcV[0] : printV[0]}
-                className="bg-gray w-full rounded-md pl-2 p1 h-6"
-              />
-              <input
-                onBlur={handleSubmit}
-                onChange={(e) => handleChange(e)}
-                onClick={() => setToggled("value")}
-                value={isToggled === "value" ? calcV[1] : printV[1]}
-                className="bg-gray w-full rounded-md pl-2 p1 h-6"
-              />
-            </div>
+        </div>
+        {toast.active === true ? (
+          <div className="rounded-md text-red text-xs ml-1.5 h-7  ">
+            {" "}
+            {toast.title}
           </div>
-        </div>
+        ) : null}
       </div>
-      {toast.active === true ? (
-        <div className="rounded-md text-red text-xs ml-1.5 h-7  ">
-          {" "}
-          {toast.title}
-        </div>
-      ) : null}
     </div>
   );
 };
