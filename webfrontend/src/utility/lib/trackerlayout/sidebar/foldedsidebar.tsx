@@ -11,7 +11,8 @@ export const renderFoldedBulletPoints = (
 ) => {
   return (
     <li key={sidebarElementContainer.id} className="flex justify-center">
-      <Link href={`/tracker/${sidebarElementContainer.link}`} legacyBehavior>
+      {/** 
+      <Link href={`/tracker/${sidebarElementContainer.link}`}>
         <a
           className="flex flex-row mt-1 py-1 justify-center align-middle pl-2 text-icongray
           hover:bg-blue hover:text-white hover:w-6/12 hover:rounded-md
@@ -22,6 +23,7 @@ export const renderFoldedBulletPoints = (
           </div>
         </a>
       </Link>
+      */}
     </li>
   );
 };
