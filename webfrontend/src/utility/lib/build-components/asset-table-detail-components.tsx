@@ -2,8 +2,8 @@
 
 import { formatCurrency, formatValue } from "../helpers/helper-functions";
 import { ExposeNfts } from "../helpers/nft-container";
-import { HoldingBarChart } from "../design-components/charts/bar-charts";
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { Bar } from "react-chartjs-2";
 import { RebalancingSetUp } from "../design-components/rebalancing-set-up/rebalancing-set-up";
 import {
   Chart as ChartJS,
@@ -13,8 +13,9 @@ import {
   Title,
   Tooltip,
   Legend,
+  ChartOptions,
+  ChartData,
 } from "chart.js";
-import { HoldingLogoImageContainer } from "../helpers/image-container";
 
 ChartJS.register(
   CategoryScale,
@@ -24,6 +25,188 @@ ChartJS.register(
   Tooltip,
   Legend
 );
+
+import { HoldingLogoImageContainer } from "../helpers/image-container";
+import { chartColors, darkerGray } from "../helpers/colors";
+
+interface detailDataProps {
+  assetvalue: number;
+  currencyvalue: number;
+  holdingdistribution: number;
+  holdingurl: string;
+  id: number;
+  name: string;
+}
+
+const InfoCards = ({
+  data,
+  tableStatus,
+  designComponents,
+  barData,
+  assetname,
+}: {
+  data: any;
+  tableStatus: string | undefined;
+  designComponents: { headerdesign: string; valuedesign: string };
+  barData: { data: any; options: any };
+  assetname: string | undefined;
+}) => {
+  {
+    return data.map((disObj: any, index: number) => {
+      return (
+        <div
+          className={` flex flex-col flex-grow justify-around card mb-2 w-1/4 py-3 px-3 sm:h-20 md:h-20 lp:h-16 lg:h-16 xl:h-16`}
+          key={disObj.id}
+        >
+          <div className="flex flex-row justify-between">
+            <div className={designComponents.headerdesign}>
+              <div className="mr-1.5">
+                <HoldingLogoImageContainer
+                  url={disObj.url}
+                  alt={`${disObj.name} Logo in Asset Detail Component`}
+                  placeholder={"HL"}
+                />{" "}
+              </div>{" "}
+              {disObj.name}
+            </div>
+            <span
+              className="w-4 h-4 rounded-sm"
+              style={{
+                backgroundColor: Array.isArray(
+                  barData.data.datasets[index].backgroundColor
+                )
+                  ? barData.data.datasets[index].backgroundColor[0]
+                  : barData.data.datasets[index].backgroundColor,
+              }}
+            />
+          </div>
+          <div className="flex flex-row align-middle">
+            {tableStatus === "cryptocurrency" ||
+            tableStatus === "derivative" ? (
+              <>
+                <div
+                  className={`flex flex-row ${designComponents.valuedesign}`}
+                >
+                  <p className="mr-1">
+                    {formatValue(disObj.assetvalue)} {assetname}{" "}
+                  </p>
+                  <p
+                    className={`${designComponents.headerdesign} border-r-2 mr-1 pr-1 font-normal`}
+                  >
+                    ~ {formatCurrency(disObj.currencyvalue)}
+                  </p>{" "}
+                  <p className={`${designComponents.headerdesign} font-normal`}>
+                    {" "}
+                    {formatValue(Number(barData.data.datasets[index].data))}%
+                  </p>
+                </div>{" "}
+              </>
+            ) : (
+              <>
+                <p className={designComponents.valuedesign}>
+                  {" "}
+                  {disObj.assetvalue} NFTs{" "}
+                </p>
+                <p
+                  className={`${designComponents.headerdesign} border-r-2 pr-1 mr-1`}
+                >
+                  ~ {formatValue(disObj.currencyvalue)} ETH
+                </p>
+                <p className={`${designComponents.headerdesign} font-normal`}>
+                  {" "}
+                  {formatValue(Number(barData.data.datasets[index].data))}%
+                </p>
+              </>
+            )}
+          </div>
+        </div>
+      );
+    });
+  }
+};
+
+const buildBar = (mainDisObj: any, otherDisObj: any, totalAmount: number) => {
+  const backgroundColors = chartColors;
+  const mainDisObjFormatted = mainDisObj.map((disObj: any, index: number) => {
+    return {
+      label: ` `,
+      data: [Number(disObj.assetvalue / totalAmount) * 100],
+      backgroundColor: backgroundColors[index % backgroundColors.length],
+      borderColor: "rgba(0, 26, 66, 1)",
+      borderWidth: 0,
+      borderRadius: 7,
+    };
+  });
+
+  const otherDisObjFormatted = {
+    label: `Other Holdings: ${formatValue(
+      otherDisObj.reduce(
+        (acc: any, [holdingdistribution]: any) => acc + holdingdistribution,
+        0
+      )
+    )}% ~ ${formatCurrency(
+      otherDisObj.reduce(
+        (acc: any, [, holdingsvalue]: any) => acc + holdingsvalue,
+        0
+      )
+    )} `,
+    data: [
+      Number(
+        formatValue(
+          otherDisObj.reduce(
+            (acc: any, [holdingdistribution]: any) => acc + holdingdistribution,
+            0
+          )
+        )
+      ),
+    ],
+    backgroundColor: darkerGray,
+    borderRadius: 7,
+  };
+
+  const datasets: any[] = [];
+
+  if (otherDisObj.length != 0 && mainDisObj.length != 0) {
+    datasets.push(mainDisObjFormatted, otherDisObjFormatted);
+  } else if (otherDisObj.length != 0 && mainDisObj.length == 0) {
+    datasets.push(otherDisObjFormatted);
+  } else if (otherDisObj.length == 0 && mainDisObj.length != 0) {
+    datasets.push(mainDisObjFormatted);
+  } else {
+    console.error(
+      "No data available in asset detailcomponent> asset details> holding chart."
+    );
+    return <p> No chart data available...</p>;
+  }
+
+  const data: ChartData<"bar"> = {
+    labels: [""],
+    datasets: datasets.flat(),
+  };
+
+  const options: ChartOptions<"bar"> = {
+    responsive: true,
+    indexAxis: "y",
+    maintainAspectRatio: false,
+    aspectRatio: 2,
+    scales: {
+      x: { stacked: true, display: false },
+      y: { stacked: true, display: false },
+    },
+    plugins: {
+      legend: {
+        position: "bottom",
+        labels: { boxWidth: 15 },
+        align: "start",
+        display: false,
+      },
+      tooltip: {
+        enabled: false,
+      },
+    },
+  };
+  return { data, options };
+};
 
 export const DrDetail = ({
   designComponents,
@@ -38,7 +221,6 @@ export const DrDetail = ({
   data: any;
   currentValue: number;
 }) => {
-  //props: designComponents, detailData
   const portfolioRebalancingData = [
     { header: "Average Entry Price", data: data.averageentryprice },
     { header: "Market Price", data: data.marketprice },
@@ -56,13 +238,13 @@ export const DrDetail = ({
   return (
     <div className="flex flex-col w-full h-full">
       <div className="flex flex-row w-full h-4/6  ">
-        <div className=" card h-full w-5/6"> </div>
+        <div className="card h-full w-5/6"> </div>
         <div className="flex flex-col h-full w-1/6">
           {portfolioRebalancingData.map((cards: any) => {
             return (
               <div
                 role="Detail Rebalancing Cards"
-                className={`${designComponents.carddesign} ml-3.5 justify-center`}
+                className={`${designComponents.carddesign} justify-center`}
                 key={cards.header}
               >
                 <p className={designComponents.headerdesign}>
@@ -90,145 +272,63 @@ export const DrDetail = ({
   );
 };
 
-export const AgDetail = (props: any) => {
-  // props: designComponents, tableStatus, assetname
-  const [activeGroup, setActiveGroup] = useState<any>(
-    props.tableStatus === "nft" ? props.data[0] : null
-  );
-
-  return (
-    <>
-      <div className="flex flex-col w-full justify-start flex-wrap ">
-        <div
-          className={`flex flex-row ml-3.5 ${
-            props.tableStatus === "nft"
-              ? "border-b-2 border-gray mb-5 pb-4"
-              : ""
-          }`}
-        >
-          {props.data.map((group: any) => {
-            return (
-              <div
-                className={`${props.designComponents.carddesign} ${
-                  activeGroup === group && props.tableStatus === "nft"
-                    ? "border border-black"
-                    : ""
-                } mr-3.5`}
-                key={group.id}
-                onClick={() => setActiveGroup(group)}
-              >
-                <div className={props.designComponents.headerdesign}>
-                  {group.name}
-                </div>
-                <div className="flex flex-row align-middle ">
-                  {props.tableStatus === "nft" ? (
-                    <p className={props.designComponents.valuedesign}>
-                      {" "}
-                      {group.nftcount} NFTs
-                    </p>
-                  ) : (
-                    <p className={props.designComponents.valuedesign}>
-                      {props.assetname}
-                    </p>
-                  )}
-                  {props.tableStatus === "nft" ? (
-                    <p className={`${props.designComponents.headerdesign}`}>
-                      {" "}
-                      ~ {formatValue(group.assetvalue)} ETH{" "}
-                    </p>
-                  ) : (
-                    <p
-                      className={`${props.designComponents.headerdesign} flex flex-row  pt-1`}
-                    >
-                      ~ {formatCurrency(group.currencyvalue)}
-                    </p>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-        {props.tableStatus === "nft" ? <ExposeNfts data={activeGroup} /> : null}
-      </div>
-    </>
-  );
-};
-
-export const HdDetail = (props: any) => {
+export const Detail = ({
+  detailData,
+  tableStatus,
+  totalAmount,
+  assetname,
+}: {
+  detailData: detailDataProps[];
+  tableStatus: string | undefined;
+  totalAmount: number;
+  assetname: string | undefined;
+}) => {
   // Proceed with building the HdDetail component to 1. render based on tableStatus 2. give the right props at datatable
   /**
    * Props needed: 1. data object containing: assetname(assetabbr), holdingdata , 2. tableStatus
    */
-  const [activeHolding, setActiveHolding] = useState<any>(
-    props.tableStatus === "nft" ? props.data[0] : null
+  const designComponents = useMemo(
+    () => ({
+      headerdesign:
+        "flex flex-row text-sm sm:text-xs md:text-xs lp:text-xs text-icongray",
+      valuedesign:
+        "font-semibold text-base mr-3 text-sm sm:text-xs md:text-xs lp:text-xs",
+    }),
+    []
   );
+  const mainDisObj: any[] = [];
+  const otherDisObj: any[] = [];
+
+  detailData.map((disObj: any) => {
+    Number(disObj.assetvalue / totalAmount) * 100 < 5
+      ? otherDisObj.push([disObj.holdingdistribution, disObj.currencyvalue])
+      : mainDisObj.push(disObj);
+  });
+
+  const barData: any = buildBar(mainDisObj, otherDisObj, totalAmount);
 
   return (
     <>
       <div className="flex flex-col justify-start">
-        <div className="flex flex-row ml-3.5 border-b-2 border-gray mb-5 pb-4 flex-wrap">
-          {props.data.map((holding: any) => {
-            return (
-              <div
-                className={`${props.designComponents.carddesign} ${
-                  activeHolding === holding && props.tableStatus === "nft"
-                    ? "border border-black"
-                    : ""
-                } mr-3.5`}
-                key={holding.id}
-                onClick={() => setActiveHolding(holding)}
-              >
-                <div className={props.designComponents.headerdesign}>
-                  <div className="mr-1.5">
-                    <HoldingLogoImageContainer
-                      url={holding.holdingurl}
-                      alt={`${holding.name} Logo in Asset Detail Component`}
-                      placeholder={"HL"}
-                    />{" "}
-                  </div>{" "}
-                  {holding.name}
-                </div>
-                <div className="flex flex-row align-middle">
-                  {props.tableStatus === "cryptocurrency" ||
-                  props.tableStatus === "derivative" ? (
-                    <>
-                      <div
-                        className={`flex flex-row ${props.designComponents.valuedesign}`}
-                      >
-                        <p>
-                          {formatValue(holding.assetvalue)} {props.assetname}{" "}
-                        </p>
-                        <p className={`${props.designComponents.headerdesign}`}>
-                          ~ {formatCurrency(holding.currencyvalue)}
-                        </p>{" "}
-                      </div>{" "}
-                    </>
-                  ) : (
-                    <>
-                      <p className={props.designComponents.valuedesign}>
-                        {" "}
-                        {holding.nftcount} NFTs{" "}
-                      </p>
-                      <p
-                        className={`${props.designComponents.headerdesign} pt-1`}
-                      >
-                        ~ {formatValue(holding.assetvalue)} ETH
-                      </p>
-                    </>
-                  )}{" "}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-        {props.tableStatus === "cryptocurrency" ? (
-          <div className="overflow-y-scroll h-36">
-            <HoldingBarChart data={props.data} />
+        <div className="flex flex-row  mb-5 pb-4 flex-wrap">
+          <div className="overflow-y-scroll w-full">
+            <div className="w-1/2 h-11 flex justify-center items-center mb-4 flex-wrap">
+              <Bar data={barData.data} options={barData.options} />
+            </div>
           </div>
-        ) : null}
-        {props.tableStatus === "nft" ? (
-          <ExposeNfts data={activeHolding} />
-        ) : null}
+          <div className="flex flex-row w-full flex-wrap gap-3">
+            <InfoCards
+              data={mainDisObj}
+              tableStatus={tableStatus}
+              designComponents={designComponents}
+              barData={barData}
+              assetname={assetname}
+            />
+          </div>
+        </div>
+        {/** 
+        {tableStatus === "nft" ? <ExposeNfts data={activeHolding} /> : null}
+        */}
       </div>
     </>
   );

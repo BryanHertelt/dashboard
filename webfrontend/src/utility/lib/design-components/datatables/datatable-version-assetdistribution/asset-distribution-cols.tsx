@@ -26,7 +26,7 @@ interface nftDataInterface {
   collectionvalueth: number;
   groupid: number;
   holdingid: number;
-  nftcount: number;
+  assetamount: number;
   notes?: string;
   portfolioid: number;
   profitloss: number;
@@ -47,7 +47,7 @@ export interface derivativesDataInterface {
   positiontype: string;
   derivativetype: string;
   leverage: number;
-  size: number;
+  asssetamount: number;
   entry: number;
   unrealizedpl: number;
   price: number;
@@ -484,10 +484,10 @@ export const dataColsNft = [
     },
   },
   {
-    accessorKey: "nftcount",
+    accessorKey: "assetamount",
     header: () => <div className={`${headerdesign} pr-5`}>Amount </div>,
     cell: ({ row }: any) => {
-      const count = parseFloat(row.getValue("nftcount"));
+      const count = parseFloat(row.getValue("assetamount"));
       return <div className={`${celldesign} pr-5`}> {count} </div>;
     },
   },

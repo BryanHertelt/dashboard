@@ -7,8 +7,7 @@ import {
 import { useDetailComponent } from "@/utility/lib/datafetching/client-refetch/client-hooks";
 import {
   DrDetail,
-  HdDetail,
-  AgDetail,
+  Detail,
 } from "@/utility/lib/build-components/asset-table-detail-components";
 import { isObject } from "@/utility/lib/helpers/helper-functions";
 import { HoldingLogoImageContainer } from "@/utility/lib/helpers/image-container";
@@ -16,6 +15,7 @@ interface TableDetailProps {
   tableStatus: string | undefined;
   assetId: number;
   currentValue: number;
+  totalAssetAmount: number;
   assetName?: string;
   assetSymbol?: string;
   assetUrl?: string;
@@ -82,7 +82,7 @@ export const TableDetailComponent = (props: TableDetailProps) => {
   } else {
     return (
       <div className="flex flex-row h-full w-full flex-wrap p-7">
-        <nav className="relative flex flex-row pl-7 w-3/4  justify-start">
+        <nav className="relative flex flex-row w-3/4  justify-start mb-3">
           <div
             className="relative flex flex-row bg-gray rounded-md lg:w-2/6 lp:w-2/6 xl:w-1/4 md:w-3/6  sm:w-4/6"
             ref={tabRef}
@@ -103,7 +103,7 @@ export const TableDetailComponent = (props: TableDetailProps) => {
                   }}
                   className={`${
                     detail === tabs[index] ? "text-white" : "text-black"
-                  } z-50 relative px-3 text-xs overflow-hidden md:text-xs text-center h-full text-black rounded-md`}
+                  } z-50 relative p-2 text-xs overflow-hidden md:text-xs text-center text-black rounded-md`}
                 >
                   {button === "DR"
                     ? "Details"
@@ -130,18 +130,18 @@ export const TableDetailComponent = (props: TableDetailProps) => {
               currentValue={props.currentValue}
             />
           ) : detail === "AG" ? (
-            <AgDetail
-              data={data.assetgroups}
+            <Detail
+              detailData={data.assetgroups}
               tableStatus={props.tableStatus}
               assetname={props.assetName}
-              designComponents={designComponents}
+              totalAmount={props.totalAssetAmount}
             />
           ) : (
-            <HdDetail
-              data={data.holdings}
+            <Detail
+              detailData={data.holdings}
               tableStatus={props.tableStatus}
               assetname={props.assetName}
-              designComponents={designComponents}
+              totalAmount={props.totalAssetAmount}
             />
           )}
         </div>

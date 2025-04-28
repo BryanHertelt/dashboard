@@ -75,6 +75,8 @@ export function DataTable<TData, TValue>({
         ? data[row.id].assetabbreviation
         : `${data[row.id].leverage}X${data[row.id].assetname}`;
 
+    const totalAssetAmount = data[row.id].assetamount;
+
     return (
       <TableDetailComponent
         tableStatus={tableStatus}
@@ -82,6 +84,7 @@ export function DataTable<TData, TValue>({
         assetName={assetName}
         assetId={data[row.id].assetid}
         assetUrl={data[row.id].symbol}
+        totalAssetAmount={data[row.id].assetamount}
       />
     );
   };
@@ -170,9 +173,7 @@ export function DataTable<TData, TValue>({
                             colSpan={columns.length + 1}
                             className="w-full"
                           >
-                            <div className="h-[75vh]">
-                              {getDetailComponent(row, tableStatus)}
-                            </div>
+                            <div>{getDetailComponent(row, tableStatus)}</div>
                           </TableCell>
                         </TableRow>
                       )}

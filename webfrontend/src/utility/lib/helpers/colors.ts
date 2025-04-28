@@ -11,15 +11,16 @@ export const darkerGray = "#D9D9D9"
 export const white = '#FFFFFF'
 
 export const chartColors = [
-  "#CBEBFF", 
-  "#A2DCFF", 
-  "#71E1FF", 
-  "#00C6FB", 
-  "#00B0F7", 
-  "#1298E6", 
-  "#3686DC", 
-  "#005CD3", 
-  "#0042AB", 
+ "#C4DDFF", 
+ "#A5CCFF", 
+ "#6DA7FF",
+ "#148AFF", 
+ "#4B5AFF", 
+ "#1447FF", 
+ "#1320A7",
+ "#0038E0", 
+ "#0023D1", 
+ "#00235B"
 ]
 
 

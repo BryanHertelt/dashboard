@@ -23,14 +23,21 @@ ChartJS.register(
 
 import { chartColors, darkerGray } from "../../helpers/colors";
 
-export const HoldingBarChart = (props: any) => {
+interface holdingProps {
+  assetvalue: number;
+  currencyvalue: number;
+  holdingdistribution: number;
+  holdingurl: string;
+  id: number;
+  name: string;
+}
+export const HoldingBarChart = ({ barData }: { barData: holdingProps[] }) => {
   const backgroundColors = chartColors;
-  console.log("props data", props.data);
 
   const mainHoldings: any[] = [];
   const otherHoldings: any[] = [];
 
-  props.data.map((holding: any) => {
+  barData.map((holding: any) => {
     holding.holdingdistribution < 5
       ? otherHoldings.push([holding.holdingdistribution, holding.currencyvalue])
       : mainHoldings.push(holding);
@@ -76,7 +83,6 @@ export const HoldingBarChart = (props: any) => {
 
   const datasets: any[] = [];
 
-  // don't forget to test this:
   if (otherHoldings.length != 0 && mainHoldings.length != 0) {
     datasets.push(mainHoldingsFormatted, otherHoldingsFormatted);
   } else if (otherHoldings.length != 0 && mainHoldings.length == 0) {
@@ -87,7 +93,7 @@ export const HoldingBarChart = (props: any) => {
     console.error(
       "No holding data available in asset detailcomponent> asset details> holding chart."
     );
-    return <p> No chart data available right now. </p>;
+    return <p> No chart data available...</p>;
   }
 
   const data: ChartData<"bar"> = {
@@ -132,7 +138,7 @@ export const HoldingBarChart = (props: any) => {
                       ? dataset.backgroundColor[0]
                       : dataset.backgroundColor,
                   }}
-                ></span>
+                />
                 <span className="text-xs text-icongray mb-3">
                   {dataset.label}
                 </span>

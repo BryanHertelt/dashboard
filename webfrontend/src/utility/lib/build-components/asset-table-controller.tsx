@@ -12,7 +12,7 @@ const AssetTableController = ({
   filterType: Record<string, boolean>;
 }) => {
   const [tableData, setTableData] = useState(tableConfig.initial);
-  const [expandedRow, setExpandedRow] = useState<number | null>(null);
+  const [expandedRow, setExpandedRow] = useState<number | null>(0);
 
   useEffect(() => {
     let filtered = tableConfig.initial.filter((asset: any) => {
@@ -40,7 +40,7 @@ const AssetTableController = ({
     }
 
     setTableData(filtered);
-    setExpandedRow(null);
+    setExpandedRow(0);
   }, [tableStatus, filterType, tableConfig.initial]);
 
   const col = useMemo(() => {
