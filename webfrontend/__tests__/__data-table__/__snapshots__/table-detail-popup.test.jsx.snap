@@ -3,7 +3,7 @@
 exports[`Derivative State does not do unexpected UI changes 1`] = `
 <div>
   <div
-    class="flex flex-row h-full w-full flex-wrap"
+    class="flex flex-row h-full w-full flex-wrap p-7"
   >
     <p
       class="p-4 ml-4 text-icongray"
@@ -11,7 +11,7 @@ exports[`Derivative State does not do unexpected UI changes 1`] = `
       Asset Group Distribution
     </p>
     <div
-      class=" w-full "
+      class=" w-full h-full"
     />
   </div>
 </div>

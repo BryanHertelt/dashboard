@@ -12,164 +12,34 @@ exports[`FoldedSideBar Component matches snapshot 1`] = `
     </li>
     <li
       class="flex justify-center"
-    >
-      <a
-        class="flex flex-row mt-1 py-1 justify-center align-middle pl-2 text-icongray hover:bg-blue hover:text-white hover:w-6/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md"
-        href="/tracker/dashboard"
-      >
-        <div
-          class="mt-1 mr-2 text-2xl h-full self-center"
-        >
-          <div
-            data-testid="icon-1"
-          />
-        </div>
-      </a>
-    </li>
+    />
     <li
       class="flex justify-center"
-    >
-      <a
-        class="flex flex-row mt-1 py-1 justify-center align-middle pl-2 text-icongray hover:bg-blue hover:text-white hover:w-6/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md"
-        href="/tracker/assetdistribution"
-      >
-        <div
-          class="mt-1 mr-2 text-2xl h-full self-center"
-        >
-          <div
-            data-testid="icon-2"
-          />
-        </div>
-      </a>
-    </li>
+    />
     <li
       class="flex justify-center"
-    >
-      <a
-        class="flex flex-row mt-1 py-1 justify-center align-middle pl-2 text-icongray hover:bg-blue hover:text-white hover:w-6/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md"
-        href="/tracker/defi"
-      >
-        <div
-          class="mt-1 mr-2 text-2xl h-full self-center"
-        >
-          <div
-            data-testid="icon-3"
-          />
-        </div>
-      </a>
-    </li>
+    />
     <li
       class="flex justify-center"
-    >
-      <a
-        class="flex flex-row mt-1 py-1 justify-center align-middle pl-2 text-icongray hover:bg-blue hover:text-white hover:w-6/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md"
-        href="/tracker/transactions"
-      >
-        <div
-          class="mt-1 mr-2 text-2xl h-full self-center"
-        >
-          <div
-            data-testid="icon-4"
-          />
-        </div>
-      </a>
-    </li>
+    />
     <li
       class="flex justify-center"
-    >
-      <a
-        class="flex flex-row mt-1 py-1 justify-center align-middle pl-2 text-icongray hover:bg-blue hover:text-white hover:w-6/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md"
-        href="/tracker/explorer"
-      >
-        <div
-          class="mt-1 mr-2 text-2xl h-full self-center"
-        >
-          <div
-            data-testid="icon-5"
-          />
-        </div>
-      </a>
-    </li>
+    />
     <li
       class="flex justify-center"
-    >
-      <a
-        class="flex flex-row mt-1 py-1 justify-center align-middle pl-2 text-icongray hover:bg-blue hover:text-white hover:w-6/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md"
-        href="/tracker/nfts"
-      >
-        <div
-          class="mt-1 mr-2 text-2xl h-full self-center"
-        >
-          <div
-            data-testid="icon-6"
-          />
-        </div>
-      </a>
-    </li>
+    />
     <li
       class="flex justify-center"
-    >
-      <a
-        class="flex flex-row mt-1 py-1 justify-center align-middle pl-2 text-icongray hover:bg-blue hover:text-white hover:w-6/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md"
-        href="/tracker/derivatives"
-      >
-        <div
-          class="mt-1 mr-2 text-2xl h-full self-center"
-        >
-          <div
-            data-testid="icon-7"
-          />
-        </div>
-      </a>
-    </li>
+    />
     <li
       class="flex justify-center"
-    >
-      <a
-        class="flex flex-row mt-1 py-1 justify-center align-middle pl-2 text-icongray hover:bg-blue hover:text-white hover:w-6/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md"
-        href="/tracker/snapshots"
-      >
-        <div
-          class="mt-1 mr-2 text-2xl h-full self-center"
-        >
-          <div
-            data-testid="icon-8"
-          />
-        </div>
-      </a>
-    </li>
+    />
     <li
       class="flex justify-center"
-    >
-      <a
-        class="flex flex-row mt-1 py-1 justify-center align-middle pl-2 text-icongray hover:bg-blue hover:text-white hover:w-6/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md"
-        href="/tracker/watchlist"
-      >
-        <div
-          class="mt-1 mr-2 text-2xl h-full self-center"
-        >
-          <div
-            data-testid="icon-9"
-          />
-        </div>
-      </a>
-    </li>
+    />
     <li
       class="flex justify-center"
-    >
-      <a
-        class="flex flex-row mt-1 py-1 justify-center align-middle pl-2 text-icongray hover:bg-blue hover:text-white hover:w-6/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md"
-        href="/tracker/reports"
-      >
-        <div
-          class="mt-1 mr-2 text-2xl h-full self-center"
-        >
-          <div
-            data-testid="icon-10"
-          />
-        </div>
-      </a>
-    </li>
+    />
     <li
       class="text-sm font-light text-gray-400 pl-3 mt-5"
     >
@@ -177,52 +47,13 @@ exports[`FoldedSideBar Component matches snapshot 1`] = `
     </li>
     <li
       class="flex justify-center"
-    >
-      <a
-        class="flex flex-row mt-1 py-1 justify-center align-middle pl-2 text-icongray hover:bg-blue hover:text-white hover:w-6/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md"
-        href="/tracker/help"
-      >
-        <div
-          class="mt-1 mr-2 text-2xl h-full self-center"
-        >
-          <div
-            data-testid="icon-11"
-          />
-        </div>
-      </a>
-    </li>
+    />
     <li
       class="flex justify-center"
-    >
-      <a
-        class="flex flex-row mt-1 py-1 justify-center align-middle pl-2 text-icongray hover:bg-blue hover:text-white hover:w-6/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md"
-        href="/tracker/settings"
-      >
-        <div
-          class="mt-1 mr-2 text-2xl h-full self-center"
-        >
-          <div
-            data-testid="icon-12"
-          />
-        </div>
-      </a>
-    </li>
+    />
     <li
       class="flex justify-center"
-    >
-      <a
-        class="flex flex-row mt-1 py-1 justify-center align-middle pl-2 text-icongray hover:bg-blue hover:text-white hover:w-6/12 hover:rounded-md focus:bg-blue focus:text-white focus:rounded-md"
-        href="/tracker/getsupport"
-      >
-        <div
-          class="mt-1 mr-2 text-2xl h-full self-center"
-        >
-          <div
-            data-testid="icon-13"
-          />
-        </div>
-      </a>
-    </li>
+    />
   </ul>
 </div>
 `;

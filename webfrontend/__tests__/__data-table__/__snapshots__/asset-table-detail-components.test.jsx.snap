@@ -515,13 +515,10 @@ exports[`HdDetail renders cryptocurrency state properly does not change unexpect
         <div
           class="flex flex-row align-middle"
         >
-           
           <div
             class="flex flex-row font-semibold text-base mr-3"
           >
-             
             <p>
-               
               97814.00
                
               BTC
@@ -556,13 +553,10 @@ exports[`HdDetail renders cryptocurrency state properly does not change unexpect
         <div
           class="flex flex-row align-middle"
         >
-           
           <div
             class="flex flex-row font-semibold text-base mr-3"
           >
-             
             <p>
-               
               4028.68
                
               BTC
@@ -597,13 +591,10 @@ exports[`HdDetail renders cryptocurrency state properly does not change unexpect
         <div
           class="flex flex-row align-middle"
         >
-           
           <div
             class="flex flex-row font-semibold text-base mr-3"
           >
-             
             <p>
-               
               6646.08
                
               BTC
@@ -638,13 +629,10 @@ exports[`HdDetail renders cryptocurrency state properly does not change unexpect
         <div
           class="flex flex-row align-middle"
         >
-           
           <div
             class="flex flex-row font-semibold text-base mr-3"
           >
-             
             <p>
-               
               4048.68
                
               BTC

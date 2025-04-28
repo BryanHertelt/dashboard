@@ -13,7 +13,6 @@ export function cn(...inputs: ClassValue[]) {
  */
 export const formatCurrency = (number: number): string => {
   if (isNaN(Number(number))) {
-    console.log("Type error in formatCurrency");
     return "--";
   }
 
@@ -39,7 +38,6 @@ export const formatCurrency = (number: number): string => {
  */
 export const formatValue = (number: number): string | undefined => {
   if (isNaN(Number(number.toString().replace(",", ".")))) {
-    console.log("Type error in formatValue");
     return "--";
   }
 

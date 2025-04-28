@@ -1,4 +1,5 @@
 import { useMemo, useState, useRef, useEffect } from "react";
+import useResizeObserver from "use-resize-observer";
 import AssetTableController from "./asset-table-controller";
 
 type StatusItem<StatusKey extends string> = {
@@ -39,30 +40,16 @@ const AssetTableComponent = <StatusKey extends string>({
   const [tableStatus, setTableStatus] = useState<string>(
     config.status[0].status
   );
-  const tabRef = useRef<HTMLDivElement | null>(null);
   const [tabWidth, setTabWidth] = useState<number>(0);
   const [currentTab, setCurrentTab] = useState<number>(0);
 
-  const updateWidth = () => {
-    if (tabRef.current) {
-      const parentWidth = tabRef.current.getBoundingClientRect().width;
-      const numberOfButtons = config.status.length;
-      const newButtonWidth = parentWidth / numberOfButtons;
-      setTabWidth(newButtonWidth);
-    }
-  };
-
-  useEffect(() => {
-    const resizeObserver = new ResizeObserver(updateWidth);
-    if (tabRef.current) {
-      resizeObserver.observe(tabRef.current);
-    }
-    return () => {
-      if (tabRef.current) {
-        resizeObserver.unobserve(tabRef.current);
+  const { ref: tabRef } = useResizeObserver<HTMLDivElement>({
+    onResize: ({ width }) => {
+      if (width) {
+        setTabWidth(width / config.status.length);
       }
-    };
-  }, [config.status.length]);
+    },
+  });
 
   const defaultFilterObject = useMemo(() => {
     return config.filter.reduce((acc, curr) => {

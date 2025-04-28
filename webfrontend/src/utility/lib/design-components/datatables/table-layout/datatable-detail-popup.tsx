@@ -1,4 +1,5 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
+import useResizeObserver from "use-resize-observer";
 import {
   ErrorSkeleton,
   LoadingSkeleton,
@@ -32,10 +33,19 @@ interface TableDetailProps {
  * @returns The detailled popup, when expanding a datatable row.
  */
 export const TableDetailComponent = (props: TableDetailProps) => {
+  const tS = props.tableStatus;
   const [detail, setDetail] = useState<string>(
-    props.tableStatus === "cryptocurrency" ? "DR" : "AG"
+    tS === "cryptocurrency" ? "DR" : "AG"
   );
-
+  let tabs = ["DR", "AG", "HD"];
+  if (tS == "nft") {
+    tabs = ["AG", "HD"];
+  }
+  if (tS == "derivative") {
+    tabs = ["AG"];
+  }
+  const [tabWidth, setTabWidth] = useState<number>(0);
+  const [currentTab, setCurrentTab] = useState<number>(0);
   const { data, isLoading, isError } = useDetailComponent(props);
   const designComponents = useMemo(
     () => ({
@@ -48,6 +58,14 @@ export const TableDetailComponent = (props: TableDetailProps) => {
     }),
     []
   );
+
+  const { ref: tabRef } = useResizeObserver<HTMLDivElement>({
+    onResize: ({ width }) => {
+      if (width) {
+        setTabWidth(width / tabs.length);
+      }
+    },
+  });
 
   if (isLoading) {
     return <LoadingSkeleton />;
@@ -64,55 +82,46 @@ export const TableDetailComponent = (props: TableDetailProps) => {
   } else {
     return (
       <div className="flex flex-row h-full w-full flex-wrap p-7">
-        {props.tableStatus === "derivative" ? (
-          <p className="p-4 ml-4 text-icongray">Asset Group Distribution</p>
-        ) : (
-          <nav className="flex flex-row justify-start items-center w-full border border-blue h-12">
-            <div className="relative flex flex-row m-1 mb-2.5 p-1 pr-1 ml-3.5 rounded-md md:w-8/12 sm:w-8/12 lp:w-4/12">
-              <div
-                role="Rebalancing-Switcher"
-                className={`absolute bg-blue z-10 transition-transform duration-200 ease-in-out rounded-md text-white flex items-center justify-center ${
-                  detail === "HD" ? "translate-x-full" : "translate-x-0"
-                } sm:w-3/12 md:w-3/12 lp:w-4/12 h-10`}
-              />
-              <button
-                className="relative z-5 bg-gray text-center sm:w-3/12 md:w-3/12 lp:w-4/12 md:text-xs lp:text-xs h-10 rounded-l-md p-2 sm:text-xs"
-                onClick={() => {
-                  setDetail(
-                    props.tableStatus === "cryptocurrency" ? "DR" : "AG"
-                  );
-                }}
-              >
-                <p
-                  className={`relative z-10 ${
-                    detail === "DR" || detail === "AG"
-                      ? "text-white"
-                      : "text-black"
-                  }`}
+        <nav className="relative flex flex-row pl-7 w-3/4  justify-start">
+          <div
+            className="relative flex flex-row bg-gray rounded-md lg:w-2/6 lp:w-2/6 xl:w-1/4 md:w-3/6  sm:w-4/6"
+            ref={tabRef}
+          >
+            {tabs.map((button: string, index) => {
+              return (
+                <button
+                  key={button}
+                  style={{ width: tabWidth }}
+                  onClick={() => {
+                    const foundTab: any = tabs.find(
+                      (detail) => detail === button
+                    );
+                    if (foundTab) {
+                      setCurrentTab(tabs.indexOf(foundTab));
+                    }
+                    setDetail(tabs[index]);
+                  }}
+                  className={`${
+                    detail === tabs[index] ? "text-white" : "text-black"
+                  } z-50 relative px-3 text-xs overflow-hidden md:text-xs text-center h-full text-black rounded-md`}
                 >
-                  {props.tableStatus === "cryptocurrency"
+                  {button === "DR"
                     ? "Details"
-                    : "Asset Groups"}
-                </p>
-              </button>
-              {/* Right button */}
-              <button
-                className="relative z-5 text-center md:text-xs lp:text-xs h-10 bg-gray rounded-r-md p-2 sm:text-xs sm:w-3/12 md:w-3/12 lp:w-4/12"
-                onClick={() => {
-                  setDetail("HD");
-                }}
-              >
-                <p
-                  className={`relative z-10 ${
-                    detail === "HD" ? "text-white" : "text-black"
-                  }`}
-                >
-                  Holdings
-                </p>
-              </button>
-            </div>
-          </nav>
-        )}
+                    : button === "HD"
+                    ? "Holdings"
+                    : "Asset-Groups"}
+                </button>
+              );
+            })}
+            <div
+              className="absolute z-5 inset-0 bg-blue rounded-md transition-all "
+              style={{
+                width: tabWidth,
+                translate: `${currentTab * tabWidth}px 0px`,
+              }}
+            />
+          </div>
+        </nav>
         <div className=" w-full h-full">
           {detail === "DR" ? (
             <DrDetail
