@@ -1,25 +1,44 @@
 import '@testing-library/jest-dom'
 import AssetTableComponent from "../../src/utility/lib/build-components/asset-table-component"
-import { render, screen, fireEvent, waitFor} from "@testing-library/react"
+import { render, screen, fireEvent, waitFor, act} from "@testing-library/react"
 import { dataColsCurrency, dataColsDerivative, dataColsNft } from '../../src/utility/lib/design-components/datatables/datatable-version-assetdistribution/asset-distribution-cols'
-
 import AssetTableController from '../../src/utility/lib/build-components/asset-table-controller'
+import useResizeObserver from 'use-resize-observer'
 
-
-// Place this at the top of your test file (before describe)
-class MockResizeObserver {
-  observe = jest.fn();
-  unobserve = jest.fn();
-  disconnect = jest.fn();
-}
-
-// Assign to global so it's available before render
-global.ResizeObserver = MockResizeObserver;
 
 jest.mock("../../src/utility/lib/build-components/asset-table-controller", () => ({
   __esModule: true,
   default: jest.fn(()=> <div data-test-id="mock-assettable-controller"> Mock </div>)
 }));
+
+observeMock = jest.fn();
+unobserveMock = jest.fn();
+
+beforeEach(() => {
+
+  global.ResizeObserver = jest.fn().mockImplementation((cb) => {
+    resizeCallback = cb; // Capture the callback
+    return {
+      observe: observeMock,
+      unobserve: unobserveMock,
+      disconnect: jest.fn(),
+    };
+  });
+
+  // Mock getBoundingClientRect to return a custom width
+  Element.prototype.getBoundingClientRect = jest.fn(() => ({
+    width: 600, 
+    height: 0,
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    x: 0,
+    y: 0,
+    toJSON: () => {},
+  }));
+});
+
 
 const mockInitial = [
     {
@@ -257,12 +276,31 @@ describe("AssetTableComponent initialises AssetTableController", () => {
       ]);
     })
     })
-    it("should observe the tab container with ResizeObserver", () => {
-      const observeSpy = jest.spyOn(MockResizeObserver.prototype, "observe");
-    
-      render(<AssetTableComponent config={config} />);
-    
-      expect(observeSpy).toHaveBeenCalled();
-    });
-    
     })
+
+
+
+    describe("AssetTableComponent - tabRef and ResizeObserver", () => {
+      it("should assign tabRef and calculate tabWidth on mount", async() => {
+        render(<AssetTableComponent config={tableConfig} />);
+  
+        const navDiv = screen.getByRole("navigation").querySelector("div");
+    
+        act(() => {
+          resizeCallback([
+            {
+              target: navDiv,
+              contentRect: { width: 500 }, 
+            },
+          ], {});
+        });
+    
+        await waitFor(() => {
+          const btnNames = [{name: /Currencies/i}, {name: /NFTs/i},{name: /Derivatives/i}]
+          const btns = btnNames.map((buttonSelector) => screen.getByRole("button", buttonSelector))
+          btns.forEach((btn) => {
+            expect(btn).toHaveStyle("width: 166.66666666666666px"); 
+          });
+        });
+      }); 
+    });

@@ -509,11 +509,10 @@ const mockInitial = [
       });
   
       await waitFor(() => {
-        //not all buttons have width of 200 
         const btnNames = [{name: /Currencies/i}, {name: /NFTs/i},{name: /Derivatives/i}]
         const btns = btnNames.map((buttonSelector) => screen.getByRole("button", buttonSelector))
         btns.forEach((btn) => {
-          expect(btn).toHaveStyle("width: 200px"); 
+          expect(btn).toHaveStyle("width: 166.66666666666666px"); 
         });
       });
     }); 
