@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef, useEffect } from "react";
+import { useState, useMemo, useRef, useEffect, useCallback } from "react";
 import useResizeObserver from "use-resize-observer";
 import {
   ErrorSkeleton,
@@ -34,16 +34,21 @@ interface TableDetailProps {
  */
 export const TableDetailComponent = (props: TableDetailProps) => {
   const tS = props.tableStatus;
+  const [activeDisObj, setActiveDisObj] = useState<number | null>(null);
   const [detail, setDetail] = useState<string>(
     tS === "cryptocurrency" ? "DR" : "AG"
   );
-  let tabs = ["DR", "AG", "HD"];
-  if (tS == "nft") {
-    tabs = ["AG", "HD"];
-  }
-  if (tS == "derivative") {
-    tabs = ["AG"];
-  }
+  const tabs = useMemo(() => {
+    switch (tS) {
+      case "nft":
+        return ["AG", "HD"];
+      case "derivative":
+        return ["AG"];
+      default:
+        return ["DR", "AG", "HD"];
+    }
+  }, [tS]);
+
   const [tabWidth, setTabWidth] = useState<number>(0);
   const [currentTab, setCurrentTab] = useState<number>(0);
   const { data, isLoading, isError } = useDetailComponent(props);
@@ -58,7 +63,17 @@ export const TableDetailComponent = (props: TableDetailProps) => {
     }),
     []
   );
-
+  const handleTabSwitch = useCallback((index: number, button: string) => {
+    {
+      setActiveDisObj(null);
+      const foundTab: any = tabs.find((detail) => detail === button);
+      if (foundTab) {
+        setCurrentTab(tabs.indexOf(foundTab));
+      }
+      setDetail(tabs[index]);
+    }
+  }, []);
+  console.log("data", data);
   const { ref: tabRef } = useResizeObserver<HTMLDivElement>({
     onResize: ({ width }) => {
       if (width) {
@@ -69,6 +84,9 @@ export const TableDetailComponent = (props: TableDetailProps) => {
 
   if (isLoading) {
     return <LoadingSkeleton />;
+  }
+
+  if (props.tableStatus === "derivative") {
   }
 
   if (isError) {
@@ -92,15 +110,7 @@ export const TableDetailComponent = (props: TableDetailProps) => {
                 <button
                   key={button}
                   style={{ width: tabWidth }}
-                  onClick={() => {
-                    const foundTab: any = tabs.find(
-                      (detail) => detail === button
-                    );
-                    if (foundTab) {
-                      setCurrentTab(tabs.indexOf(foundTab));
-                    }
-                    setDetail(tabs[index]);
-                  }}
+                  onClick={() => handleTabSwitch(index, button)}
                   className={`${
                     detail === tabs[index] ? "text-white" : "text-black"
                   } z-50 relative p-2 text-xs overflow-hidden md:text-xs text-center text-black rounded-md`}
@@ -135,6 +145,11 @@ export const TableDetailComponent = (props: TableDetailProps) => {
               tableStatus={props.tableStatus}
               assetname={props.assetName}
               totalAmount={props.totalAssetAmount}
+              changeActiveDisObj={(activeDisObj: number | null) =>
+                setActiveDisObj(activeDisObj)
+              }
+              activeDisObj={activeDisObj}
+              sltp={props.tableStatus === "derivative" ? data.sltp : []}
             />
           ) : (
             <DisDetail
@@ -142,6 +157,10 @@ export const TableDetailComponent = (props: TableDetailProps) => {
               tableStatus={props.tableStatus}
               assetname={props.assetName}
               totalAmount={props.totalAssetAmount}
+              changeActiveDisObj={(activeDisObj: number | null) =>
+                setActiveDisObj(activeDisObj)
+              }
+              activeDisObj={activeDisObj}
             />
           )}
         </div>

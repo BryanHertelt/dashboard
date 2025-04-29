@@ -1,8 +1,9 @@
 import { formatValue } from "./helper-functions";
 import { NftDetailImageContainer } from "./image-container";
 
-export const ExposeNfts = (props: any) => {
-  const distributionElement = props.data;
+export const ExposeNfts = ({ data }: { data: any }) => {
+  console.log("data", data);
+  const distributionElement = data;
   return (
     <div
       key={distributionElement.id}

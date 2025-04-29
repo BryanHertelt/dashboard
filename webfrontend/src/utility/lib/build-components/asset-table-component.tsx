@@ -5,6 +5,7 @@ import AssetTableController from "./asset-table-controller";
 type StatusItem<StatusKey extends string> = {
   status: StatusKey;
   statusTitle: string;
+  column: object;
 };
 
 type FilterItem<StatusKey extends string> = {
@@ -21,14 +22,24 @@ type AssetTableConfig<StatusKey extends string> = {
   filter: FilterItem<StatusKey>[];
 };
 
-const AssetTableComponent = <StatusKey extends string>({
+/**
+ *The AssetTableComponent generates the navigation for more complex datatables.
+ * @param config The config object holds the settings for the datatable component, including the following configurations:
+ * title: title of the data-table
+ * intial: initial data,
+ * detail: boolean => wether a detail page is available or not
+ * status: array of objects, each object holding the status(used for implementation), statusTitle(rendered on the status buttons), columns(which should be displayed when selecting this status)
+ * filter: array of objects, each object holding the filter (used for implementation), statusTitle(rendered on the filter button), filterStatus(the table status where the filter should be visible)
+ * @returns A UI giving the possibility to trigger filter or status change functions and the Asset Table Controller.
+ */
+const AssetTableComponent = ({
   config,
 }: {
   config: {
     title: string;
     initial: any;
     detail: boolean;
-    status: { status: string; statusTitle: string; columns: Object }[];
+    status: { status: string; statusTitle: string; columns: object }[];
     filter: {
       filter: string;
       filterTitle: string;
@@ -61,6 +72,11 @@ const AssetTableComponent = <StatusKey extends string>({
   const [filter, setFilter] =
     useState<Record<string, boolean>>(defaultFilterObject);
 
+  /**
+   *
+   * @param status - containing information about the status
+   * @returns
+   */
   const StatusButtons = ({
     status,
     label,

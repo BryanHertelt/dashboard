@@ -11,12 +11,12 @@ export function cn(...inputs: ClassValue[]) {
  * @param number
  * @returns Currency value  based on US format rules.
  */
-export const formatCurrency = (number: number): string => {
-  if (isNaN(Number(number))) {
+export const formatCurrency = (number: number | null): string => {
+  if (isNaN(Number(number)) || number === null) {
     return "--";
   }
 
-  let num = Number(number.toString().replace(",", "."));
+  let num = Number(number?.toString().replace(",", "."));
   const roundedNumber = Number(num.toFixed(2));
 
   if (num > 0 && num < 1) {
