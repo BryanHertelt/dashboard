@@ -7,7 +7,7 @@ import {
 import { useDetailComponent } from "@/utility/lib/datafetching/client-refetch/client-hooks";
 import {
   DrDetail,
-  Detail,
+  DisDetail,
 } from "@/utility/lib/build-components/asset-table-detail-components";
 import { isObject } from "@/utility/lib/helpers/helper-functions";
 import { HoldingLogoImageContainer } from "@/utility/lib/helpers/image-container";
@@ -84,7 +84,7 @@ export const TableDetailComponent = (props: TableDetailProps) => {
       <div className="flex flex-row h-full w-full flex-wrap p-7">
         <nav className="relative flex flex-row w-3/4  justify-start mb-3">
           <div
-            className="relative flex flex-row bg-gray rounded-md lg:w-2/6 lp:w-2/6 xl:w-1/4 md:w-3/6  sm:w-4/6"
+            className="relative flex flex-row bg-gray rounded-md lg:w3/6 lp:w-3/6 xl:w-1/4 md:w-4/6  sm:w-4/6"
             ref={tabRef}
           >
             {tabs.map((button: string, index) => {
@@ -130,14 +130,14 @@ export const TableDetailComponent = (props: TableDetailProps) => {
               currentValue={props.currentValue}
             />
           ) : detail === "AG" ? (
-            <Detail
+            <DisDetail
               detailData={data.assetgroups}
               tableStatus={props.tableStatus}
               assetname={props.assetName}
               totalAmount={props.totalAssetAmount}
             />
           ) : (
-            <Detail
+            <DisDetail
               detailData={data.holdings}
               tableStatus={props.tableStatus}
               assetname={props.assetName}

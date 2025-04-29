@@ -45,140 +45,94 @@ const InfoCards = ({
   barData,
   assetname,
 }: {
-  data: any;
+  data: any[];
   tableStatus: string | undefined;
   designComponents: { headerdesign: string; valuedesign: string };
   barData: { data: any; options: any };
   assetname: string | undefined;
 }) => {
-  {
-    return data.map((disObj: any, index: number) => {
-      return (
-        <div
-          className={` flex flex-col flex-grow justify-around card mb-2 w-1/4 py-3 px-3 sm:h-20 md:h-20 lp:h-16 lg:h-16 xl:h-16`}
-          key={disObj.id}
-        >
-          <div className="flex flex-row justify-between">
-            <div className={designComponents.headerdesign}>
-              <div className="mr-1.5">
-                <HoldingLogoImageContainer
-                  url={disObj.url}
-                  alt={`${disObj.name} Logo in Asset Detail Component`}
-                  placeholder={"HL"}
-                />{" "}
-              </div>{" "}
-              {disObj.name}
-            </div>
-            <span
-              className="w-4 h-4 rounded-sm"
-              style={{
-                backgroundColor: Array.isArray(
-                  barData.data.datasets[index].backgroundColor
-                )
-                  ? barData.data.datasets[index].backgroundColor[0]
-                  : barData.data.datasets[index].backgroundColor,
-              }}
-            />
+  return data.map((disObj: any, index: number) => {
+    return (
+      <div
+        className={` flex flex-col flex-grow justify-around card mb-2 w-1/4 py-3 px-3 sm:h-20 md:h-20 lp:h-16 lg:h-16 xl:h-16`}
+        key={disObj.id}
+      >
+        <div className="flex flex-row justify-between">
+          <div className={designComponents.headerdesign}>
+            <div className="mr-1.5">
+              <HoldingLogoImageContainer
+                url={disObj.url}
+                alt={`${disObj.name} Logo in Asset Detail Component`}
+                placeholder={"HL"}
+              />{" "}
+            </div>{" "}
+            {disObj.name}
           </div>
-          <div className="flex flex-row align-middle">
-            {tableStatus === "cryptocurrency" ||
-            tableStatus === "derivative" ? (
-              <>
-                <div
-                  className={`flex flex-row ${designComponents.valuedesign}`}
-                >
-                  <p className="mr-1">
-                    {formatValue(disObj.assetvalue)} {assetname}{" "}
-                  </p>
-                  <p
-                    className={`${designComponents.headerdesign} border-r-2 mr-1 pr-1 font-normal`}
-                  >
-                    ~ {formatCurrency(disObj.currencyvalue)}
-                  </p>{" "}
-                  <p className={`${designComponents.headerdesign} font-normal`}>
-                    {" "}
-                    {formatValue(Number(barData.data.datasets[index].data))}%
-                  </p>
-                </div>{" "}
-              </>
-            ) : (
-              <>
-                <p className={designComponents.valuedesign}>
-                  {" "}
-                  {disObj.assetvalue} NFTs{" "}
-                </p>
-                <p
-                  className={`${designComponents.headerdesign} border-r-2 pr-1 mr-1`}
-                >
-                  ~ {formatValue(disObj.currencyvalue)} ETH
-                </p>
-                <p className={`${designComponents.headerdesign} font-normal`}>
-                  {" "}
-                  {formatValue(Number(barData.data.datasets[index].data))}%
-                </p>
-              </>
-            )}
-          </div>
+          <span
+            className="w-4 h-4 rounded-sm"
+            style={{
+              backgroundColor: Array.isArray(
+                barData.data.datasets[index].backgroundColor
+              )
+                ? barData.data.datasets[index].backgroundColor[0]
+                : barData.data.datasets[index].backgroundColor,
+            }}
+          />
         </div>
-      );
-    });
-  }
+        <div className="flex flex-row align-middle">
+          <>
+            <div className={`flex flex-row ${designComponents.valuedesign}`}>
+              <p className="mr-1">
+                {tableStatus === "nft"
+                  ? `${disObj.assetvalue} NFTs`
+                  : `${formatValue(disObj.assetvalue)} ${assetname}`}
+              </p>
+              <p
+                className={`${designComponents.headerdesign} border-r-2 mr-1 pr-1 font-normal`}
+              >
+                ~{" "}
+                {tableStatus === "nft"
+                  ? `${formatValue(disObj.currencyvalue)} ETH`
+                  : formatCurrency(disObj.currencyvalue)}
+              </p>{" "}
+              <p className={`${designComponents.headerdesign} font-normal`}>
+                {" "}
+                {formatValue(Number(barData.data.datasets[index].data))}%
+              </p>
+            </div>{" "}
+          </>
+        </div>
+      </div>
+    );
+  });
 };
 
-const buildBar = (mainDisObj: any, otherDisObj: any, totalAmount: number) => {
+const buildBar = (cardData: any[], totalAmount: number) => {
   const backgroundColors = chartColors;
-  const mainDisObjFormatted = mainDisObj.map((disObj: any, index: number) => {
+  const cardDataFormatted = cardData.map((disObj: any, index: number) => {
     return {
       label: ` `,
       data: [Number(disObj.assetvalue / totalAmount) * 100],
-      backgroundColor: backgroundColors[index % backgroundColors.length],
+      backgroundColor:
+        disObj.name === "Others"
+          ? darkerGray
+          : backgroundColors[index % backgroundColors.length],
       borderColor: "rgba(0, 26, 66, 1)",
       borderWidth: 0,
       borderRadius: 7,
     };
   });
 
-  const otherDisObjFormatted = {
-    label: `Other Holdings: ${formatValue(
-      otherDisObj.reduce(
-        (acc: any, [holdingdistribution]: any) => acc + holdingdistribution,
-        0
-      )
-    )}% ~ ${formatCurrency(
-      otherDisObj.reduce(
-        (acc: any, [, holdingsvalue]: any) => acc + holdingsvalue,
-        0
-      )
-    )} `,
-    data: [
-      Number(
-        formatValue(
-          otherDisObj.reduce(
-            (acc: any, [holdingdistribution]: any) => acc + holdingdistribution,
-            0
-          )
-        )
-      ),
-    ],
-    backgroundColor: darkerGray,
-    borderRadius: 7,
-  };
-
   const datasets: any[] = [];
 
-  if (otherDisObj.length != 0 && mainDisObj.length != 0) {
-    datasets.push(mainDisObjFormatted, otherDisObjFormatted);
-  } else if (otherDisObj.length != 0 && mainDisObj.length == 0) {
-    datasets.push(otherDisObjFormatted);
-  } else if (otherDisObj.length == 0 && mainDisObj.length != 0) {
-    datasets.push(mainDisObjFormatted);
+  if (cardDataFormatted.length != 0) {
+    datasets.push(cardDataFormatted);
   } else {
     console.error(
       "No data available in asset detailcomponent> asset details> holding chart."
     );
     return <p> No chart data available...</p>;
   }
-
   const data: ChartData<"bar"> = {
     labels: [""],
     datasets: datasets.flat(),
@@ -272,7 +226,7 @@ export const DrDetail = ({
   );
 };
 
-export const Detail = ({
+export const DisDetail = ({
   detailData,
   tableStatus,
   totalAmount,
@@ -301,12 +255,25 @@ export const Detail = ({
 
   detailData.map((disObj: any) => {
     Number(disObj.assetvalue / totalAmount) * 100 < 5
-      ? otherDisObj.push([disObj.holdingdistribution, disObj.currencyvalue])
+      ? otherDisObj.push(disObj)
       : mainDisObj.push(disObj);
   });
 
-  const barData: any = buildBar(mainDisObj, otherDisObj, totalAmount);
+  const otherObj = [
+    otherDisObj.reduce(
+      (acc: any, curr: any) => {
+        acc.assetvalue += curr.assetvalue;
+        acc.currencyvalue += curr.currencyvalue;
+        return acc;
+      },
+      { name: "Others", id: 89, assetvalue: 0, currencyvalue: 0 }
+    ),
+  ];
 
+  const cardData =
+    otherDisObj.length != 0 ? [...mainDisObj, otherObj].flat() : mainDisObj;
+
+  const barData: any = buildBar(cardData, totalAmount);
   return (
     <>
       <div className="flex flex-col justify-start">
@@ -318,7 +285,7 @@ export const Detail = ({
           </div>
           <div className="flex flex-row w-full flex-wrap gap-3">
             <InfoCards
-              data={mainDisObj}
+              data={cardData}
               tableStatus={tableStatus}
               designComponents={designComponents}
               barData={barData}
