@@ -106,7 +106,7 @@ const InfoCards = ({
         </div>
         <div className="flex flex-row align-middle">
           <>
-            <div className={`flex flex-row ${designComponents.valuedesign}`}>
+            <div className={`flex flex-row ${designComponents.valuedesign} `}>
               <p className="mr-1">
                 {tableStatus === "nft"
                   ? `${disObj.assetvalue} NFTs`
@@ -120,7 +120,7 @@ const InfoCards = ({
                   ? `${formatValue(disObj.currencyvalue)} ETH`
                   : formatCurrency(disObj.currencyvalue)}
               </p>{" "}
-              <p className={`${designComponents.headerdesign} font-normal`}>
+              <p className={`${designComponents.headerdesign} font-normal `}>
                 {" "}
                 {formatValue(Number(barData.data.datasets[index].data))}%
               </p>
@@ -184,6 +184,7 @@ const buildBar = (cardData: any[], totalAmount: number) => {
       },
     },
   };
+  console.log("data", data);
   return { data, options };
 };
 
@@ -282,24 +283,29 @@ const DerivativeComponent = ({
         </p>
       </span>
       <p className="mb-2"> Partial SL/TP: </p>
-      <div className="flex flex-row gap-3 overlflow-x-scroll w-full mb-2">
+      <div className="flex flex-row gap-3 overflow-scroll w-full mb-2">
         {sltp?.partial.map((parEl) => {
-          console.log("parEl", parEl.quantity);
           return (
             <div
-              className="flex flex-col bg-gray px-3 pt-3 pb-2 rounded-md w-1/5"
+              className="flex flex-col bg-gray px-3 pt-3 pb-2 rounded-md"
               key={parEl.id}
             >
-              <div className="flex flex-row ">
+              <div className="flex flex-row w-full ">
                 <span className="flex flex-col justify-center items-start w-full border-r border-icongray mr-2 pr-2">
-                  <p className="text-xs text-icongray"> Take Profit</p>{" "}
+                  <p className="w-28 text-xs text-icongray mb-1">
+                    {" "}
+                    Take Profit
+                  </p>{" "}
                   <p className="text-green">
                     {" "}
                     {formatCurrency(parEl.tp != null ? Number(parEl.tp) : NaN)}
                   </p>
                 </span>
                 <span className="flex flex-col justify-center items-end w-full ">
-                  <p className="text-xs text-icongray"> Stop Loss</p>{" "}
+                  <p className="w-28 text-end text-xs text-icongray mb-1">
+                    {" "}
+                    Stop Loss
+                  </p>{" "}
                   <p className="text-red">
                     {" "}
                     {formatCurrency(parEl.sl != null ? Number(parEl.sl) : NaN)}
@@ -374,7 +380,7 @@ export const DisDetail = ({
 
   let newId: number;
   do {
-    newId = Math.floor(Math.random() * 1_000_000); // Larger range = lower collision risk
+    newId = Math.floor(Math.random() * 1_000_000);
   } while (ids.has(newId));
 
   const otherObj = [
@@ -395,6 +401,7 @@ export const DisDetail = ({
 
   const cardData =
     otherDisObj.length != 0 ? [...mainDisObj, otherObj].flat() : mainDisObj;
+  console.log("cardData", cardData);
 
   const barData: any = buildBar(cardData, totalAmount);
   return (
