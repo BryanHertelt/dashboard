@@ -56,7 +56,11 @@ const InfoCards = ({
   changeActiveDisObj: Function;
   activeDisObj: number | null;
 }) => {
-  return data.map((disObj: any, index: number) => {
+  const flatArray = data.flat();
+  console.log("flat Array", flatArray);
+  console.log("barData", barData);
+
+  return flatArray.map((disObj: any, index: number) => {
     const active =
       tableStatus != "nft" || disObj.name === "Others"
         ? "hidden"
@@ -95,11 +99,9 @@ const InfoCards = ({
             <span
               className="w-4 h-4 rounded-sm"
               style={{
-                backgroundColor: Array.isArray(
-                  barData.data.datasets[index].backgroundColor
-                )
-                  ? barData.data.datasets[index].backgroundColor[0]
-                  : barData.data.datasets[index].backgroundColor,
+                backgroundColor: !disObj.other
+                  ? barData.data.datasets[index].backgroundColor
+                  : "#D9D9D9",
               }}
             />
           </div>
@@ -122,7 +124,7 @@ const InfoCards = ({
               </p>{" "}
               <p className={`${designComponents.headerdesign} font-normal `}>
                 {" "}
-                {formatValue(Number(barData.data.datasets[index].data))}%
+                {formatValue(Number(disObj.distribution))}%
               </p>
             </div>{" "}
           </>
@@ -134,6 +136,7 @@ const InfoCards = ({
 
 const buildBar = (cardData: any[], totalAmount: number) => {
   const backgroundColors = chartColors;
+  console.log("cardData", cardData);
   const cardDataFormatted = cardData.map((disObj: any, index: number) => {
     return {
       label: ` `,
@@ -184,7 +187,6 @@ const buildBar = (cardData: any[], totalAmount: number) => {
       },
     },
   };
-  console.log("data", data);
   return { data, options };
 };
 
@@ -365,16 +367,50 @@ export const DisDetail = ({
     []
   );
 
-  console.log("sltp", formatValue(sltp?.sl === null ? NaN : Number(sltp?.sl)));
+  const sortedEntries = detailData.sort((prevDisObj, thisDisObj) =>
+    Number(
+      (tableStatus === "nft"
+        ? prevDisObj.currencyvalue
+        : prevDisObj.assetvalue) / totalAmount
+    ) *
+      100 <
+    Number(
+      (tableStatus === "nft"
+        ? thisDisObj.currencyvalue
+        : thisDisObj.assetvalue) / totalAmount
+    ) *
+      100
+      ? 1
+      : Number(
+          (tableStatus === "nft"
+            ? prevDisObj.currencyvalue
+            : prevDisObj.assetvalue) / totalAmount
+        ) *
+          100 >
+        Number(
+          (tableStatus === "nft"
+            ? thisDisObj.currencyvalue
+            : thisDisObj.assetvalue) / totalAmount
+        ) *
+          100
+      ? -1
+      : 0
+  );
 
-  const mainDisObj: any[] = [];
-  const otherDisObj: any[] = [];
+  let mainDisObj: any[] = [];
+  let otherDisObj: any[] = [];
 
-  detailData.map((disObj: any) => {
-    Number(disObj.assetvalue / totalAmount) * 100 < 5
-      ? otherDisObj.push(disObj)
-      : mainDisObj.push(disObj);
-  });
+  const widthProp = window.innerWidth < 1100 ? 9 : 14;
+
+  console.log("widthProp", widthProp);
+  console.log("detailTableData", detailData.length);
+
+  if (detailData.length > widthProp + 1) {
+    mainDisObj.push(sortedEntries.slice(0, widthProp));
+    otherDisObj.push(sortedEntries.slice(widthProp));
+  } else {
+    mainDisObj.push(sortedEntries);
+  }
 
   const ids = new Set(mainDisObj.map((disObj: any) => disObj.id));
 
@@ -383,27 +419,53 @@ export const DisDetail = ({
     newId = Math.floor(Math.random() * 1_000_000);
   } while (ids.has(newId));
 
+  mainDisObj = mainDisObj.map((disObj) =>
+    disObj.map((obj: any) => {
+      return {
+        ...obj,
+        other: false,
+        distribution: Number(obj.assetvalue / totalAmount) * 100,
+      };
+    })
+  );
+  otherDisObj = otherDisObj.map((disObj) =>
+    disObj.map((obj: any) => ({
+      ...obj,
+      other: true,
+      distribution: Number(obj.assetvalue / totalAmount) * 100,
+    }))
+  );
+
   const otherObj = [
-    otherDisObj.reduce(
-      (acc: any, curr: any) => {
-        acc.assetvalue += curr.assetvalue;
-        acc.currencyvalue += curr.currencyvalue;
-        return acc;
-      },
-      {
-        name: "Others",
-        assetvalue: 0,
-        currencyvalue: 0,
-        id: newId,
-      }
-    ),
+    otherDisObj.length > 0
+      ? otherDisObj[0].reduce(
+          (acc: any, curr: any) => {
+            acc.assetvalue += curr.assetvalue;
+            acc.currencyvalue += curr.currencyvalue;
+            return acc;
+          },
+          {
+            name: "Others",
+            assetvalue: 0,
+            currencyvalue: 0,
+            id: newId,
+          }
+        )
+      : null,
   ];
-
   const cardData =
-    otherDisObj.length != 0 ? [...mainDisObj, otherObj].flat() : mainDisObj;
-  console.log("cardData", cardData);
+    detailData.length > widthProp + 1
+      ? [...mainDisObj, otherDisObj].flat()
+      : mainDisObj.flat();
 
-  const barData: any = buildBar(cardData, totalAmount);
+  const barData: any = buildBar(
+    detailData.length > widthProp + 1
+      ? [...mainDisObj, otherObj].flat()
+      : mainDisObj.flat(),
+    totalAmount
+  );
+  console.log("mainDisObj", mainDisObj);
+
   return (
     <>
       <div className="flex flex-col justify-start">
@@ -412,7 +474,7 @@ export const DisDetail = ({
             <DerivativeComponent sltp={sltp} />
           ) : null}
           <div className="overflow-y-scroll w-full">
-            <div className="w-1/2 h-11 flex justify-center items-center mb-4 flex-wrap">
+            <div className="w-full h-11 flex justify-center items-center mb-4 flex-wrap">
               <Bar data={barData.data} options={barData.options} />
             </div>
           </div>
@@ -432,7 +494,7 @@ export const DisDetail = ({
         </div>
         {activeDisObj != null ? (
           <ExposeNfts
-            data={cardData.find((disObj) => activeDisObj === disObj.id)}
+            data={detailData.find((disObj) => activeDisObj === disObj.id)}
           />
         ) : null}
       </div>

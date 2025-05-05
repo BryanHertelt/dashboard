@@ -73,7 +73,6 @@ export const TableDetailComponent = (props: TableDetailProps) => {
       setDetail(tabs[index]);
     }
   }, []);
-  console.log("data", data);
   const { ref: tabRef } = useResizeObserver<HTMLDivElement>({
     onResize: ({ width }) => {
       if (width) {
