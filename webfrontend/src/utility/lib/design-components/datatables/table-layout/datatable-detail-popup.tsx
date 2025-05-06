@@ -52,17 +52,6 @@ export const TableDetailComponent = (props: TableDetailProps) => {
   const [tabWidth, setTabWidth] = useState<number>(0);
   const [currentTab, setCurrentTab] = useState<number>(0);
   const { data, isLoading, isError } = useDetailComponent(props);
-  const designComponents = useMemo(
-    () => ({
-      carddesign:
-        "flex flex-col justify-around card mb-2.5 py-3 px-3 w-full sm:h-20 md:h-20 lp:h-16 lg:h-16 xl:h-16",
-      headerdesign:
-        "flex flex-row text-sm sm:text-xs md:text-xs lp:text-xs text-icongray",
-      valuedesign:
-        "font-semibold text-base mr-3 text-sm sm:text-xs md:text-xs lp:text-xs",
-    }),
-    []
-  );
   const handleTabSwitch = useCallback((index: number, button: string) => {
     {
       setActiveDisObj(null);
@@ -81,11 +70,10 @@ export const TableDetailComponent = (props: TableDetailProps) => {
     },
   });
 
+  console.log("data", data);
+
   if (isLoading) {
     return <LoadingSkeleton />;
-  }
-
-  if (props.tableStatus === "derivative") {
   }
 
   if (isError) {
@@ -133,11 +121,7 @@ export const TableDetailComponent = (props: TableDetailProps) => {
         </nav>
         <div className=" w-full h-full">
           {detail === "DR" ? (
-            <DrDetail
-              designComponents={designComponents}
-              data={data}
-              currentValue={props.currentValue}
-            />
+            <DrDetail data={data} currentValue={props.currentValue} />
           ) : detail === "AG" ? (
             <DisDetail
               detailData={data.assetgroups}

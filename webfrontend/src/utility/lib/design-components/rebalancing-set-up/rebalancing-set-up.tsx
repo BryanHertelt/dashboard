@@ -29,26 +29,17 @@ ChartJS.register(
 
 export const RebalancingSetUp = ({
   data,
-  theme,
   currentValue,
   assetId,
 }: {
   data: {
     currentbalance: number;
     desiredbalance: number;
-    desiredbalancenumber: number;
-    currentbalancenumber: number;
   };
   assetId: string | number;
-  theme: string;
   currentValue: number;
 }) => {
-  const {
-    desiredbalance,
-    currentbalance,
-    desiredbalancenumber,
-    currentbalancenumber,
-  } = data;
+  const { desiredbalance, currentbalance } = data;
   const [calcV, setCalcV] = useState<any[]>([
     Math.round(desiredbalance),
     Math.round(Number((desiredbalance / 100) * currentValue * 100)) / 100,
@@ -63,7 +54,7 @@ export const RebalancingSetUp = ({
   }>({ active: false, title: "" });
   const [isToggled, setToggled] = useState<string>("none");
 
-  if (desiredbalance === null || desiredbalancenumber === null) {
+  if (desiredbalance === null) {
     return (
       <p> Set desired balancing to see your rebalancing statistics here.</p>
     );
@@ -77,7 +68,6 @@ export const RebalancingSetUp = ({
     e.preventDefault();
     setToast({ active: false, title: "" });
     setToggled("none");
-    //Change
     postRebalancing(assetId, calcV[0]);
   };
 
@@ -144,18 +134,20 @@ export const RebalancingSetUp = ({
     }
   };
 
+  const currBalance = (currentbalance / 100) * currentValue;
+
   const barData: ChartData<"bar"> = {
     labels: [""],
     datasets: [
       {
         label: `Current: ${formatValue(currentbalance)}% ~ ${formatCurrency(
-          currentbalancenumber
+          currBalance
         )}`,
         data: [currentbalance],
         backgroundColor: flyzerBlue,
         borderWidth: 0,
         borderRadius: 7,
-        order: currentbalancenumber > calcV[0] ? 2 : 1,
+        order: currBalance > calcV[0] ? 2 : 1,
       },
       {
         label: `Desired: ${printV[0]} ~ ${printV[1]}`,
