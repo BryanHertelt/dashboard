@@ -70,8 +70,6 @@ export const TableDetailComponent = (props: TableDetailProps) => {
     },
   });
 
-  console.log("data", data);
-
   if (isLoading) {
     return <LoadingSkeleton />;
   }

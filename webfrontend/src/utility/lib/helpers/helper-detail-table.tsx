@@ -19,6 +19,7 @@ export const InfoCards = ({
   activeDisObj: number | null;
 }) => {
   const flatArray = data.flat();
+  console.log("called infocards");
 
   return flatArray.map((disObj: any, index: number) => {
     const active =
@@ -117,8 +118,7 @@ export const StopLossCards = ({
   return (
     <div className="w-full">
       <span className="flex flex-row gap-2 mb-2 ">
-        {" "}
-        SL/TP:{" "}
+        <p>SL/TP:</p>
         <p className="pl-1 text-red">
           {" "}
           {formatValue(Number(sltp?.sl === null ? NaN : Number(sltp?.sl)))} %
@@ -179,7 +179,6 @@ export const StopLossCards = ({
 };
 
 export const DetailNfts = ({ data }: { data: any }) => {
-  console.log("data", data);
   const distributionElement = data;
   return (
     <div

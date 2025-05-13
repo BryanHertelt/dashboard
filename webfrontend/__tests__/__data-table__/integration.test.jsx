@@ -8,14 +8,16 @@ import { dataColsCurrency, dataColsDerivative, dataColsNft } from "../../src/uti
 import { formatCurrency, formatValue } from "../../src/utility/lib/helpers/helper-functions";
 import { LoadingSkeleton, ErrorSkeleton } from "../../src/utility/lib/datafetching/loading-skeleton";
 import { ShowDetailIcon, SortingDataTableIcon, PositionDirectionIcon } from "../../public/images/icons";
-import { checkIsOnDemandRevalidate } from "next/dist/server/api-utils";
 import { TableDetailComponent } from "../../src/utility/lib/design-components/datatables/table-layout/datatable-detail-popup";
 import {prefetchDetailComponent} from "../../src/utility/lib/datafetching/client-refetch/prefetch-hooks"
+import { RebalancingSetUp } from "../../src/utility/lib/design-components/rebalancing-set-up/rebalancing-set-up";
+import { DrDetail, DisDetail } from "../../src/utility/lib/build-components/asset-table-detail-components";
+import { mockInitial, tableConfig, detailMockCryptoResponse, detailMockDerivatives, detailMockNFTs } from "../testmocks";
 
 
 observeMock = jest.fn();
 unobserveMock = jest.fn();
-
+ 
 beforeEach(() => {
 
   global.ResizeObserver = jest.fn().mockImplementation((cb) => {
@@ -45,10 +47,16 @@ const mockPrefetch = jest.fn();
 jest.mock("@/utility/lib/datafetching/client-refetch/prefetch-hooks", () => ({
   prefetchDetailComponent: (...args) => mockPrefetch(...args),
 }));
-
 jest.mock("../../src/utility/lib/design-components/datatables/table-layout/datatable-detail-popup", () => ({
   TableDetailComponent: jest.fn().mockImplementation(()=> <p> TableDetail Component</p>) 
 }));
+
+
+jest.mock('../../src/utility/lib/build-components/asset-table-detail-components', () => ({
+  DrDetail: jest.fn().mockImplementation(() => <div> DrDetail </div>), 
+  DisDetail: jest.fn().mockImplementation(()=> <div> DisDetail</div>)
+}));
+
 
 jest.mock('../../src/utility/lib/datafetching/loading-skeleton', () => ({
   LoadingSkeleton: jest.fn().mockImplementation(() => (
@@ -57,9 +65,13 @@ jest.mock('../../src/utility/lib/datafetching/loading-skeleton', () => ({
 }));
 
 jest.mock("../../public/images/icons", ()=> ({
-  ShowDetailIcon: jest.fn().mockImplementation(()=> <button> ShowDetail</button> ),
+  ShowDetailIcon: jest.fn().mockImplementation(()=> <button onClick={() => console.log("clicked")}> ShowDetail</button> ),
   SortingDataTableIcon: jest.fn().mockImplementation(()=> <p> Sorting </p>),
   PositionDirectionIcon: jest.fn().mockImplementation(() => <p> P </p>)
+}))
+
+jest.mock("../../src/utility/lib/design-components/rebalancing-set-up/rebalancing-set-up", ()=> ({
+  RebalancingSetUp: jest.fn().mockImplementation(()=> <div> RB-SetUp </div> ),
 }))
 
 jest.mock("../../src/utility/lib/datafetching/client-refetch/prefetch-hooks", () => ({
@@ -71,206 +83,7 @@ const queryClient = new QueryClient();
 const renderWithClient = (ui) =>
   render(<QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>);
 
-const mockInitial = [
-    {
-        "symbol": "A",
-        "portfolioid": 1,
-        "userid": 1,
-        "groupid": 1,
-        "holdingid": 1,
-        "assettype": "cryptocurrency",
-        "assetid": 1,
-        "assetname": "Bitcoin",
-        "assetabbreviation": "BTC",
-        "assetamount": 0.5,
-        "assetpercentage": 5,
-        "assetvalue": 700000,
-        "assetmarketprice": 1400000,
-        "assetchange24h": 4,
-        "profitloss": 1020, 
-        "profitlosschange": 20, 
-        "assetchange24hourvalue": 35000,
-        "assetchange7d": [680000, 690000, 710000, 695000, 700000],
-        "notes": "Notes"
-    },
-    {
-      "symbol": "C",
-      "portfolioid": 1,
-      "userid": 1,
-      "groupid": 2,
-      "holdingid": 7,
-      "assetpercentage": 3,
-      "assettype": "derivative",
-      "assetid": 12,
-      "assetname": "BTCUSDT",
-      "derivateexchange":"Bybit" ,
-      "positiontype": "open",
-      "tradedirection": "long", 
-      "derivativetype": "future",
-      "leverage": 5,
-      "size": 15000,
-      "entry": 30000,
-      "unrealizedpl": 2500,
-      "price": 32000,
-      "liquidationprice": 25000,
-      "margin": 100,
-      "tp": 3,
-      "sl": 29,
-      "profitloss": 1000, 
-        "profitlosschange": 26, 
-      "settlementdate": "2024-06-15T10:00:00.000Z",
-       "notes": "Notes"
-    },
-    {
-        "symbol": "C",
-        "portfolioid": 1,
-        "userid": 1,
-        "groupid": 2,
-        "holdingid": 7,
-        "assetpercentage": 3,
-        "assettype": "derivative",
-        "assetid": 18,
-        "assetname": "LTCUSDT",
-        "derivateexchange":"Bybit" ,
-        "positiontype": "open",
-        "tradedirection": "short", 
-        "derivativetype": "perpetual",
-        "leverage": 15,
-        "size": 5000,
-        "entry": 10,
-        "unrealizedpl": -250,
-        "price": 95,
-        "liquidationprice": 85,
-        "margin": 35,
-        "tp": 10,
-        "sl": null,
-        "profitloss": -1030, 
-        "profitlosschange": 21, 
-        "settlementdate": "",
-         "notes": "Notes"
-      },
-    {
-      "symbol": "B",
-      "portfolioid": 1,
-      "userid": 1,
-      "groupid": 2,
-      "holdingid": 7,
-      "assetpercentage": 3,
-      "assettype": "nft",
-      "assetid": 312,
-      "assetname": "Bored Ape Yacht Club",
-      "collectionvalue": 1200,
-      "profitloss": 1040, 
-        "profitlosschange": 26, 
-      "collectionfloorprice": 1200,
-      "collectionvalueeth": 1,
-      "nftcount": 20,
-      "notes": "Notes"
-    }, 
-    {
-      "symbol": "A",
-      "portfolioid": 1,
-      "userid": 1,
-      "groupid": 1,
-      "holdingid": 1,
-      "assettype": "cryptocurrency",
-      "assetid": 2,
-      "assetname": "Ethereum",
-      "assetabbreviation": "ETH",
-      "assetamount": 0.4,
-      "assetpercentage": -3,
-      "assetvalue": -72000,
-      "profitloss": -120, 
-      "profitlosschange": -34, 
-      "assetchange24h": -2,
-      "assetchange24hourvalue": -3500,
-      "assetchange7d": [680000, 690000, 710000, 695000, 700000],
-      "notes": "Notes"
-  },
-  {
-    "symbol": "C",
-    "portfolioid": 1,
-    "userid": 1,
-    "groupid": 2,
-    "holdingid": 7,
-    "assetpercentage": 3,
-    "assettype": "derivative",
-    "assetid": 12,
-    "assetname": "USDTUSDC",
-    "derivateexchange":"Binance" ,
-    "positiontype": "open",
-    "tradedirection": "long", 
-    "derivativetype": "future",
-    "leverage": 3,
-    "size": 1000,
-    "entry": 3020,
-    "unrealizedpl": 2501,
-    "price": 32020,
-    "liquidationprice": 25050,
-    "margin": 105,
-    "tp": 32,
-    "sl": 9,
-    "profitloss": -1001, 
-      "profitlosschange": -25, 
-    "settlementdate": "2024-06-15T10:00:00.000Z",
-     "notes": "Notes"
-  },
-  {
-    "symbol": "B",
-    "portfolioid": 1,
-    "userid": 1,
-    "groupid": 2,
-    "holdingid": 7,
-    "assetpercentage": 3,
-    "assettype": "nft",
-    "assetid": 312,
-    "assetname": "Bored Ae Yacht",
-    "collectionvalue": 1210,
-    "profitloss": -1340, 
-      "profitlosschange": -6, 
-    "collectionfloorprice": 1210,
-    "collectionvalueeth": 2,
-    "nftcount": 10,
-    "notes": "Notes"
-  }, 
- ]
 
- const tableConfig = {
-    title: "Assets",
-    initial: mockInitial,
-    detail: true,
-    statusFilter: "assettype",
-    status: [
-      {
-        status: "cryptocurrency",
-        statusTitle: "Currencies",
-        columns: dataColsCurrency
-      },
-      {
-        status: "nft",
-        statusTitle: "NFTs",
-        columns: dataColsNft
-      },
-      {
-        status: "derivative",
-        statusTitle: "Derivatives",
-        columns: dataColsDerivative
-      },
-    ],
-    filter: [
-      {
-        filter: "perp",
-        filterTitle: "Perpetual",
-        filterStatus: "derivative",
-      },
-      {
-        filter: "future",
-        filterTitle: "Future",
-        filterStatus: "derivative",
-      },
-    ],
-    currentValue: 1000,
-  };
   const checkItem = (item ) => {
     const td = screen.getByText(item).closest("td")
     expect(within(td).getByText(item)).toBeInTheDocument()
@@ -347,7 +160,7 @@ const mockInitial = [
               const collectionvalue = screen.getByText(formatCurrency(mockInitial[3].collectionvalue)).closest("td")
               expect(within(collectionvalue).getByText(`1.00 ETH`)).toBeInTheDocument()
 
-                  checkItem(mockInitial[3].nftcount)
+                  checkItem(mockInitial[3].assetamount)
                   checkItem(formatCurrency(mockInitial[3].profitloss))
           
                   const profitloss = screen.getByText(formatCurrency(mockInitial[3].profitloss)).closest("td")
@@ -414,7 +227,6 @@ const mockInitial = [
               
                     })
 
-
                     it("renders just futures", async () => {
                       const filterBtn = screen.getByRole("button", { name: /Future/i });
                       expect(filterBtn).toBeInTheDocument();
@@ -460,20 +272,6 @@ const mockInitial = [
     afterEach(()=> {
       jest.clearAllMocks()
     })
-    it("expands detail if clicked on row", () => {
-      const showDetail = screen.getAllByRole("button", {name: /ShowDetail/i})
-      expect(showDetail[0]).toBeInTheDocument()
-      act(() => {
-        fireEvent.click(showDetail[0])
-      });
-      expect(TableDetailComponent).toHaveBeenCalledWith({"assetId": 1, "assetName": "BTC", "assetUrl": "A", "currentValue": 1000, "tableStatus": "cryptocurrency"}, {})
-
-      expect(showDetail[1]).toBeInTheDocument()
-      act(() => {
-        fireEvent.click(showDetail[1])
-      });
-      expect(TableDetailComponent).toHaveBeenCalledWith({"assetId": 2, "assetName": "ETH", "assetUrl": "A", "currentValue": 1000, "tableStatus": "cryptocurrency"}, {})
-    })
     it("prefetches data on mouse hover", async () => {
       const showDetail = screen.getAllByRole("button", { name: /ShowDetail/i });
       expect(showDetail[0]).toBeInTheDocument();
@@ -491,6 +289,21 @@ const mockInitial = [
         });
       });
     });
+
+    it("expands detail if clicked on row", () => {
+      const showDetail = screen.getAllByRole("button", {name: /ShowDetail/i})
+      expect(showDetail[0]).toBeInTheDocument()
+      act(() => {
+        fireEvent.click(showDetail[0])
+      });
+      expect(TableDetailComponent).toHaveBeenCalledWith({"assetId": 1, "assetName": "BTC", "assetUrl": "A", "currentValue": 1000, "tableStatus": "cryptocurrency", "totalAssetAmount": 0.5}, {})
+  
+      expect(showDetail[1]).toBeInTheDocument()
+      act(() => {
+        fireEvent.click(showDetail[1])
+      });
+      expect(TableDetailComponent).toHaveBeenCalledWith({"assetId": 2, "assetName": "ETH", "assetUrl": "A", "currentValue": 1000, "tableStatus": "cryptocurrency", "totalAssetAmount" : 0.4}, {})
+    })
   })
 
   describe("AssetTableComponent - tabRef and ResizeObserver", () => {
@@ -517,7 +330,6 @@ const mockInitial = [
       });
     }); 
   });
-
 
 
 

@@ -117,11 +117,6 @@ export const buildBar = (cardData: any[], totalAmount: number) => {
 
   if (cardDataFormatted.length != 0) {
     datasets.push(cardDataFormatted);
-  } else {
-    console.error(
-      "No data available in asset detailcomponent> asset details> holding chart."
-    );
-    return <p> No chart data available...</p>;
   }
   const data: ChartData<"bar"> = {
     labels: [""],

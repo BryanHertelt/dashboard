@@ -94,25 +94,12 @@ export const RebalancingSetUp = ({
 
     const numericValue = Number(value);
     const roundedValue = Math.round(numericValue * 100) / 100;
-    console.log("rounded value", roundedValue);
-    console.log("calcV", calcV);
 
     if (roundedValue > currentValue) {
       setToast({
         active: true,
         title: "Your desired balance cannot be larger than the portfolio size.",
       });
-    } else if (value.endsWith(".")) {
-      isToggled === "value"
-        ? setCalcV([
-            Math.round((roundedValue / currentValue) * 100 * 100) / 100,
-            roundedValue,
-          ])
-        : setCalcV([
-            roundedValue,
-            Math.round(Number((Number(value) / 100) * currentValue * 100)) /
-              100,
-          ]);
     } else if (isToggled === "percentage" && roundedValue > 100) {
       setToast({
         active: true,
@@ -204,6 +191,7 @@ export const RebalancingSetUp = ({
         <div className="flex flex-row justify-end w-4/12 items-center ml-5">
           <div className="flex justify-end w-full">
             <input
+              aria-label="inputPercentage"
               type="text"
               step="any"
               onBlur={handleSubmit}
@@ -217,6 +205,7 @@ export const RebalancingSetUp = ({
               } w-5/12 rounded-md pl-2 p1 h-6 text-xs focus:outline-none focus:ring-0 focus:border-transparent`}
             />
             <input
+              aria-label="inputAbsolute"
               onBlur={handleSubmit}
               onChange={(e) => handleChange(e)}
               onClick={() => setToggled("value")}
