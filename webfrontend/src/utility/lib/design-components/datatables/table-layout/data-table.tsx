@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { TableDetailComponent } from "./datatable-detail-popup";
 import { ErrorSkeleton } from "@/utility/lib/datafetching/loading-skeleton";
@@ -61,6 +61,10 @@ export function DataTable<TData, TValue>({
     );
   };
   const queryClient = useQueryClient();
+
+  useEffect(() => {
+    setSorting([]);
+  }, [tableStatus]);
 
   /**
    * This function is triggered, when a row is clicked. It`s purpose is to render the related detail component.
