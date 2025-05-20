@@ -291,7 +291,6 @@ export const dataColsDerivative = [
     accessorKey: "entry",
     header: ({ column }: any) => {
       const sorted = column.getIsSorted();
-      console.log("sorted", sorted);
       return (
         <button
           className={`flex flex-row font-normal items-center justify-end text-black h-11 w-full`}

@@ -5,7 +5,6 @@ export async function POST(req) {
   const lokiUrl = "https://logs-prod-012.grafana.net/loki/api/v1/push";
     try {
       const body = await req.json();
-      console.log("Body", body)
   
       const logLine = {
         streams: [

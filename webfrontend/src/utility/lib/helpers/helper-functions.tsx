@@ -21,7 +21,6 @@ export const formatCurrency = (number: number | null): string => {
 
   if (num > 0 && num < 1) {
     const formattedDecimals = formatDecimals(num, roundedNumber);
-    console.log(formattedDecimals);
     const currencyDecimals = new Intl.NumberFormat("en-Us", {
       style: "currency",
       currency: "USD",

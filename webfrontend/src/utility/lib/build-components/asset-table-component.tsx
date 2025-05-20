@@ -1,6 +1,7 @@
 import { useMemo, useState, useRef, useEffect } from "react";
 import useResizeObserver from "use-resize-observer";
 import AssetTableController from "./asset-table-controller";
+import logger from "../logging/logger";
 
 type StatusItem<StatusKey extends string> = {
   status: StatusKey;
@@ -12,6 +13,19 @@ type FilterItem<StatusKey extends string> = {
   filter: string;
   filterTitle: string;
   filterStatus: StatusKey;
+};
+
+type configType = {
+  title: string;
+  initial: any;
+  detail: boolean;
+  status: { status: string; statusTitle: string; columns: object }[];
+  filter: {
+    filter: string;
+    filterTitle: string;
+    filterStatus: string;
+  }[];
+  currentValue?: number;
 };
 
 type AssetTableConfig<StatusKey extends string> = {
@@ -32,22 +46,7 @@ type AssetTableConfig<StatusKey extends string> = {
  * filter: array of objects, each object holding the filter (used for implementation), statusTitle(rendered on the filter button), filterStatus(the table status where the filter should be visible)
  * @returns A UI giving the possibility to trigger filter or status change functions and the Asset Table Controller.
  */
-const AssetTableComponent = ({
-  config,
-}: {
-  config: {
-    title: string;
-    initial: any;
-    detail: boolean;
-    status: { status: string; statusTitle: string; columns: object }[];
-    filter: {
-      filter: string;
-      filterTitle: string;
-      filterStatus: string;
-    }[];
-    currentValue?: number;
-  };
-}) => {
+const AssetTableComponent = ({ config }: { config: configType }) => {
   const [tableStatus, setTableStatus] = useState<string>(
     config.status[0].status
   );

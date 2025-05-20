@@ -2,6 +2,7 @@ import { HoldingLogoImageContainer } from "./image-container";
 import { NftsIcon } from "../../../../public/images";
 import { formatValue, formatCurrency } from "./helper-functions";
 import { NftDetailImageContainer } from "./image-container";
+import { ErrorSkeleton } from "../datafetching/loading-skeleton";
 
 export const InfoCards = ({
   data,
@@ -19,7 +20,6 @@ export const InfoCards = ({
   activeDisObj: number | null;
 }) => {
   const flatArray = data.flat();
-  console.log("called infocards");
 
   return flatArray.map((disObj: any, index: number) => {
     const active =

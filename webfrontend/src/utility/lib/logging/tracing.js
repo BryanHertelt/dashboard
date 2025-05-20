@@ -1,3 +1,5 @@
+
+"use client"
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
 import { BatchSpanProcessor, WebTracerProvider} from '@opentelemetry/sdk-trace-web';
 import { FetchInstrumentation } from '@opentelemetry/instrumentation-fetch';
