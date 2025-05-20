@@ -1,12 +1,14 @@
 import React from "react";
 import '@testing-library/jest-dom'
 import { render, screen, act,  fireEvent, waitFor} from "@testing-library/react";
-import { TableDetailComponent } from "../../src/utility/lib/design-components/datatables/table-layout/datatable-detail-popup";
-import { HoldingLogoImageContainer, NftDetailImageContainer } from "../../src/utility/lib/helpers/image-container";
-import { ErrorSkeleton, LoadingSkeleton } from "../../src/utility/lib/datafetching/loading-skeleton";
-import { useDetailComponent } from "../../src/utility/lib/datafetching/client-refetch/client-hooks";
-import { RebalancingSetUp } from "../../src/utility/lib/design-components/rebalancing-set-up/rebalancing-set-up";
+import { TableDetailComponent } from "../../src/utility/lib/data-table/table-detail-components/v-ad-assets-parent"
+import { HoldingLogoImageContainer, NftDetailImageContainer} from "../../src/utility/lib/helpers/helper-components/image-container";
+import { SmallErrorSkeleton } from "../../src/utility/lib/data-fetching/skeletons/error-skeleton";
+import { SmallLoadingSkeleton } from "../../src/utility/lib/data-fetching/skeletons/loading-skeleton";
+import { useDetailComponent } from "../../src/utility/lib/data-fetching/client-hooks";
+import { RebalancingSetUp } from "../../src/utility/lib/helpers/helper-components/rebalancing-set-up";
 import { cryptoMockDetail, derivativeMockDetail, nftMockDetail } from "../testmocks";
+import { prefetchDetailComponent } from "../../src/utility/lib/data-fetching/prefetch-hooks";
 import { NftsIcon } from "../../public/images";
 
 import { Bar } from "react-chartjs-2";
@@ -20,16 +22,16 @@ jest.mock("../../public/images/icons", ()=> ({
   PositionDirectionIcon: jest.fn().mockImplementation(() => <p> P </p>)
 }))
 
-jest.mock("../../src/utility/lib/design-components/rebalancing-set-up/rebalancing-set-up", ()=> ({
+jest.mock("../../src/utility/lib/helpers/helper-components/rebalancing-set-up", ()=> ({
   RebalancingSetUp: jest.fn().mockImplementation(()=> <div> RB-SetUp </div> ),
 }))
 
-jest.mock("../../src/utility/lib/datafetching/client-refetch/prefetch-hooks", () => ({
+jest.mock("../../src/utility/lib/data-fetching/prefetch-hooks", () => ({
 
   prefetchDetailComponent: jest.fn().mockImplementation(()=> null)
 }))
 
-jest.mock("@/utility/lib/datafetching/client-refetch/client-hooks", () => ({
+jest.mock( "../../src/utility/lib/data-fetching/client-hooks", () => ({
   useDetailComponent: jest.fn(),
 }));
 jest.mock("react-chartjs-2", () => ({
@@ -40,19 +42,20 @@ jest.mock("../../public/images", () => ({
   NftsIcon: jest.fn().mockImplementation(()=> <p>Nfts Icon</p>)
 }))
 
-jest.mock("../../src/utility/lib/helpers/image-container", () => ({
+jest.mock("../../src/utility/lib/helpers/helper-components/image-container", () => ({
   HoldingLogoImageContainer: jest.fn().mockImplementation(()=> <div> Image</div>), 
   NftDetailImageContainer: jest.fn().mockImplementation(()=> null)
 }));
 
-jest.mock("../../src/utility/lib/design-components/rebalancing-set-up/rebalancing-set-up", () => ({
-    RebalancingSetUp: jest.fn().mockImplementation(()=> <div> Rebalancing </div>)
-  }));
-
-jest.mock("../../src/utility/lib/datafetching/loading-skeleton", () => ({
-  LoadingSkeleton: jest.fn().mockImplementation(()=> <div> Loading...</div>), 
-  ErrorSkeleton: jest.fn().mockImplementation(()=> <div> Error Skeleton...</div>)
+jest.mock("../../src/utility/lib/data-fetching/skeletons/loading-skeleton", () => ({
+  SmallLoadingSkeleton: jest.fn().mockImplementation(()=> <div> Loading...</div>), 
 }));
+
+jest.mock("../../src/utility/lib/data-fetching/skeletons/error-skeleton", () => ({
+  SmallErrorSkeleton: jest.fn().mockImplementation(()=> <div> Error Skeleton ... </div>)
+}))
+
+
 
 
 jest.mock("use-resize-observer", () => ({
@@ -61,10 +64,6 @@ jest.mock("use-resize-observer", () => ({
     ref: jest.fn(),
   }),
 }));
-
-
-import { useDetailComponent } from "@/utility/lib/datafetching/client-refetch/client-hooks";
-import { clear } from "console";
 
 describe("TableDetailComponent", () => {
   afterEach(()=> jest.clearAllMocks())
@@ -232,7 +231,7 @@ describe("loading state", () => {
       );
   });
   it("renders loading", () => {
-    expect(LoadingSkeleton).toHaveBeenCalled()
+    expect(SmallLoadingSkeleton).toHaveBeenCalled()
   })
 })
 
@@ -256,7 +255,7 @@ describe("error state", () => {
             assetUrl="https://btc.com"
           />
         );
-    expect(ErrorSkeleton).toHaveBeenCalled()
+    expect(SmallErrorSkeleton).toHaveBeenCalled()
   })
   it("renders error, when wrong data is passed", () => {
     (useDetailComponent).mockReturnValue({
@@ -275,7 +274,7 @@ describe("error state", () => {
           assetUrl="https://btc.com"
         />
       );
-  expect(ErrorSkeleton).toHaveBeenCalled()
+  expect(SmallErrorSkeleton).toHaveBeenCalled()
   })
   it("renders error, when detaildata for certain state is not given", () => {
     (useDetailComponent).mockReturnValue({
@@ -295,7 +294,7 @@ describe("error state", () => {
         />
       );
 
-      expect(ErrorSkeleton).toHaveBeenCalled()
+      expect(SmallErrorSkeleton).toHaveBeenCalled()
   })
 })
 

@@ -1,20 +1,20 @@
 import '@testing-library/jest-dom'
-import { formatDataColsCurrency, formatDataColsDerivative, formatDataColsNft } from "../../src/utility/lib/design-components/datatables/datatable-version-assetdistribution/asset-distribution-cols";
 import {
     AssetPercentageValueIcon,
     NotesInDataTableIcon,
     PositionDirectionIcon
   } from "../../public/images/index";
-import { formatCurrency } from "../../src/utility/lib/helpers/helper-functions";
-import { TableLineChart } from "../../src/utility/lib/design-components/charts/table-line-charts";
-import {DataTable} from "../../src/utility/lib/design-components/datatables/table-layout/data-table"
-import { ErrorSkeleton } from "../../src/utility/lib/datafetching/loading-skeleton";
+  import { formatCurrency } from '../../src/utility/lib/helpers/helper-functions/formatCurrency';
+  import { formatValue } from '../../src/utility/lib/helpers/helper-functions/formatValue';
+  import { cn } from '../../src/utility/lib/helpers/helper-functions/cn';
+import { TableDetailComponent } from '../../src/utility/lib/data-table/table-detail-components/v-ad-assets-parent';
+import { DataTable } from '../../src/utility/lib/data-table/data-table';
+import { SmallErrorSkeleton } from '../../src/utility/lib/data-fetching/skeletons/error-skeleton';
 import { render,screen, within, fireEvent } from "@testing-library/react";
-import { formatCurrency, formatValue, cn} from '../../src/utility/lib/helpers/helper-functions'
 import { twMerge } from 'tailwind-merge'
 import { clsx } from "clsx";
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
-import { dataColsNft, dataColsCurrency, dataColsDerivative } from '../../src/utility/lib/design-components/datatables/datatable-version-assetdistribution/asset-distribution-cols';
+import { dataColsCurrency, dataColsDerivative, dataColsNft } from '../../src/utility/lib/data-table/v-ad-cols/asset-distribution-cols';
 
 jest.mock("../../public/images/icons", () => ({
     PositionDirectionIcon: jest.fn().mockImplementation(() => <p testid="position-direction-icon"> PositionDirection </p> ),
@@ -123,12 +123,12 @@ const cryptodata = [
   },
  ]
 
-jest.mock("../../src/utility/lib/datafetching/loading-skeleton", () => ({
-    ErrorSkeleton: jest.fn().mockImplementation(()=> null), 
+jest.mock("../../src/utility/lib/data-fetching/skeletons/error-skeleton", () => ({
+    SmallErrorSkeleton: jest.fn().mockImplementation(()=> null), 
 }))
 
 
-jest.mock("../../src/utility/lib/design-components/datatables/table-layout/datatable-detail-popup", () => ({
+jest.mock('../../src/utility/lib/data-table/table-detail-components/v-ad-assets-parent', () => ({
     TableDetailComponent: jest.fn().mockImplementation(()=> null), 
     }))
 

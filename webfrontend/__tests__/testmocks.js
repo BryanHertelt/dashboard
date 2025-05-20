@@ -1,4 +1,6 @@
-import { dataColsCurrency, dataColsDerivative, dataColsNft } from "../src/utility/lib/design-components/datatables/datatable-version-assetdistribution/asset-distribution-cols";
+
+
+import { dataColsCurrency, dataColsDerivative, dataColsNft } from "../src/utility/lib/data-table/v-ad-cols/asset-distribution-cols";
 
 export const mockInitial = [
     {

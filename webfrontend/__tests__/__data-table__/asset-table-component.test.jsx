@@ -1,12 +1,11 @@
 import '@testing-library/jest-dom'
-import AssetTableComponent from "../../src/utility/lib/build-components/asset-table-component"
 import { render, screen, fireEvent, waitFor, act} from "@testing-library/react"
-import { dataColsCurrency, dataColsDerivative, dataColsNft } from '../../src/utility/lib/design-components/datatables/datatable-version-assetdistribution/asset-distribution-cols'
-import AssetTableController from '../../src/utility/lib/build-components/asset-table-controller'
+import { dataColsCurrency, dataColsDerivative, dataColsNft } from '../../src/utility/lib/data-table/v-ad-cols/asset-distribution-cols'
 import useResizeObserver from 'use-resize-observer'
+import {AssetTableComponent} from "../../src/utility/lib/data-table"
+import AssetTableController from '../../src/utility/lib/data-table/asset-table-controller'
 
-
-jest.mock("../../src/utility/lib/build-components/asset-table-controller", () => ({
+jest.mock("../../src/utility/lib/data-table/asset-table-controller", () => ({
   __esModule: true,
   default: jest.fn(()=> <div data-test-id="mock-assettable-controller"> Mock </div>)
 }));

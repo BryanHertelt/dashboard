@@ -2,19 +2,23 @@ import React from "react";
 import '@testing-library/jest-dom'
 import { render, fireEvent, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { DataTable } from "../../src/utility/lib/design-components/datatables/table-layout/data-table";
+import { prefetchDetailComponent } from "../../src/utility/lib/data-fetching/prefetch-hooks";
+import { TableDetailComponent } from "../../src/utility/lib/data-table/table-detail-components/v-ad-assets-parent";
+import { DataTable } from "../../src/utility/lib/data-table/data-table";
+import { SmallErrorSkeleton } from "../../src/utility/lib/data-fetching/skeletons/error-skeleton";
 
 // Spy-able mock for prefetchDetailComponent
 const mockPrefetch = jest.fn();
-jest.mock("@/utility/lib/datafetching/client-refetch/prefetch-hooks", () => ({
+jest.mock("../../src/utility/lib/data-fetching/prefetch-hooks", () => ({
   prefetchDetailComponent: (...args) => mockPrefetch(...args),
 }));
 
-jest.mock("../../src/utility/lib/design-components/datatables/table-layout/datatable-detail-popup", () => ({
+
+jest.mock( "../../src/utility/lib/data-table/table-detail-components/v-ad-assets-parent", () => ({
   TableDetailComponent: () => <div test-id="mock-detail">Mock Detail Component</div>,
 }));
-jest.mock("@/utility/lib/datafetching/loading-skeleton", () => ({
-  ErrorSkeleton: () => <div>Mock Error Skeleton</div>,
+jest.mock("../../src/utility/lib/data-fetching/skeletons/error-skeleton", () => ({
+  SmallErrorSkeleton: () => <div>Mock Error Skeleton</div>,
 }));
 
 jest.mock("../../public/images/icons", () => ({

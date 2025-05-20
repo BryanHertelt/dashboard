@@ -1,23 +1,23 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { DataTable } from '../../src/utility/lib/design-components/datatables/table-layout/data-table';
-import AssetTableController from '../../src/utility/lib/build-components/asset-table-controller';
+import { DataTable } from '../../src/utility/lib/data-table/data-table';
+import { AssetTableController } from '../../src/utility/lib/data-table';
 import {
   dataColsCurrency,
   dataColsDerivative,
   dataColsNft,
-} from '../../src/utility/lib/design-components/datatables/datatable-version-assetdistribution/asset-distribution-cols';
-import { LoadingSkeleton } from '../../src/utility/lib/datafetching/loading-skeleton';
+} from '../../src/utility/lib/data-table/v-ad-cols/asset-distribution-cols';
+import { SmallLoadingSkeleton } from '../../src/utility/lib/data-fetching/skeletons/loading-skeleton';
 import '@testing-library/jest-dom';
 
-jest.mock('../../src/utility/lib/design-components/datatables/table-layout/data-table', () => ({
+jest.mock("../../src/utility/lib/data-table/data-table", () => ({
   DataTable: jest.fn().mockImplementation(({ data }) => (
     <div data-testid="data-table">DataTable with {data.length} rows</div>
   )),
 }));
 
-jest.mock('../../src/utility/lib/datafetching/loading-skeleton', () => ({
-  LoadingSkeleton: jest.fn().mockImplementation(() => (
+jest.mock('../../src/utility/lib/data-fetching/skeletons/loading-skeleton', () => ({
+  SmallLoadingSkeleton: jest.fn().mockImplementation(() => (
     <div data-testid="loading-skeleton">Loading...</div>
   )),
 }));

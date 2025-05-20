@@ -2,17 +2,20 @@
 import React from "react";
 import '@testing-library/jest-dom'
 import { render, screen, within, fireEvent, act,waitFor} from "@testing-library/react";
-import AssetTableComponent from "../../src/utility/lib/build-components/asset-table-component";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { dataColsCurrency, dataColsDerivative, dataColsNft } from "../../src/utility/lib/design-components/datatables/datatable-version-assetdistribution/asset-distribution-cols";
-import { formatCurrency, formatValue } from "../../src/utility/lib/helpers/helper-functions";
-import { LoadingSkeleton, ErrorSkeleton } from "../../src/utility/lib/datafetching/loading-skeleton";
 import { ShowDetailIcon, SortingDataTableIcon, PositionDirectionIcon } from "../../public/images/icons";
-import { TableDetailComponent } from "../../src/utility/lib/design-components/datatables/table-layout/datatable-detail-popup";
-import {prefetchDetailComponent} from "../../src/utility/lib/datafetching/client-refetch/prefetch-hooks"
-import { RebalancingSetUp } from "../../src/utility/lib/design-components/rebalancing-set-up/rebalancing-set-up";
-import { DrDetail, DisDetail } from "../../src/utility/lib/build-components/asset-table-detail-components";
 import { mockInitial, tableConfig, detailMockCryptoResponse, detailMockDerivatives, detailMockNFTs } from "../testmocks";
+
+import { AssetTableComponent } from "../../src/utility/lib/data-table";
+import { dataColsCurrency, dataColsDerivative, dataColsNft } from "../../src/utility/lib/data-table/v-ad-cols/asset-distribution-cols";
+import { formatCurrency } from "../../src/utility/lib/helpers/helper-functions/formatCurrency";
+import { formatValue } from "../../src/utility/lib/helpers/helper-functions/formatValue";
+import { SmallLoadingSkeleton } from "../../src/utility/lib/data-fetching/skeletons/loading-skeleton";
+import { SmallErrorSkeleton } from "../../src/utility/lib/data-fetching/skeletons/error-skeleton";
+import { TableDetailComponent } from "../../src/utility/lib/data-table/table-detail-components/v-ad-assets-parent";
+import { prefetchDetailComponent } from "../../src/utility/lib/data-fetching/prefetch-hooks";
+import { RebalancingSetUp } from "../../src/utility/lib/helpers/helper-components/rebalancing-set-up";
+import { DrDetail, DisDetail } from "../../src/utility/lib/data-table/table-detail-components/v-ad-assets-detail-components";
 
 
 observeMock = jest.fn();
@@ -43,23 +46,23 @@ beforeEach(() => {
   }));
 });
 
-const mockPrefetch = jest.fn();
-jest.mock("@/utility/lib/datafetching/client-refetch/prefetch-hooks", () => ({
-  prefetchDetailComponent: (...args) => mockPrefetch(...args),
-}));
-jest.mock("../../src/utility/lib/design-components/datatables/table-layout/datatable-detail-popup", () => ({
+jest.mock("../../src/utility/lib/data-fetching/prefetch-hooks", () => ({
+  prefetchDetailComponent: jest.fn().mockImplementation(()=> null)
+}))
+
+jest.mock("../../src/utility/lib/data-table/table-detail-components/v-ad-assets-parent", () => ({
   TableDetailComponent: jest.fn().mockImplementation(()=> <p> TableDetail Component</p>) 
 }));
 
 
-jest.mock('../../src/utility/lib/build-components/asset-table-detail-components', () => ({
+jest.mock("../../src/utility/lib/data-table/table-detail-components/v-ad-assets-detail-components", () => ({
   DrDetail: jest.fn().mockImplementation(() => <div> DrDetail </div>), 
   DisDetail: jest.fn().mockImplementation(()=> <div> DisDetail</div>)
 }));
 
 
-jest.mock('../../src/utility/lib/datafetching/loading-skeleton', () => ({
-  LoadingSkeleton: jest.fn().mockImplementation(() => (
+jest.mock("../../src/utility/lib/data-fetching/skeletons/loading-skeleton", () => ({
+  SmallLoadingSkeleton: jest.fn().mockImplementation(() => (
     <div data-testid="loading-skeleton">Loading...</div>
   )),
 }));
@@ -70,13 +73,8 @@ jest.mock("../../public/images/icons", ()=> ({
   PositionDirectionIcon: jest.fn().mockImplementation(() => <p> P </p>)
 }))
 
-jest.mock("../../src/utility/lib/design-components/rebalancing-set-up/rebalancing-set-up", ()=> ({
+jest.mock("../../src/utility/lib/helpers/helper-components/rebalancing-set-up", ()=> ({
   RebalancingSetUp: jest.fn().mockImplementation(()=> <div> RB-SetUp </div> ),
-}))
-
-jest.mock("../../src/utility/lib/datafetching/client-refetch/prefetch-hooks", () => ({
-
-  prefetchDetailComponent: jest.fn().mockImplementation(()=> null)
 }))
 
 const queryClient = new QueryClient();

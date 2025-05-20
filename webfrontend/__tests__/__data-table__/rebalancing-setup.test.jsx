@@ -1,15 +1,15 @@
 import '@testing-library/jest-dom'
-import { RebalancingSetUp } from '../../src/utility/lib/design-components/rebalancing-set-up/rebalancing-set-up';
-import { InfoCards, DetailNfts, StopLossCards } from '../../src/utility/lib/helpers/helper-detail-table';
-import { formatValue, formatCurrency } from '../../src/utility/lib/helpers/helper-functions';
+import { RebalancingSetUp } from '../../src/utility/lib/helpers/helper-components/rebalancing-set-up';
+import { formatCurrency } from '../../src/utility/lib/helpers/helper-functions/formatCurrency';
+import { formatValue } from '../../src/utility/lib/helpers/helper-functions/formatValue';
 import { Bar } from 'react-chartjs-2';
 import { render, screen, fireEvent, act, waitFor } from "@testing-library/react"
-import { postRebalancing } from '../../src/utility/lib/datafetching/layer';
+import { postRebalancing } from '../../src/utility/lib/data-fetching/layer';
 
 jest.mock("react-chartjs-2", () => ({
     Bar: jest.fn().mockImplementation(() => <p> Bar Chart </p>) 
 }))
-jest.mock('../../src/utility/lib/datafetching/layer', () => ({
+jest.mock('../../src/utility/lib/data-fetching/layer', () => ({
     postRebalancing: jest.fn().mockImplementation(null)
 }))
 let mockInitial = {

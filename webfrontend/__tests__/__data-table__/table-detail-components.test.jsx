@@ -1,18 +1,19 @@
 
 import '@testing-library/jest-dom'
-import { DisDetail, DrDetail} from "../../src/utility/lib/build-components/asset-table-detail-components";
-import { formatValue, formatCurrency, formatDecimals } from '../../src/utility/lib/helpers/helper-functions';
+import { DrDetail, DisDetail } from "../../src/utility/lib/data-table/table-detail-components/v-ad-assets-detail-components";
+import { formatCurrency } from '../../src/utility/lib/helpers/helper-functions/formatCurrency';
+import { formatValue } from '../../src/utility/lib/helpers/helper-functions/formatValue';
 import { render } from '@testing-library/react';
-import { InfoCards, DetailNfts, StopLossCards } from '../../src/utility/lib/helpers/helper-detail-table';
-import { RebalancingSetUp } from '../../src/utility/lib/design-components/rebalancing-set-up/rebalancing-set-up';
-import { HoldingLogoImageContainer } from '../../src/utility/lib/helpers/image-container';
+import { InfoCards, DetailNfts, StopLossCards } from '../../src/utility/lib/helpers/helper-components/detail-table-comps';
+import { RebalancingSetUp } from '../../src/utility/lib/helpers/helper-components/rebalancing-set-up';
+import { HoldingLogoImageContainer } from '../../src/utility/lib/helpers/helper-components/image-container';
 import { Bar } from 'react-chartjs-2';
 import { screen } from '@testing-library/react';
 import { DerivativesIcon } from '../../public/images';
-import { ErrorSkeleton } from '../../src/utility/lib/datafetching/loading-skeleton';
+import { SmallErrorSkeleton } from '../../src/utility/lib/data-fetching/skeletons/error-skeleton';
 import { cryptoMockDetail, derivativeMockDetail, nftMockDetail } from '../testmocks';
 
-jest.mock("../../src/utility/lib/helpers/helper-detail-table", () => ({
+jest.mock('../../src/utility/lib/helpers/helper-components/detail-table-comps', () => ({
     DetailNfts: jest.fn().mockImplementation(() => <p> Expose NFTs </p>), 
     InfoCards: jest.fn().mockImplementation(()=> <p> Info Cards</p>), 
     StopLossCards: jest.fn().mockImplementation((derivativeMockDetail)=> <p>Stop Loss Cards </p>)
@@ -23,17 +24,17 @@ jest.mock("react-chartjs-2", () => ({
 }))
 
 
-jest.mock("../../src/utility/lib/design-components/rebalancing-set-up/rebalancing-set-up", () => ({
+jest.mock("../../src/utility/lib/helpers/helper-components/rebalancing-set-up", () => ({
     RebalancingSetUp: jest.fn().mockImplementation(()=> <p> Rebalancing Set up</p>)
 }))
 
-jest.mock("../../src/utility/lib/datafetching/loading-skeleton", () => ({
-    ErrorSkeleton: jest.fn().mockImplementation(() => <p> Error occured </p>)
+jest.mock("../../src/utility/lib/data-fetching/skeletons/error-skeleton", () => ({
+    SmallErrorSkeleton: jest.fn().mockImplementation(() => <p> Error occured </p>)
 }))
 
 
 
-jest.mock("../../src/utility/lib/helpers/image-container", () => ({
+jest.mock("../../src/utility/lib/helpers/helper-components/image-container", () => ({
     HoldingLogoImageContainer: jest.fn().mockImplementation(() => <p> Holding Logo Image Container </p> )
 }))
 
