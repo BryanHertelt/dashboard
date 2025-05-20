@@ -3,7 +3,7 @@ import AssetDistributionComponent from "@/utility/lib/page-components/asset-dist
 import {
   getPortfolioData,
   getTimeFrames,
-} from "@/utility/lib/datafetching/layer";
+} from "@/utility/lib/data-fetching/layer";
 
 const AssetDistribution = async () => {
   const [assetDistributionResponse, initialLineLoad] = await Promise.all([

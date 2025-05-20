@@ -1,10 +1,4 @@
-import DistributionComponent from "../build-components/distribution-component";
-import DetailTableComponent from "../build-components/data-table-component";
-import ParentListComponent from "../build-components/parent-table-component";
-
-import { holdingsdistributioncolumns } from "../design-components/datatables/datatable-version-assetdistribution/holding-cols";
-import { holdingslistcolumns } from "../design-components/datatables/datatable-version-assetdistribution/holding-cols";
-import { holdingsData } from "@/api/distribution/asset-distributiontabledata";
+import { DistributionComponent } from "../charts";
 
 import {
   holdingsPieChartData,
@@ -19,16 +13,9 @@ const HoldingsDistributionComponent = () => {
           text={"You can see your Holding Distribution here."}
           title={"Holding Distribution"}
           piedata={holdingsPieChartData}
-          pieoptions={pieChartOptions}
         />
       </div>
-      <div className="card h-4/6 w-8/12 flex-grow pl-7 py-7 pr-8 ml-7">
-        {" "}
-        <ParentListComponent
-          listcolumns={holdingslistcolumns}
-          listdata={holdingsData}
-        />{" "}
-      </div>
+      {/* 
       <div className="card mt-9 p-7 w-full">
         <DetailTableComponent
           text={"You can see all your cryptocurrencies here."}
@@ -37,6 +24,7 @@ const HoldingsDistributionComponent = () => {
           data={holdingsData}
         />
       </div>
+      */}
     </>
   );
 };

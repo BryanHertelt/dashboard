@@ -1,16 +1,13 @@
 "use client";
-import AssetValueChartComponent from "../build-components/value-chart-comp";
-import DistributionComponent from "../build-components/distribution-component";
-import AssetTableComponent from "../build-components/asset-table-component";
-import { useDistributionData } from "../datafetching/client-refetch/client-hooks";
-import { getPortfolioData } from "../datafetching/layer";
-import { formatValue } from "../helpers/helper-functions";
+import { LineChartController, DistributionComponent } from "../charts";
 import {
+  AssetTableComponent,
   dataColsCurrency,
   dataColsDerivative,
   dataColsNft,
-} from "../design-components/datatables/datatable-version-assetdistribution/asset-distribution-cols";
-import { LoadingSkeleton } from "../datafetching/loading-skeleton";
+} from "../data-table";
+import { useDistributionData, getPortfolioData } from "../data-fetching";
+import { formatValue } from "../helpers";
 
 const AssetDistributionComponent = (props: any) => {
   const { processedQueryData, isLoading, isError, error } = useDistributionData(
@@ -96,7 +93,7 @@ const AssetDistributionComponent = (props: any) => {
     <div className="h-full">
       {/**
       <div className="card h-4/6 w-8/12 flex-grow pl-7 pt-7 pr-8">
-        <AssetValueChartComponent
+        <LineChartController
           currentValue={processedQueryData.currentvalue}
           initialData={props.initialLineLoad}
         />

@@ -1,8 +1,8 @@
 import {
   getPortfolioData,
   getDetailAssetData,
-} from "@/utility/lib/datafetching/layer";
-import { baseUrl } from "@/utility/lib/datafetching/layer";
+} from "@/utility/lib/data-fetching/layer";
+import { baseUrl } from "@/utility/lib/data-fetching/layer";
 
 describe("testing API layer for portfolio fetch", () => {
   beforeEach(() => {

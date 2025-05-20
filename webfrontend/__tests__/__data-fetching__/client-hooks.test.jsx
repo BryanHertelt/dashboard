@@ -1,6 +1,6 @@
-import { useDetailComponent, useValueChart } from "../../src/utility/lib/datafetching/client-refetch/client-hooks";
+import { useDetailComponent, useValueChart } from "../../src/utility/lib/data-fetching/client-refetch/client-hooks";
 import { useQuery } from "@tanstack/react-query";
-import { getDetailAssetData, getTimeFrames} from "../../src/utility/lib/datafetching/layer";
+import { getDetailAssetData, getTimeFrames} from "../../src/utility/lib/data-fetching/layer";
 import { renderHook} from "@testing-library/react";
 import { waitFor, waitForNextUpdate } from "@testing-library/react";
 import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";

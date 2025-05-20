@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import {
   black,
   white,
@@ -7,7 +5,7 @@ import {
   gray,
   red,
   icongray,
-} from "@/utility/lib/helpers/colors";
+} from "../../src/utility/lib/helpers/helper-config/colors";
 
 export const PositionDirectionIcon = ({ direction }: { direction: string }) => {
   return (
