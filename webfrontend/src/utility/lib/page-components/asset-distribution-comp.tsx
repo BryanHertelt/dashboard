@@ -5,13 +5,28 @@ import AssetTableComponent from "../build-components/asset-table-component";
 import { useDistributionData } from "../datafetching/client-refetch/client-hooks";
 import { getPortfolioData } from "../datafetching/layer";
 import { formatValue } from "../helpers/helper-functions";
+import { useEffect } from "react";
 import {
   dataColsCurrency,
   dataColsDerivative,
   dataColsNft,
 } from "../design-components/datatables/datatable-version-assetdistribution/asset-distribution-cols";
+import logger from "../logging/logger";
+import { trace, context } from "@opentelemetry/api";
 
 const AssetDistributionComponent = (props: any) => {
+  useEffect(() => {
+    const startTime = performance.now();
+    logger.info({ event: "page_load_start", page: "asset_distribution" });
+    return () => {
+      const loadTime = performance.now() - startTime;
+      logger.info({
+        event: "page_load_complete",
+        page: "asset_distribution",
+        load_time_ms: loadTime,
+      });
+    };
+  }, []);
   const { processedQueryData, isLoading, isError, error } = useDistributionData(
     {
       qKey: ["PortfolioAD"],
@@ -89,6 +104,37 @@ const AssetDistributionComponent = (props: any) => {
     ],
     currentValue: processedQueryData.currentvalue,
   };
+
+  useEffect(() => {
+    if (isLoading) {
+      logger.info({ event: "data_fetch_start", query: "PortfolioAD" });
+    }
+    if (isError) {
+      const tracer = trace.getTracer("asset-distribution-tracer");
+      tracer.startActiveSpan("fetch-portfolio-data", (span) => {
+        logger.error({
+          event: "data_fetch_error",
+          query: "PortfolioAD",
+          error: error?.message || "Unknown error",
+        });
+        span.setAttribute("error", true);
+        span.setAttribute("error.message", error?.message || "Unknown error");
+        span.end();
+      });
+    }
+    if (processedQueryData && !isLoading && !isError) {
+      const tracer = trace.getTracer("asset-distribution-tracer");
+      tracer.startActiveSpan("fetch-portfolio-data", (span) => {
+        logger.info({
+          event: "data_fetch_success",
+          query: "PortfolioAD",
+          asset_count: processedQueryData.assets.length,
+        });
+        span.setAttribute("asset_count", processedQueryData.assets.length);
+        span.end();
+      });
+    }
+  }, [isLoading, isError, error, processedQueryData]);
 
   return (
     <div className="h-full">

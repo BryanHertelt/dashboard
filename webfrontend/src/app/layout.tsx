@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import ReactQueryProvider from "@/utility/lib/datafetching/client-refetch/react-query-provider";
+import TracingProvider from "@/utility/lib/logging/tracing-provider";
 
 export const metadata: Metadata = {
   title: "My Flyzer",
@@ -18,7 +19,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ReactQueryProvider>{children}</ReactQueryProvider>
+        <TracingProvider>
+          {" "}
+          <ReactQueryProvider>{children}</ReactQueryProvider>
+        </TracingProvider>
       </body>
     </html>
   );
