@@ -3,6 +3,34 @@ import { NftsIcon } from "../../../../../public/images";
 import { formatValue, formatCurrency } from "../../helpers";
 import { NftDetailImageContainer } from "../../helpers";
 
+/**
+ * `InfoCards` is a visual component that renders a list of distribution summary cards
+ * for NFT or asset holdings. It displays metadata including the asset name, value, percentage distribution,
+ * and a color indicator used in associated charts.
+ * Navigation:
+ * 1. Navigate to Asset Distribution
+ * 2. Expand the detail component.
+ * 3. Switch to Holdings or Asset Groups.
+ * 4. These cards are described in the component below.
+ *
+ * For NFTs, a button is shown to allow toggling which distribution object is actively selected.
+ *
+ * ### Props
+ * @param data - A nested array of distribution objects containing asset metadata (e.g., name, url, value).
+ * @param tableStatus - Current table context (e.g., "nft", "cryptocurrency"); determines layout and labels.
+ * @param barData - Chart data used to extract background colors for cards.
+ * @param assetname - Name of the asset shown in the card (used in formatting).
+ * @param changeActiveDisObj - Callback function to set the currently selected distribution object.
+ * @param activeDisObj - ID of the currently active/selected distribution object.
+ *
+ * ### Behavior
+ * - Flattens the nested input data array.
+ * - Displays logo, name, value, currency, and distribution percentage.
+ * - Color swatch indicates corresponding chart bar color.
+ * - Optional toggle button appears for NFTs to highlight a selected item.
+ *
+ * @returns {JSX.Element[]} A list of flexbox cards displaying key holding data with optional interactivity.
+ */
 export const InfoCards = ({
   data,
   tableStatus,
@@ -98,6 +126,33 @@ export const InfoCards = ({
   });
 };
 
+/**
+ * `StopLossCards` displays stop-loss and take-profit (SL/TP) values, including partial SL/TP settings,
+ * in a compact, readable card format. Each partial configuration includes a quantity and individual SL/TP values.
+ *
+ * Navigation:
+ * 1. Navigate to asset distribution.
+ * 2. Select derivatives in the asset table.
+ * 3. Expand the detail
+ *
+ *
+ * ### Props
+ * @param sltp - SL/TP configuration object.
+ * @param sltp.sl - Main stop-loss percentage (nullable).
+ * @param sltp.tp - Main take-profit percentage (nullable).
+ * @param sltp.partial - An array of partial SL/TP settings.
+ * @param sltp.partial[].id - Unique identifier.
+ * @param sltp.partial[].quantity - Quantity for this partial position.
+ * @param sltp.partial[].tp - Partial take-profit value.
+ * @param sltp.partial[].sl - Partial stop-loss value.
+ *
+ * ### Behavior
+ * - Renders overall SL/TP percentages if provided.
+ * - Iterates through `partial` array to render a series of SL/TP cards with quantity information.
+ * - Displays color-coded profit/loss values for clarity.
+ *
+ * @returns A vertically stacked set of SL/TP value cards.
+ */
 export const StopLossCards = ({
   sltp,
 }: {
@@ -177,6 +232,31 @@ export const StopLossCards = ({
   );
 };
 
+/**
+ * `DetailNfts` displays a horizontal list of NFT cards within an expanded detail component.
+ * Each NFT is shown with its image, name, and ETH value. Designed for use inside detailed views
+ * of NFT distribution objects.
+ *
+ * Navigation:
+ * 1. Navigate to asset distribution.
+ * 2. Select nfts in the asset table.
+ * 3. Expand the detail.
+ * 4. Click on one asset group.
+ *
+ * ### Props
+ * @param data - An object containing a list of NFTs to display.
+ * @param data.id - Unique ID of the distribution group (used as key).
+ * @param data.nfts - List of NFT objects in the distribution.
+ * @param data.nfts[].name - Name of the NFT.
+ * @param data.nfts[].nfturl - Image URL for the NFT.
+ * @param data.nfts[].nftvalue - Value of the NFT in ETH.
+ *
+ * ### Behavior
+ * - Renders each NFT with image, truncated name (if necessary), and formatted ETH value.
+ * - Visually separates each NFT with a vertical border, except for the first one.
+ *
+ * @returns {JSX.Element} A flex-wrapped horizontal list of NFT display cards.
+ */
 export const DetailNfts = ({ data }: { data: any }) => {
   const distributionElement = data;
   return (

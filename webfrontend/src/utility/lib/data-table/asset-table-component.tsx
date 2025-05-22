@@ -3,48 +3,38 @@ import useResizeObserver from "use-resize-observer";
 import AssetTableController from "./asset-table-controller";
 import logger from "../logging/logger";
 
-type StatusItem<StatusKey extends string> = {
-  status: StatusKey;
-  statusTitle: string;
-  column: object;
-};
-
-type FilterItem<StatusKey extends string> = {
-  filter: string;
-  filterTitle: string;
-  filterStatus: StatusKey;
-};
-
-type configType = {
-  title: string;
-  initial: any;
-  detail: boolean;
-  status: { status: string; statusTitle: string; columns: object }[];
-  filter: {
-    filter: string;
-    filterTitle: string;
-    filterStatus: string;
-  }[];
-  currentValue?: number;
-};
-
-type AssetTableConfig<StatusKey extends string> = {
-  title: string;
-  initial: any[];
-  currentValue: number;
-  status: StatusItem<StatusKey>[];
-  filter: FilterItem<StatusKey>[];
-};
+import { StatusItem, FilterItem, configType } from "./types";
 
 /**
- *The AssetTableComponent generates the navigation for more complex datatables.
- * @param config The config object holds the settings for the datatable component, including the following configurations:
- * title: title of the data-table
- * intial: initial data,
- * detail: boolean => wether a detail page is available or not
- * status: array of objects, each object holding the status(used for implementation), statusTitle(rendered on the status buttons), columns(which should be displayed when selecting this status)
- * filter: array of objects, each object holding the filter (used for implementation), statusTitle(rendered on the filter button), filterStatus(the table status where the filter should be visible)
- * @returns A UI giving the possibility to trigger filter or status change functions and the Asset Table Controller.
+ * `AssetTableComponent` renders a tabbed and filterable interface for viewing different
+ * types of asset tables, based on a provided configuration object.
+ *
+ * It dynamically builds status tabs and context-aware filters, updates the internal table status,
+ * and passes configuration and state to the `AssetTableController` for applying the filter and status objects selected in this component.
+ *
+ * This component renders the UI for the user to use the AssetTableController. The controller applies filters, status and everything else selected
+ * here to the actual dataset and passes it down to the DataTable, which takes care of rendering.
+ *
+ * ### State Variables:
+ * - `tableStatus`: Tracks the currently active table/status view.
+ * - `tabWidth`: Dynamically calculated width of each tab button for layout.
+ * - `currentTab`: Index of the currently active status tab.
+ * - `filter`: Object storing boolean values for each active/inactive filter by key.
+ *
+ * ### Subcomponents:
+ * - `StatusButtons`: Renders each status as a tab, updating `tableStatus` and `currentTab` on click.
+ * - `FilterButtons`: Dynamically renders filter buttons that are context-sensitive to `tableStatus`.
+ *
+ * @component
+ * @param } props
+ * @param  props.config - Configuration object containing:
+ *   - `status`: Array of status objects (each with `status` and `statusTitle`)
+ *   - `filter`: Array of filter objects (each with `filter`, `filterTitle`, and `filterStatus`)
+ *
+ * @returns A UI component displaying status-based asset tables with interactive tabs and filters.
+ *
+ * @example
+ * <AssetTableComponent config={assetTableConfig} />
  */
 const AssetTableComponent = ({ config }: { config: configType }) => {
   const [tableStatus, setTableStatus] = useState<string>(

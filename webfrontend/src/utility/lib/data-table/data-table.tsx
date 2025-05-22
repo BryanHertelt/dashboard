@@ -7,7 +7,6 @@ import { TableDetailComponent } from "../data-table";
 import { SmallErrorSkeleton, prefetchDetailComponent } from "../data-fetching";
 
 import {
-  ColumnDef,
   SortingState,
   flexRender,
   getCoreRowModel,
@@ -23,25 +22,40 @@ import {
   TableRow,
 } from "./table";
 import { ShowDetailIcon } from "../../../../public/images/icons";
-
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<any, TValue>[];
-  data: any;
-  currentValue: number;
-  expandedRow?: number | null;
-  setExpandedRow?: any;
-  tableStatus?: string;
-}
+import { DataTableProps } from "./types";
 
 /**
- * The component renders a data table based on the data and columns passed.
- * The basic structure is taken from shadcn/ui.
- * I added the extra feature to expand a detail component of the selected row. This feature is currently just usable for the Crypto/NFT/Derivative data table.
- * @param data
- * @param columns
- * @param expandedRow Optional: takes the expanded row and passed it down to the detail component. This is necessary for the detail component to make the right api call.
- * @param tableStatus Optional: Takes the status of the datatable from the wrapping data handler.
- * @returns The data table.
+ * `DataTable` is a reusable, generic table component built on top of `@tanstack/react-table`
+ * and customized with ShadCN UI primitives. It renders sortable tabular data and supports
+ * row expansion to reveal a detail component specific to the selected row.
+ *
+ * ### Props
+ * @template TData, TValue
+ * @param data - The array of data records to display in the table.
+ * @param columns - Column definitions for the table.
+ * @param tableStatus - (Optional) Indicates the type/status of the table (e.g., "cryptocurrency", "nft", "derivative").
+ *                                 This controls which detail component is rendered.
+ * @param currentValue - (Optional) A numeric value passed to the detail component (e.g., current market value).
+ * @param expandedRow- (Optional) ID of the currently expanded row; used to determine which row detail to show.
+ * @param setExpandedRow - (Optional) Function to toggle row expansion, managed by the parent.
+ *
+ * ### Internal State
+ * - `sorting: SortingState` - Tracks the current sorting configuration of the table.
+ * - `rowName: string` - Tracks the name of the currently hovered or selected row (can be used for future enhancements or analytics).
+ *
+ * ### Behavior
+ * - Sorts data using TanStack React Table's sorting model.
+ * - Resets sorting state when `tableStatus` changes.
+ * - Prefetches detail component data on row hover using `prefetchDetailComponent`.
+ * - Renders a detail component inline beneath a selected row if it is expanded.
+ *
+ * ### Detail Expansion
+ * Uses a helper function `getDetailComponent` to dynamically render a `<TableDetailComponent />`
+ * based on the selected row and `tableStatus`. This includes pre-calculated props like:
+ * - `assetName`, `assetId`, `assetUrl`, and `totalAssetAmount`.
+ *
+ * ### Return
+ * @returns {JSX.Element} A fully interactive data table with sortable headers and expandable row details.
  */
 export function DataTable<TData, TValue>({
   data,
@@ -71,7 +85,6 @@ export function DataTable<TData, TValue>({
    * @param tableStatus The status determines which table detail component is rendered.
    * @returns The TableDetailComponent related to the table status.
    */
-
   const getDetailComponent = (row: any, tableStatus: string | undefined) => {
     const assetName =
       tableStatus === "cryptocurrency"

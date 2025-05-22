@@ -7,34 +7,66 @@ import {
 } from "../../data-fetching";
 import { DrDetail, DisDetail } from "../../data-table";
 import { HoldingLogoImageContainer, isObject } from "../../helpers";
-interface TableDetailProps {
-  tableStatus: string | undefined;
-  assetId: number;
-  currentValue: number;
-  totalAssetAmount: number;
-  assetName?: string;
-  assetSymbol?: string;
-  assetUrl?: string;
-}
+import { TableDetailProps } from "../types";
+type tabType = "DR" | "HD" | "AG";
 
 /**
- * The component handles the user interaction inside of the detailled pop up, when expanding the datatable row.
- * It also handles loading and error states for the detailled pop up.
- * All parameters are given as props from the parent component.
- * @param tableStatus
- * @param assetId
- * @param assetName
- * @param assetSymbol
- * @param assetUrl
- * @returns The detailled popup, when expanding a datatable row.
+ * `TableDetailComponent` is a dynamic detail panel component displayed when expanding
+ * a row in a data table. It shows in-depth data about an asset including general info,
+ * asset groups, and holdings, depending on the asset type.
+ *
+ * ## Features
+ * - Dynamically fetches and displays detail data based on the selected asset and `tableStatus`
+ * - Supports multiple views: Details (`DR`), Asset Groups (`AG`), Holdings (`HD`)
+ * - Handles loading and error states gracefully
+ * - Renders corresponding subcomponents like `DrDetail` and `DisDetail` conditionally
+ *
+ * ## State Management
+ * - `activeDisObj`: Tracks the selected asset group or holding for highlighting/details
+ * - `detail`: Currently selected tab ("DR", "AG", "HD")
+ * - `currentTab`: Index of the active tab for visual indicator animation
+ * - `tabWidth`: Dynamically calculated width for evenly spacing tabs
+ *
+ * ## Responsive Behavior
+ * Uses `useResizeObserver` to calculate and apply dynamic tab widths,
+ * enabling a responsive and animated tab-switching experience.
+ *
+ * @param props - Object of type `TableDetailProps` including:
+ * @param props.tableStatus - The type of asset (`"nft"`, `"cryptocurrency"`, `"derivative"`, etc.)
+ * @param props.assetId - Unique identifier for the asset
+ * @param props.assetName - Name of the asset to be displayed in charts and info cards
+ * @param props.assetSymbol - The ticker symbol for the asset
+ * @param props.assetUrl - An optional URL or path to an image or external resource for the asset
+ * @param props.totalAssetAmount - Total portfolio value of the asset (used for distribution calculation)
+ * @param props.currentValue - Current market value of the asset (used in `DrDetail`)
+ *
+ * @returns A React component rendering the expanded detail panel including:
+ * - Loading skeleton (`SmallLoadingSkeleton`) if data is loading
+ * - Error skeleton (`SmallErrorSkeleton`) if data fails to load or is malformed
+ * - A tabbed navigation and a conditional detail view:
+ *   - `DrDetail`: For general metrics (used mainly for cryptocurrency and derivatives)
+ *   - `DisDetail`: For asset groups (`AG`) or holdings (`HD`)
+ *
+ * @example
+ * ```tsx
+ * <TableDetailComponent
+ *   tableStatus="nft"
+ *   assetId={101}
+ *   assetName="CoolCats NFT"
+ *   assetSymbol="CCAT"
+ *   assetUrl="/images/ccat.png"
+ *   totalAssetAmount={5000}
+ *   currentValue={1200}
+ * />
+ * ```
  */
 export const TableDetailComponent = (props: TableDetailProps) => {
   const tS = props.tableStatus;
   const [activeDisObj, setActiveDisObj] = useState<number | null>(null);
-  const [detail, setDetail] = useState<string>(
+  const [detail, setDetail] = useState<tabType>(
     tS === "cryptocurrency" ? "DR" : "AG"
   );
-  const tabs = useMemo(() => {
+  const tabs: tabType[] = useMemo(() => {
     switch (tS) {
       case "nft":
         return ["AG", "HD"];
@@ -48,16 +80,22 @@ export const TableDetailComponent = (props: TableDetailProps) => {
   const [tabWidth, setTabWidth] = useState<number>(0);
   const [currentTab, setCurrentTab] = useState<number>(0);
   const { data, isLoading, isError } = useDetailComponent(props);
-  const handleTabSwitch = useCallback((index: number, button: string) => {
-    {
-      setActiveDisObj(null);
-      const foundTab: any = tabs.find((detail) => detail === button);
-      if (foundTab) {
-        setCurrentTab(tabs.indexOf(foundTab));
+
+  const handleTabSwitch = useCallback(
+    (index: number, button: string) => {
+      {
+        setActiveDisObj(null);
+        const foundTab: tabType | undefined = tabs.find(
+          (detail) => detail === button
+        );
+        if (foundTab) {
+          setCurrentTab(tabs.indexOf(foundTab));
+        }
+        setDetail(tabs[index]);
       }
-      setDetail(tabs[index]);
-    }
-  }, []);
+    },
+    [tabs]
+  );
   const { ref: tabRef } = useResizeObserver<HTMLDivElement>({
     onResize: ({ width }) => {
       if (width) {

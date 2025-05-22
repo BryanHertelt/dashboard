@@ -1,20 +1,55 @@
+import React from "react";
 import { useState, useMemo, useEffect } from "react";
-import { SmallLoadingSkeleton } from "../data-fetching";
 import { DataTable } from "../data-table";
 import logger from "../logging/logger";
+import { configType } from "./types";
 
+/**
+ * `AssetTableController` is a container component responsible for
+ * filtering and managing asset table data based on the selected status
+ * and active filters. It processes the data and passes it along with
+ * the appropriate configuration to the `DataTable` component for rendering.
+ *
+ * ### Props
+ * @param tableStatus - The currently selected status tab (e.g., "cryptocurrency", "derivative", "nft").
+ * @param tableConfig - Configuration object including:
+ * - `initial`: the raw, unfiltered dataset.
+ * - `status`: status tab configurations with column definitions.
+ * - `filter`: filter button definitions tied to specific statuses.
+ * - `currentValue` (optional): current market value or similar numerical metric.
+ * @param filterType - A key-value map representing active filters,
+ *   such as `{ perp: true, future: false }`.
+ *
+ * ### Internal State
+ * - `tableData: any[]` - Holds the currently filtered list of assets shown in the table.
+ * - `expandedRow: number | null` - Tracks the currently expanded row in the table, if any.
+ *
+ * ### Behavior
+ * - Applies the `tableStatus` and `filterType` values to filter the raw `initial` data.
+ * - Updates internal `tableData` state accordingly when filters or status change.
+ * - Automatically resets expanded rows when filters/status update.
+ * - Computes the columns to render based on the current status configuration.
+ *
+ * @returns A rendered `DataTable` containing the filtered asset data,
+ * configured columns, and UI interaction for expanding table rows.
+ */
 const AssetTableController = ({
   tableStatus,
   tableConfig,
   filterType,
 }: {
   tableStatus: string;
-  tableConfig: any;
+  tableConfig: configType;
   filterType: Record<string, boolean>;
-}) => {
+}): React.ReactElement => {
   const [tableData, setTableData] = useState(tableConfig.initial);
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
 
+  /**
+   * Applies filtering logic whenever the table status or filter settings change.
+   * Filters data based on the `statusFilter` key in the config, and handles special
+   * logic for derivative assets.
+   */
   useEffect(() => {
     logger.info({
       message: "AssetTableController called",
@@ -75,7 +110,7 @@ const AssetTableController = ({
     });
   }, [tableStatus, filterType, tableConfig.initial]);
 
-  const col = useMemo(() => {
+  const col: any = useMemo(() => {
     const statusConfig = tableConfig.status.find(
       (s: any) => s.status === tableStatus
     );
@@ -83,16 +118,16 @@ const AssetTableController = ({
     logger.debug({
       message: "Columns configured for table",
       tableStatus,
-      columnCount: statusConfig.columns?.length || 0,
+      columnCount: statusConfig?.columns?.length || 0,
     });
-    return statusConfig.columns;
+    return statusConfig?.columns;
   }, [tableStatus, tableData]);
 
   logger.debug({
     message: "Rendering DataTable",
     tableStatus,
     dataCount: tableData.length,
-    columnCount: col.length,
+    columnCount: col?.length,
     expandedRow,
   });
 

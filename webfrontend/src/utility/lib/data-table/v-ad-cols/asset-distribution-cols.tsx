@@ -59,9 +59,7 @@ export interface derivativesDataInterface {
 }
 
 /**
- *
- * @param parentdata Passes the data, fetched from the page component down to the data table component.
- * @returns
+ * dataColsCurrency is an object, which holds header and column definitions for the data-table status currency.
  */
 export const dataColsCurrency = [
   {
@@ -245,6 +243,9 @@ export const dataColsCurrency = [
   },
 ];
 
+/**
+ * dataColsDerivative is an object, which holds header and column definitions for the data-table status derivative.
+ */
 export const dataColsDerivative = [
   {
     accessorKey: "assetname",
@@ -407,7 +408,9 @@ export const dataColsDerivative = [
     },
   },
 ];
-
+/**
+ * dataColsNft is an object, which holds header and column definitions for the data-table status nft.
+ */
 export const dataColsNft = [
   {
     accessorKey: "assetname",

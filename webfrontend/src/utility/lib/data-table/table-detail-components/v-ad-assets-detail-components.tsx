@@ -38,6 +38,52 @@ interface detailDataProps {
   name: string;
 }
 
+/**
+ * `DrDetail` is a React component that displays detailed information
+ * for a derivative asset in a rebalancing context. It renders key portfolio
+ * metrics and includes a setup section for initiating a rebalance.
+ * Navigate to the component:
+ * 1. Navigate to assetdistribution.
+ * 2. Ensure, that you are in the currency tab, than click on expand detail arrow.
+ * 3. The first tab of the popup shows everything, the DrDetail component is doing.
+ *
+ * @param data - The object containing various rebalancing-related properties for an asset:
+ * - `averageentryprice`: The average price at which the asset was purchased.
+ * - `marketprice`: The current market price of the asset.
+ * - `averageexitprice`: The average price at which the asset was sold or exited.
+ * - `totalcost`: The total cost basis of the asset in the portfolio.
+ * - `desiredbalance`: The target allocation or balance for rebalancing.
+ * - `currentbalance`: The current allocation or balance in the portfolio.
+ * - `assetId`: Identifier for the asset, passed to the `RebalancingSetUp` component.
+ *
+ * @param currentValue - The current value of the asset, passed to the rebalancing setup logic.
+ *
+ * @returns A layout consisting of:
+ * - A line chart, visualizing the asset change in a picked timeframe.
+ * - A sidebar of rebalancing metric cards (like entry price, market price, etc.)
+ * - A `RebalancingSetUp` component to allow adjusting target and current balances
+ *
+ * @remarks
+ * - Uses `formatCurrency()` to format all monetary values.
+ * - Layout adjusts responsively using utility classes for different screen sizes.
+ * - The component expects `data` to contain properly structured financial information.
+ *
+ * @example
+ * ```tsx
+ * <DrDetail
+ *   data={{
+ *     averageentryprice: 100,
+ *     marketprice: 120,
+ *     averageexitprice: 110,
+ *     totalcost: 1000,
+ *     desiredbalance: 50,
+ *     currentbalance: 45,
+ *     assetId: 1
+ *   }}
+ *   currentValue={115}
+ * />
+ * ```
+ */
 export const DrDetail = ({
   data,
   currentValue,
@@ -97,6 +143,38 @@ export const DrDetail = ({
   );
 };
 
+/**
+ * `buildBar` generates a horizontal stacked bar chart configuration
+ * compatible with Chart.js, based on asset distribution data.
+ * The build bar function is just called once in the DisDetail, but because of seperation of concerns it is extracted from the DisDetail Component.
+ *
+ * @param cardData - An array of objects representing distribution entries.
+ *   Each object should include:
+ *   - `name`: Name of the asset (used to label "Others")
+ *   - `assetvalue`: The value of the asset used for calculating its share
+ * @param totalAmount - The total value used to compute percentage distribution
+ *
+ * @returns An object with:
+ * - `data`: A `ChartData<"bar">` object structured for horizontal stacked bars
+ * - `options`: A `ChartOptions<"bar">` object with chart styling, scale, and interaction settings
+ *
+ * @remarks
+ * - Each bar's width corresponds to its percentage share of the total amount.
+ * - "Others" entries are rendered with a fixed `darkerGray` color.
+ * - All bars have consistent styling including border radius and no tooltip or legend.
+ * - The chart is horizontal (`indexAxis: "y"`) and responsive.
+ *
+ * @example
+ * ```ts
+ * const chart = buildBar([
+ *   { name: "BTC", assetvalue: 500 },
+ *   { name: "ETH", assetvalue: 300 },
+ *   { name: "Others", assetvalue: 200 }
+ * ], 1000);
+ *
+ * <Bar data={chart.data} options={chart.options} />
+ * ```
+ */
 export const buildBar = (cardData: any[], totalAmount: number) => {
   const backgroundColors = chartColors;
   const cardDataFormatted = cardData.map((disObj: any, index: number) => {
@@ -147,6 +225,49 @@ export const buildBar = (cardData: any[], totalAmount: number) => {
   return { data, options };
 };
 
+/**
+ * `DisDetail` is a React component that visualizes distribution data in a bar chart and info card format.
+ * You can see this component in action following this route:
+ * 1. Navigate to asset-distribution.
+ * 2. Click on the expand arrow in one of the rows.
+ * 3. Navigate to asset-groups or holdings.
+ * It also conditionally renders stop loss cards and a detailed view for active distribution items.
+ *
+ * @param detailData - An array of distribution data objects. These represent individual entries to be visualized.
+ * @param tableStatus - A string indicating the table context (e.g., `"nft"` or `"derivative"`), used to determine sorting and rendering behavior.
+ * @param totalAmount - The total value (asset or currency) used for calculating the relative distribution of each entry.
+ * @param assetname - The name of the asset associated with the distribution data, passed to info cards.
+ * @param changeActiveDisObj - A function used to update the currently active distribution object (e.g., on user interaction).
+ * @param activeDisObj - The ID of the currently active distribution object, or `null` if none is active.
+ * @param sltp - Optional object containing stop-loss and take-profit configurations:
+ * - `sl`: Stop-loss value (nullable)
+ * - `tp`: Take-profit value (nullable)
+ * - `partial`: An array of partial SL/TP configurations, each with `id`, `quantity`, and optional `sl`/`tp`
+ *
+ * @returns A composite component consisting of:
+ * - A bar chart representing the distribution
+ * - Optional stop-loss cards (for "derivative" status)
+ * - Info cards summarizing each distribution entry
+ * - A detailed NFT section if an active distribution is selected
+ *
+ * @remarks
+ * - If no `detailData` is provided, it shows a fallback error skeleton.
+ * - Entries are sorted by distribution size before rendering.
+ * - Data is split between a main set and an "Others" group when exceeding screen/display limits.
+ * - Responsive layout adapts based on `window.innerWidth`.
+ *
+ * @example
+ * ```tsx
+ * <DisDetail
+ *   detailData={[{ id: 1, assetvalue: 100, currencyvalue: 50, name: 'BTC' }]}
+ *   tableStatus="nft"
+ *   totalAmount={1000}
+ *   assetname="Bitcoin"
+ *   changeActiveDisObj={(id) => console.log(id)}
+ *   activeDisObj={1}
+ * />
+ * ```
+ */
 export const DisDetail = ({
   detailData,
   tableStatus,

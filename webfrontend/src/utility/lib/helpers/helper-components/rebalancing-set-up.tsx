@@ -31,6 +31,39 @@ ChartJS.register(
   Legend
 );
 
+/**
+ * RebalancingSetUp Component
+ *
+ * Displays a bar chart comparing the current vs desired portfolio balance for a given asset.
+ * Allows the user to input and submit a new desired balance either as a percentage or a value.
+ *
+ * Navigation:
+ * 1. Navigate to asset distribution.
+ * 2. Select crypto currrency in asset table.
+ * 3. Expand detail.
+ * 4. Navigate to details (should be the default value here)
+ * 5. Look beneath the asset chart.
+ *
+ * ### Props:
+ * @param data - An object containing balance details.
+ * @param data.currentbalance - The current balance percentage of the asset.
+ * @param data.desiredbalance - The desired balance percentage to be set.
+ * @param currentValue - The total value of the portfolio for calculation reference.
+ * @param assetId - Unique identifier of the asset for which rebalancing is set.
+ *
+ * ### Behavior:
+ * - Users can toggle between inputting desired balance as a percentage or absolute value.
+ * - Displays formatted percentage and currency values.
+ * - Prevents invalid input (e.g., values exceeding portfolio size or 100%).
+ * - Submits rebalancing data using `postRebalancing` when inputs lose focus.
+ * - Provides inline error messages for invalid values.
+ * - Visualizes current, desired, and total portfolio balance with a responsive horizontal bar chart.
+ *
+ * ### Dependencies:
+ * - Uses `Chart.js` via `react-chartjs-2` to render the bar chart.
+ * - Depends on formatting helpers: `formatCurrency`, `formatValue`.
+ * - Communicates updates via the `postRebalancing` API helper.
+ */
 export const RebalancingSetUp = ({
   data,
   currentValue,
