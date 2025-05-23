@@ -53,7 +53,6 @@ const AssetDistributionComponent = (props: any) => {
   };
 
   const tableConfig = {
-    title: "Assets",
     initial: tableData,
     detail: true,
     statusFilter: "assettype",

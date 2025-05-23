@@ -14,7 +14,7 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "incremental": true,
     "plugins": [
       {
@@ -29,7 +29,7 @@
     "types": [
       "jest",
       "node",
-      "@testing-library/jest-dom", 
+      "@testing-library/jest-dom",
       "react"
     ],
     "target": "ES2017"
@@ -47,8 +47,15 @@
     ".next/types/**/*.ts",
     "jest.config.js",
     "__tests__/layout.test.jsx",
-    "__tests__/assetdistribution.test.jsx"
-, "__tests__/bar-charts.test.jsx", "__tests__/bar-charts.test.jsx", "__tests__/bar-charts.test.jsx", "__tests__/__data-fetching__/client-hooks.test.jsx", "__tests__/prefetch-query-test.jsx", "src/app/api/logging/route.js", "src/app/api/logging/route.js"  ],
+    "__tests__/assetdistribution.test.jsx",
+    "__tests__/bar-charts.test.jsx",
+    "__tests__/bar-charts.test.jsx",
+    "__tests__/bar-charts.test.jsx",
+    "__tests__/__data-fetching__/client-hooks.test.jsx",
+    "__tests__/prefetch-query-test.jsx",
+    "src/app/api/logging/route.js",
+    "src/app/api/logging/route.js"
+  ],
   "exclude": [
     "node_modules"
   ]

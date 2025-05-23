@@ -61,11 +61,6 @@ const AssetTableComponent = ({ config }: { config: configType }) => {
   const [filter, setFilter] =
     useState<Record<string, boolean>>(defaultFilterObject);
 
-  /**
-   *
-   * @param status - containing information about the status
-   * @returns
-   */
   const StatusButtons = ({
     status,
     label,

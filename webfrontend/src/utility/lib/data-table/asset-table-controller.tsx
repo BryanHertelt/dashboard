@@ -140,6 +140,7 @@ const AssetTableController = ({
         tableStatus={tableStatus}
         currentValue={tableConfig.currentValue}
         setExpandedRow={setExpandedRow}
+        detail={tableConfig.detail}
       />
     </div>
   );

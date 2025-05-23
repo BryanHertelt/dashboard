@@ -255,7 +255,7 @@ export const StopLossCards = ({
  * - Renders each NFT with image, truncated name (if necessary), and formatted ETH value.
  * - Visually separates each NFT with a vertical border, except for the first one.
  *
- * @returns {JSX.Element} A flex-wrapped horizontal list of NFT display cards.
+ * @returns A flex-wrapped horizontal list of NFT display cards.
  */
 export const DetailNfts = ({ data }: { data: any }) => {
   const distributionElement = data;

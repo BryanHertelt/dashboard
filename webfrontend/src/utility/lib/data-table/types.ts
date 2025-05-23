@@ -14,8 +14,7 @@ export type StatusItem<StatusKey extends string> = {
   
   export type configType = {
     statusFilter: string
-    title: string;
-    initial: any;
+    initial: any[];
     detail: boolean;
     status: { status: string; statusTitle: string; columns: object[] }[];
     filter: {
@@ -24,6 +23,7 @@ export type StatusItem<StatusKey extends string> = {
       filterStatus: string;
     }[];
     currentValue: number;
+    title?: string;
   };
 
   export interface TableDetailProps {
@@ -40,6 +40,7 @@ export type StatusItem<StatusKey extends string> = {
     columns: ColumnDef<any, TValue>[];
     data: any;
     currentValue: number;
+    detail: boolean; 
     expandedRow?: number | null;
     setExpandedRow?: any;
     tableStatus?: string;

@@ -55,11 +55,12 @@ import { DataTableProps } from "./types";
  * - `assetName`, `assetId`, `assetUrl`, and `totalAssetAmount`.
  *
  * ### Return
- * @returns {JSX.Element} A fully interactive data table with sortable headers and expandable row details.
+ * @returns A fully interactive data table with sortable headers and expandable row details.
  */
 export function DataTable<TData, TValue>({
   data,
   columns,
+  detail,
   tableStatus,
   currentValue,
   expandedRow,
@@ -90,8 +91,6 @@ export function DataTable<TData, TValue>({
       tableStatus === "cryptocurrency"
         ? data[row.id].assetabbreviation
         : `${data[row.id].leverage}X${data[row.id].assetname}`;
-
-    const totalAssetAmount = data[row.id].assetamount;
 
     return (
       <TableDetailComponent
@@ -152,24 +151,26 @@ export function DataTable<TData, TValue>({
                           expandedRow?.toString() === row.id ? "2" : "4"
                         } border-gray bg-white`}
                       >
-                        <TableCell
-                          className="w-6 pl-3"
-                          onClick={() => {
-                            toggleExpandedRow(Number(row.id));
-                          }}
-                          onMouseEnter={() => {
-                            prefetchDetailComponent(
-                              row.original.assettype,
-                              row.original.assetid,
-                              queryClient
-                            );
-                          }}
-                        >
-                          <ShowDetailIcon
-                            rowId={Number(row.id)}
-                            expandedRow={expandedRow}
-                          />
-                        </TableCell>
+                        {!detail ? null : (
+                          <TableCell
+                            className="w-6 pl-3"
+                            onClick={() => {
+                              toggleExpandedRow(Number(row.id));
+                            }}
+                            onMouseEnter={() => {
+                              prefetchDetailComponent(
+                                row.original.assettype,
+                                row.original.assetid,
+                                queryClient
+                              );
+                            }}
+                          >
+                            <ShowDetailIcon
+                              rowId={Number(row.id)}
+                              expandedRow={expandedRow}
+                            />
+                          </TableCell>
+                        )}
                         {row.getVisibleCells().map((cell) => (
                           <TableCell key={cell.id}>
                             {flexRender(

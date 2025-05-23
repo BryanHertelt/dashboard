@@ -2,10 +2,12 @@ import React from "react";
 import '@testing-library/jest-dom'
 import { render, fireEvent, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ShowDetailIcon } from "../../public/images/icons";
 import { prefetchDetailComponent } from "../../src/utility/lib/data-fetching/prefetch-hooks";
 import { TableDetailComponent } from "../../src/utility/lib/data-table/table-detail-components/v-ad-assets-parent";
 import { DataTable } from "../../src/utility/lib/data-table/data-table";
 import { SmallErrorSkeleton } from "../../src/utility/lib/data-fetching/skeletons/error-skeleton";
+import { ShowDetailIcon } from "../../public/images/icons";
 
 // Spy-able mock for prefetchDetailComponent
 const mockPrefetch = jest.fn();
@@ -22,7 +24,7 @@ jest.mock("../../src/utility/lib/data-fetching/skeletons/error-skeleton", () => 
 }));
 
 jest.mock("../../public/images/icons", () => ({
-  ShowDetailIcon: ({ rowId }) => <button data-testid={`toggle-${rowId}`}>+</button>,
+  ShowDetailIcon: jest.fn().mockImplementation(({ rowId }) => <button data-testid={`toggle-${rowId}`}>+</button>) 
 }));
 
 const queryClient = new QueryClient();
@@ -31,6 +33,7 @@ const renderWithClient = (ui) =>
 
 
 describe("DataTable unit tests (with interaction)", () => {
+  beforeEach(()=> jest.clearAllMocks())
   const columns = [
     {
       header: "Asset",
@@ -56,6 +59,7 @@ describe("DataTable unit tests (with interaction)", () => {
         data={data}
         columns={columns}
         currentValue={1}
+        detail={true}
         tableStatus="cryptocurrency"
         expandedRow={null}
         setExpandedRow={() => {}}
@@ -72,17 +76,34 @@ describe("DataTable unit tests (with interaction)", () => {
     expect(screen.getByText("Mock Error Skeleton")).toBeInTheDocument();
   });
 
+  it("shows no detail component, when detail == false", () => {
+    renderWithClient(
+      <DataTable
+        data={data}
+        columns={columns}
+        currentValue={1}
+        detail={false}
+        tableStatus="cryptocurrency"
+        expandedRow={0}
+        setExpandedRow={() => {}}
+      />
+    );
+    expect(ShowDetailIcon).not.toHaveBeenCalled()
+  })
+
   it("shows detail component when row is expanded", () => {
     renderWithClient(
       <DataTable
         data={data}
         columns={columns}
         currentValue={1}
+        detail={true}
         tableStatus="cryptocurrency"
         expandedRow={0}
         setExpandedRow={() => {}}
       />
     );
+    expect(ShowDetailIcon).toHaveBeenCalled()
     expect(screen.getByText("Mock Detail Component")).toBeInTheDocument();
   });
 
@@ -94,6 +115,7 @@ describe("DataTable unit tests (with interaction)", () => {
         data={data}
         columns={columns}
         currentValue={1}
+        detail={true}
         tableStatus="cryptocurrency"
         expandedRow={null}
         setExpandedRow={setExpandedRow}
@@ -141,6 +163,7 @@ describe("DataTable prefetch behavior", () => {
         data={data}
         columns={columns}
         currentValue={1}
+        detail={true}
         tableStatus="cryptocurrency"
         expandedRow={null}
         setExpandedRow={() => {}}

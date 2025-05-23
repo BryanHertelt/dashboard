@@ -329,6 +329,15 @@ const renderWithClient = (ui) =>
     }); 
   });
 
+  describe("renders no detail", () => {
+    beforeEach(()=> jest.clearAllMocks())
+    it("renders no detail", () => {
+      const newConfig = {...tableConfig, detail: false}
+      renderWithClient(
+        <AssetTableComponent config={newConfig} />) 
+        expect(ShowDetailIcon).not.toHaveBeenCalled()
+    })
+  })
 
 
 
