@@ -10,3 +10,4 @@ export {default as LineChartController} from "./asset-chart-controller"
 
 //Chart Components 
 export {default as DistributionComponent} from "./distribution-component"
+export {SemiCircleChart} from "./semi-circle-chart"

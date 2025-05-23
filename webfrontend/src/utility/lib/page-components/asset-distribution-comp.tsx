@@ -1,5 +1,6 @@
 "use client";
 import { LineChartController, DistributionComponent } from "../charts";
+import { SemiCircleChart } from "../charts";
 import {
   AssetTableComponent,
   dataColsCurrency,
@@ -36,19 +37,9 @@ const AssetDistributionComponent = (props: any) => {
     return asset;
   });
 
+  console.log("processedQueryData", processedQueryData);
   const pieData = {
-    assetData: processedQueryData.assets.map((asset: any) => {
-      return {
-        symbol: asset.symbol,
-        assetname: asset.assetname,
-        assetvalue:
-          asset.assettype === "cryptocurrency"
-            ? asset.assetvalue
-            : asset.assettype === "derivative"
-            ? asset.size
-            : asset.collectionvalue,
-      };
-    }),
+    assetData: processedQueryData.assets,
     total: processedQueryData.currentvalue,
   };
 
@@ -98,7 +89,7 @@ const AssetDistributionComponent = (props: any) => {
         />
       </div>
       <div id="note-overlay"> </div>
-      <div className="card p-7 h-4/6 ml-7 w-3/12">
+       <div className="card p-7 h-4/6 ml-7 w-3/12">
         <DistributionComponent
           text={"You can see your Asset Distribution here."}
           title={"Asset Distribution"}
@@ -106,6 +97,11 @@ const AssetDistributionComponent = (props: any) => {
         />
       </div>
       */}
+      <div className="flex flex-col text-end justify-center card h-56 mb-7 w-full">
+        <div className="flex flex-col items-center justify-center h-96  ">
+          <SemiCircleChart pieData={pieData} />
+        </div>
+      </div>
       <div className="w-full h-1/5 mb-10 card">
         <AssetTableComponent config={tableConfig} />
       </div>

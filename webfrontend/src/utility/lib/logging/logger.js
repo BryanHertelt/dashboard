@@ -15,11 +15,13 @@ const logger = pino({
         };
 
         try {
-          await fetch("/api/logging", {
+          /**
+           *  await fetch("/api/logging", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(logPayload),
           });
+           */
         } catch (err) {
           console.error("Log send failed:", err);
         }
