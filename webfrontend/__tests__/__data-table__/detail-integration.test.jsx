@@ -10,6 +10,13 @@ import { RebalancingSetUp } from "../../src/utility/lib/helpers/helper-component
 import { cryptoMockDetail, derivativeMockDetail, nftMockDetail } from "../testmocks";
 import { prefetchDetailComponent } from "../../src/utility/lib/data-fetching/prefetch-hooks";
 import { NftsIcon } from "../../public/images";
+import logger from '../../src/utility/lib/logging/logger'
+
+jest.mock('../../src/utility/lib/logging/logger', () => ({
+  info: jest.fn(),
+  error: jest.fn(),
+  debug: jest.fn(),
+}));
 
 import { Bar } from "react-chartjs-2";
 
@@ -255,6 +262,7 @@ describe("error state", () => {
             assetUrl="https://btc.com"
           />
         );
+    expect(logger.error).toHaveBeenCalledWith("TableDetailComponent: detail fetch failed", {"data": undefined, "isError": true})
     expect(SmallErrorSkeleton).toHaveBeenCalled()
   })
   it("renders error, when wrong data is passed", () => {
@@ -274,6 +282,7 @@ describe("error state", () => {
           assetUrl="https://btc.com"
         />
       );
+      expect(logger.error).toHaveBeenCalledWith("TableDetailComponent: wrong data format or empty Object while calling detailcomponent", {"data": [], "dataType": "object"})
   expect(SmallErrorSkeleton).toHaveBeenCalled()
   })
   it("renders error, when detaildata for certain state is not given", () => {
@@ -293,7 +302,7 @@ describe("error state", () => {
           assetUrl="https://btc.com"
         />
       );
-
+      expect(logger.error).toHaveBeenCalledWith("DisDetailData: no detail data in disdetail component")
       expect(SmallErrorSkeleton).toHaveBeenCalled()
   })
 })

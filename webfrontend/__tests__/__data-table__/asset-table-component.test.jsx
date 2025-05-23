@@ -4,6 +4,13 @@ import { dataColsCurrency, dataColsDerivative, dataColsNft } from '../../src/uti
 import useResizeObserver from 'use-resize-observer'
 import {AssetTableComponent} from "../../src/utility/lib/data-table"
 import AssetTableController from '../../src/utility/lib/data-table/asset-table-controller'
+import logger from '../../src/utility/lib/logging/logger'
+
+jest.mock('../../src/utility/lib/logging/logger', () => ({
+  info: jest.fn(),
+  error: jest.fn(),
+  debug: jest.fn(),
+}));
 
 jest.mock("../../src/utility/lib/data-table/asset-table-controller", () => ({
   __esModule: true,
@@ -212,6 +219,17 @@ describe("AssetTableComponent initialises AssetTableController", () => {
           {}
       );
     })
+
+
+    describe("logs correctly", () => {
+      beforeEach(() => jest.clearAllMocks())
+      afterEach(()=> jest.clearAllMocks())
+    it("correctly logs when invalid config", () => {
+      const newConfig = {...tableConfig, status: [], filter: []}
+      render(<AssetTableComponent config={newConfig}/>)
+      expect(logger.error).toHaveBeenCalledWith("AssetTableComponent: invalid config: status or filter array is empty or undefined", {"config": {"currentValue": 1000, "detail": true, "filter": [], "initial": [{"assetabbreviation": "BTC", "assetamount": 0.5, "assetchange24h": 5, "assetchange24hourvalue": 35000, "assetchange7d": [680000, 690000, 710000, 695000, 700000], "assetid": 1, "assetmarketprice": 1400000, "assetname": "Bitcoin", "assetpercentage": 5, "assettype": "cryptocurrency", "assetvalue": 700000, "groupid": 1, "holdingid": 1, "notes": "Notes", "portfolioid": 1, "symbol": "A", "userid": 1}, {"assetid": 12, "assetname": "BTCUSDT", "assetpercentage": 3, "assettype": "derivative", "derivateexchange": "Bybit", "derivativetype": "future", "entry": 30000, "groupid": 2, "holdingid": 7, "leverage": 5, "liquidationprice": 25000, "margin": 100, "notes": "Notes", "portfolioid": 1, "positiontype": "open", "price": 32000, "settlementdate": "2024-06-15T10:00:00.000Z", "size": 15000, "sl": 29, "symbol": "C", "tp": 3, "tradedirection": "long", "unrealizedpl": 2500, "userid": 1}, {"assetid": 18, "assetname": "LTCUSDT", "assetpercentage": 3, "assettype": "derivative", "derivateexchange": "Bybit", "derivativetype": "perpetual", "entry": 100, "groupid": 2, "holdingid": 7, "leverage": 15, "liquidationprice": 85, "margin": 35, "notes": "Notes", "portfolioid": 1, "positiontype": "open", "price": 95, "settlementdate": "", "size": 5000, "sl": null, "symbol": "C", "tp": 10, "tradedirection": "short", "unrealizedpl": -250, "userid": 1}, {"assetid": 312, "assetname": "Bored Ape Yacht Club", "assetpercentage": 3, "assettype": "nft", "collectionfloorprice": 1200, "collectionvalue": 1200, "groupid": 2, "holdingid": 7, "nftcount": 20, "notes": "Notes", "portfolioid": 1, "symbol": "B", "userid": 1}], "status": [], "statusFilter": "assettype", "title": "Assets"}})
+    })
+    })
   
     })
     describe("handles filter as expected", () => {
@@ -303,3 +321,5 @@ describe("AssetTableComponent initialises AssetTableController", () => {
         });
       }); 
     });
+
+  

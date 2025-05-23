@@ -7,6 +7,7 @@ import {
   formatCurrency,
 } from "../../helpers";
 import { SmallErrorSkeleton } from "../../data-fetching";
+import logger from "../../logging/logger";
 import { Bar } from "react-chartjs-2";
 import { RebalancingSetUp } from "../../helpers";
 import { chartColors, darkerGray } from "../../helpers/helper-config/colors";
@@ -102,6 +103,7 @@ export const DrDetail = ({
     desiredbalance: data.desiredbalance,
     currentbalance: data.currentbalance,
   };
+  logger.info("DrDetail called", { initialData: initialData });
 
   return (
     <div className="flex flex-col w-full h-full">
@@ -191,6 +193,8 @@ export const buildBar = (cardData: any[], totalAmount: number) => {
     };
   });
 
+  logger.info("buildBar called");
+
   const datasets: any[] = [];
 
   if (cardDataFormatted.length != 0) {
@@ -222,6 +226,7 @@ export const buildBar = (cardData: any[], totalAmount: number) => {
       },
     },
   };
+  logger.debug("buildBar", { data: data, options: options });
   return { data, options };
 };
 
@@ -294,8 +299,11 @@ export const DisDetail = ({
     }[];
   };
 }) => {
+  logger.info("DisDetail is called for:", tableStatus);
+
   //Check for entries and return Error Skeleton if there are no Entries
   if (detailData.length === 0) {
+    logger.error("DisDetailData: no detail data in disdetail component");
     return <SmallErrorSkeleton />;
   }
 
@@ -329,6 +337,7 @@ export const DisDetail = ({
       ? -1
       : 0
   );
+  logger.debug("DisDetail: sorted entries for bar chart", sortedEntries);
 
   //Categorize items, based on index position and screen position.
   let mainDisObj: any[] = [];
@@ -378,12 +387,15 @@ export const DisDetail = ({
         )
       : null,
   ];
+  logger.debug("DisDetail: treshold for barchart", otherObj);
 
   // Generating data, which are used for the infocards.
   const cardData =
     detailData.length > widthProp + 1
       ? [...mainDisObj, otherDisObj].flat()
       : mainDisObj.flat();
+
+  logger.debug("DisDetail: generated card data", cardData);
 
   // Generating data, which are used for the bar-chart.
   const barData: any = buildBar(
@@ -392,7 +404,9 @@ export const DisDetail = ({
       : mainDisObj.flat(),
     totalAmount
   );
+  logger.debug("DisDetail: generated bar data", barData);
 
+  logger.debug("DisDetail: Rendering InfoCards, DetailNFTS and StopLossCards");
   return (
     <>
       <div className="flex flex-col justify-start">

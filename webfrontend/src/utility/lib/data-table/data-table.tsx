@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { TableDetailComponent } from "../data-table";
 import { SmallErrorSkeleton, prefetchDetailComponent } from "../data-fetching";
+import logger from "../logging/logger";
 
 import {
   SortingState,
@@ -69,7 +70,14 @@ export function DataTable<TData, TValue>({
   const [sorting, setSorting] = useState<SortingState>([]);
   const [rowName, setRowName] = useState<string>("");
 
+  logger.info("DataTable rendered", {
+    expandedRow: expandedRow,
+    tableStatus: tableStatus,
+    detail: detail,
+  });
+
   const toggleExpandedRow = (rowId: number) => {
+    logger.info("DataTable: ShowDetailIcon was clicked", { rowId: rowId });
     setExpandedRow((prevExpandedRow: number | null) =>
       prevExpandedRow === rowId ? null : rowId
     );
@@ -92,6 +100,10 @@ export function DataTable<TData, TValue>({
         ? data[row.id].assetabbreviation
         : `${data[row.id].leverage}X${data[row.id].assetname}`;
 
+    logger.info("TableDetailComponent called", {
+      tableStatus: tableStatus,
+      assetName: assetName,
+    });
     return (
       <TableDetailComponent
         tableStatus={tableStatus}
@@ -158,6 +170,13 @@ export function DataTable<TData, TValue>({
                               toggleExpandedRow(Number(row.id));
                             }}
                             onMouseEnter={() => {
+                              logger.debug(
+                                "prefetchDetailComponent called with",
+                                {
+                                  assettype: row.original.assettype,
+                                  assetid: row.original.assetid,
+                                }
+                              );
                               prefetchDetailComponent(
                                 row.original.assettype,
                                 row.original.assetid,

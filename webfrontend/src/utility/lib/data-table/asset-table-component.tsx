@@ -1,61 +1,42 @@
-import { useMemo, useState, useRef, useEffect } from "react";
+import { useMemo, useState } from "react";
 import useResizeObserver from "use-resize-observer";
 import AssetTableController from "./asset-table-controller";
 import logger from "../logging/logger";
 
-import { StatusItem, FilterItem, configType } from "./types";
+import { configType } from "./types";
 
-/**
- * `AssetTableComponent` renders a tabbed and filterable interface for viewing different
- * types of asset tables, based on a provided configuration object.
- *
- * It dynamically builds status tabs and context-aware filters, updates the internal table status,
- * and passes configuration and state to the `AssetTableController` for applying the filter and status objects selected in this component.
- *
- * This component renders the UI for the user to use the AssetTableController. The controller applies filters, status and everything else selected
- * here to the actual dataset and passes it down to the DataTable, which takes care of rendering.
- *
- * ### State Variables:
- * - `tableStatus`: Tracks the currently active table/status view.
- * - `tabWidth`: Dynamically calculated width of each tab button for layout.
- * - `currentTab`: Index of the currently active status tab.
- * - `filter`: Object storing boolean values for each active/inactive filter by key.
- *
- * ### Subcomponents:
- * - `StatusButtons`: Renders each status as a tab, updating `tableStatus` and `currentTab` on click.
- * - `FilterButtons`: Dynamically renders filter buttons that are context-sensitive to `tableStatus`.
- *
- * @component
- * @param } props
- * @param  props.config - Configuration object containing:
- *   - `status`: Array of status objects (each with `status` and `statusTitle`)
- *   - `filter`: Array of filter objects (each with `filter`, `filterTitle`, and `filterStatus`)
- *
- * @returns A UI component displaying status-based asset tables with interactive tabs and filters.
- *
- * @example
- * <AssetTableComponent config={assetTableConfig} />
- */
 const AssetTableComponent = ({ config }: { config: configType }) => {
   const [tableStatus, setTableStatus] = useState<string>(
-    config.status[0].status
+    config.status[0]?.status || ""
   );
   const [tabWidth, setTabWidth] = useState<number>(0);
   const [currentTab, setCurrentTab] = useState<number>(0);
 
+  if (!config?.status?.length || !config?.filter) {
+    logger.error(
+      "AssetTableComponent: invalid config: status or filter array is empty or undefined",
+      { config }
+    );
+  }
+
   const { ref: tabRef } = useResizeObserver<HTMLDivElement>({
     onResize: ({ width }) => {
       if (width) {
-        setTabWidth(width / config.status.length);
+        const newTabWidth = width / config.status.length;
+        setTabWidth(newTabWidth);
       }
     },
   });
 
   const defaultFilterObject = useMemo(() => {
-    return config.filter.reduce((acc, curr) => {
+    const filterObj = config.filter.reduce((acc, curr) => {
       acc[curr.filter] = true;
       return acc;
     }, {} as Record<string, boolean>);
+    logger.debug("AssetTableComponent: default filter object initialized", {
+      filterObj,
+    });
+    return filterObj;
   }, [config.filter]);
 
   const [filter, setFilter] =
@@ -69,24 +50,25 @@ const AssetTableComponent = ({ config }: { config: configType }) => {
     label: string;
   }) => (
     <button
-      style={{
-        width: tabWidth,
-      }}
+      style={{ width: tabWidth }}
       onClick={() => {
         const foundStatus = config.status.find(
           (object) => object.status === status
         );
-
         if (foundStatus) {
           setCurrentTab(config.status.indexOf(foundStatus));
+          setTableStatus(status);
+          logger.info("AssetTableComponent:status tab clicked", {
+            status,
+            statusTitle: label,
+            currentTab: config.status.indexOf(foundStatus),
+          });
         }
-        setTableStatus(status);
       }}
       className={`${
         tableStatus === status ? "text-white" : "text-black"
       } z-50 relative px-3 text-xs overflow-hidden md:text-xs text-center h-full text-black rounded-md`}
     >
-      {" "}
       {label}
     </button>
   );
@@ -100,7 +82,6 @@ const AssetTableComponent = ({ config }: { config: configType }) => {
               .filter(({ filterStatus }) => filterStatus === tableStatus)
               .map(({ filter }) => filter)
               .filter((keys) => keys !== key);
-
             const otherActive = otherKeys.some((keys) => filter[keys]);
 
             return (
@@ -112,10 +93,17 @@ const AssetTableComponent = ({ config }: { config: configType }) => {
                     : "border-2 border-white"
                 } flex mr-3 items-center justify-center rounded-md text-sm px-3 py-1`}
                 onClick={() => {
-                  setFilter((prevState) => ({
-                    ...prevState,
-                    [key]: !prevState[key],
-                  }));
+                  setFilter((prevState) => {
+                    const newFilter = { ...prevState, [key]: !prevState[key] };
+                    logger.info("AssetTableComponent: filter toggled", {
+                      filterKey: key,
+                      filterTitle,
+                      newState: !prevState[key],
+                      tableStatus,
+                      fullFilterState: newFilter,
+                    });
+                    return newFilter;
+                  });
                 }}
                 disabled={!(otherActive || !filter[key])}
               >
@@ -132,9 +120,9 @@ const AssetTableComponent = ({ config }: { config: configType }) => {
   return (
     <div className="pt-5">
       <header className="flex flex-row justify-between mb-4 h-9">
-        <nav className="relative flex flex-row pl-7 w-3/4  justify-start ">
+        <nav className="relative flex flex-row pl-7 w-3/4 justify-start">
           <div
-            className="relative flex flex-row bg-gray rounded-md lg:w-2/6 lp:w-2/6 xl:w-1/4 md:w-3/6  sm:w-4/6"
+            className="relative flex flex-row bg-gray rounded-md lg:w-2/6 lp:w-2/6 xl:w-1/4 md:w-3/6 sm:w-4/6"
             ref={tabRef}
           >
             {config.status.map((statusConfig) => (
@@ -146,7 +134,7 @@ const AssetTableComponent = ({ config }: { config: configType }) => {
               </div>
             ))}
             <div
-              className="absolute z-5 inset-0 bg-blue rounded-md transition-all "
+              className="absolute z-5 inset-0 bg-blue rounded-md transition-all"
               style={{
                 width: tabWidth,
                 translate: `${currentTab * tabWidth}px 0px`,
@@ -154,7 +142,7 @@ const AssetTableComponent = ({ config }: { config: configType }) => {
             />
           </div>
         </nav>
-        <div className=" flex flex-row w-1/4  justify-end">
+        <div className="flex flex-row w-1/4 justify-end">
           <FilterButtons />
         </div>
       </header>

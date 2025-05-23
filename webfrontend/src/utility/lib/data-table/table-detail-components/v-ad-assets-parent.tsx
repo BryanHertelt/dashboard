@@ -8,6 +8,7 @@ import {
 import { DrDetail, DisDetail } from "../../data-table";
 import { HoldingLogoImageContainer, isObject } from "../../helpers";
 import { TableDetailProps } from "../types";
+import logger from "../../logging/logger";
 type tabType = "DR" | "HD" | "AG";
 
 /**
@@ -81,8 +82,14 @@ export const TableDetailComponent = (props: TableDetailProps) => {
   const [currentTab, setCurrentTab] = useState<number>(0);
   const { data, isLoading, isError } = useDetailComponent(props);
 
+  logger.info("TableDetailComponent called", {
+    tabs: tabs,
+    activeDisObj: { activeDisObj },
+  });
+
   const handleTabSwitch = useCallback(
     (index: number, button: string) => {
+      logger.debug("TableDetailComponent: tab switch called");
       {
         setActiveDisObj(null);
         const foundTab: tabType | undefined = tabs.find(
@@ -105,15 +112,20 @@ export const TableDetailComponent = (props: TableDetailProps) => {
   });
 
   if (isLoading) {
+    logger.debug("TableDetailComponent: SmallLoadingSkeleton is called.");
     return <SmallLoadingSkeleton />;
   }
 
   if (isError) {
+    logger.error("TableDetailComponent: detail fetch failed", {
+      isError: isError,
+      data: data,
+    });
     return <SmallErrorSkeleton />;
   } else if (isObject(data) === false || Object.keys(data).length === 0) {
-    console.error(
-      "Wrong data format or empty Object while calling detailcomponent",
-      typeof data
+    logger.error(
+      "TableDetailComponent: wrong data format or empty Object while calling detailcomponent",
+      { dataType: typeof data, data: data }
     );
     return <SmallErrorSkeleton />;
   } else {

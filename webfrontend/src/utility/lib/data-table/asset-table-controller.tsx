@@ -51,8 +51,7 @@ const AssetTableController = ({
    * logic for derivative assets.
    */
   useEffect(() => {
-    logger.info({
-      message: "AssetTableController called",
+    logger.info("AssetTableController: called", {
       tableStatus,
       filterType,
       initialDataCount: tableConfig.initial?.length || 0,
@@ -62,8 +61,7 @@ const AssetTableController = ({
       return asset[tableConfig.statusFilter] === tableStatus;
     });
 
-    logger.info({
-      message: "Applied status filter",
+    logger.debug("AssetTableController: applied status filter", {
       tableStatus,
       statusFilter: tableConfig.statusFilter,
       filteredCount: filtered.length,
@@ -74,18 +72,13 @@ const AssetTableController = ({
         filtered = tableConfig.initial.filter(
           (asset: any) => asset.assettype === "derivative"
         );
-        logger.info({
-          message: "Filtered derivatives (perp and future)",
-          filteredCount: filtered.length,
-        });
       } else if (filterType.perp && !filterType.future) {
         filtered = tableConfig.initial.filter(
           (asset: any) =>
             asset.assettype === "derivative" &&
             asset.derivativetype === "perpetual"
         );
-        logger.info({
-          message: "Filtered derivatives (perpetual only)",
+        logger.debug("Filtered derivatives (future only)", {
           filteredCount: filtered.length,
         });
       } else if (!filterType.perp && filterType.future) {
@@ -94,8 +87,7 @@ const AssetTableController = ({
             asset.assettype === "derivative" &&
             asset.derivativetype === "future"
         );
-        logger.info({
-          message: "Filtered derivatives (future only)",
+        logger.debug("Filtered derivatives (future only)", {
           filteredCount: filtered.length,
         });
       }
@@ -103,8 +95,7 @@ const AssetTableController = ({
 
     setTableData(filtered);
     setExpandedRow(null);
-    logger.info({
-      message: "Table data updated",
+    logger.info("AssetTableController: table data updated", {
       tableStatus,
       filteredCount: filtered.length,
     });
@@ -115,16 +106,14 @@ const AssetTableController = ({
       (s: any) => s.status === tableStatus
     );
 
-    logger.debug({
-      message: "Columns configured for table",
+    logger.info("AssetTableController: columns configured for table", {
       tableStatus,
       columnCount: statusConfig?.columns?.length || 0,
     });
     return statusConfig?.columns;
   }, [tableStatus, tableData]);
 
-  logger.debug({
-    message: "Rendering DataTable",
+  logger.debug("AssetTableController: rendering DataTable", {
     tableStatus,
     dataCount: tableData.length,
     columnCount: col?.length,

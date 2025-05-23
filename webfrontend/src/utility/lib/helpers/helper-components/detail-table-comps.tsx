@@ -2,6 +2,7 @@ import { HoldingLogoImageContainer } from "../../helpers";
 import { NftsIcon } from "../../../../../public/images";
 import { formatValue, formatCurrency } from "../../helpers";
 import { NftDetailImageContainer } from "../../helpers";
+import logger from "../../logging/logger";
 
 /**
  * `InfoCards` is a visual component that renders a list of distribution summary cards
@@ -29,7 +30,7 @@ import { NftDetailImageContainer } from "../../helpers";
  * - Color swatch indicates corresponding chart bar color.
  * - Optional toggle button appears for NFTs to highlight a selected item.
  *
- * @returns {JSX.Element[]} A list of flexbox cards displaying key holding data with optional interactivity.
+ * @returns A list of flexbox cards displaying key holding data with optional interactivity.
  */
 export const InfoCards = ({
   data,
@@ -46,6 +47,9 @@ export const InfoCards = ({
   changeActiveDisObj: Function;
   activeDisObj: number | null;
 }) => {
+  logger.info("InfoCards called");
+  logger.debug("InfoCards: active Object", activeDisObj);
+
   const flatArray = data.flat();
 
   return flatArray.map((disObj: any, index: number) => {
@@ -169,6 +173,7 @@ export const StopLossCards = ({
       }
     | undefined;
 }) => {
+  logger.info("StopLossCards called");
   return (
     <div className="w-full">
       <span className="flex flex-row gap-2 mb-2 ">
@@ -259,6 +264,7 @@ export const StopLossCards = ({
  */
 export const DetailNfts = ({ data }: { data: any }) => {
   const distributionElement = data;
+  logger.info("DetailNfts called");
   return (
     <div
       key={distributionElement.id}
