@@ -114,10 +114,10 @@ export interface NFTDataInterface {
   holdingid: number;
   assettype: string;
   assetid: number;
-  CollectionName: string;
-  CollectionValue: number;
-  CollectionFloorPrice: number;
-  NftCount: number;
+  ollectionName: string;
+  collectionValue: number;
+  collectionFloorPrice: number;
+  nftCount: number;
 }
 export interface DerivativesDataInterface {
   Symbol: string;
@@ -175,3 +175,71 @@ export interface HoldingsDataInterface {
   description: string;
   id?: string;
 }
+
+
+// new Types 
+interface BaseAsset {
+  symbol: string;
+  portfolioid: number;
+  userid: number;
+  groupid: number;
+  holdingid: number;
+  assettype: 'nft' | 'derivative' | 'cryptocurrency';
+  assetid: number;
+  assetname: string;
+  assetpercentage?: number;
+  profitloss: number;
+  profitlosschange: number;
+  notes?: string;
+}
+
+export interface NFTAsset extends BaseAsset {
+  assettype: 'nft';
+  collectionvalue: number;
+  collectionvalueeth: number;
+  collectionfloorprice: number;
+  assetamount: number;
+}
+
+export interface DerivativeAsset extends BaseAsset {
+  assettype: 'derivative';
+  derivativeexchange: string;
+  positiontype: 'open' | 'closed';
+  tradedirection: 'long' | 'short';
+  derivativetype: 'perpetual' | 'futures' | string;
+  leverage: number;
+  assetvalue: number;
+  entry: number;
+  unrealizedpl: number;
+  price: number;
+  liquidationprice: number;
+  margin: number;
+  tp: number;
+  sl: number;
+  settlementdate: string;
+}
+
+export interface CryptoAsset extends BaseAsset {
+  assettype: 'cryptocurrency';
+  assetabbreviation: string;
+  assetamount: number;
+  assetvalue: number;
+  assetmarketprice: number;
+  assetchange24h: number;
+  assetchange24hourvalue: number;
+  assetchange7d: number[];
+}
+
+export interface DistributionCrypto extends CryptoAsset {
+  distribution: number
+}
+export interface DistributionNFT extends NFTAsset {
+  distribution: number
+}
+
+export interface DistributionDerivative extends DerivativeAsset {
+  distribution: number 
+}
+
+export type Asset = NFTAsset | DerivativeAsset | CryptoAsset;
+export type DistributionAsset = DistributionCrypto | DistributionDerivative | DistributionNFT

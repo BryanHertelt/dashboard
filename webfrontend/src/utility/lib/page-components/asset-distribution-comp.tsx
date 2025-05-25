@@ -1,6 +1,6 @@
 "use client";
 import { LineChartController, DistributionComponent } from "../charts";
-import { SemiCircleChart } from "../charts";
+import { DistributionChart } from "../charts";
 import {
   AssetTableComponent,
   dataColsCurrency,
@@ -99,7 +99,7 @@ const AssetDistributionComponent = (props: any) => {
       */}
       <div className="flex flex-col text-end justify-center card h-56 mb-7 w-full">
         <div className="flex flex-col items-center justify-center h-96  ">
-          <SemiCircleChart pieData={pieData} />
+          <DistributionChart pieData={pieData} full={false} />
         </div>
       </div>
       <div className="w-full h-1/5 mb-10 card">
