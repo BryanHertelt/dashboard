@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+"use client";
+import { useMemo, useState, useEffect } from "react";
 import useResizeObserver from "use-resize-observer";
 import AssetTableController from "./asset-table-controller";
 import logger from "../logging/logger";
@@ -11,6 +12,12 @@ const AssetTableComponent = ({ config }: { config: configType }) => {
   );
   const [tabWidth, setTabWidth] = useState<number>(0);
   const [currentTab, setCurrentTab] = useState<number>(0);
+  const start = performance.now();
+  useEffect(() => {
+    const end = performance.now();
+    const duration = end - start;
+    logger.info(`DataTable rendered in ${duration.toFixed(2)} ms`);
+  }, []);
 
   if (!config?.status?.length || !config?.filter) {
     logger.error(

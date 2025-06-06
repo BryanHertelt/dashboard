@@ -15,11 +15,12 @@ import {
 } from "chart.js";
 
 import { Doughnut } from "react-chartjs-2";
-import { useRef, useState, useMemo } from "react";
+import { useRef, useMemo, useEffect } from "react";
 import { ranHexGen } from "../helpers";
 import { icongray, black, chartColors } from "../helpers/helper-config/colors";
 import { drawDoughnutChart, renderHoverLabel } from "../charts";
 import { SmallErrorSkeleton } from "../data-fetching";
+import logger from "../logging/logger";
 
 import {
   Asset,
@@ -81,11 +82,30 @@ export const DistributionChart = ({
   full: boolean;
   tresholdValue: number;
 }) => {
+  // Measure performance of component
+  const start = performance.now();
+  useEffect(() => {
+    const end = performance.now();
+    const duration = end - start;
+    logger.info(
+      `Asset Distribution Doughnut Chart rendered with the following data`,
+      {
+        duration: duration.toFixed(2),
+        options: doughnutOptions,
+        data: formattedPieData,
+      }
+    );
+  }, []);
+
   //Data sorting
   const selectedDatasetIndex = useRef<number | null>(null);
   const selectedIndex = useRef<number | null>(null);
 
   if (!pieData || pieData.assetData.length === 0) {
+    logger.error(
+      "distribution-chart.tsx >> Pie Data is undefined or empty",
+      pieData
+    );
     return <SmallErrorSkeleton />;
   }
 
@@ -102,6 +122,7 @@ export const DistributionChart = ({
       };
     }
   );
+  logger.debug("distribution-chart.tsx >> updated pie data", updatedPieData);
 
   const sortedEntries = [...updatedPieData].sort(
     (prevAsset: DistributionAsset, thisAsset: DistributionAsset) =>
@@ -111,6 +132,7 @@ export const DistributionChart = ({
         ? -1
         : 0
   );
+  logger.debug("distribution-chart.tsx >> sorted entries", sortedEntries);
 
   //chart treshold logic
   const mainAssets: MainAssetsChart[] = [];
@@ -147,11 +169,20 @@ export const DistributionChart = ({
     0
   );
 
+  logger.debug("distribution-chart.tsx >> [MainAssets, OtherAssets]", [
+    mainAssets,
+    otherAssets,
+  ]);
   //generate colors
   const colors = useMemo(() => {
     const baseColors = ranHexGen(tresholdValue);
     return otherAssets.length !== 0 ? [...baseColors, icongray] : baseColors;
   }, [tresholdValue, otherAssets.length]);
+  logger.debug(
+    "distribution-chart.tsx >> colors generated, tresholdValue",
+    colors.length,
+    tresholdValue - 1
+  );
 
   // render HoverLabel
   const hoverLabelInformation = {
@@ -165,6 +196,7 @@ export const DistributionChart = ({
     full: full,
   };
 
+  logger.debug("distribution-chart.tsx >> hoverLabel render starts");
   const hoverLabel = {
     id: "hoverLabel",
     afterDraw: (chart: ChartJS<"doughnut">) => {
