@@ -1,7 +1,8 @@
-import { formatCurrency,formatValue, isObject, cn} from "../../src/utility/lib/helpers/helper-functions";
+
 import { twMerge } from "tailwind-merge";
-import { formatDecimals } from "../../src/utility/lib/helpers/helper-functions";
 import clsx from "clsx";
+import {formatCurrency, formatValue, isObject, cn, formatDecimals, ranHexGen} from "../../src/utility/lib/helpers"
+import { Chart as ChartJS } from 'chart.js';
 
 describe('cn utility function', () => {
   it('should merge class names correctly', () => {
@@ -200,5 +201,25 @@ describe("test for helper: formatDecimals", () => {
     const num = "0,0002"
     const roundedNumber = 0 
     expect(formatDecimals(num, roundedNumber)).toBe("0.0₂ 2")
+  })
+})
+
+describe("ranHexGen", () => {
+  beforeEach(()=> jest.clearAllMocks())
+  it("correctly renders hex codes out of treshold", () => {
+    const colors = ranHexGen(4)
+    expect(colors.length).toBe(4)
+    const moreColors = ranHexGen(100)
+    expect(moreColors.length).toBe(100)
+    expect(colors[0]).toStrictEqual(moreColors[0])
+    expect(colors[3]).toStrictEqual(moreColors[99])
+  })
+  it("correctly processes tresholdValue 1", () => {
+    const colors = ranHexGen(1)
+    expect(colors).toEqual(["#C4DDFF"])
+  })
+  it("correctly handles treshold value of 0", () => {
+    const colors = ranHexGen(0)
+    expect(colors).toEqual([])
   })
 })
