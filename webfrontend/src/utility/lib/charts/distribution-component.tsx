@@ -25,8 +25,8 @@ const DistributionComponent = ({
         <p className="text-icongray mb-3">{text}</p>
       </header>
       <hr />
-      <div className=" flex flex-row justify-center align-middle w-full h-full my-5 ">
-        <div className="flex flex-row justify-center w-full h-5/6 ">
+      <div className=" flex flex-row justify-center align-middle w-full border border-black h-full my-5 ">
+        <div className="flex flex-row justify-center w-full h-5/6">
           <DoughnutChart pieData={piedata} />
         </div>
       </div>

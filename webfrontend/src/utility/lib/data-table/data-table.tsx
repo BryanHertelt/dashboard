@@ -160,7 +160,7 @@ export function DataTable<TData, TValue>({
                         key={row.id}
                         data-state={row.getIsSelected() && "selected"}
                         className={`border-b-${
-                          expandedRow?.toString() === row.id ? "2" : "4"
+                          expandedRow?.toString() === row.id ? "1" : "2"
                         } border-gray bg-white`}
                       >
                         {!detail ? null : (
