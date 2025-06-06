@@ -42,6 +42,7 @@ const AssetDistributionComponent = (props: any) => {
     assetData: processedQueryData.assets,
     total: processedQueryData.currentvalue,
   };
+  // Manual calculate total value above, for the case currentvalue is undefined
 
   const tableConfig = {
     initial: tableData,
@@ -97,9 +98,13 @@ const AssetDistributionComponent = (props: any) => {
         />
       </div>
       */}
-      <div className="flex flex-col text-end justify-center card h-56 mb-7 w-full">
+      <div className="flex flex-col text-end justify-center card h-56 mb-7 w-8/12 sm:w-8/12 md:w-full lg:w-full lp:w-full">
         <div className="flex flex-col items-center justify-center h-96  ">
-          <DistributionChart pieData={pieData} full={false} />
+          <DistributionChart
+            pieData={pieData}
+            full={false}
+            tresholdValue={10}
+          />
         </div>
       </div>
       <div className="w-full h-1/5 mb-10 card">

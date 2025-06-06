@@ -18,7 +18,7 @@ import { Doughnut } from "react-chartjs-2";
 import { useRef, useState, useMemo } from "react";
 import { ranHexGen } from "../helpers";
 import { icongray, black, chartColors } from "../helpers/helper-config/colors";
-import { renderHoverLabel } from "./renderHoverLabel";
+import { drawDoughnutChart, renderHoverLabel } from "../charts";
 import { SmallErrorSkeleton } from "../data-fetching";
 
 import {
@@ -27,7 +27,6 @@ import {
   OtherAssetsChart,
   MainAssetsChart,
 } from "../types/data-fetching-types";
-import { drawDoughnutChart } from "./drawDoughnutChart";
 
 ChartJS.register(
   CategoryScale,

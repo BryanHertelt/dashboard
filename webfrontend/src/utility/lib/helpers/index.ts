@@ -1,5 +1,6 @@
 
 
+
 // Formatter functions 
 export {formatCurrency} from "./helper-functions/formatCurrency"
 export {formatValue} from "./helper-functions/formatValue"
@@ -10,6 +11,7 @@ export {isObject} from "./helper-functions/isObject"
 
 //Design functions 
 export {cn} from "./helper-functions/cn"
+export { ranHexGen } from "./helper-functions/ranHexGen"
 
 //Image container / placeholder 
 export {NftDetailImageContainer} from "./helper-components/image-container"
