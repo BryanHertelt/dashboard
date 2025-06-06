@@ -39,6 +39,7 @@ export const mockInitial = [
       "tradedirection": "long", 
       "derivativetype": "future",
       "leverage": 5,
+      "assetvalue": 15000, 
       "size": 15000,
       "entry": 30000,
       "unrealizedpl": 2500,
@@ -67,6 +68,7 @@ export const mockInitial = [
         "tradedirection": "short", 
         "derivativetype": "perpetual",
         "leverage": 15,
+        "assetvalue": 50000, 
         "size": 5000,
         "entry": 10,
         "unrealizedpl": -250,
@@ -110,7 +112,7 @@ export const mockInitial = [
       "assetabbreviation": "ETH",
       "assetamount": 0.4,
       "assetpercentage": -3,
-      "assetvalue": -72000,
+      "assetvalue": 72000,
       "profitloss": -120, 
       "profitlosschange": -34, 
       "assetchange24h": -2,
@@ -133,6 +135,7 @@ export const mockInitial = [
     "tradedirection": "long", 
     "derivativetype": "future",
     "leverage": 3,
+    "assetvalue": 1000, 
     "size": 1000,
     "entry": 3020,
     "unrealizedpl": 2501,
@@ -545,3 +548,18 @@ holdings: [
 }
 ]
 }
+
+
+export const DoughnutMock = jest.fn(({ data, options, plugins }) => {
+  const mockChart = {
+    draw: jest.fn(),
+  };
+
+  if (simulateHover && options?.onHover) {
+    const mockHoverEvent = {};
+    const mockElements = [{ datasetIndex: 0, index: 2 }];
+    options.onHover(mockHoverEvent, mockElements, mockChart);
+  }
+
+  return <p> DoughnutMock </p> ;
+});

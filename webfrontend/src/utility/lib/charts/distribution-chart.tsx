@@ -40,6 +40,38 @@ ChartJS.register(
   Filler
 );
 
+/**
+ * `DistributionChart` is a data visualization component that renders a responsive
+ * doughnut chart representing asset distribution. It visualizes the proportional
+ * value of asset holdings, categorizing smaller items under an "Other" segment
+ * when a defined threshold is exceeded.
+ *
+ * ### Props
+ * @param pieData - An object containing:
+ * - `total`: the overall value of all assets combined.
+ * - `assetData`: an array of `Asset` objects, each representing an individual asset.
+ * @param full - A boolean flag indicating whether the doughnut chart should render
+ *   as a full circle (`true`) or as a half-circle (`false`).
+ * @param tresholdValue - A numerical threshold used to determine how many top assets
+ *   are displayed individually before grouping the remaining into an "Other" segment.
+ *
+ * ### Internal Logic
+ * - `selectedDatasetIndex: useRef<number | null>` - Tracks the active dataset on hover.
+ * - `selectedIndex: useRef<number | null>` - Tracks the index of the currently hovered chart segment.
+ *
+ * ### Behavior
+ * - Sorts and processes the input `assetData` by descending distribution share.
+ * - Divides data into two categories based on `tresholdValue`:
+ *   - `mainAssets`: top assets rendered as distinct segments in the chart.
+ *   - `otherAssets`: grouped under a single "Other" segment with combined value and distribution.
+ * - Dynamically generates color codes for each chart segment, appending a default gray color
+ *   for the "Other" segment if it exists.
+ * - Configures Chart.js `onHover` behavior to track hovered segments and trigger chart redraw.
+ * - Uses a custom plugin (`hoverLabel`) to draw hover labels manually, bypassing default tooltips.
+ *
+ * @returns A rendered `Doughnut` chart component from `react-chartjs-2`, customized
+ * with sorting, grouping logic, hover behavior, and dynamic color rendering.
+ */
 export const DistributionChart = ({
   pieData,
   full,

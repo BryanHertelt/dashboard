@@ -44,6 +44,39 @@ pieData: any
 full: boolean
 }
 
+/**
+ * `renderHoverLabel` is a canvas-drawing utility for Chart.js doughnut charts
+ * that displays dynamic tooltip-like labels at the center of the chart,
+ * depending on the current hover state. It visually annotates selected
+ * segments or defaults to total chart information if no segment is selected.
+ *
+ * ### Parameters
+ * @param chart - A Chart.js `doughnut` chart instance whose canvas context (`ctx`)
+ *   and dimensions are used for rendering.
+ * @param hoverLabelInformation - An object containing relevant chart and data state:
+ * - `selectedDatasetIndex` - Ref to the currently hovered dataset index (null if none).
+ * - `selectedIndex` - Ref to the currently hovered slice index (null if none).
+ * - `updatedPieData` - Array of assets being visualized in the doughnut chart.
+ * - `tresholdValue` - Index separating specific assets from grouped "Other Assets".
+ * - `otherAssetsValue` - Combined value of grouped assets below the threshold.
+ * - `otherAssetsDistribution` - Percentage distribution of grouped "Other Assets".
+ * - `pieData` - Original pie chart data, including `total` value.
+ * - `full` - Boolean flag controlling display logic (not directly used here).
+ *
+ * ### Behavior
+ * - If a chart segment is selected (`selectedIndex` is not null):
+ *   - Displays the asset value or `otherAssetsValue` if it's part of "Other Assets".
+ *   - Shows the asset name or "Other Assets".
+ *   - Displays the distribution percentage.
+ * - If no segment is selected:
+ *   - Shows the total portfolio value and 100% label in the center.
+ *
+ * ### Canvas Styling
+ * - Uses bold and light font weights to distinguish between values and labels.
+ * - Always centers the text both horizontally and vertically within the chart area.
+ *
+ * @returns void - This function draws directly onto the Chart.js canvas.
+ */
 export const renderHoverLabel = (chart: ChartJS<"doughnut">, hoverLabelInformation: HoverLabelInformation ) => {
     const {
       ctx,
