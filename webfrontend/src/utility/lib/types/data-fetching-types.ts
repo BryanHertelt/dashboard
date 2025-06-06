@@ -243,3 +243,36 @@ export interface DistributionDerivative extends DerivativeAsset {
 
 export type Asset = NFTAsset | DerivativeAsset | CryptoAsset;
 export type DistributionAsset = DistributionCrypto | DistributionDerivative | DistributionNFT
+
+ interface OtherCryptoChart  {
+  value: number,
+  label: string, 
+  distribution: number 
+}
+interface OtherNFTChart  {
+  value: number , 
+  label:string, 
+  distribution: number 
+}
+interface OtherDerivativeChart {
+  value: number, 
+  label: string, 
+  distribution: number
+}
+
+export type OtherAssetsChart = OtherCryptoChart | OtherNFTChart | OtherDerivativeChart 
+
+interface MainCryptoChart {
+distribution: number, 
+label: string
+}
+interface MainNFTChart  {
+  distribution: number, 
+label: string
+}
+interface MainDerivativeChart{
+  distribution: number, 
+  label: string
+}
+
+export type MainAssetsChart = MainCryptoChart | MainNFTChart | MainDerivativeChart
