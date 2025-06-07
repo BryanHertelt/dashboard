@@ -171,14 +171,12 @@ export const dataColsCurrency = [
     cell: ({ row }: any) => {
       const percentage = parseFloat(row.getValue("assetchange24h"));
       const percentagecolor =
-        percentage < 0
-          ? " text-red text-xs rounded-md"
-          : " text-green text-xs rounded-md;";
+        percentage < 0 ? " text-red rounded-md" : " text-green rounded-md;";
 
       return (
         <div className={`${celldesign}`}>
           <div
-            className={`${percentagecolor}  flex flex-row text-xs w-32 items-end justify-end  rounded-md`}
+            className={`${percentagecolor}  flex flex-row w-32 items-end justify-end  rounded-md`}
           >
             {" "}
             <p>
@@ -226,7 +224,13 @@ export const dataColsCurrency = [
                   : profitloss
               )}
             </p>
-            <p className={`${profitloss < 0 ? " text-red" : "text-green"}`}>
+            <p
+              className={`${
+                profitloss < 0
+                  ? " text-red font-normal "
+                  : "text-green font-normal"
+              }`}
+            >
               (
               {formatValue(
                 profitLossChange < 0

@@ -39,7 +39,7 @@ const AssetDistributionLayout = ({
     <section className="flex flex-col flex-wrap w-full px-12 mt-10">
       <header className="flex flex-col justify-center w-full h-1/6">
         <h1 className="text-3xl font-light"> Asset-Distribution </h1>
-        <nav className="relative flex flex-row w-1/6 justify-start card py-1 mt-3">
+        <nav className="relative flex flex-row lp:w-1/4 lg:w-1/6 justify-start card py-1 mt-3">
           <div
             className="relative flex flex-row w-full justify-around"
             ref={routeRef}
