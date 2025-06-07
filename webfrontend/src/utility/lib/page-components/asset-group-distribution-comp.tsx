@@ -1,5 +1,3 @@
-import { DistributionComponent } from "../charts";
-
 import { assetGroupData } from "@/api/distribution/asset-distributiontabledata";
 
 import {
@@ -10,13 +8,7 @@ import {
 const AssetGroupDistributionComponent = () => {
   return (
     <>
-      <div className=" card p-7 h-4/6  w-3/12">
-        <DistributionComponent
-          text={"You can see your Asset-Group Distribution here"}
-          title={"Asset Group Distribution"}
-          piedata={assetGroupPieChartData}
-        />
-      </div>
+      <div>Asset Group Distribution</div>
       {/** 
       <div className="card mt-9 p-7 w-full">
         <DetailTableComponent

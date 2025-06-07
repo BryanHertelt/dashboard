@@ -1,5 +1,5 @@
 "use client";
-import { LineChartController, DistributionComponent } from "../charts";
+import { LineChartController } from "../charts";
 import { DistributionChart } from "../charts";
 import {
   AssetTableComponent,

@@ -1,4 +1,4 @@
-import { DistributionComponent } from "../charts";
+import { DistributionChart } from "../charts";
 
 import {
   holdingsPieChartData,
@@ -8,13 +8,7 @@ import {
 const HoldingsDistributionComponent = () => {
   return (
     <>
-      <div className="card p-7 h-4/6  w-3/12">
-        <DistributionComponent
-          text={"You can see your Holding Distribution here."}
-          title={"Holding Distribution"}
-          piedata={holdingsPieChartData}
-        />
-      </div>
+      <div className="card p-7 h-4/6  w-full">Holdings</div>
       {/* 
       <div className="card mt-9 p-7 w-full">
         <DetailTableComponent
