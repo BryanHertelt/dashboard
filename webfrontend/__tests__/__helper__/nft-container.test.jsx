@@ -1,10 +1,10 @@
-import { ExposeNfts } from "../../src/utility/lib/helpers/nft-container";
-import { NftDetailImageContainer} from "../../src/utility/lib/helpers/image-container";
+
+import {ExposeNfts, NftDetailImageContainer} from "../../src/utility/lib/helpers/helper-components"
 import { formatValue } from "../../src/utility/lib/helpers/helper-functions";
 import { render, screen } from "@testing-library/react";
 import '@testing-library/jest-dom'
 
-jest.mock("../../src/utility/lib/helpers/image-container", () => ({
+jest.mock("../../src/utility/lib/helpers/helper-components", () => ({
     NftDetailImageContainer: jest.fn().mockImplementation(() => null)
     }))
 
