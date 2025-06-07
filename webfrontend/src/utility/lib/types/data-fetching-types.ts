@@ -180,6 +180,7 @@ export interface HoldingsDataInterface {
 // new Types 
 interface BaseAsset {
   symbol: string;
+  scope: "asset" | "group" | "holding"
   portfolioid: number;
   userid: number;
   groupid: number;
@@ -276,3 +277,39 @@ interface MainDerivativeChart{
 }
 
 export type MainAssetsChart = MainCryptoChart | MainNFTChart | MainDerivativeChart
+
+
+export interface QueryConstructorInterface {
+  qKey: string[],
+  slug: string,
+  staleTime: number,
+  queryFunction: Function, 
+  distributionScope: "all" | "group" | "holding", 
+  cacheTime?: number,
+  initialData?: Asset[] | AssetGroups, 
+}
+
+export type AssetGroups = {
+  portfolioid: number;
+  currentvalue: number;
+  groups: Group[];
+};
+
+export interface Group{
+  scope:"holding" | "group" | "asset"
+  groupid: number;
+  portfolioid: number;
+  userid: number;
+  groupname: string;
+  assetcount: number;
+  groupvalue: number;
+  grouppercentage: number;
+  groupchange24h: number;
+  groupchange24hvalue: number;
+  groupchange7d: number[];
+  description: string;
+};
+
+export interface DistributionGroup extends Group {
+distribution: number,
+}

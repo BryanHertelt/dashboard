@@ -4,10 +4,18 @@ import axios from "axios";
 export const portfolioId = "1";
 export const baseUrl = `http://localhost:3001/${portfolioId}`;
 
-export const getPortfolioData = async () => {
+export const getDistribution = async (
+  distributionUnit: "group" | "all" | "holding"
+) => {
+  const url =
+    distributionUnit === "holding"
+      ? `${baseUrl}/holdings`
+      : distributionUnit === "group"
+      ? `${baseUrl}/assetgroups`
+      : baseUrl;
   try {
     let rawdata = await fetch(
-      `${baseUrl}`,
+      `${url}`,
       // while dev, need fast data updates, replace with cache strategy in build
       { cache: "no-store" }
     );
@@ -25,6 +33,30 @@ export const getPortfolioData = async () => {
   } catch (error) {
     console.error("Error occured in fetchDistribution Units " + `${error}`);
 
+    return ["failed", error];
+  }
+};
+
+export const getAllAssetGroups = async () => {
+  try {
+    let rawdata = await fetch(
+      `${baseUrl}/assetgroups`,
+      // while dev, need fast data updates, replace with cache strategy in build
+      { cache: "no-store" }
+    );
+    if (!rawdata.ok) {
+      throw new Error("API is not reachable");
+    }
+    let data = await rawdata.json();
+    if (!isObject(data)) {
+      throw new Error("Invalid response format: PortfolioData isn't an object");
+    }
+    if (Object.keys(data).length === 0) {
+      throw new Error("Object is empty");
+    }
+    return data;
+  } catch (error) {
+    console.error("Error occured in fetchDistribution Units " + `${error}`);
     return ["failed", error];
   }
 };

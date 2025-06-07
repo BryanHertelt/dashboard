@@ -27,6 +27,7 @@ import {
   DistributionAsset,
   OtherAssetsChart,
   MainAssetsChart,
+  DistributionGroup,
 } from "../types/data-fetching-types";
 
 ChartJS.register(
@@ -50,7 +51,7 @@ ChartJS.register(
  * ### Props
  * @param pieData - An object containing:
  * - `total`: the overall value of all assets combined.
- * - `assetData`: an array of `Asset` objects, each representing an individual asset.
+ * - `data`: an array of `Asset` objects, each representing an individual asset.
  * @param full - A boolean flag indicating whether the doughnut chart should render
  *   as a full circle (`true`) or as a half-circle (`false`).
  * @param tresholdValue - A numerical threshold used to determine how many top assets
@@ -61,7 +62,7 @@ ChartJS.register(
  * - `selectedIndex: useRef<number | null>` - Tracks the index of the currently hovered chart segment.
  *
  * ### Behavior
- * - Sorts and processes the input `assetData` by descending distribution share.
+ * - Sorts and processes the input `data` by descending distribution share.
  * - Divides data into two categories based on `tresholdValue`:
  *   - `mainAssets`: top assets rendered as distinct segments in the chart.
  *   - `otherAssets`: grouped under a single "Other" segment with combined value and distribution.
@@ -78,7 +79,7 @@ export const DistributionChart = ({
   full,
   tresholdValue,
 }: {
-  pieData: { total: number; assetData: Asset[] };
+  pieData: { total: number; data: Asset[] };
   full: boolean;
   tresholdValue: number;
 }) => {
@@ -101,7 +102,7 @@ export const DistributionChart = ({
   const selectedDatasetIndex = useRef<number | null>(null);
   const selectedIndex = useRef<number | null>(null);
 
-  if (!pieData || pieData.assetData.length === 0) {
+  if (!pieData || pieData.data.length === 0) {
     logger.error(
       "distribution-chart.tsx >> Pie Data is undefined or empty",
       pieData
@@ -109,47 +110,39 @@ export const DistributionChart = ({
     return <SmallErrorSkeleton />;
   }
 
-  const updatedPieData: DistributionAsset[] = pieData.assetData.map(
-    (assetObj: Asset) => {
-      return {
-        ...assetObj,
-        distribution:
-          Number(
-            (assetObj.assettype === "nft"
-              ? assetObj.collectionvalue
-              : assetObj.assetvalue) / pieData.total
-          ) * 100,
-      };
-    }
-  );
-  logger.debug("distribution-chart.tsx >> updated pie data", updatedPieData);
-
-  const sortedEntries = [...updatedPieData].sort(
-    (prevAsset: DistributionAsset, thisAsset: DistributionAsset) =>
+  const sortedEntries = [...pieData.data].sort(
+    (prevAsset: any, thisAsset: any) =>
       prevAsset.distribution < thisAsset.distribution
         ? 1
         : prevAsset.distribution > thisAsset.distribution
         ? -1
         : 0
   );
+
   logger.debug("distribution-chart.tsx >> sorted entries", sortedEntries);
 
   //chart treshold logic
   const mainAssets: MainAssetsChart[] = [];
   const otherAssets: OtherAssetsChart[] = [];
 
-  sortedEntries.forEach((asset: DistributionAsset, index: number) => {
+  sortedEntries.forEach((asset: any, index: number) => {
     if (index < tresholdValue) {
       mainAssets.push({
         distribution: asset.distribution,
-        label: asset.assetid.toString(),
+        label:
+          asset.scope === "asset"
+            ? asset.assetid.toString()
+            : asset.groupid.toString(),
       });
     } else {
       otherAssets.push({
         value:
           asset.assettype == "nft" ? asset.collectionvalue : asset.assetvalue,
         distribution: asset.distribution,
-        label: asset.assetid.toString(),
+        label:
+          asset.scope === "asset"
+            ? asset.assetid.toString()
+            : asset.groupid.toString(),
       });
     }
   });
@@ -188,7 +181,7 @@ export const DistributionChart = ({
   const hoverLabelInformation = {
     selectedDatasetIndex: selectedDatasetIndex,
     selectedIndex: selectedIndex,
-    updatedPieData: updatedPieData,
+    updatedPieData: sortedEntries,
     tresholdValue: tresholdValue,
     otherAssetsValue: otherAssetsValue,
     otherAssetsDistribution: otherAssetsDistribution,

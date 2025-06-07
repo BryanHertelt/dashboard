@@ -89,7 +89,7 @@ export const dataColsCurrency = [
     },
   },
   {
-    accessorKey: "assetpercentage",
+    accessorKey: "distribution",
     header: ({ column }: any) => {
       const sorted = column.getIsSorted();
       return (
@@ -106,7 +106,7 @@ export const dataColsCurrency = [
       );
     },
     cell: ({ row }: any) => {
-      const percentage = parseFloat(row.getValue("assetpercentage"));
+      const percentage = parseFloat(row.getValue("distribution"));
       const formattedPercentage = formatValue(Number(percentage));
       return (
         <div className={`${celldesign} w-1/3`}> {formattedPercentage} %</div>

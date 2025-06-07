@@ -1,7 +1,7 @@
 
 
 // Getters + Setters 
-export { getPortfolioData, getDetailAssetData, getTimeFrames, postRebalancing } from "./layer";
+export { getDistribution, getDetailAssetData, getTimeFrames, postRebalancing } from "./layer";
 
 
 //Placeholder

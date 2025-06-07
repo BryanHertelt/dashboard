@@ -1,7 +1,7 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
 import {
-  getPortfolioData,
+  getDistribution,
   getTimeFrames,
   getDetailAssetData,
 } from "../data-fetching";
@@ -9,9 +9,10 @@ import {
   QueryConstructorInterfaceDistribution,
   QueryConstructorInterfaceChart,
 } from "../types/data-fetching-types";
+import { QueryConstructorInterface } from "../types/data-fetching-types";
 
 export const useDistributionData = (
-  queryConstructor: QueryConstructorInterfaceDistribution
+  queryConstructor: QueryConstructorInterface
 ) => {
   if (!queryConstructor || Object.keys(queryConstructor).length === 0) {
     console.error(
@@ -24,7 +25,9 @@ export const useDistributionData = (
     staleTime: queryConstructor.staleTime,
     gcTime: queryConstructor.cacheTime,
     queryFn: async () => {
-      const processedData = await queryConstructor.queryFunction();
+      const processedData = await queryConstructor.queryFunction(
+        queryConstructor.distributionScope
+      );
       return processedData;
     },
     retryDelay: (attemptIndex: number): number => {

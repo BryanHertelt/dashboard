@@ -1,49 +1,132 @@
 "use client";
-import { LineChartController } from "../charts";
 import { DistributionChart } from "../charts";
+import { Asset, DistributionAsset } from "../types/data-fetching-types";
 import {
   AssetTableComponent,
   dataColsCurrency,
   dataColsDerivative,
   dataColsNft,
 } from "../data-table";
-import { useDistributionData, getPortfolioData } from "../data-fetching";
-import { formatValue } from "../helpers";
+import { useDistributionData, getDistribution } from "../data-fetching";
 
-const AssetDistributionComponent = (props: any) => {
+const AssetDistributionComponent = ({
+  portfolioData,
+}: {
+  portfolioData: Asset[];
+}) => {
   const { processedQueryData, isLoading, isError, error } = useDistributionData(
     {
       qKey: ["PortfolioAD"],
-      initialData: props.portfolioData,
-      queryFunction: getPortfolioData,
+      initialData: portfolioData,
+      queryFunction: getDistribution,
+      distributionScope: "all",
       slug: "portfolios",
       staleTime: 0,
       cacheTime: 0,
     }
   );
 
-  const tableData = processedQueryData.assets.map((asset: any) => {
-    asset = {
-      ...asset,
-      assetpercentage:
-        asset.assettype === "cryptocurrency"
-          ? Number(
-              formatValue(
-                (asset.assetvalue / processedQueryData.currentvalue) * 100
-              )
-            )
-          : null,
-    };
-    return asset;
+  const dataFrontendNaming = processedQueryData.assets.map((asset: Asset) => {
+    const dataFrontendNamingArray = [];
+
+    if (asset.assettype === "derivative") {
+      dataFrontendNamingArray.push({
+        symbol: asset.symbol,
+        portfolioid: asset.portfolioid,
+        userid: asset.userid,
+        groupid: asset.groupid,
+        holdingid: asset.holdingid,
+        assettype: asset.assettype,
+        assetid: asset.assetid,
+        assetname: asset.assetname,
+        derivativeexchange: asset.derivativeexchange,
+        positiontype: asset.positiontype,
+        tradedirection: asset.tradedirection,
+        derivativetype: asset.derivativetype,
+        leverage: asset.leverage,
+        assetvalue: asset.assetvalue,
+        entry: asset.entry,
+        unrealizedpl: asset.unrealizedpl,
+        price: asset.price,
+        liquidationprice: asset.liquidationprice,
+        margin: asset.margin,
+        tp: asset.tp,
+        sl: asset.sl,
+        profitloss: asset.profitloss,
+        profitlosschange: asset.profitlosschange,
+        settlementdate: asset.settlementdate,
+        notes: asset.notes,
+      });
+    } else if (asset.assettype === "nft") {
+      dataFrontendNamingArray.push({
+        symbol: asset.symbol,
+        portfolioid: asset.portfolioid,
+        userid: asset.userid,
+        groupid: asset.groupid,
+        holdingid: asset.holdingid,
+        assetpercentage: asset.assetpercentage,
+        assettype: asset.assettype,
+        assetid: asset.assetid,
+        assetname: asset.assetname,
+        collectionvalue: asset.collectionvalue,
+        collectionvalueeth: asset.collectionvalueeth,
+        collectionfloorprice: asset.collectionfloorprice,
+        assetamount: asset.assetamount,
+        profitloss: asset.profitloss,
+        profitlosschange: asset.profitlosschange,
+        notes: asset.notes,
+      });
+    } else if (asset.assettype === "cryptocurrency") {
+      dataFrontendNamingArray.push({
+        symbol: asset.symbol,
+        portfolioid: asset.portfolioid,
+        userid: asset.userid,
+        groupid: asset.groupid,
+        holdingid: asset.holdingid,
+        assettype: asset.assettype,
+        assetid: asset.assetid,
+        assetname: asset.assetname,
+        assetabbreviation: asset.assetabbreviation,
+        assetamount: asset.assetamount,
+        assetvalue: asset.assetvalue,
+        assetmarketprice: asset.assetmarketprice,
+        assetchange24h: asset.assetchange24h,
+        assetchange24hourvalue: asset.assetchange24hourvalue,
+        assetchange7d: asset.assetchange7d,
+        profitloss: asset.profitloss,
+        profitlosschange: asset.profitlosschange,
+        notes: asset.notes,
+      });
+    } else {
+      dataFrontendNamingArray.push({});
+    }
+    return dataFrontendNamingArray;
   });
+
+  const updatedData = dataFrontendNaming
+    .flat()
+    .map((asset: DistributionAsset) => {
+      console.log("asset", asset);
+      asset = {
+        ...asset,
+        distribution:
+          Number(
+            (asset.assettype === "nft"
+              ? asset.collectionvalue
+              : asset.assetvalue) / processedQueryData.currentvalue
+          ) * 100,
+      };
+      console.log("newAsset", asset);
+      return asset;
+    });
   const pieData = {
-    assetData: processedQueryData.assets,
+    data: updatedData,
     total: processedQueryData.currentvalue,
   };
   // Manual calculate total value above, for the case currentvalue is undefined
 
   const tableConfig = {
-    initial: tableData,
+    initial: updatedData,
     detail: true,
     statusFilter: "assettype",
     status: [
