@@ -42,7 +42,8 @@ otherValue: number,
 otherDistribution: number, 
 pieData: any, 
 total: number, 
-full: boolean
+full: boolean, 
+others: string, 
 }
 
 /**
@@ -110,7 +111,7 @@ export const renderHoverLabel = (chart: ChartJS<"doughnut">, hoverLabelInformati
     ctx.fillText(
      currentIndex != hoverLabelInformation.tresholdValue
         ? hoverLabelInformation.updatedPieData[currentIndex].disElName
-        : "Other Assets",
+        : hoverLabelInformation.others,
       width / 2,
       height / 2 + top + 35,
     );

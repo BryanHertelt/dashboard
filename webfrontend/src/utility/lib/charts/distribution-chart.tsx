@@ -87,6 +87,7 @@ export const DistributionChart = ({
     full: boolean;
     tresholdValue: number;
     total: number;
+    others: string;
   };
 }) => {
   // Measure performance of component
@@ -189,6 +190,7 @@ export const DistributionChart = ({
     pieData: config.pieData,
     total: config.total,
     full: config.full,
+    others: config.others,
   };
 
   logger.debug("distribution-chart.tsx >> hoverLabel render starts");

@@ -72,16 +72,26 @@ const AssetGroupDistributionComponent = ({
     total: processedQueryData.currentvalue,
   };
 
+  const pieConfig = {
+    pieData: updatedData.map((group: DistributionGroup) => {
+      return {
+        disElId: group.groupid,
+        disElVal: group.groupvalue,
+        disElName: group.groupname,
+        disElDistribution: group.distribution,
+      };
+    }),
+    full: false,
+    tresholdValue: 2,
+    total: processedQueryData.currentvalue,
+    others: "Other Groups",
+  };
   return (
     <>
       <div className="flex flex-col text-end justify-center card h-56 mb-7 w-8/12 sm:w-8/12 md:w-full lg:w-full lp:w-full">
         <div className="flex flex-col items-center justify-center h-96 w-full">
           <div className="w-96 h-96">
-            <DistributionChart
-              pieData={pieData}
-              full={false}
-              tresholdValue={3}
-            />
+            <DistributionChart config={pieConfig} />
           </div>
         </div>
       </div>

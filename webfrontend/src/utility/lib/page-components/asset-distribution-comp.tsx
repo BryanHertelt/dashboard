@@ -138,6 +138,7 @@ const AssetDistributionComponent = ({
     full: false,
     tresholdValue: 10,
     total: processedQueryData.currentvalue,
+    others: "Other Assets",
   };
 
   const tableConfig = {
