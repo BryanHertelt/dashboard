@@ -8,12 +8,15 @@ import {
   dataColsNft,
 } from "../data-table";
 import { useDistributionData, getDistribution } from "../data-fetching";
+import { useMemo } from "react";
+import { ranHexGen } from "../helpers";
 
 const AssetDistributionComponent = ({
   portfolioData,
 }: {
   portfolioData: Asset[];
 }) => {
+  const tresholdValue = 10;
   const { processedQueryData, isLoading, isError, error } = useDistributionData(
     {
       qKey: ["PortfolioAD"],
@@ -102,13 +105,20 @@ const AssetDistributionComponent = ({
     }
     return dataFrontendNamingArray;
   });
+  const colors = useMemo(() => {
+    const baseColors = ranHexGen(tresholdValue);
+    return baseColors;
+  }, [tresholdValue, processedQueryData.assets.length]);
+
+  console.log("colors in asset distributino", colors);
 
   const updatedData = dataFrontendNaming
     .flat()
-    .map((asset: DistributionAsset) => {
+    .map((asset: DistributionAsset, index: number) => {
       console.log("asset", asset);
       asset = {
         ...asset,
+        color: colors[index],
         distribution:
           Number(
             (asset.assettype === "nft"
@@ -119,10 +129,7 @@ const AssetDistributionComponent = ({
       console.log("newAsset", asset);
       return asset;
     });
-  const pieData = {
-    data: updatedData,
-    total: processedQueryData.currentvalue,
-  };
+
   // Manual calculate total value above, for the case currentvalue is undefined
 
   const pieConfig = {
@@ -133,10 +140,11 @@ const AssetDistributionComponent = ({
           asset.assettype === "nft" ? asset.collectionvalue : asset.assetvalue,
         disElName: asset.assetname,
         disElDistribution: asset.distribution,
+        disColor: asset.color,
       };
     }),
     full: false,
-    tresholdValue: 10,
+    tresholdValue: tresholdValue,
     total: processedQueryData.currentvalue,
     others: "Other Assets",
   };

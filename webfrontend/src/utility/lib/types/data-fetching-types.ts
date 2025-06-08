@@ -232,14 +232,17 @@ export interface CryptoAsset extends BaseAsset {
 }
 
 export interface DistributionCrypto extends CryptoAsset {
-  distribution: number
+  distribution: number, 
+  color:string
 }
 export interface DistributionNFT extends NFTAsset {
-  distribution: number
+  distribution: number, 
+  color: string
 }
 
 export interface DistributionDerivative extends DerivativeAsset {
-  distribution: number 
+  distribution: number, 
+  color: string
 }
 
 export type Asset = NFTAsset | DerivativeAsset | CryptoAsset;
@@ -307,9 +310,12 @@ export interface Group{
   groupchange24h: number;
   groupchange24hvalue: number;
   groupchange7d: number[];
+  profitloss: number, 
+  profitlosschange: number, 
   description: string;
 };
 
 export interface DistributionGroup extends Group {
 distribution: number,
+color: string
 }

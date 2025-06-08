@@ -83,6 +83,7 @@ export const DistributionChart = ({
       disElVal: number;
       disElName: string;
       disElDistribution: number;
+      disColor: string;
     }[];
     full: boolean;
     tresholdValue: number;
@@ -166,11 +167,19 @@ export const DistributionChart = ({
     mainDisObj,
     otherDisObj,
   ]);
-  //generate colors
-  const colors = useMemo(() => {
-    const baseColors = ranHexGen(config.tresholdValue);
-    return otherDisObj.length !== 0 ? [...baseColors, icongray] : baseColors;
-  }, [config.tresholdValue, otherDisObj.length]);
+
+  const baseColors = config.pieData
+    .map((disObj, index) => {
+      if (index < config.tresholdValue) {
+        return disObj.disColor;
+      }
+    })
+    .filter((color) => color !== undefined); // Remove undefined values from map
+
+  console.log("baseColors in asset distirbtuion", baseColors);
+
+  const colors =
+    otherDisObj.length !== 0 ? [...baseColors, icongray] : baseColors;
   logger.debug(
     "distribution-chart.tsx >> colors generated, tresholdValue",
     colors.length,

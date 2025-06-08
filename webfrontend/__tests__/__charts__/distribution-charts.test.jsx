@@ -68,9 +68,9 @@ describe("DistributionChart Component", () => {
 
   it("correctly sets threshold and processes data", () => {
     const mockData = [
-      { disElId: "1", disElVal: 500, disElName: "Asset A", disElDistribution: 50 },
-      { disElId: "2", disElVal: 300, disElName: "Asset B", disElDistribution: 30 },
-      { disElId: "3", disElVal: 200, disElName: "Asset C", disElDistribution: 20 }
+      { disElId: "1", disElVal: 500, disElName: "Asset A", disElDistribution: 50, disColor: "#cceeff" },
+      { disElId: "2", disElVal: 300, disElName: "Asset B", disElDistribution: 30, disColor: "" },
+      { disElId: "3", disElVal: 200, disElName: "Asset C", disElDistribution: 20, disColor: "#7A7A7A" }
     ];
     setUpTest(1000, mockData, false, 2);
     const mockCalls = Doughnut.mock.calls[0][0];

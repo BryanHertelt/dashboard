@@ -14,12 +14,15 @@ import { getDistribution } from "../data-fetching";
 import { DistributionChart } from "../charts";
 import { SmallLoadingSkeleton } from "../data-fetching";
 import { dataColsGroups, AssetTableComponent } from "../data-table";
+import { useMemo } from "react";
+import { ranHexGen } from "../helpers";
 
 const AssetGroupDistributionComponent = ({
   groupData,
 }: {
   groupData: AssetGroups;
 }) => {
+  const tresholdValue = 5;
   const { processedQueryData, isLoading, isError, error } = useDistributionData(
     {
       qKey: ["PortfolioAD"],
@@ -53,15 +56,23 @@ const AssetGroupDistributionComponent = ({
       groupchange24h: group.groupchange24h,
       groupchange24hvalue: group.groupchange24hvalue,
       groupchange7d: group.groupchange7d,
+      profitloss: group.profitloss,
+      profitlosschange: group.profitlosschange,
       description: group.description,
     };
   });
 
+  const colors = useMemo(() => {
+    const baseColors = ranHexGen(tresholdValue);
+    return baseColors;
+  }, [tresholdValue, processedQueryData.groups.length]);
+
   const updatedData = dataFrontendNaming
     .flat()
-    .map((group: DistributionGroup) => {
+    .map((group: DistributionGroup, index: number) => {
       group = {
         ...group,
+        color: colors[index],
         distribution:
           Number(group.groupvalue / processedQueryData.currentvalue) * 100,
       };
@@ -75,10 +86,11 @@ const AssetGroupDistributionComponent = ({
         disElVal: group.groupvalue,
         disElName: group.groupname,
         disElDistribution: group.distribution,
+        disColor: group.color,
       };
     }),
     full: false,
-    tresholdValue: 10,
+    tresholdValue: tresholdValue,
     total: processedQueryData.currentvalue,
     others: "Other Groups",
   };
@@ -99,22 +111,6 @@ const AssetGroupDistributionComponent = ({
   };
   return (
     <div className="h-full">
-      {/**
-    <div className="card h-4/6 w-8/12 flex-grow pl-7 pt-7 pr-8">
-      <LineChartController
-        currentValue={processedQueryData.currentvalue}
-        initialData={props.initialLineLoad}
-      />
-    </div>
-    <div id="note-overlay"> </div>
-     <div className="card p-7 h-4/6 ml-7 w-3/12">
-      <DistributionComponent
-        text={"You can see your Asset Distribution here."}
-        title={"Asset Distribution"}
-        piedata={pieData}
-      />
-    </div>
-    */}
       <div className="flex flex-col text-end justify-center card h-56 mb-7 w-8/12 sm:w-8/12 md:w-full lg:w-full lp:w-full">
         <div className="flex flex-col items-center justify-center h-96 w-full">
           <div className="w-96 h-96">
