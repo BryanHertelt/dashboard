@@ -125,6 +125,21 @@ const AssetDistributionComponent = ({
   };
   // Manual calculate total value above, for the case currentvalue is undefined
 
+  const pieConfig = {
+    pieData: updatedData.map((asset: DistributionAsset) => {
+      return {
+        disElId: asset.assetid,
+        disElVal:
+          asset.assettype === "nft" ? asset.collectionvalue : asset.assetvalue,
+        disElName: asset.assetname,
+        disElDistribution: asset.distribution,
+      };
+    }),
+    full: false,
+    tresholdValue: 10,
+    total: processedQueryData.currentvalue,
+  };
+
   const tableConfig = {
     initial: updatedData,
     detail: true,
@@ -182,11 +197,7 @@ const AssetDistributionComponent = ({
       <div className="flex flex-col text-end justify-center card h-56 mb-7 w-8/12 sm:w-8/12 md:w-full lg:w-full lp:w-full">
         <div className="flex flex-col items-center justify-center h-96 w-full">
           <div className="w-96 h-96">
-            <DistributionChart
-              pieData={pieData}
-              full={false}
-              tresholdValue={10}
-            />
+            <DistributionChart config={pieConfig} />
           </div>
         </div>
       </div>

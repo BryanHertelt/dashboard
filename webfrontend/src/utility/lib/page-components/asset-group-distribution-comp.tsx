@@ -80,7 +80,7 @@ const AssetGroupDistributionComponent = ({
             <DistributionChart
               pieData={pieData}
               full={false}
-              tresholdValue={10}
+              tresholdValue={3}
             />
           </div>
         </div>

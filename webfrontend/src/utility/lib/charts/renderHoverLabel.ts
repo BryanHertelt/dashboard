@@ -38,9 +38,10 @@ selectedDatasetIndex: any
 selectedIndex: any
 updatedPieData: any, 
 tresholdValue: number, 
-otherAssetsValue: number, 
-otherAssetsDistribution: number, 
-pieData: any
+otherValue: number, 
+otherDistribution: number, 
+pieData: any, 
+total: number, 
 full: boolean
 }
 
@@ -58,8 +59,8 @@ full: boolean
 * - `selectedIndex` - Ref to the currently hovered slice index (null if none).
 * - `updatedPieData` - Array of assets being visualized in the doughnut chart.
 * - `tresholdValue` - Index separating specific assets from grouped "Other Assets".
-* - `otherAssetsValue` - Combined value of grouped assets below the threshold.
-* - `otherAssetsDistribution` - Percentage distribution of grouped "Other Assets".
+* - `otherValue` - Combined value of grouped assets below the threshold.
+* - `otherDistribution` - Percentage distribution of grouped "Other Assets".
 * - `pieData` - Original pie chart data, including `total` value.
 * - `full` - Boolean flag controlling display logic (not directly used here).
 *
@@ -91,44 +92,34 @@ export const renderHoverLabel = (chart: ChartJS<"doughnut">, hoverLabelInformati
     currentIndex !== null
   ) {
     ctx.save();
+    ctx.font = "bold 1.25rem sans-serif";
+    ctx.fillStyle = black;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
 
     const selectedAsset = hoverLabelInformation.updatedPieData[currentIndex]
 
-      ctx.font = "bold 1.25rem sans-serif";
-      ctx.fillStyle = black;
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillText(
-        selectedAsset.scope === "asset" ? 
-        currentIndex < hoverLabelInformation.tresholdValue 
-            ? formatCurrency(
-                selectedAsset.assettype === "nft"
-                  ? selectedAsset.collectionfloorprice
-                  : selectedAsset.assetvalue
-              )
-            : formatCurrency(hoverLabelInformation.otherAssetsValue) : 
-            currentIndex < hoverLabelInformation.tresholdValue 
-            ? formatCurrency(selectedAsset.groupvalue )
-            : formatCurrency(hoverLabelInformation.otherAssetsValue),
-          width / 2,
-          height / 2 + top + 10
-        );
-  
-   
+    ctx.fillText(
+    currentIndex < hoverLabelInformation.tresholdValue 
+        ? formatCurrency(  selectedAsset.disElVal)
+        : formatCurrency(hoverLabelInformation.otherValue),
+      width / 2,
+      height / 2 + top + 10
+    );
     ctx.font = "normal 1rem  sans-serif";
     ctx.fillText(
      currentIndex != hoverLabelInformation.tresholdValue
-        ? selectedAsset === "asset" ?  hoverLabelInformation.updatedPieData[currentIndex].assetname:hoverLabelInformation.updatedPieData[currentIndex].groupname 
-        : "Other Assets", 
+        ? hoverLabelInformation.updatedPieData[currentIndex].disElName
+        : "Other Assets",
       width / 2,
       height / 2 + top + 35,
     );
     ctx.font = "lighter 1rem  sans-serif";
     ctx.fillText(
       currentIndex < hoverLabelInformation.tresholdValue
-        ? formatValue(hoverLabelInformation.updatedPieData[currentIndex].distribution) +
+        ? formatValue(hoverLabelInformation.updatedPieData[currentIndex].disElDistribution) +
             "%"
-        : formatValue(hoverLabelInformation.otherAssetsDistribution) + "%",
+        : formatValue(hoverLabelInformation.otherDistribution) + "%",
       width / 2,
       height / 2 + top + 55
     );
@@ -139,7 +130,7 @@ export const renderHoverLabel = (chart: ChartJS<"doughnut">, hoverLabelInformati
     ctx.fillStyle = black;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.fillText(formatCurrency(hoverLabelInformation.pieData.total), width / 2, height / 2 + top + 25);
+    ctx.fillText(formatCurrency(hoverLabelInformation.total), width / 2, height / 2 + top + 25);
     ctx.font = "lighter 1rem  sans-serif";
     ctx.fillText("100%", width / 2, height / 2 + top + 50);
     ctx.restore();

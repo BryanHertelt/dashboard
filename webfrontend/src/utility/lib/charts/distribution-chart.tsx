@@ -75,13 +75,19 @@ ChartJS.register(
  * with sorting, grouping logic, hover behavior, and dynamic color rendering.
  */
 export const DistributionChart = ({
-  pieData,
-  full,
-  tresholdValue,
+  config,
 }: {
-  pieData: { total: number; data: Asset[] };
-  full: boolean;
-  tresholdValue: number;
+  config: {
+    pieData: {
+      disElId: number | string;
+      disElVal: number;
+      disElName: string;
+      disElDistribution: number;
+    }[];
+    full: boolean;
+    tresholdValue: number;
+    total: number;
+  };
 }) => {
   // Measure performance of component
   const start = performance.now();
@@ -102,19 +108,19 @@ export const DistributionChart = ({
   const selectedDatasetIndex = useRef<number | null>(null);
   const selectedIndex = useRef<number | null>(null);
 
-  if (!pieData || pieData.data.length === 0) {
+  if (!config.pieData || config.pieData.length === 0) {
     logger.error(
       "distribution-chart.tsx >> Pie Data is undefined or empty",
-      pieData
+      config.pieData
     );
     return <SmallErrorSkeleton />;
   }
 
-  const sortedEntries = [...pieData.data].sort(
-    (prevAsset: any, thisAsset: any) =>
-      prevAsset.distribution < thisAsset.distribution
+  const sortedEntries = [...config.pieData].sort(
+    (prevDisObj: any, thisDisObj: any) =>
+      prevDisObj.disElDistribution < thisDisObj.disElDistribution
         ? 1
-        : prevAsset.distribution > thisAsset.distribution
+        : prevDisObj.disElDistribution > thisDisObj.disElDistribution
         ? -1
         : 0
   );
@@ -122,59 +128,54 @@ export const DistributionChart = ({
   logger.debug("distribution-chart.tsx >> sorted entries", sortedEntries);
 
   //chart treshold logic
-  const mainAssets: MainAssetsChart[] = [];
-  const otherAssets: OtherAssetsChart[] = [];
+  const mainDisObj: MainAssetsChart[] = [];
+  const otherDisObj: OtherAssetsChart[] = [];
 
-  sortedEntries.forEach((asset: any, index: number) => {
-    if (index < tresholdValue) {
-      mainAssets.push({
-        distribution: asset.distribution,
-        label:
-          asset.scope === "asset"
-            ? asset.assetid.toString()
-            : asset.groupid.toString(),
+  sortedEntries.forEach((disObj: any, index: number) => {
+    if (index < config.tresholdValue) {
+      mainDisObj.push({
+        distribution: disObj.disElDistribution,
+        label: disObj.disElId,
       });
     } else {
-      otherAssets.push({
-        value:
-          asset.assettype == "nft" ? asset.collectionvalue : asset.assetvalue,
-        distribution: asset.distribution,
-        label:
-          asset.scope === "asset"
-            ? asset.assetid.toString()
-            : asset.groupid.toString(),
+      otherDisObj.push({
+        value: disObj.disElVal,
+        distribution: disObj.disElDistribution,
+        label: disObj.disElId,
       });
     }
   });
 
-  const otherAssetsDistribution = otherAssets.reduce(
-    (acc: number, asset: OtherAssetsChart) => {
-      const result = acc + asset.distribution;
+  const otherDistribution = otherDisObj.reduce(
+    (acc: number, disObj: OtherAssetsChart) => {
+      const result = acc + disObj.distribution;
       return result;
     },
     0
   );
-  const otherAssetsValue = otherAssets.reduce(
-    (acc: number, asset: OtherAssetsChart) => {
-      const result = acc + asset.value;
+  const otherValue = otherDisObj.reduce(
+    (acc: number, disObj: OtherAssetsChart) => {
+      const result = acc + disObj.value;
       return result;
     },
     0
   );
 
+  console.log("otherAssetValue", otherValue);
+
   logger.debug("distribution-chart.tsx >> [MainAssets, OtherAssets]", [
-    mainAssets,
-    otherAssets,
+    mainDisObj,
+    otherDisObj,
   ]);
   //generate colors
   const colors = useMemo(() => {
-    const baseColors = ranHexGen(tresholdValue);
-    return otherAssets.length !== 0 ? [...baseColors, icongray] : baseColors;
-  }, [tresholdValue, otherAssets.length]);
+    const baseColors = ranHexGen(config.tresholdValue);
+    return otherDisObj.length !== 0 ? [...baseColors, icongray] : baseColors;
+  }, [config.tresholdValue, otherDisObj.length]);
   logger.debug(
     "distribution-chart.tsx >> colors generated, tresholdValue",
     colors.length,
-    tresholdValue - 1
+    config.tresholdValue - 1
   );
 
   // render HoverLabel
@@ -182,11 +183,12 @@ export const DistributionChart = ({
     selectedDatasetIndex: selectedDatasetIndex,
     selectedIndex: selectedIndex,
     updatedPieData: sortedEntries,
-    tresholdValue: tresholdValue,
-    otherAssetsValue: otherAssetsValue,
-    otherAssetsDistribution: otherAssetsDistribution,
-    pieData: pieData,
-    full: full,
+    tresholdValue: config.tresholdValue,
+    otherValue: otherValue,
+    otherDistribution: otherDistribution,
+    pieData: config.pieData,
+    total: config.total,
+    full: config.full,
   };
 
   logger.debug("distribution-chart.tsx >> hoverLabel render starts");
@@ -200,18 +202,18 @@ export const DistributionChart = ({
 
   //format pie data for chart js
   const formattedPieData = {
-    labels: mainAssets.map(
+    labels: mainDisObj.map(
       (labelconstructor: MainAssetsChart) => labelconstructor.label
     ),
     datasets: [
       {
         label: "Asset",
         data: [
-          mainAssets.map(
+          mainDisObj.map(
             (distributionObject: MainAssetsChart) =>
               distributionObject.distribution
           ),
-          otherAssetsDistribution,
+          otherDistribution,
         ].flat(),
         backgroundColor: colors,
         hoverOffset: 10,
@@ -234,8 +236,8 @@ export const DistributionChart = ({
     },
     cutout: "73%",
     radius: "90%",
-    circumference: full ? 360 : 180,
-    rotation: full ? 0 : 270,
+    circumference: config.full ? 360 : 180,
+    rotation: config.full ? 0 : 270,
     onHover: (hover, element, chart) => {
       drawDoughnutChart(
         hover,
