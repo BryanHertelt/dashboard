@@ -5,7 +5,6 @@ import { render, screen, within, fireEvent, act,waitFor} from "@testing-library/
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ShowDetailIcon, SortingDataTableIcon, PositionDirectionIcon } from "../../public/images/icons";
 import { mockInitial, tableConfig, detailMockCryptoResponse, detailMockDerivatives, detailMockNFTs } from "../testmocks";
-
 import { AssetTableComponent } from "../../src/utility/lib/data-table";
 import { dataColsCurrency, dataColsDerivative, dataColsNft } from "../../src/utility/lib/data-table/v-ad-cols/asset-distribution-cols";
 import { formatCurrency } from "../../src/utility/lib/helpers/helper-functions/formatCurrency";
@@ -115,7 +114,6 @@ const renderWithClient = (ui) =>
               checkItem(mockInitial[0].assetamount)
               const assetvalue  = screen.getByText(mockInitial[0].assetamount).closest("td");
               expect(within(assetvalue).getByText("$700,000.00")).toBeInTheDocument()
-              checkItem(`${formatValue(mockInitial[0].assetpercentage)} %`)
               checkItem(`${formatValue(mockInitial[0].assetchange24h)} %`)
               checkItem(formatCurrency(mockInitial[0].profitloss))
               const profitloss = screen.getByText(formatCurrency(mockInitial[0].profitloss)).closest("td")

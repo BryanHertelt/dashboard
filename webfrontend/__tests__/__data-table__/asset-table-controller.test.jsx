@@ -1,11 +1,12 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { DataTable } from '../../src/utility/lib/data-table/data-table';
-import { AssetTableController } from '../../src/utility/lib/data-table';
+import { AssetTableController, dataColsGroups } from '../../src/utility/lib/data-table';
 import {
   dataColsCurrency,
   dataColsDerivative,
   dataColsNft,
+  dataColsGroup
 } from '../../src/utility/lib/data-table/v-ad-cols/asset-distribution-cols';
 import { SmallLoadingSkeleton } from '../../src/utility/lib/data-fetching/skeletons/loading-skeleton';
 import '@testing-library/jest-dom';
@@ -167,4 +168,28 @@ describe('AssetTableController', () => {
 
     expect(screen.getByTestId('data-table')).toHaveTextContent('1 rows');
   });
+  it("renders full dataset, when no status filter applied", () => {
+    jest.clearAllMocks()
+    const newTableConfig = {
+      ...tableConfig, 
+      statusFilter: "", 
+      detail: false, 
+      status: [
+        {
+          status: 'groups',
+          statusTitle: 'Asset-Groups',
+          columns: dataColsGroups,
+        }
+      ], 
+    filter: []
+    }
+    render(
+      <AssetTableController 
+      tableStatus="groups"
+      tableConfig={newTableConfig}
+      /> 
+    )
+    const mockLength = DataTable.mock.calls[0][0].data.length
+    expect(mockLength).toBe(mockInitial.length)
+  })
 });

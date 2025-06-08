@@ -58,6 +58,9 @@ const AssetTableController = ({
     });
 
     let filtered = tableConfig.initial.filter((asset: any) => {
+      if (tableConfig.statusFilter === "") {
+        return asset;
+      }
       return asset[tableConfig.statusFilter] === tableStatus;
     });
 

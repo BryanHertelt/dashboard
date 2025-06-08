@@ -127,28 +127,35 @@ const AssetTableComponent = ({ config }: { config: configType }) => {
   return (
     <div className="pt-5">
       <header className="flex flex-row justify-between mb-4 h-9">
-        <nav className="relative flex flex-row pl-7 w-3/4 justify-start">
-          <div
-            className="relative flex flex-row bg-gray rounded-md lg:w-2/6 lp:w-2/6 xl:w-1/4 md:w-3/6 sm:w-4/6"
-            ref={tabRef}
-          >
-            {config.status.map((statusConfig) => (
-              <div key={statusConfig.status}>
-                <StatusButtons
-                  status={statusConfig.status}
-                  label={statusConfig.statusTitle}
-                />
-              </div>
-            ))}
+        {config.status.length === 1 ? (
+          <p className="flex flex-row pl-7 justify-start items-center ">
+            {" "}
+            {config.status[0].statusTitle}{" "}
+          </p>
+        ) : (
+          <nav className="relative flex flex-row pl-7 w-3/4 justify-start">
             <div
-              className="absolute z-5 inset-0 bg-blue rounded-md transition-all"
-              style={{
-                width: tabWidth,
-                translate: `${currentTab * tabWidth}px 0px`,
-              }}
-            />
-          </div>
-        </nav>
+              className="relative flex flex-row bg-gray rounded-md lg:w-2/6 lp:w-2/6 xl:w-1/4 md:w-3/6 sm:w-4/6"
+              ref={tabRef}
+            >
+              {config.status.map((statusConfig) => (
+                <div key={statusConfig.status}>
+                  <StatusButtons
+                    status={statusConfig.status}
+                    label={statusConfig.statusTitle}
+                  />
+                </div>
+              ))}
+              <div
+                className="absolute z-5 inset-0 bg-blue rounded-md transition-all"
+                style={{
+                  width: tabWidth,
+                  translate: `${currentTab * tabWidth}px 0px`,
+                }}
+              />
+            </div>
+          </nav>
+        )}
         <div className="flex flex-row w-1/4 justify-end">
           <FilterButtons />
         </div>

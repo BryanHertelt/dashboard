@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom'
 import { render, screen, fireEvent, waitFor, act} from "@testing-library/react"
-import { dataColsCurrency, dataColsDerivative, dataColsNft } from '../../src/utility/lib/data-table/v-ad-cols/asset-distribution-cols'
+import { dataColsCurrency, dataColsDerivative, dataColsNft, dataColsGroups } from '../../src/utility/lib/data-table/v-ad-cols/asset-distribution-cols'
 import useResizeObserver from 'use-resize-observer'
 import {AssetTableComponent} from "../../src/utility/lib/data-table"
 import AssetTableController from '../../src/utility/lib/data-table/asset-table-controller'
@@ -185,13 +185,28 @@ describe("AssetTableComponent initialises AssetTableController", () => {
     afterEach(()=> {
       jest.clearAllMocks()
     })
-    it("renders all Buttons", () => {
+    it("renders all Buttons if status > 1", () => {
       const currencyButton = screen.getByRole("button", {name: /Currencies/i}); 
       expect(currencyButton).toBeInTheDocument()
       const nftButton =  screen.getByRole("button", {name: /NFTs/i}); 
       expect(nftButton).toBeInTheDocument()
       const derivativeButton = screen.getByRole("button", {name: /Derivatives/i}); 
       expect(derivativeButton).toBeInTheDocument()
+    })
+    it("renders just one button if status = 1", () => {
+      jest.clearAllMocks()
+      const newTableConfig = {
+        ...tableConfig, 
+        status: [
+          {
+            statusTitle: "Asset-Groups", 
+            statusFilter: "", 
+            columns: dataColsGroups
+          }
+        ]
+      }
+      render(<AssetTableComponent config={newTableConfig} />)
+      expect(screen.getByText("Asset-Groups")).toBeInTheDocument()
     })
     it("currency", () => {
       const currencyButton = screen.getByRole("button", {name: /Currencies/i}); 
@@ -248,9 +263,9 @@ describe("AssetTableComponent initialises AssetTableController", () => {
         expect(futureBtn).toBeInTheDocument()
       })
     })
+
+
     describe("handles status changes as specified in the config", () => {
-  
-      
       afterEach(() => jest.clearAllMocks())
 
     it("handles perp filter", () => {
@@ -294,6 +309,7 @@ describe("AssetTableComponent initialises AssetTableController", () => {
     })
     })
     })
+
 
 
 

@@ -11,7 +11,7 @@ import { Bar } from 'react-chartjs-2';
 import { screen } from '@testing-library/react';
 import { DerivativesIcon } from '../../public/images';
 import { SmallErrorSkeleton } from '../../src/utility/lib/data-fetching/skeletons/error-skeleton';
-import { cryptoMockDetail, derivativeMockDetail, nftMockDetail } from '../testmocks';
+import {cryptoMockDetail, derivativeMockDetail, nftMockDetail} from "../testmocks"
 
 jest.mock('../../src/utility/lib/helpers/helper-components/detail-table-comps', () => ({
     DetailNfts: jest.fn().mockImplementation(() => <p> Expose NFTs </p>), 

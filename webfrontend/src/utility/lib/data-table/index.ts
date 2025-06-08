@@ -13,4 +13,5 @@ export {DisDetail, DrDetail } from "./table-detail-components/v-ad-assets-detail
 
 //Column Definitions 
 export {dataColsCurrency, dataColsDerivative, dataColsNft} from "./v-ad-cols/asset-distribution-cols"
+export { dataColsGroups } from "./v-ad-cols/asset-group-distribution-cols"
 

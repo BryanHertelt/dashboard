@@ -13,6 +13,7 @@ import { useDistributionData } from "../data-fetching";
 import { getDistribution } from "../data-fetching";
 import { DistributionChart } from "../charts";
 import { SmallLoadingSkeleton } from "../data-fetching";
+import { dataColsGroups, AssetTableComponent } from "../data-table";
 
 const AssetGroupDistributionComponent = ({
   groupData,
@@ -67,11 +68,6 @@ const AssetGroupDistributionComponent = ({
       return group;
     });
 
-  const pieData = {
-    data: updatedData,
-    total: processedQueryData.currentvalue,
-  };
-
   const pieConfig = {
     pieData: updatedData.map((group: DistributionGroup) => {
       return {
@@ -82,12 +78,43 @@ const AssetGroupDistributionComponent = ({
       };
     }),
     full: false,
-    tresholdValue: 2,
+    tresholdValue: 10,
     total: processedQueryData.currentvalue,
     others: "Other Groups",
   };
+
+  const tableConfig = {
+    initial: updatedData,
+    detail: false,
+    statusFilter: "",
+    status: [
+      {
+        status: "groups",
+        statusTitle: "Asset Groups",
+        columns: dataColsGroups,
+      },
+    ],
+    filter: [],
+    currentValue: processedQueryData.currentvalue,
+  };
   return (
-    <>
+    <div className="h-full">
+      {/**
+    <div className="card h-4/6 w-8/12 flex-grow pl-7 pt-7 pr-8">
+      <LineChartController
+        currentValue={processedQueryData.currentvalue}
+        initialData={props.initialLineLoad}
+      />
+    </div>
+    <div id="note-overlay"> </div>
+     <div className="card p-7 h-4/6 ml-7 w-3/12">
+      <DistributionComponent
+        text={"You can see your Asset Distribution here."}
+        title={"Asset Distribution"}
+        piedata={pieData}
+      />
+    </div>
+    */}
       <div className="flex flex-col text-end justify-center card h-56 mb-7 w-8/12 sm:w-8/12 md:w-full lg:w-full lp:w-full">
         <div className="flex flex-col items-center justify-center h-96 w-full">
           <div className="w-96 h-96">
@@ -95,17 +122,10 @@ const AssetGroupDistributionComponent = ({
           </div>
         </div>
       </div>
-      {/** 
-      <div className="card mt-9 p-7 w-full">
-        <DetailTableComponent
-          text={"You can see all your cryptocurrencies here."}
-          title={"Assets"}
-          columns={assetgroupdistributioncolumns}
-          data={assetGroupData}
-        />
+      <div className="w-8/12 sm:w-8/12 md:w-full lg:w-full lp:w-full h-1/5 mb-10 card">
+        <AssetTableComponent config={tableConfig} />
       </div>
-      */}
-    </>
+    </div>
   );
 };
 export default AssetGroupDistributionComponent;
