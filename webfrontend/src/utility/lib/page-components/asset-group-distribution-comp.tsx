@@ -22,7 +22,7 @@ const AssetGroupDistributionComponent = ({
 }: {
   groupData: AssetGroups;
 }) => {
-  const tresholdValue = 5;
+  const thresholdValue = 5;
   const { processedQueryData, isLoading, isError, error } = useDistributionData(
     {
       qKey: ["PortfolioAD"],
@@ -39,58 +39,65 @@ const AssetGroupDistributionComponent = ({
     return <SmallLoadingSkeleton />;
   }
 
-  console.log(
-    "processed Wuery data in asset group distribution comp",
-    processedQueryData
-  );
+  if (isError) {
+    return (
+      <div className="text-red-500 p-4">
+        Error loading data: {error?.message || "Unknown error"}
+      </div>
+    );
+  }
 
-  const dataFrontendNaming = processedQueryData.groups.map((group: Group) => {
-    return {
-      groupid: group.groupid,
-      portfolioid: group.portfolioid,
-      userid: group.userid,
-      groupname: group.groupname,
-      assetcount: group.assetcount,
-      groupvalue: group.groupvalue,
-      grouppercentage: group.grouppercentage,
-      groupchange24h: group.groupchange24h,
-      groupchange24hvalue: group.groupchange24hvalue,
-      groupchange7d: group.groupchange7d,
-      profitloss: group.profitloss,
-      profitlosschange: group.profitlosschange,
-      description: group.description,
-    };
-  });
+  let attempts = 0;
+  while (attempts < 3) {
+    if (processedQueryData && processedQueryData.groups) {
+      break;
+    }
+    attempts++;
+  }
+  if (!processedQueryData || !processedQueryData.groups) {
+    return <div className="p-4">Try to reload the page</div>;
+  }
+
+  const dataFrontendNaming = processedQueryData.groups.map((group: Group) => ({
+    groupid: group.groupid,
+    portfolioid: group.portfolioid,
+    userid: group.userid,
+    groupname: group.groupname,
+    assetcount: group.assetcount,
+    groupvalue: group.groupvalue,
+    grouppercentage: group.grouppercentage,
+    groupchange24h: group.groupchange24h,
+    groupchange24hvalue: group.groupchange24hvalue,
+    groupchange7d: group.groupchange7d,
+    profitloss: group.profitloss,
+    profitlosschange: group.profitlosschange,
+    description: group.description,
+  }));
 
   const colors = useMemo(() => {
-    const baseColors = ranHexGen(tresholdValue);
+    const baseColors = ranHexGen(thresholdValue);
     return baseColors;
-  }, [tresholdValue, processedQueryData.groups.length]);
+  }, [thresholdValue]);
 
-  const updatedData = dataFrontendNaming
-    .flat()
-    .map((group: DistributionGroup, index: number) => {
-      group = {
-        ...group,
-        color: colors[index],
-        distribution:
-          Number(group.groupvalue / processedQueryData.currentvalue) * 100,
-      };
-      return group;
-    });
+  const updatedData = dataFrontendNaming.map(
+    (group: DistributionGroup, index: number) => ({
+      ...group,
+      color: colors[index],
+      distribution:
+        Number(group.groupvalue / processedQueryData.currentvalue) * 100,
+    })
+  );
 
   const pieConfig = {
-    pieData: updatedData.map((group: DistributionGroup) => {
-      return {
-        disElId: group.groupid,
-        disElVal: group.groupvalue,
-        disElName: group.groupname,
-        disElDistribution: group.distribution,
-        disColor: group.color,
-      };
-    }),
+    pieData: updatedData.map((group: DistributionGroup) => ({
+      disElId: group.groupid,
+      disElVal: group.groupvalue,
+      disElName: group.groupname,
+      disElDistribution: group.distribution,
+      disColor: group.color,
+    })),
     full: false,
-    tresholdValue: tresholdValue,
+    tresholdValue: thresholdValue,
     total: processedQueryData.currentvalue,
     others: "Other Groups",
   };
@@ -109,6 +116,7 @@ const AssetGroupDistributionComponent = ({
     filter: [],
     currentValue: processedQueryData.currentvalue,
   };
+
   return (
     <div className="h-full">
       <div className="flex flex-col text-end justify-center card h-56 mb-7 w-8/12 sm:w-8/12 md:w-full lg:w-full lp:w-full">
@@ -124,4 +132,5 @@ const AssetGroupDistributionComponent = ({
     </div>
   );
 };
+
 export default AssetGroupDistributionComponent;
