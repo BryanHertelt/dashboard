@@ -99,8 +99,6 @@ export const DistributionChart = ({
       `Asset Distribution Doughnut Chart rendered with the following data`,
       {
         duration: duration.toFixed(2),
-        options: doughnutOptions,
-        data: formattedPieData,
       }
     );
   }, []);
