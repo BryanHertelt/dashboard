@@ -125,7 +125,7 @@ const AssetTableComponent = ({ config }: { config: configType }) => {
   };
 
   return (
-    <div className="pt-5">
+    <div className="pt-5 h-[68vh] border border-transparent">
       <header className="flex flex-row justify-between mb-4 h-9">
         {config.status.length === 1 ? (
           <p className="flex flex-row pl-7 justify-start items-center ">

@@ -150,7 +150,7 @@ export function DataTable<TData, TValue>({
               ))}
             </TableHeader>
           </Table>
-          <div className="overflow-y-auto rounded-md max-h-[60vh]">
+          <div className="overflow-y-auto rounded-md max-h-[50vh]">
             <Table className="table-fixed w-full ">
               <TableBody>
                 {table.getRowModel().rows?.length ? (
