@@ -55,11 +55,11 @@ const HSLToHex = (h:number, s:number, l:number) => {
  * @returns An array of hex color strings (e.g., `["#C4DDFF", "#3399FF", ...]`) with length equal to `tresholdValue`.
  */
   export const ranHexGen = (tresholdValue: number): string[] => {
-    const bottomHue = 200;
-    const topHue = 220;
+    const bottomHue = 220;
+    const topHue = 200;
     const saturation = 100;
-    const bottomLightness = 90;
-    const topLightness = 34;
+    const bottomLightness = 34;
+    const topLightness = 90;
   
     if (tresholdValue  == 1) return ["#C4DDFF"];
     if(tresholdValue == 0) return [];

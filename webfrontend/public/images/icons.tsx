@@ -4,6 +4,7 @@ import {
   green,
   gray,
   red,
+  flyzerBlue,
   icongray,
 } from "../../src/utility/lib/helpers/helper-config/colors";
 
@@ -128,6 +129,26 @@ export const AssetPercentageValueIcon = ({
           />
         </clipPath>
       </defs>
+    </svg>
+  );
+};
+
+export const CustomHoldingIcon = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="27"
+      height="27"
+      viewBox="0 0 28 28"
+      fill="none"
+    >
+      <rect x="0.5" y="0.5" width="27" height="27" rx="2.5" fill={flyzerBlue} />
+      <rect x="0.5" y="0.5" width="27" height="27" rx="2.5" stroke="black" />
+      <path
+        d="M5 9.88235V9C5 7.89543 5.89543 7 7 7H21C22.1046 7 23 7.89543 23 9V9.88235M5 9.88235V19C5 20.1046 5.89543 21 7 21H21C22.1046 21 23 20.1046 23 19V9.88235M5 9.88235H9.09091M23 9.88235H18.9091M18.9091 9.88235V11.1765C18.9091 12.281 18.0137 13.1765 16.9091 13.1765H11.0909C9.98634 13.1765 9.09091 12.281 9.09091 11.1765V9.88235M18.9091 9.88235H9.09091"
+        stroke="white"
+        stroke-width="1.7"
+      />
     </svg>
   );
 };

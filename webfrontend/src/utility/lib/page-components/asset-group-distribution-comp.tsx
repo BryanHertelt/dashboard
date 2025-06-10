@@ -23,6 +23,10 @@ const AssetGroupDistributionComponent = ({
   groupData: AssetGroups;
 }) => {
   const thresholdValue = 5;
+  const colors = useMemo(() => {
+    const baseColors = ranHexGen(thresholdValue);
+    return baseColors;
+  }, [thresholdValue]);
   const { processedQueryData, isLoading, isError, error } = useDistributionData(
     {
       qKey: ["PortfolioAD"],
@@ -73,11 +77,6 @@ const AssetGroupDistributionComponent = ({
     profitlosschange: group.profitlosschange,
     description: group.description,
   }));
-
-  const colors = useMemo(() => {
-    const baseColors = ranHexGen(thresholdValue);
-    return baseColors;
-  }, [thresholdValue]);
 
   const updatedData = dataFrontendNaming.map(
     (group: DistributionGroup, index: number) => ({

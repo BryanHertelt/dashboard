@@ -17,6 +17,10 @@ const AssetDistributionComponent = ({
   portfolioData: Asset[];
 }) => {
   const tresholdValue = 10;
+  const colors = useMemo(() => {
+    const baseColors = ranHexGen(tresholdValue);
+    return baseColors;
+  }, [tresholdValue]);
   const { processedQueryData, isLoading, isError, error } = useDistributionData(
     {
       qKey: ["PortfolioAD"],
@@ -105,12 +109,6 @@ const AssetDistributionComponent = ({
     }
     return dataFrontendNamingArray;
   });
-  const colors = useMemo(() => {
-    const baseColors = ranHexGen(tresholdValue);
-    return baseColors;
-  }, [tresholdValue, processedQueryData.assets.length]);
-
-  console.log("colors in asset distributino", colors);
 
   const updatedData = dataFrontendNaming
     .flat()
