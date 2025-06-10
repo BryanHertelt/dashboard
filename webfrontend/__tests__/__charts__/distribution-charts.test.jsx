@@ -83,7 +83,7 @@ describe("DistributionChart Component", () => {
     expect(dataLength).toBe(3);
     expect(mockCalls.data.datasets[0].data).toEqual([50, 30, 20]); 
     expect(mainColors).toEqual("#cceeff");
-    expect(otherColors).toEqual("#7A7A7A"); 
+    expect(otherColors).toEqual("#EFEEF3"); 
   });
 
   it("correctly handles threshold edge cases", () => {
@@ -96,7 +96,7 @@ describe("DistributionChart Component", () => {
     const mockCalls = Doughnut.mock.calls[0][0];
     expect(mockCalls.data.datasets[0].data.length).toBe(1); 
     expect(mockCalls.data.datasets[0].data).toEqual([100]); 
-    expect(mockCalls.data.datasets[0].backgroundColor).toEqual(["#7A7A7A"]); 
+    expect(mockCalls.data.datasets[0].backgroundColor).toEqual(["#EFEEF3"]); 
     expect(mockCalls.data.labels).toEqual([]); 
   });
 
