@@ -17,7 +17,12 @@ import {
 import { Doughnut } from "react-chartjs-2";
 import { useRef, useMemo, useEffect } from "react";
 import { ranHexGen } from "../helpers";
-import { icongray, black, chartColors } from "../helpers/helper-config/colors";
+import {
+  icongray,
+  black,
+  chartColors,
+  gray,
+} from "../helpers/helper-config/colors";
 import { drawDoughnutChart, renderHoverLabel } from "../charts";
 import { SmallErrorSkeleton } from "../data-fetching";
 import logger from "../logging/logger";
@@ -178,8 +183,7 @@ export const DistributionChart = ({
 
   console.log("baseColors in asset distirbtuion", baseColors);
 
-  const colors =
-    otherDisObj.length !== 0 ? [...baseColors, icongray] : baseColors;
+  const colors = otherDisObj.length !== 0 ? [...baseColors, gray] : baseColors;
   logger.debug(
     "distribution-chart.tsx >> colors generated, tresholdValue",
     colors.length,

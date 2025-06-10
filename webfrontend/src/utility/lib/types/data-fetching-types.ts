@@ -289,7 +289,7 @@ export interface QueryConstructorInterface {
   queryFunction: Function, 
   distributionScope: "all" | "group" | "holding", 
   cacheTime?: number,
-  initialData?: Asset[] | AssetGroups, 
+  initialData?: Asset[] | AssetGroups | AssetHoldings, 
 }
 
 export type AssetGroups = {
@@ -318,4 +318,34 @@ export interface Group{
 export interface DistributionGroup extends Group {
 distribution: number,
 color: string
+}
+
+export type AssetHoldings = {
+  portfolioid: number;
+  currentvalue: number;
+  holdings: Holding[];
+};
+
+export interface Holding {
+  scope: "holding" | "group" | "asset";
+  holdingid: number;
+  portfolioid: number;
+  custom: boolean, 
+  symbol: string, 
+  userid: number;
+  holdingname: string;
+  assetcount: number;
+  holdingvalue: number;
+  holdingpercentage: number;
+  holdingchange24h: number;
+  holdingchange24hvalue: number;
+  holdingchange7d: number[];
+  profitloss: number;
+  profitlosschange: number;
+  description: string;
+};
+
+export interface DistributionHolding extends Holding {
+  distribution: number;
+  color: string;
 }

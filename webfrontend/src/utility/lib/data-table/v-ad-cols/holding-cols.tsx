@@ -1,170 +1,210 @@
-"use client";
-
-import { ColumnDef } from "@tanstack/react-table";
 import {
-  HoldingsResponseObject,
-  holdingsData,
-} from "@/api/distribution/asset-distributiontabledata";
+  SortingDataTableIcon,
+  CustomHoldingIcon,
+} from "../../../../../public/images/icons";
+import { formatCurrency, formatValue, formatDecimals } from "../../helpers";
+import { icongray } from "../../helpers/helper-config/colors";
 import {
-  AssetPercentageValueIcon,
-  NotesInDataTableIcon,
-} from "../../../../../public/images";
-import { SortingDataTableIcon } from "../../../../../public/images/icons";
-import { Line } from "react-chartjs-2";
-import { assetDataTableLineChartData } from "@/api/distribution/chartdataformatter";
-import { assetDataTableLineChartDataOptions } from "@/api/distribution/chartdataformatter";
+  headerdesign,
+  sortingicondesgin,
+  firstcelldesign,
+  celldesign,
+} from "../../helpers/helper-config/colors";
 
-export const holdingslistcolumns: ColumnDef<HoldingsResponseObject>[] = [
+export const dataColsHoldings = [
   {
     accessorKey: "holdingname",
-    header: "Holdings",
-    cell: ({ row }) => {
-      const groupname: string = row.getValue("holdingname");
-      return <div className=""> {groupname} </div>;
+    header: () => (
+      <div className="flex flex-row justify-start items-center text-black h-11 w-full">
+        Holding
+      </div>
+    ),
+    cell: ({ row }: { row: any }) => {
+      const name = row.original.holdingname;
+      const symbol = row.original.symbol;
+      const customHolding = row.original.custom;
+
+      console.log("original row", row.original);
+
+      const color =
+        row.original.color === undefined ? icongray : row.original.color;
+
+      return (
+        <div className={` ${firstcelldesign}`}>
+          <div
+            style={{ backgroundColor: color }}
+            className="flex items-center justify-center w-4 h-4 rounded-sm mx-3"
+          ></div>
+          <div>
+            {" "}
+            {customHolding === false ? (
+              <p className="flex flex-row justify-center items-center w-7 h-7 bg-gray rounded-sm text-center align-middle">
+                {" "}
+                {symbol}
+              </p>
+            ) : (
+              <div className="w-7 h-7">
+                <CustomHoldingIcon />
+              </div>
+            )}
+          </div>
+          <div className="flex flex-row justify-start items-baseline w-8/12 pl-2">
+            <p>{name}</p>
+            <p className="text-icongray ml-1">
+              {" "}
+              {customHolding === false ? null : "(Custom)"}
+            </p>
+          </div>
+        </div>
+      );
     },
   },
   {
-    accessorKey: "holdingpercentage",
-    header: "%",
-    cell: ({ row }) => {
-      const percentage = parseFloat(row.getValue("holdingpercentage"));
-      return <div className=""> {percentage} %</div>;
+    accessorKey: "assetcount",
+    header: ({ column }: any) => {
+      const sorted = column.getIsSorted();
+      return (
+        <button
+          className={`${headerdesign} pr-1`}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          <SortingDataTableIcon
+            className={`${sortingicondesgin}`}
+            sorted={sorted}
+          />
+          Asset-Count
+        </button>
+      );
+    },
+    cell: ({ row }: any) => {
+      const amount = row.original.assetcount;
+      return (
+        <div className={` flex flex-col justify-end items-end`}>
+          <p> {amount} </p>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "distribution",
+    header: ({ column }: any) => {
+      const sorted = column.getIsSorted();
+      return (
+        <button
+          className={`${headerdesign}`}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          <SortingDataTableIcon
+            className={`${sortingicondesgin}`}
+            sorted={sorted}
+          />
+          Percentage
+        </button>
+      );
+    },
+    cell: ({ row }: any) => {
+      const percentage = row.original.distribution;
+
+      return (
+        <div className={`${celldesign}`}>
+          <div
+            className={`flex flex-row w-32 items-end justify-end rounded-md`}
+          >
+            <p>{formatValue(percentage)} %</p>
+          </div>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "holdingchange24h",
+    header: ({ column }: any) => {
+      const sorted = column.getIsSorted();
+      return (
+        <button
+          className={`${headerdesign}`}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          <SortingDataTableIcon
+            className={`${sortingicondesgin}`}
+            sorted={sorted}
+          />
+          Change 24h
+        </button>
+      );
+    },
+    cell: ({ row }: any) => {
+      const percentage = row.original.holdingchange24h;
+      const percentagecolor =
+        percentage < 0 ? " text-red rounded-md" : " text-green rounded-md";
+
+      return (
+        <div className={`${celldesign}`}>
+          <div
+            className={`${percentagecolor} flex flex-row w-32 items-end justify-end rounded-md`}
+          >
+            <p>
+              {formatValue(
+                percentage < 0
+                  ? Number(percentage.toString().replace("-", ""))
+                  : percentage
+              )}{" "}
+              %
+            </p>
+          </div>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "profitloss",
+    header: ({ column }: any) => {
+      const sorted = column.getIsSorted();
+      return (
+        <button
+          className={`${headerdesign} pr-1`}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          <SortingDataTableIcon
+            className={`${sortingicondesgin}`}
+            sorted={sorted}
+          />
+          P/L
+        </button>
+      );
+    },
+    cell: ({ row }: any) => {
+      const profitloss = row.original.profitloss;
+      const profitLossChange = row.original.profitlosschange;
+      const renderProfitCell = () => {
+        return (
+          <div className={"flex flex-col justify-end items-end font-medium"}>
+            <p className={`${profitloss < 0 ? " text-red" : "text-green"}`}>
+              {formatCurrency(
+                profitloss < 0
+                  ? Number(profitloss.toString().replace("-", ""))
+                  : profitloss
+              )}
+            </p>
+            <p
+              className={`${
+                profitloss < 0
+                  ? " text-red font-normal "
+                  : "text-green font-normal"
+              }`}
+            >
+              (
+              {formatValue(
+                profitLossChange < 0
+                  ? Number(profitLossChange.toString().replace("-", ""))
+                  : profitLossChange
+              )}
+              %)
+            </p>
+          </div>
+        );
+      };
+      return renderProfitCell();
     },
   },
 ];
-
-export const holdingsdistributioncolumns: ColumnDef<HoldingsResponseObject>[] =
-  [
-    {
-      accessorKey: "holdingname",
-      header: () => <div className="text-icongray font-normal"> Holdings </div>,
-    },
-    {
-      accessorKey: "assetcount",
-      header: () => (
-        <div className="text-icongray font-normal"> Asset-Count </div>
-      ),
-    },
-    {
-      accessorKey: "holdingvalue",
-      header: "Value",
-      cell: ({ row }) => {
-        const groupvalue = parseFloat(row.getValue("holdingvalue"));
-        const formattedgroupvalue = new Intl.NumberFormat("en-US", {
-          style: "currency",
-          currency: "USD",
-        }).format(groupvalue);
-        return <div> {formattedgroupvalue}</div>;
-      },
-    },
-    {
-      accessorKey: "holdingpercentage",
-      header: ({ column }) => {
-        return (
-          <button
-            className="flex flex-row text-icongray font-normal items-center"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            {" "}
-            % <SortingDataTableIcon
-              sorted="asc"
-              className="ml-2 h-4 w-4"
-            />{" "}
-          </button>
-        );
-      },
-      cell: ({ row }) => {
-        const grouppercentage = parseFloat(row.getValue("holdingpercentage"));
-        return <div> {grouppercentage} %</div>;
-      },
-    },
-    {
-      accessorKey: "holdingchange24h",
-      header: ({ column }) => {
-        return (
-          <button
-            className="flex flex-row text-icongray font-normal items-center"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            {" "}
-            Change 24h{" "}
-            <SortingDataTableIcon sorted="asc" className="ml-2 h-4 w-4" />{" "}
-          </button>
-        );
-      },
-      cell: ({ row }) => {
-        const holdingpercentage = parseFloat(row.getValue("holdingchange24h"));
-        const renderPercentageCell = () => {
-          for (let index = 0; index < holdingsData.length; index++) {
-            if (holdingpercentage == holdingsData[index].holdingchange24h) {
-              const formattedPercentageValue = new Intl.NumberFormat("en-US", {
-                style: "currency",
-                currency: "USD",
-              }).format(holdingsData[index].holdingchange24hvalue);
-              const percentagecolor =
-                holdingpercentage < 0 ? "negative" : "positive";
-              const iconcolor =
-                holdingpercentage < 0 ? "text-red" : "text-green";
-              return (
-                <div
-                  className={`${percentagecolor} flex flex-row text-xs w-1/2 items-center`}
-                >
-                  <div className={`${iconcolor}flex flex-row mx-1`}>
-                    <AssetPercentageValueIcon />
-                  </div>
-                  <div className="flex flex-col">
-                    {" "}
-                    <p>{holdingpercentage}% </p>
-                    <p> {formattedPercentageValue} </p>
-                  </div>{" "}
-                </div>
-              );
-            }
-          }
-        };
-        return renderPercentageCell();
-      },
-    },
-    {
-      accessorKey: "holdingchange7d",
-      header: ({ column }) => {
-        return (
-          <button
-            className="flex flex-row text-icongray font-normal items-center"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            {" "}
-            Change 7d{" "}
-            <SortingDataTableIcon sorted="desc" className="ml-2 h-4 w-4" />{" "}
-          </button>
-        );
-      },
-      cell: ({ row }) => {
-        return (
-          <div className="w-2/6 h-5">
-            <Line
-              options={assetDataTableLineChartDataOptions}
-              data={assetDataTableLineChartData}
-            />
-          </div>
-        );
-      },
-    },
-    {
-      accessorKey: "description",
-      header: () => (
-        <div className="flex flex-row justify-start text-icongray font-normal">
-          {" "}
-          Description{" "}
-        </div>
-      ),
-      cell: ({ row }) => {
-        return (
-          <div className="flex flex-row justify-start text-3xl items-center">
-            {" "}
-            <NotesInDataTableIcon />{" "}
-          </div>
-        );
-      },
-    },
-  ];
