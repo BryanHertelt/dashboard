@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "docs": "typedoc src/app",
-    "test": " jest --coverage",
+    "test": "jest --coverage",
     "test:watch": "jest --watchAll",
     "clearj": "jest --clearCache"
   },
@@ -31,7 +31,8 @@
     "react-test-renderer": "^18.3.1",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
-    "use-resize-observer": "^9.1.0"
+    "use-resize-observer": "^9.1.0",
+    "zustand": "^5.0.5"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.26.9",
@@ -43,8 +44,8 @@
     "@testing-library/user-event": "^14.5.2",
     "@types/jest": "^29.5.14",
     "@types/node": "^20",
-    "@types/react": "^19.0.10",
-    "@types/react-dom": "19.0.4",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
     "@types/react-test-renderer": "^18.3.0",
     "autoprefixer": "^10.4.20",
     "babel-jest": "^29.7.0",
@@ -60,13 +61,9 @@
     "tailwindcss": "^3.4.17",
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
-    "typedoc": "^0.27.9",
+    "typedoc": "^0.28.0",
     "typedoc-plugin-markdown": "^4.4.2",
     "typedoc-plugin-rename-defaults": "^0.7.1",
     "typescript": "^5"
-  },
-  "overrides": {
-    "@types/react": "19.0.10",
-    "@types/react-dom": "19.0.4"
   }
 }
