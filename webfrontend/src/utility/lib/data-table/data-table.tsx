@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { TableDetailComponent } from "../data-table";
 import { SmallErrorSkeleton, prefetchDetailComponent } from "../data-fetching";
@@ -13,6 +13,7 @@ import {
   getCoreRowModel,
   getSortedRowModel,
   useReactTable,
+  Row,
 } from "@tanstack/react-table";
 import {
   Table,
@@ -22,43 +23,27 @@ import {
   TableHeader,
   TableRow,
 } from "./table";
-import { ShowDetailIcon } from "../../../../public/images/icons";
+import {
+  ShowDetailIcon,
+  ReloadSingleHoldingIcon,
+} from "../../../../public/images/icons";
 import { DataTableProps } from "./types";
+import { useSyncSingleHolding } from "../stores";
+import { SyncStatusItem } from "../stores/clear-cache";
 
-/**
- * `DataTable` is a reusable, generic table component built on top of `@tanstack/react-table`
- * and customized with ShadCN UI primitives. It renders sortable tabular data and supports
- * row expansion to reveal a detail component specific to the selected row.
- *
- * ### Props
- * @template TData, TValue
- * @param data - The array of data records to display in the table.
- * @param columns - Column definitions for the table.
- * @param tableStatus - (Optional) Indicates the type/status of the table (e.g., "cryptocurrency", "nft", "derivative").
- *                                 This controls which detail component is rendered.
- * @param currentValue - (Optional) A numeric value passed to the detail component (e.g., current market value).
- * @param expandedRow- (Optional) ID of the currently expanded row; used to determine which row detail to show.
- * @param setExpandedRow - (Optional) Function to toggle row expansion, managed by the parent.
- *
- * ### Internal State
- * - `sorting: SortingState` - Tracks the current sorting configuration of the table.
- * - `rowName: string` - Tracks the name of the currently hovered or selected row (can be used for future enhancements or analytics).
- *
- * ### Behavior
- * - Sorts data using TanStack React Table's sorting model.
- * - Resets sorting state when `tableStatus` changes.
- * - Prefetches detail component data on row hover using `prefetchDetailComponent`.
- * - Renders a detail component inline beneath a selected row if it is expanded.
- *
- * ### Detail Expansion
- * Uses a helper function `getDetailComponent` to dynamically render a `<TableDetailComponent />`
- * based on the selected row and `tableStatus`. This includes pre-calculated props like:
- * - `assetName`, `assetId`, `assetUrl`, and `totalAssetAmount`.
- *
- * ### Return
- * @returns A fully interactive data table with sortable headers and expandable row details.
- */
-export function DataTable<TData, TValue>({
+// Define interface for row data to improve type safety
+interface RowData {
+  holdingid?: number;
+  assettype?: string;
+  assetid?: number;
+  assetabbreviation?: string;
+  leverage?: number;
+  assetname?: string;
+  symbol?: string;
+  assetamount?: number;
+}
+
+export function DataTable<TData extends RowData, TValue>({
   data,
   columns,
   detail,
@@ -68,56 +53,89 @@ export function DataTable<TData, TValue>({
   setExpandedRow,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [rowName, setRowName] = useState<string>("");
-
-  logger.info("DataTable rendered", {
-    expandedRow: expandedRow,
-    tableStatus: tableStatus,
-    detail: detail,
-  });
-
-  const toggleExpandedRow = (rowId: number) => {
-    logger.info("DataTable: ShowDetailIcon was clicked", { rowId: rowId });
-    setExpandedRow((prevExpandedRow: number | null) =>
-      prevExpandedRow === rowId ? null : rowId
-    );
-  };
   const queryClient = useQueryClient();
 
+  const setSyncStatus = useSyncSingleHolding((state) => state.setSyncStatus);
+  const syncStatus = useSyncSingleHolding((state) => state.syncStatus);
+
+  // Memoize handleSync to prevent unnecessary recreations
+  const handleSync = useCallback(
+    (row: Row<TData>) => {
+      const holdingId = row.original.holdingid;
+      if (!holdingId) {
+        logger.error("Missing holdingId in row", { row: row.original });
+        return;
+      }
+
+      const currentHolding = syncStatus.find(
+        (holdingSync) => holdingSync.holdingId === holdingId
+      );
+
+      if (!currentHolding) {
+        logger.warn("No sync status found for holding", { holdingId });
+        return;
+      }
+
+      let updatedStatus: SyncStatusItem["status"];
+      const currentStatus = currentHolding.status;
+
+      if (currentStatus === "noSync" || currentStatus === "synced") {
+        updatedStatus = "syncing";
+      } else if (currentStatus === "syncing" || currentStatus === "error") {
+        updatedStatus = "noSync";
+      } else {
+        updatedStatus = "noSync";
+      }
+
+      // Avoid updating if status hasn't changed
+      if (currentStatus === updatedStatus) {
+        return;
+      }
+
+      // Use functional update to ensure latest state
+      setSyncStatus((prev: SyncStatusItem[]) =>
+        prev.map((item) =>
+          item.holdingId === holdingId
+            ? { ...item, status: updatedStatus }
+            : item
+        )
+      );
+
+      logger.info("Sync status updated", { holdingId, updatedStatus });
+    },
+    [syncStatus, setSyncStatus]
+  );
+
+  // Reset sorting when tableStatus changes
   useEffect(() => {
     setSorting([]);
   }, [tableStatus]);
 
-  /**
-   * This function is triggered, when a row is clicked. It`s purpose is to render the related detail component.
-   * @param row An object holding all related data for the selected row (made up by tanstack query.)
-   * @param tableStatus The status determines which table detail component is rendered.
-   * @returns The TableDetailComponent related to the table status.
-   */
-  const getDetailComponent = (row: any, tableStatus: string | undefined) => {
-    const assetName =
-      tableStatus === "cryptocurrency"
-        ? data[row.id].assetabbreviation
-        : `${data[row.id].leverage}X${data[row.id].assetname}`;
+  // Memoize getDetailComponent to avoid unnecessary recreations
+  const getDetailComponent = useCallback(
+    (row: Row<TData>, tableStatus: string | undefined) => {
+      const rowData = data[Number(row.id)] || {};
+      const assetName =
+        tableStatus === "cryptocurrency"
+          ? rowData.assetabbreviation || "Unknown"
+          : `${rowData.leverage || 1}X${rowData.assetname || "Unknown"}`;
 
-    logger.info("TableDetailComponent called", {
-      tableStatus: tableStatus,
-      assetName: assetName,
-    });
-    return (
-      <TableDetailComponent
-        tableStatus={tableStatus}
-        currentValue={currentValue}
-        assetName={assetName}
-        assetId={data[row.id].assetid}
-        assetUrl={data[row.id].symbol}
-        totalAssetAmount={data[row.id].assetamount}
-      />
-    );
-  };
+      return (
+        <TableDetailComponent
+          tableStatus={tableStatus}
+          currentValue={currentValue}
+          assetName={assetName}
+          assetId={rowData.assetid ?? 0}
+          assetUrl={rowData.symbol ?? ""}
+          totalAssetAmount={rowData.assetamount ?? 0}
+        />
+      );
+    },
+    [data, currentValue]
+  );
 
   const table = useReactTable({
-    data,
+    data: data ?? [], // Fallback to empty array
     columns,
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: setSorting,
@@ -127,8 +145,18 @@ export function DataTable<TData, TValue>({
     },
   });
 
+  // Validate tableStatus
+  const validTableStatus = [
+    "cryptocurrency",
+    "nft",
+    "derivative",
+    "holdings",
+  ].includes(tableStatus ?? "")
+    ? tableStatus
+    : undefined;
+
   return (
-    <div className="h-2/6 flex flex-col  mb-10">
+    <div className="h-2/6 flex flex-col mb-10">
       <div className="w-full overflow-x-auto">
         <div className="min-w-[800px]">
           <Table className="table-fixed w-full">
@@ -151,45 +179,67 @@ export function DataTable<TData, TValue>({
             </TableHeader>
           </Table>
           <div className="overflow-y-auto rounded-md max-h-[50vh]">
-            <Table className="table-fixed w-full ">
+            <Table className="table-fixed w-full">
               <TableBody>
                 {table.getRowModel().rows?.length ? (
-                  table.getRowModel().rows.map((row) => (
+                  table.getRowModel().rows.map((row, index) => (
                     <React.Fragment key={row.id}>
                       <TableRow
-                        key={row.id}
                         data-state={row.getIsSelected() && "selected"}
                         className={`border-b-${
                           expandedRow?.toString() === row.id ? "1" : "2"
                         } border-gray bg-white`}
                       >
-                        {!detail ? null : (
+                        {(detail || validTableStatus === "holdings") && (
                           <TableCell
                             className="w-6 pl-3"
                             onClick={() => {
-                              toggleExpandedRow(Number(row.id));
+                              if (detail) {
+                                logger.info("ShowDetailIcon clicked", {
+                                  rowId: row.id,
+                                });
+                                setExpandedRow((prev: number | null) =>
+                                  prev === Number(row.id)
+                                    ? null
+                                    : Number(row.id)
+                                );
+                              } else if (validTableStatus === "holdings") {
+                                handleSync(row);
+                              }
                             }}
                             onMouseEnter={() => {
-                              logger.debug(
-                                "prefetchDetailComponent called with",
-                                {
+                              if (
+                                detail &&
+                                row.original.assettype &&
+                                row.original.assetid
+                              ) {
+                                logger.debug("Prefetching detail", {
                                   assettype: row.original.assettype,
                                   assetid: row.original.assetid,
-                                }
-                              );
-                              prefetchDetailComponent(
-                                row.original.assettype,
-                                row.original.assetid,
-                                queryClient
-                              );
+                                });
+                                prefetchDetailComponent(
+                                  row.original.assettype,
+                                  row.original.assetid,
+                                  queryClient
+                                );
+                              }
                             }}
                           >
-                            <ShowDetailIcon
-                              rowId={Number(row.id)}
-                              expandedRow={expandedRow}
-                            />
+                            {detail ? (
+                              <ShowDetailIcon
+                                rowId={Number(row.id)}
+                                expandedRow={expandedRow}
+                              />
+                            ) : validTableStatus === "holdings" &&
+                              row.original.holdingid ? (
+                              <ReloadSingleHoldingIcon
+                                rowId={Number(row.original.holdingid)}
+                                index={index}
+                              />
+                            ) : null}
                           </TableCell>
                         )}
+
                         {row.getVisibleCells().map((cell) => (
                           <TableCell key={cell.id}>
                             {flexRender(
@@ -200,16 +250,23 @@ export function DataTable<TData, TValue>({
                         ))}
                       </TableRow>
 
-                      {expandedRow?.toString() === row.id && (
+                      {expandedRow?.toString() === row.id && detail && (
                         <TableRow
                           key={`detail${row.id}`}
                           className="border-b-4 border-t-2 border-gray"
                         >
                           <TableCell
-                            colSpan={columns.length + 1}
+                            colSpan={
+                              columns.length +
+                              (detail || validTableStatus === "holdings"
+                                ? 1
+                                : 0)
+                            }
                             className="w-full"
                           >
-                            <div>{getDetailComponent(row, tableStatus)}</div>
+                            <div>
+                              {getDetailComponent(row, validTableStatus)}
+                            </div>
                           </TableCell>
                         </TableRow>
                       )}
@@ -218,7 +275,10 @@ export function DataTable<TData, TValue>({
                 ) : (
                   <TableRow>
                     <TableCell
-                      colSpan={columns.length + 1}
+                      colSpan={
+                        columns.length +
+                        (detail || validTableStatus === "holdings" ? 1 : 0)
+                      }
                       className="h-24 text-center"
                     >
                       <SmallErrorSkeleton />

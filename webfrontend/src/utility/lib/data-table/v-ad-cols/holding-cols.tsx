@@ -10,6 +10,7 @@ import {
   firstcelldesign,
   celldesign,
 } from "../../helpers/helper-config/colors";
+import { useSyncSingleHolding } from "../../stores";
 
 export const dataColsHoldings = [
   {
@@ -23,8 +24,6 @@ export const dataColsHoldings = [
       const name = row.original.holdingname;
       const symbol = row.original.symbol;
       const customHolding = row.original.custom;
-
-      console.log("original row", row.original);
 
       const color =
         row.original.color === undefined ? icongray : row.original.color;

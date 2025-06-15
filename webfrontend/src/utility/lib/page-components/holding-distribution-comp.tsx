@@ -9,14 +9,15 @@ import {
   DistributionHolding,
   Holding,
 } from "../types/data-fetching-types";
+import { useState, useMemo, useEffect } from "react";
 import { useDistributionData } from "../data-fetching";
 import { getDistribution } from "../data-fetching";
 import { DistributionChart } from "../charts";
 import { SmallLoadingSkeleton } from "../data-fetching";
 import { dataColsGroups, AssetTableComponent } from "../data-table";
-import { useMemo } from "react";
 import { ranHexGen } from "../helpers";
 import { dataColsHoldings } from "../data-table/v-ad-cols/holding-cols";
+import { useSyncSingleHolding } from "../stores";
 
 const HoldingDistributionComponent = ({
   holdingData,
@@ -24,10 +25,8 @@ const HoldingDistributionComponent = ({
   holdingData: any;
 }) => {
   const thresholdValue = 5;
-  const colors = useMemo(() => {
-    const baseColors = ranHexGen(thresholdValue);
-    return baseColors;
-  }, [thresholdValue]);
+  const [refetchedData, setRefetchedData] = useState<Holding[] | null>(null);
+  const setSyncStatus = useSyncSingleHolding((state) => state.setSyncStatus);
 
   const { processedQueryData, isLoading, isError, error } = useDistributionData(
     {
@@ -41,10 +40,34 @@ const HoldingDistributionComponent = ({
     }
   );
 
+  // Generate colors based on holdings count
+  const colors = useMemo(() => {
+    const holdingsCount =
+      processedQueryData?.holdings?.length || thresholdValue;
+    return ranHexGen(Math.max(holdingsCount, thresholdValue));
+  }, [processedQueryData?.holdings, thresholdValue]);
+
+  // Initialize syncStatus
+  useEffect(() => {
+    if (!processedQueryData?.holdings?.length) return;
+    setSyncStatus((prev) => {
+      const existingIds = new Set(prev.map((item) => item.holdingId));
+      const newSyncObjects = processedQueryData.holdings
+        .filter((holding: Holding) => !existingIds.has(holding.holdingid))
+        .map((holding: Holding) => ({
+          holdingId: holding.holdingid,
+          status: "noSync",
+        }));
+      return [...prev, ...newSyncObjects];
+    });
+  }, [processedQueryData?.holdings, setSyncStatus]);
+
+  // Handle loading state
   if (isLoading) {
     return <SmallLoadingSkeleton />;
   }
 
+  // Handle error state
   if (isError) {
     return (
       <div className="text-red-500 p-4">
@@ -53,46 +76,51 @@ const HoldingDistributionComponent = ({
     );
   }
 
-  let attempts = 0;
-  while (attempts < 3) {
-    if (processedQueryData && processedQueryData.holdings) {
-      break;
-    }
-    attempts++;
-  }
+  // Handle missing data
   if (!processedQueryData || !processedQueryData.holdings) {
-    return <div className="p-4">Try to reload the page</div>;
+    return (
+      <>
+        <div className="flex flex-col text-end justify-center card h-56 mb-7 w-8/12 sm:w-8/12 md:w-full lg:w-full lp:w-full"></div>
+
+        <div className="card p-7 w-full h-5/6" />
+      </>
+    );
   }
 
-  const dataFrontendNaming = processedQueryData.holdings.map(
-    (holding: Holding) => ({
-      holdingid: holding.holdingid,
-      portfolioid: holding.portfolioid,
-      userid: holding.userid,
-      holdingname: holding.holdingname,
-      assetcount: holding.assetcount,
-      holdingvalue: holding.holdingvalue,
-      holdingpercentage: holding.holdingpercentage,
-      holdingchange24h: holding.holdingchange24h,
-      holdingchange24hvalue: holding.holdingchange24hvalue,
-      holdingchange7d: holding.holdingchange7d,
-      profitloss: holding.profitloss,
-      profitlosschange: holding.profitlosschange,
-      symbol: holding.symbol,
-      custom: holding.custom,
-      description: holding.description,
-    })
-  );
+  // Map holdings to frontend naming
+  const dataFrontendNaming = processedQueryData.holdings?.length
+    ? processedQueryData.holdings.map((holding: Holding) => ({
+        holdingid: holding.holdingid,
+        portfolioid: holding.portfolioid,
+        userid: holding.userid,
+        holdingname: holding.holdingname,
+        assetcount: holding.assetcount,
+        holdingvalue: holding.holdingvalue,
+        holdingpercentage: holding.holdingpercentage,
+        holdingchange24h: holding.holdingchange24h,
+        holdingchange24hvalue: holding.holdingchange24hvalue,
+        holdingchange7d: holding.holdingchange7d,
+        profitloss: holding.profitloss,
+        profitlosschange: holding.profitlosschange,
+        symbol: holding.symbol,
+        custom: holding.custom,
+        description: holding.description,
+      }))
+    : [];
 
+  // Add colors and distribution percentage
   const updatedData = dataFrontendNaming.map(
     (holding: DistributionHolding, index: number) => ({
       ...holding,
-      color: colors[index],
+      color: colors[index] || "#000000",
       distribution:
-        Number(holding.holdingvalue / processedQueryData.currentvalue) * 100,
+        processedQueryData.currentvalue > 0
+          ? Number(holding.holdingvalue / processedQueryData.currentvalue) * 100
+          : 0,
     })
   );
 
+  // Pie chart configuration
   const pieConfig = {
     pieData: updatedData.map((holding: DistributionHolding) => ({
       disElId: holding.holdingid,
@@ -107,6 +135,7 @@ const HoldingDistributionComponent = ({
     others: "Other Holdings",
   };
 
+  // Table configuration
   const tableConfig = {
     initial: updatedData,
     detail: false,

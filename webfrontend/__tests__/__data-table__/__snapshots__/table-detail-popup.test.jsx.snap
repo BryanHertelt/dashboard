@@ -1,0 +1,120 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Derivative State does not do unexpected UI changes 1`] = `
+<div>
+  <div
+    class="flex flex-row h-full w-full flex-wrap p-7"
+  >
+    <p
+      class="p-4 ml-4 text-icongray"
+    >
+      Asset Group Distribution
+    </p>
+    <div
+      class=" w-full h-full"
+    />
+  </div>
+</div>
+`;
+
+exports[`NFT State does not do unexpected UI changes 1`] = `
+<div>
+  <div
+    class="flex flex-row h-full w-full flex-wrap"
+  >
+    <nav
+      class="flex flex-row justify-between items-center w-full"
+    >
+      <div
+        class="relative flex flex-row m-1 mb-2.5 p-1 pr-1 ml-3.5 rounded-md md:w-8/12 sm:w-8/12 lp:w-4/12"
+      >
+        <div
+          class="absolute bg-blue z-10 transition-transform duration-200 ease-in-out rounded-md text-white flex items-center justify-center translate-x-0 sm:w-3/12 md:w-3/12 lp:w-4/12 h-10"
+          role="Rebalancing-Switcher"
+        />
+        <button
+          class="relative z-5 bg-gray text-center sm:w-3/12 md:w-3/12 lp:w-4/12 md:text-xs lp:text-xs h-10 rounded-l-md p-2 sm:text-xs"
+        >
+          <p
+            class="relative z-10 text-white"
+          >
+            Asset Groups
+          </p>
+        </button>
+        <button
+          class="relative z-5 text-center md:text-xs lp:text-xs h-10 bg-gray rounded-r-md p-2 sm:text-xs sm:w-3/12 md:w-3/12 lp:w-4/12"
+        >
+          <p
+            class="relative z-10 text-black"
+          >
+            Holdings
+          </p>
+        </button>
+      </div>
+      <div
+        class="h-12 md:w-10 sm:w-10 lp:w-1/4 lp:ml-12 xl:w-1/4 xl:ml-20 lg:p-2 lg:items-center flex flex-row justify-end items-end p-1 m-1"
+      >
+        <div>
+           
+          CP
+           
+        </div>
+      </div>
+    </nav>
+    <div
+      class=" w-full "
+    />
+  </div>
+</div>
+`;
+
+exports[`TableDetailComponent Crypto State does not do unexpected UI changes 1`] = `
+<div>
+  <div
+    class="flex flex-row h-full w-full flex-wrap"
+  >
+    <nav
+      class="flex flex-row justify-between items-center w-full"
+    >
+      <div
+        class="relative flex flex-row m-1 mb-2.5 p-1 pr-1 ml-3.5 rounded-md md:w-8/12 sm:w-8/12 lp:w-4/12"
+      >
+        <div
+          class="absolute bg-blue z-10 transition-transform duration-200 ease-in-out rounded-md text-white flex items-center justify-center translate-x-0 sm:w-3/12 md:w-3/12 lp:w-4/12 h-10"
+          role="Rebalancing-Switcher"
+        />
+        <button
+          class="relative z-5 bg-gray text-center sm:w-3/12 md:w-3/12 lp:w-4/12 md:text-xs lp:text-xs h-10 rounded-l-md p-2 sm:text-xs"
+        >
+          <p
+            class="relative z-10 text-white"
+          >
+            Details
+          </p>
+        </button>
+        <button
+          class="relative z-5 text-center md:text-xs lp:text-xs h-10 bg-gray rounded-r-md p-2 sm:text-xs sm:w-3/12 md:w-3/12 lp:w-4/12"
+        >
+          <p
+            class="relative z-10 text-black"
+          >
+            Holdings
+          </p>
+        </button>
+      </div>
+      <div
+        class="h-12 md:w-10 sm:w-10 lp:w-1/4 lp:ml-12 xl:w-1/4 xl:ml-20 lg:p-2 lg:items-center flex flex-row justify-end items-end p-1 m-1"
+      >
+        <div>
+           
+          CP
+           
+        </div>
+      </div>
+    </nav>
+    <div
+      class=" w-full "
+    />
+  </div>
+</div>
+`;
