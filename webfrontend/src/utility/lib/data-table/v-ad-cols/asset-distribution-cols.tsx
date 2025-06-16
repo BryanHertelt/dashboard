@@ -79,9 +79,9 @@ export const dataColsCurrency = [
         <div className={`${firstcelldesign} w-full`}>
           {row.original.symbol} {""}{" "}
           <div className="flex flex-col justify-start w-full ml-2">
-            {name}
+            {row.original.assetabbreviation}
             <div className="text-xs text-icongray w-2/5 justify-start">
-              {row.original.assetabbreviation}
+              {name}
             </div>
           </div>
         </div>

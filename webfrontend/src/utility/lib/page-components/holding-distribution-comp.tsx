@@ -10,7 +10,7 @@ import {
   Holding,
 } from "../types/data-fetching-types";
 import { useState, useMemo, useEffect } from "react";
-import { useDistributionData } from "../data-fetching";
+import { useDistributionData, useHoldingMutation } from "../data-fetching";
 import { getDistribution } from "../data-fetching";
 import { DistributionChart } from "../charts";
 import { SmallLoadingSkeleton } from "../data-fetching";
@@ -18,6 +18,7 @@ import { dataColsGroups, AssetTableComponent } from "../data-table";
 import { ranHexGen } from "../helpers";
 import { dataColsHoldings } from "../data-table/v-ad-cols/holding-cols";
 import { useSyncSingleHolding } from "../stores";
+import { useQueryClient } from "@tanstack/react-query";
 
 const HoldingDistributionComponent = ({
   holdingData,
@@ -25,12 +26,13 @@ const HoldingDistributionComponent = ({
   holdingData: any;
 }) => {
   const thresholdValue = 5;
-  const [refetchedData, setRefetchedData] = useState<Holding[] | null>(null);
   const setSyncStatus = useSyncSingleHolding((state) => state.setSyncStatus);
+  const syncStatus = useSyncSingleHolding((state) => state.syncStatus);
+  const queryClient = useQueryClient();
 
   const { processedQueryData, isLoading, isError, error } = useDistributionData(
     {
-      qKey: ["PortfolioAD"],
+      qKey: ["PortfolioAD", "Holdings"],
       initialData: holdingData,
       queryFunction: getDistribution,
       distributionScope: "holding",
@@ -75,6 +77,8 @@ const HoldingDistributionComponent = ({
       </div>
     );
   }
+
+  console.log("This is the sync status ", syncStatus);
 
   // Handle missing data
   if (!processedQueryData || !processedQueryData.holdings) {

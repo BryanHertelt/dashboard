@@ -29,7 +29,7 @@ const AssetGroupDistributionComponent = ({
   }, [thresholdValue]);
   const { processedQueryData, isLoading, isError, error } = useDistributionData(
     {
-      qKey: ["PortfolioAD"],
+      qKey: ["PortfolioAd", "Asset Groups"],
       initialData: groupData,
       queryFunction: getDistribution,
       distributionScope: "group",

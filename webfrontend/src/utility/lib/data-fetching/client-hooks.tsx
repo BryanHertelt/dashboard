@@ -1,21 +1,27 @@
 "use client";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import logger from "../logging/logger";
 import {
   getDistribution,
+  postHoldingSync,
   getTimeFrames,
   getDetailAssetData,
 } from "../data-fetching";
 import {
   QueryConstructorInterfaceDistribution,
+  MutationConstructorInterface,
   QueryConstructorInterfaceChart,
+  Holding,
 } from "../types/data-fetching-types";
 import { QueryConstructorInterface } from "../types/data-fetching-types";
+import { useSyncSingleHolding } from "../stores";
+import { SyncStatusItem, SyncStoreState } from "../stores/clear-cache";
 
 export const useDistributionData = (
   queryConstructor: QueryConstructorInterface
 ) => {
   if (!queryConstructor || Object.keys(queryConstructor).length === 0) {
-    console.error(
+    logger.error(
       "useDistributionData Hook: Refetch not possible, because there is no queryConstructor provided."
     );
   }
@@ -37,6 +43,59 @@ export const useDistributionData = (
   });
   const processedQueryData = data;
   return { processedQueryData, isLoading, isError, error };
+};
+
+export const useHoldingMutation = (
+  queryConstructor: MutationConstructorInterface
+) => {
+  if (!queryConstructor || Object.keys(queryConstructor).length === 0) {
+    logger.error(
+      "useDistributionData Hook: Sync not possible, because there is no queryConstructor provided."
+    );
+  }
+  const { data, isError, error } = useMutation({
+    mutationFn: () => postHoldingSync(queryConstructor.holdingId),
+    onSuccess: (updatedHolding) => {
+      queryConstructor.queryClient.setQueryData(
+        ["PortfolioAd"],
+        (oldData: any) => {
+          if (!oldData?.holdings) return oldData;
+          return {
+            ...oldData,
+            holdings: oldData.holdings.map((holding: Holding) =>
+              holding.holdingid === updatedHolding.holdingid
+                ? updatedHolding
+                : holding
+            ),
+          };
+        }
+      );
+      queryConstructor.setSyncStatus((prev: SyncStatusItem[]) => {
+        prev.map((item) =>
+          item.holdingId === updatedHolding.holdingid
+            ? { ...item, syncStatus: "noSync" }
+            : item
+        );
+      });
+      queryConstructor.queryClient.invalidateQueries([
+        "PortfolioAD",
+        "Holdings",
+      ]);
+      queryConstructor.queryClient.invalidateQueries([
+        "PortfolioAD",
+        "Asset-Groups",
+      ]);
+    },
+    onError: (error, holdingId) => {
+      queryConstructor.setSyncStatus((prev: SyncStatusItem[]) => {
+        prev.map((item) =>
+          item.holdingId === Number(queryConstructor.holdingId)
+            ? { ...item, syncStatus: "error" }
+            : item
+        );
+      });
+    },
+  });
 };
 
 export const useValueChart = (

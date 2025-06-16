@@ -283,13 +283,22 @@ export type MainAssetsChart = MainCryptoChart | MainNFTChart | MainDerivativeCha
 
 
 export interface QueryConstructorInterface {
-  qKey: string[],
+  qKey: string[], 
   slug: string,
   staleTime: number,
   queryFunction: Function, 
   distributionScope: "all" | "group" | "holding", 
   cacheTime?: number,
   initialData?: Asset[] | AssetGroups | AssetHoldings, 
+}
+
+export interface MutationConstructorInterface {
+mutationFn: Function, 
+holdingId: string, 
+onSuccess: Function, 
+onError: Function, 
+queryClient: any, 
+setSyncStatus: Function, 
 }
 
 export type AssetGroups = {

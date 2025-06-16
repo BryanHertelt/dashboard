@@ -23,7 +23,7 @@ const AssetDistributionComponent = ({
   }, [tresholdValue]);
   const { processedQueryData, isLoading, isError, error } = useDistributionData(
     {
-      qKey: ["PortfolioAD"],
+      qKey: ["PortfolioAD", "Assets"],
       initialData: portfolioData,
       queryFunction: getDistribution,
       distributionScope: "all",
