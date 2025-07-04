@@ -15,7 +15,7 @@ export type SyncStoreState = {
   setCache: (value: boolean) => void;
 };
 
-export const useSyncSingleHolding = create<SyncStoreState>((set) => ({
+export const syncSingleHolding = create<SyncStoreState>((set) => ({
   clearCache: false,
   syncStatus: [],
   setSyncStatus: (syncObjects) =>

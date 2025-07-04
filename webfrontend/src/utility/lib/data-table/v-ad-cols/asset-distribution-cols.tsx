@@ -78,9 +78,9 @@ export const dataColsCurrency = [
       return (
         <div className={`${firstcelldesign} w-full`}>
           {row.original.symbol} {""}{" "}
-          <div className="flex flex-col justify-start w-full ml-2">
+          <div className="flex flex-col justify-start w-full ml-2 text-sm font-medium">
             {row.original.assetabbreviation}
-            <div className="text-xs text-icongray w-2/5 justify-start">
+            <div className="text-sm text-icongray w-2/5 justify-start font-medium">
               {name}
             </div>
           </div>
@@ -215,9 +215,15 @@ export const dataColsCurrency = [
       const profitLossChange = row.original.profitlosschange;
       const renderProfitCell = () => {
         return (
-          <div className={"flex flex-col justify-end items-end font-medium"}>
+          <div
+            className={`flex flex-col justify-end items-end w-full pr-1 text-black font-light text-sm`}
+          >
             {" "}
-            <p className={`${profitloss < 0 ? " text-red" : "text-green"}`}>
+            <p
+              className={`${
+                profitloss < 0 ? " text-red" : "text-green"
+              } font-medium`}
+            >
               {formatCurrency(
                 profitloss < 0
                   ? Number(profitloss.toString().replace("-", ""))
@@ -226,10 +232,8 @@ export const dataColsCurrency = [
             </p>
             <p
               className={`${
-                profitloss < 0
-                  ? " text-red font-normal "
-                  : "text-green font-normal"
-              }`}
+                profitloss < 0 ? " text-red" : "text-green"
+              } font-normal`}
             >
               (
               {formatValue(
@@ -270,15 +274,15 @@ export const dataColsDerivative = [
           className={`flex flex-row justify-start items-center  text-black font-normal `}
         >
           <PositionDirectionIcon direction={tradeDirection} />
-          <div className="flex flex-col items-start w-full ml-2">
+          <div className="flex flex-col items-start w-full ml-2 text-sm">
             <div> {name}</div>
-            <div className="flex flex-row justify-start items-center">
+            <div className="flex flex-row justify-start items-center text-xs">
               {" "}
               <div className="flex justify-center items-center mr-1 text-xs items text-center text-blue bg-lightblue rounded-sm h-4 p-1">
                 {" "}
                 x{leverage}{" "}
               </div>
-              <div className="flex flex-row">
+              <div className="flex flex-row text-sm">
                 {" "}
                 {symbol} {""} {derivativeExchange}{" "}
               </div>
@@ -396,7 +400,11 @@ export const dataColsDerivative = [
                   : profitloss
               )}
             </p>
-            <p className={`${profitloss < 0 ? " text-red" : "text-green"}`}>
+            <p
+              className={`${
+                profitloss < 0 ? " text-red" : "text-green"
+              } font-normal`}
+            >
               (
               {formatValue(
                 profitLossChange < 0
@@ -481,7 +489,7 @@ export const dataColsNft = [
       return (
         <div className={` flex flex-col justify-end items-end`}>
           <p> {formattedAmount} </p>
-          <p className="text-xs"> {formatValue(Number(valueEth))} ETH </p>{" "}
+          <p className=""> {formatValue(Number(valueEth))} ETH </p>{" "}
         </div>
       );
     },
@@ -526,7 +534,11 @@ export const dataColsNft = [
                   : profitloss
               )}
             </p>
-            <p className={`${profitloss < 0 ? " text-red" : "text-green"}`}>
+            <p
+              className={`${
+                profitloss < 0 ? " text-red" : "text-green"
+              } font-normal`}
+            >
               (
               {formatValue(
                 profitLossChange < 0

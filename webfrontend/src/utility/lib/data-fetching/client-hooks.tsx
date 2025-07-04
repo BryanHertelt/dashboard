@@ -1,5 +1,5 @@
 "use client";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, QueryClient } from "@tanstack/react-query";
 import logger from "../logging/logger";
 import {
   getDistribution,
@@ -14,7 +14,7 @@ import {
   Holding,
 } from "../types/data-fetching-types";
 import { QueryConstructorInterface } from "../types/data-fetching-types";
-import { useSyncSingleHolding } from "../stores";
+import { syncSingleHolding } from "../stores";
 import { SyncStatusItem, SyncStoreState } from "../stores/clear-cache";
 
 export const useDistributionData = (
@@ -45,55 +45,56 @@ export const useDistributionData = (
   return { processedQueryData, isLoading, isError, error };
 };
 
-export const useHoldingMutation = (
-  queryConstructor: MutationConstructorInterface
-) => {
-  if (!queryConstructor || Object.keys(queryConstructor).length === 0) {
-    logger.error(
-      "useDistributionData Hook: Sync not possible, because there is no queryConstructor provided."
-    );
-  }
-  const { data, isError, error } = useMutation({
-    mutationFn: () => postHoldingSync(queryConstructor.holdingId),
-    onSuccess: (updatedHolding) => {
-      queryConstructor.queryClient.setQueryData(
-        ["PortfolioAd"],
-        (oldData: any) => {
-          if (!oldData?.holdings) return oldData;
-          return {
-            ...oldData,
-            holdings: oldData.holdings.map((holding: Holding) =>
-              holding.holdingid === updatedHolding.holdingid
-                ? updatedHolding
-                : holding
-            ),
-          };
-        }
+export const useHoldingMutation = ({
+  setSyncStatus,
+  queryClient,
+}: {
+  setSyncStatus: Function;
+  queryClient: any;
+}) => {
+  return useMutation({
+    mutationFn: async (holdingId: number) => {
+      const data = await postHoldingSync(holdingId.toString());
+      return data;
+    },
+    onMutate: async (holdingId: number) => {
+      // Set status to "syncing" before the mutation starts
+      setSyncStatus((prev: { holdingId: number; status: string }[]) =>
+        prev.map((item) =>
+          item.holdingId === holdingId ? { ...item, status: "syncing" } : item
+        )
       );
-      queryConstructor.setSyncStatus((prev: SyncStatusItem[]) => {
+    },
+    onSuccess: (updatedHolding) => {
+      queryClient.setQueryData(["PortfolioAD", "Holdings"], (oldData: any) => {
+        if (!oldData?.holdings) return oldData;
+        return {
+          ...oldData,
+          holdings: oldData.holdings.map((holding: Holding) =>
+            holding.holdingid === updatedHolding.holdingid
+              ? updatedHolding
+              : holding
+          ),
+        };
+      });
+
+      setSyncStatus((prev: { holdingId: number; status: string }[]) =>
         prev.map((item) =>
           item.holdingId === updatedHolding.holdingid
-            ? { ...item, syncStatus: "noSync" }
+            ? { ...item, status: "synced" }
             : item
-        );
-      });
-      queryConstructor.queryClient.invalidateQueries([
-        "PortfolioAD",
-        "Holdings",
-      ]);
-      queryConstructor.queryClient.invalidateQueries([
-        "PortfolioAD",
-        "Asset-Groups",
-      ]);
+        )
+      );
+
+      queryClient.invalidateQueries(["PortfolioAD", "Asset-Groups"]);
+      queryClient.invalidateQueries(["PortfolioAD", "Assets"]);
     },
-    onError: (error, holdingId) => {
-      queryConstructor.setSyncStatus((prev: SyncStatusItem[]) => {
+    onError: (_error, holdingId: number) => {
+      setSyncStatus((prev: { holdingId: number; status: string }[]) =>
         prev.map((item) =>
-          item.holdingId === Number(queryConstructor.holdingId)
-            ? { ...item, syncStatus: "error" }
-            : item
-        );
-      });
+          item.holdingId === holdingId ? { ...item, status: "error" } : item
+        )
+      );
     },
   });
 };

@@ -10,7 +10,7 @@ import {
   firstcelldesign,
   celldesign,
 } from "../../helpers/helper-config/colors";
-import { useSyncSingleHolding } from "../../stores";
+import { syncSingleHolding } from "../../stores";
 
 export const dataColsHoldings = [
   {

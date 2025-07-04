@@ -1,1 +1,1 @@
-export { useSyncSingleHolding } from "./clear-cache";
+export { syncSingleHolding } from "./clear-cache";

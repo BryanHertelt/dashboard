@@ -293,10 +293,7 @@ export interface QueryConstructorInterface {
 }
 
 export interface MutationConstructorInterface {
-mutationFn: Function, 
 holdingId: string, 
-onSuccess: Function, 
-onError: Function, 
 queryClient: any, 
 setSyncStatus: Function, 
 }

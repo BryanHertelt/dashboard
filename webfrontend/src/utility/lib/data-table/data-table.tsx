@@ -28,7 +28,7 @@ import {
   ReloadSingleHoldingIcon,
 } from "../../../../public/images/icons";
 import { DataTableProps } from "./types";
-import { useSyncSingleHolding } from "../stores";
+import { syncSingleHolding } from "../stores";
 import { SyncStatusItem } from "../stores/clear-cache";
 
 // Define interface for row data to improve type safety
@@ -55,8 +55,8 @@ export function DataTable<TData extends RowData, TValue>({
   const [sorting, setSorting] = useState<SortingState>([]);
   const queryClient = useQueryClient();
 
-  const setSyncStatus = useSyncSingleHolding((state) => state.setSyncStatus);
-  const syncStatus = useSyncSingleHolding((state) => state.syncStatus);
+  const setSyncStatus = syncSingleHolding((state) => state.setSyncStatus);
+  const syncStatus = syncSingleHolding((state) => state.syncStatus);
 
   // Memoize handleSync to prevent unnecessary recreations
   const handleSync = useCallback(

@@ -114,12 +114,12 @@ export const DrDetail = ({
             return (
               <div
                 role="Detail Rebalancing Cards"
-                className={`flex flex-col justify-center card mb-2.5 py-3 px-3 w-full sm:h-20 md:h-20 lp:h-16 lg:h-16 xl:h-16`}
+                className={`flex flex-col border border-black justify-center card mb-2.5 py-3 px-3 w-full sm:h-20 md:h-20 lp:h-16 lg:h-16 xl:h-16`}
                 key={cards.header}
               >
                 <p
                   className={
-                    "flex flex-row text-sm sm:text-xs md:text-xs lp:text-xs text-icongray"
+                    "flex flex-row items-stretch text-sm sm:text-xs md:text-xs lp:text-xs text-icongray mb-1"
                   }
                 >
                   {" "}

@@ -33,6 +33,6 @@ export const chartBgColors =  [
 export const headerdesign =
   "flex flex-row font-medium items-center justify-end text-black h-11  w-full ";
 export const celldesign =
-  "flex flex-row justify-end items-center w-full pr-1 text-black font-light";
+  "flex flex-row justify-end items-center w-full pr-1 text-black text-sm";
 export const firstcelldesign = "flex flex-row text-sm font-medium items-center";
 export const sortingicondesgin = "h-5 w-1 ml-1 rounded-sm";

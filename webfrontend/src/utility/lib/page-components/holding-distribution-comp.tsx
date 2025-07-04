@@ -9,7 +9,7 @@ import {
   DistributionHolding,
   Holding,
 } from "../types/data-fetching-types";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { useDistributionData, useHoldingMutation } from "../data-fetching";
 import { getDistribution } from "../data-fetching";
 import { DistributionChart } from "../charts";
@@ -17,8 +17,8 @@ import { SmallLoadingSkeleton } from "../data-fetching";
 import { dataColsGroups, AssetTableComponent } from "../data-table";
 import { ranHexGen } from "../helpers";
 import { dataColsHoldings } from "../data-table/v-ad-cols/holding-cols";
-import { useSyncSingleHolding } from "../stores";
-import { useQueryClient } from "@tanstack/react-query";
+import { syncSingleHolding } from "../stores";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const HoldingDistributionComponent = ({
   holdingData,
@@ -26,9 +26,14 @@ const HoldingDistributionComponent = ({
   holdingData: any;
 }) => {
   const thresholdValue = 5;
-  const setSyncStatus = useSyncSingleHolding((state) => state.setSyncStatus);
-  const syncStatus = useSyncSingleHolding((state) => state.syncStatus);
+  const alreadySynced = useRef<Set<number>>(new Set());
+  const setSyncStatus = syncSingleHolding((state) => state.setSyncStatus);
+  const syncStatus = syncSingleHolding((state) => state.syncStatus);
   const queryClient = useQueryClient();
+  const mutation = useHoldingMutation({
+    queryClient,
+    setSyncStatus,
+  });
 
   const { processedQueryData, isLoading, isError, error } = useDistributionData(
     {
@@ -49,20 +54,35 @@ const HoldingDistributionComponent = ({
     return ranHexGen(Math.max(holdingsCount, thresholdValue));
   }, [processedQueryData?.holdings, thresholdValue]);
 
-  // Initialize syncStatus
   useEffect(() => {
     if (!processedQueryData?.holdings?.length) return;
+
     setSyncStatus((prev) => {
-      const existingIds = new Set(prev.map((item) => item.holdingId));
-      const newSyncObjects = processedQueryData.holdings
-        .filter((holding: Holding) => !existingIds.has(holding.holdingid))
-        .map((holding: Holding) => ({
+      const prevMap = new Map(prev.map((s) => [s.holdingId, s.status]));
+
+      const merged = processedQueryData.holdings.map((holding: Holding) => {
+        const existingStatus = prevMap.get(holding.holdingid) ?? "noSync";
+        return {
           holdingId: holding.holdingid,
-          status: "noSync",
-        }));
-      return [...prev, ...newSyncObjects];
+          status: existingStatus,
+        };
+      });
+
+      return merged;
     });
-  }, [processedQueryData?.holdings, setSyncStatus]);
+  }, [processedQueryData]);
+
+  useEffect(() => {
+    syncStatus.forEach((syncObject) => {
+      if (
+        syncObject.status === "syncing" &&
+        !alreadySynced.current.has(syncObject.holdingId)
+      ) {
+        alreadySynced.current.add(syncObject.holdingId);
+        mutation.mutate(syncObject.holdingId);
+      }
+    });
+  }, [syncStatus, mutation]);
 
   // Handle loading state
   if (isLoading) {
@@ -77,8 +97,6 @@ const HoldingDistributionComponent = ({
       </div>
     );
   }
-
-  console.log("This is the sync status ", syncStatus);
 
   // Handle missing data
   if (!processedQueryData || !processedQueryData.holdings) {
@@ -165,6 +183,9 @@ const HoldingDistributionComponent = ({
         </div>
       </div>
       <div className="w-8/12 sm:w-8/12 md:w-full lg:w-full lp:w-full h-1/5 mb-10 card">
+        <div className="flex flex-row w-full justify-end items-end">
+          <button className="border border-black">Sync all </button>
+        </div>
         <AssetTableComponent config={tableConfig} />
       </div>
     </div>

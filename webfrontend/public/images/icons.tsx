@@ -7,7 +7,7 @@ import {
   flyzerBlue,
   icongray,
 } from "../../src/utility/lib/helpers/helper-config/colors";
-import { useSyncSingleHolding } from "@/utility/lib/stores";
+import { syncSingleHolding } from "@/utility/lib/stores";
 
 export const PositionDirectionIcon = ({ direction }: { direction: string }) => {
   return (
@@ -161,7 +161,7 @@ export const ReloadSingleHoldingIcon = ({
   rowId: number;
   index: number;
 }) => {
-  const syncStatus = useSyncSingleHolding((state: any) => state.syncStatus);
+  const syncStatus = syncSingleHolding((state: any) => state.syncStatus);
 
   const currentHolding = syncStatus.find(
     (item: {
