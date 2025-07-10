@@ -112,6 +112,7 @@ const AssetGroupDistributionComponent = ({
       },
     ],
     filter: [],
+    addOns: [],
     currentValue: processedQueryData.currentvalue,
   };
 

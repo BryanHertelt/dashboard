@@ -2,6 +2,7 @@
 import { useMemo, useState, useEffect } from "react";
 import useResizeObserver from "use-resize-observer";
 import AssetTableController from "./asset-table-controller";
+import { ReloadHoldingsIcon } from "../../../../public/images/icons";
 import logger from "../logging/logger";
 
 import { configType } from "./types";
@@ -124,6 +125,28 @@ const AssetTableComponent = ({ config }: { config: configType }) => {
     );
   };
 
+  const AddOnButtons = () => {
+    return (
+      <>
+        {config.addOns.map(
+          (
+            addOn: { addOnStatus: string; addOnTitle: string },
+            index: number
+          ) => {
+            return (
+              <button
+                key={index}
+                className={`flex mr-3 items-center justify-center rounded-md text-sm w-10 py-1 bg-blue`}
+              >
+                <ReloadHoldingsIcon />
+              </button>
+            );
+          }
+        )}
+      </>
+    );
+  };
+
   return (
     <div className="pt-5 h-[68vh] border border-transparent">
       <header className="flex flex-row justify-between mb-4 h-9">
@@ -158,6 +181,7 @@ const AssetTableComponent = ({ config }: { config: configType }) => {
         )}
         <div className="flex flex-row w-1/4 justify-end">
           <FilterButtons />
+          <AddOnButtons />
         </div>
       </header>
       <div>

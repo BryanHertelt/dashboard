@@ -22,6 +22,10 @@ export type StatusItem<StatusKey extends string> = {
       filterTitle: string;
       filterStatus: string;
     }[];
+    addOns : {
+      addOnStatus: string; 
+      addOnTitle: string; 
+    }[]; 
     currentValue: number;
     title?: string;
   };

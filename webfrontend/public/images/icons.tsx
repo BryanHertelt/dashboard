@@ -8,6 +8,7 @@ import {
   icongray,
 } from "../../src/utility/lib/helpers/helper-config/colors";
 import { syncSingleHolding } from "@/utility/lib/stores";
+import { useState } from "react";
 
 export const PositionDirectionIcon = ({ direction }: { direction: string }) => {
   return (
@@ -154,12 +155,87 @@ export const CustomHoldingIcon = () => {
   );
 };
 
+export const ReloadHoldingsIcon = ({}: {}) => {
+  const [sync, setSync] = useState<string>("noSync");
+
+  const staticIcon = (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="10"
+      height="12"
+      viewBox="0 0 10 12"
+      fill="none"
+      onClick={() => setSync("syncing")}
+    >
+      <path
+        d="M5 1.33597V0.292396C5 0.0300447 4.6625 -0.098216 4.46875 0.0883451L2.71875 1.71492C2.59375 1.83153 2.59375 2.01226 2.71875 2.12886L4.4625 3.75544C4.6625 3.93617 5 3.80791 5 3.54556V2.50198C7.06875 2.50198 8.75 4.07026 8.75 6C8.75 6.46057 8.65625 6.90949 8.475 7.31176C8.38125 7.52164 8.45 7.76067 8.61875 7.91808C8.9375 8.21541 9.475 8.11047 9.64375 7.71986C9.875 7.18933 10 6.60632 10 6C10 3.42312 7.7625 1.33597 5 1.33597ZM5 9.49802C2.93125 9.49802 1.25 7.92974 1.25 6C1.25 5.53943 1.34375 5.09051 1.525 4.68824C1.61875 4.47836 1.55 4.23933 1.38125 4.08192C1.0625 3.78459 0.525 3.88953 0.35625 4.28014C0.125 4.81067 0 5.39368 0 6C0 8.57688 2.2375 10.664 5 10.664V11.7076C5 11.97 5.3375 12.0982 5.53125 11.9117L7.275 10.2851C7.4 10.1685 7.4 9.98774 7.275 9.87114L5.53125 8.24456C5.48719 8.20428 5.43133 8.17706 5.37071 8.16633C5.3101 8.15561 5.24743 8.16187 5.19062 8.18431C5.13381 8.20676 5.08539 8.24439 5.05147 8.29246C5.01755 8.34053 4.99964 8.39689 5 8.45444V9.49802Z"
+        fill="white"
+      />
+    </svg>
+  );
+
+  if (sync === "noSync") {
+    return staticIcon;
+  } else if (sync === "syncing") {
+    return (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="12"
+        height="14"
+        viewBox="0 0 20 20"
+        fill="none"
+        style={{
+          animation: "rotation 1s linear infinite",
+        }}
+        onClick={() => setSync("noSync")}
+      >
+        <defs>
+          <linearGradient
+            id="conicGradientApprox"
+            x1="0%"
+            y1="0%"
+            x2="100%"
+            y2="100%"
+          >
+            <stop offset="0%" stopColor="rgba(255, 255, 255, 1)" />
+            <stop offset="100%" stopColor="rgba(255, 255, 255, 0)" />
+          </linearGradient>
+          <clipPath id="paint0_angular_clip">
+            <path d="M10 19.5C4.75329 19.5 0.5 15.2467 0.5 10C0.5 4.75329 4.75329 0.5 10 0.5C15.2467 0.5 19.5 4.75329 19.5 10C19.5 15.2467 15.2467 19.5 10 19.5ZM10 2.4C5.80264 2.4 2.4 5.80264 2.4 10C2.4 14.1974 5.80264 17.6 10 17.6C14.1974 17.6 17.6 14.1974 17.6 10C17.6 5.80264 14.1974 2.4 10 2.4Z" />
+          </clipPath>
+        </defs>
+        <g clipPath="url(#paint0_angular_clip)">
+          <circle cx="10" cy="10" r="10" fill="url(#conicGradientApprox)" />
+        </g>
+        <path
+          d="M10 19.5C4.75329 19.5 0.5 15.2467 0.5 10C0.5 4.75329 4.75329 0.5 10 0.5C15.2467 0.5 19.5 4.75329 19.5 10C19.5 15.2467 15.2467 19.5 10 19.5ZM10 2.4C5.80264 2.4 2.4 5.80264 2.4 10C2.4 14.1974 5.80264 17.6 10 17.6C14.1974 17.6 17.6 14.1974 17.6 10C17.6 5.80264 14.1974 2.4 10 2.4Z"
+          fill="url(#conicGradientApprox)"
+        />
+        <style>
+          {`
+            @keyframes rotation {
+              0% {
+                transform: rotate(0deg);
+              }
+              100% {
+                transform: rotate(360deg);
+              }
+            }
+          `}
+        </style>
+      </svg>
+    );
+  }
+
+  return null;
+};
+
 export const ReloadSingleHoldingIcon = ({
   rowId,
   index,
 }: {
-  rowId: number;
-  index: number;
+  rowId?: number;
+  index?: number;
 }) => {
   const syncStatus = syncSingleHolding((state: any) => state.syncStatus);
 

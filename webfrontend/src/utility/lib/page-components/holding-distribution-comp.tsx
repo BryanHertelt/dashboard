@@ -26,14 +26,7 @@ const HoldingDistributionComponent = ({
   holdingData: any;
 }) => {
   const thresholdValue = 5;
-  const alreadySynced = useRef<Set<number>>(new Set());
   const setSyncStatus = syncSingleHolding((state) => state.setSyncStatus);
-  const syncStatus = syncSingleHolding((state) => state.syncStatus);
-  const queryClient = useQueryClient();
-  const mutation = useHoldingMutation({
-    queryClient,
-    setSyncStatus,
-  });
 
   const { processedQueryData, isLoading, isError, error } = useDistributionData(
     {
@@ -71,18 +64,6 @@ const HoldingDistributionComponent = ({
       return merged;
     });
   }, [processedQueryData]);
-
-  useEffect(() => {
-    syncStatus.forEach((syncObject) => {
-      if (
-        syncObject.status === "syncing" &&
-        !alreadySynced.current.has(syncObject.holdingId)
-      ) {
-        alreadySynced.current.add(syncObject.holdingId);
-        mutation.mutate(syncObject.holdingId);
-      }
-    });
-  }, [syncStatus, mutation]);
 
   // Handle loading state
   if (isLoading) {
@@ -170,6 +151,12 @@ const HoldingDistributionComponent = ({
       },
     ],
     filter: [],
+    addOns: [
+      {
+        addOnStatus: "holdings",
+        addOnTitle: "Sync All",
+      },
+    ],
     currentValue: processedQueryData.currentvalue,
   };
 
@@ -183,9 +170,6 @@ const HoldingDistributionComponent = ({
         </div>
       </div>
       <div className="w-8/12 sm:w-8/12 md:w-full lg:w-full lp:w-full h-1/5 mb-10 card">
-        <div className="flex flex-row w-full justify-end items-end">
-          <button className="border border-black">Sync all </button>
-        </div>
         <AssetTableComponent config={tableConfig} />
       </div>
     </div>

@@ -180,6 +180,7 @@ const AssetDistributionComponent = ({
         filterStatus: "derivative",
       },
     ],
+    addOns: [],
     currentValue: processedQueryData.currentvalue,
   };
 
