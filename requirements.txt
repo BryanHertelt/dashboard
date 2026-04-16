@@ -1,5 +1,0 @@
-mkdocs
-mkdocs-material
-mkdocstrings-python
-#mkdocs-coverage
-mkdocs-git-revision-date-localized-plugin
