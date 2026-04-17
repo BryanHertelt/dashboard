@@ -1,7 +1,6 @@
 "use client";
 import {
   Chart as ChartJS,
-  Chart as ChartType,
   CategoryScale,
   LinearScale,
   PointElement,
@@ -15,12 +14,8 @@ import {
 } from "chart.js";
 
 import { Doughnut } from "react-chartjs-2";
-import { useRef, useMemo, useEffect } from "react";
-import { ranHexGen } from "../helpers";
+import { useRef, useEffect } from "react";
 import {
-  icongray,
-  black,
-  chartColors,
   gray,
 } from "../helpers/helper-config/colors";
 import { drawDoughnutChart, renderHoverLabel } from "../charts";
@@ -28,11 +23,8 @@ import { SmallErrorSkeleton } from "../data-fetching";
 import logger from "../logging/logger";
 
 import {
-  Asset,
-  DistributionAsset,
   OtherAssetsChart,
   MainAssetsChart,
-  DistributionGroup,
 } from "../types/data-fetching-types";
 
 ChartJS.register(
@@ -166,7 +158,6 @@ export const DistributionChart = ({
     0
   );
 
-  console.log("otherAssetValue", otherValue);
 
   logger.debug("distribution-chart.tsx >> [MainAssets, OtherAssets]", [
     mainDisObj,
@@ -180,8 +171,6 @@ export const DistributionChart = ({
       }
     })
     .filter((color) => color !== undefined); // Remove undefined values from map
-
-  console.log("baseColors in asset distirbtuion", baseColors);
 
   const colors = otherDisObj.length !== 0 ? [...baseColors, gray] : baseColors;
   logger.debug(

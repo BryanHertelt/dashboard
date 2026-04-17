@@ -21,7 +21,7 @@ const AssetDistributionComponent = ({
     const baseColors = ranHexGen(tresholdValue);
     return baseColors;
   }, [tresholdValue]);
-  const { processedQueryData, isLoading, isError, error } = useDistributionData(
+  const { processedQueryData } = useDistributionData(
     {
       qKey: ["PortfolioAD", "Assets"],
       initialData: portfolioData,
@@ -113,7 +113,6 @@ const AssetDistributionComponent = ({
   const updatedData = dataFrontendNaming
     .flat()
     .map((asset: DistributionAsset, index: number) => {
-      console.log("asset", asset);
       asset = {
         ...asset,
         color: colors[index],
@@ -124,7 +123,6 @@ const AssetDistributionComponent = ({
               : asset.assetvalue) / processedQueryData.currentvalue
           ) * 100,
       };
-      console.log("newAsset", asset);
       return asset;
     });
 
