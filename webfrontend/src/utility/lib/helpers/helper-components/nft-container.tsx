@@ -1,7 +1,18 @@
 import { formatValue } from "../../helpers";
 import { NftDetailImageContainer } from "./image-container";
 
-export const ExposeNfts = ({ data }: { data: any }) => {
+interface NftItem {
+  name: string;
+  nfturl: string;
+  nftvalue: number;
+}
+
+interface NftDistributionElement {
+  id: number;
+  nfts: NftItem[];
+}
+
+export const ExposeNfts = ({ data }: { data: NftDistributionElement }) => {
   console.log("data", data);
   const distributionElement = data;
   return (
@@ -9,7 +20,7 @@ export const ExposeNfts = ({ data }: { data: any }) => {
       key={distributionElement.id}
       className="flex flex-row w-full flex-wrap justify-start pb-5"
     >
-      {distributionElement.nfts.map((nft: any) => {
+      {distributionElement.nfts.map((nft: NftItem) => {
         return (
           <div
             key={nft.name}

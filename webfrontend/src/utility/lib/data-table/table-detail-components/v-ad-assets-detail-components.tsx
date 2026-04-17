@@ -21,6 +21,7 @@ import {
   Legend,
   ChartOptions,
   ChartData,
+  ChartDataset,
 } from "chart.js";
 ChartJS.register(
   CategoryScale,
@@ -38,6 +39,20 @@ interface detailDataProps {
   id: number;
   name: string;
 }
+
+interface DrDetailData {
+  averageentryprice: number;
+  marketprice: number;
+  averageexitprice: number;
+  totalcost: number;
+  desiredbalance: number;
+  currentbalance: number;
+  assetId: number;
+}
+
+type DetailDataExtended = detailDataProps & { other: boolean; distribution: number };
+
+type BarCardData = { name: string; assetvalue: number };
 
 /**
  * `DrDetail` is a React component that displays detailed information
@@ -89,10 +104,10 @@ export const DrDetail = ({
   data,
   currentValue,
 }: {
-  data: any;
+  data: DrDetailData;
   currentValue: number;
 }) => {
-  const portfolioRebalancingData = [
+  const portfolioRebalancingData: { header: string; data: number }[] = [
     { header: "Average Entry Price", data: data.averageentryprice },
     { header: "Market Price", data: data.marketprice },
     { header: "Average Exit Price", data: data.averageexitprice },
@@ -113,7 +128,7 @@ export const DrDetail = ({
       <div className="flex flex-row w-full h-4/6  ">
         <div className="card h-full w-5/6"> </div>
         <div className="flex flex-col h-full w-1/6">
-          {portfolioRebalancingData.map((cards: any) => {
+          {portfolioRebalancingData.map((cards) => {
             return (
               <div
                 role="Detail Rebalancing Cards"
@@ -180,9 +195,9 @@ export const DrDetail = ({
  * <Bar data={chart.data} options={chart.options} />
  * ```
  */
-export const buildBar = (cardData: any[], totalAmount: number) => {
+export const buildBar = (cardData: BarCardData[], totalAmount: number) => {
   const backgroundColors = chartColors;
-  const cardDataFormatted = cardData.map((disObj: any, index: number) => {
+  const cardDataFormatted = cardData.map((disObj: BarCardData, index: number) => {
     return {
       label: disObj.name === "Others" ? "Others" : "",
       data: [Number(disObj.assetvalue / totalAmount) * 100],
@@ -198,7 +213,7 @@ export const buildBar = (cardData: any[], totalAmount: number) => {
 
   logger.info("buildBar called");
 
-  const datasets: any[] = [];
+  const datasets: ChartDataset<"bar">[] = [];
 
   if (cardDataFormatted.length != 0) {
     datasets.push(cardDataFormatted);
@@ -311,7 +326,7 @@ export const DisDetail = ({
   }
 
   //Sort Entries for the Barchart
-  const sortedEntries = detailData.sort((prevDisObj, thisDisObj) =>
+  const sortedEntries: detailDataProps[] = detailData.sort((prevDisObj, thisDisObj) =>
     Number(
       (tableStatus === "nft"
         ? prevDisObj.currencyvalue
@@ -343,8 +358,8 @@ export const DisDetail = ({
   logger.debug("DisDetail: sorted entries for bar chart", sortedEntries);
 
   //Categorize items, based on index position and screen position.
-  let mainDisObj: any[] = [];
-  let otherDisObj: any[] = [];
+  let mainDisObj: DetailDataExtended[][] = [];
+  let otherDisObj: DetailDataExtended[][] = [];
 
   const widthProp = window.innerWidth < 1100 ? 9 : 14;
 
@@ -357,16 +372,14 @@ export const DisDetail = ({
 
   //Add properties to the objects (other => to determine the background color, distribution=> to avoid calculations everytime)
   mainDisObj = mainDisObj.map((disObj) =>
-    disObj.map((obj: any) => {
-      return {
-        ...obj,
-        other: false,
-        distribution: Number(obj.assetvalue / totalAmount) * 100,
-      };
-    })
+    disObj.map((obj: detailDataProps) => ({
+      ...obj,
+      other: false,
+      distribution: Number(obj.assetvalue / totalAmount) * 100,
+    }))
   );
   otherDisObj = otherDisObj.map((disObj) =>
-    disObj.map((obj: any) => ({
+    disObj.map((obj: detailDataProps) => ({
       ...obj,
       other: true,
       distribution: Number(obj.assetvalue / totalAmount) * 100,
@@ -377,7 +390,7 @@ export const DisDetail = ({
   const otherObj = [
     otherDisObj.length > 0
       ? otherDisObj[0].reduce(
-          (acc: any, curr: any) => {
+          (acc: { name: string; assetvalue: number; currencyvalue: number }, curr: DetailDataExtended) => {
             acc.assetvalue += curr.assetvalue;
             acc.currencyvalue += curr.currencyvalue;
             return acc;
@@ -401,7 +414,7 @@ export const DisDetail = ({
   logger.debug("DisDetail: generated card data", cardData);
 
   // Generating data, which are used for the bar-chart.
-  const barData: any = buildBar(
+  const barData = buildBar(
     detailData.length > widthProp + 1
       ? [...mainDisObj, otherObj].flat()
       : mainDisObj.flat(),

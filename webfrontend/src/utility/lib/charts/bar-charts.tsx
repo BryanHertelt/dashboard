@@ -10,6 +10,7 @@ import {
   Legend,
   ChartOptions,
   ChartData,
+  ChartDataset,
 } from "chart.js";
 
 ChartJS.register(
@@ -34,17 +35,17 @@ interface holdingProps {
 export const HoldingBarChart = ({ barData }: { barData: holdingProps[] }) => {
   const backgroundColors = chartColors;
 
-  const mainHoldings: any[] = [];
-  const otherHoldings: any[] = [];
+  const mainHoldings: holdingProps[] = [];
+  const otherHoldings: [number, number][] = [];
 
-  barData.map((holding: any) => {
+  barData.map((holding: holdingProps) => {
     holding.holdingdistribution < 5
       ? otherHoldings.push([holding.holdingdistribution, holding.currencyvalue])
       : mainHoldings.push(holding);
   });
 
   const mainHoldingsFormatted = mainHoldings.map(
-    (holding: any, index: number) => {
+    (holding: holdingProps, index: number) => {
       return {
         label: `${holding.name}: ${formatValue(
           holding.holdingdistribution
@@ -81,7 +82,7 @@ export const HoldingBarChart = ({ barData }: { barData: holdingProps[] }) => {
     borderRadius: 7,
   };
 
-  const datasets: any[] = [];
+  const datasets: ChartDataset<"bar">[] = [];
 
   if (otherHoldings.length != 0 && mainHoldings.length != 0) {
     datasets.push(mainHoldingsFormatted, otherHoldingsFormatted);

@@ -8,8 +8,19 @@ import {
   SmallErrorSkeleton,
   useValueChart,
 } from "../data-fetching";
+import {
+  PortfolioResponseObject,
+  AssetResponseObject,
+  TimeFrameResponseObject,
+} from "../types/data-fetching-types";
 
-const LineChartController = ({ currentValue, initialData }: any) => {
+const LineChartController = ({
+  currentValue,
+  initialData,
+}: {
+  currentValue: number;
+  initialData: PortfolioResponseObject[] | AssetResponseObject[] | TimeFrameResponseObject[];
+}) => {
   const [comparators, setComparators] = useState({
     costbasis: false,
     btc: false,
@@ -75,8 +86,8 @@ const LineChartController = ({ currentValue, initialData }: any) => {
     { timeframe: "5 years", timeunit: "year" },
   ];
 
-  const handleTimeFrames = (item: any) => {
-    setComparators((prev: any) => {
+  const handleTimeFrames = (item: { timeframe: string; timeunit: string }) => {
+    setComparators((prev) => {
       return {
         costbasis: prev.costbasis,
         btc: false,
@@ -98,7 +109,7 @@ const LineChartController = ({ currentValue, initialData }: any) => {
                 comparators.costbasis ? "border border-black" : "none"
               } bg-gray text-black text-sm h-full w-4/12 mr-2.5 rounded-md`}
               onClick={() =>
-                setComparators((prev: any) => {
+                setComparators((prev) => {
                   return {
                     costbasis:
                       scope === "portfoliotimeframes"
@@ -123,7 +134,7 @@ const LineChartController = ({ currentValue, initialData }: any) => {
             </button>
           </div>
           <div className={`${dropDownDesign} absolute top-10 right-1`}>
-            {dropDownMenuValues.map((item: any, index: number) => {
+            {dropDownMenuValues.map((item, index) => {
               return (
                 <button
                   key={item.timeframe}
@@ -144,7 +155,7 @@ const LineChartController = ({ currentValue, initialData }: any) => {
             <button
               className="mt-1 mr-2 text-3xl h-full rounded-md"
               onClick={() => {
-                setComparators((prev: any) => {
+                setComparators((prev) => {
                   return {
                     costbasis: false,
                     btc: !prev.btc,
@@ -159,7 +170,7 @@ const LineChartController = ({ currentValue, initialData }: any) => {
             <button
               className="mt-1 text-3xl h-full rounded-md "
               onClick={() => {
-                setComparators((prev: any) => {
+                setComparators((prev) => {
                   return {
                     costbasis: false,
                     btc: prev.btc,

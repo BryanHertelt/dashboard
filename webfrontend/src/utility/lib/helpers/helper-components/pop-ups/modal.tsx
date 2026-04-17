@@ -1,7 +1,7 @@
 "use client";
 
 import Portal from "./portal";
-import { useState } from "react";
+import { useState, ChangeEvent } from "react";
 import axios from "axios";
 
 const Modal = ({
@@ -17,7 +17,7 @@ const Modal = ({
 
   const [note, setNote] = useState<string>("");
 
-  const handleNoteChange = (event: any) => {
+  const handleNoteChange = (event: ChangeEvent<HTMLInputElement>) => {
     setNote(event.target.value);
   };
 

@@ -25,7 +25,7 @@ ChartJS.register(
   Filler
 );
 
-export const TableLineChart = (props: any) => {
+export const TableLineChart = (props: { data: number[] }) => {
   const lineOptions: ChartOptions<"line"> = {
     responsive: true,
     maintainAspectRatio: false,

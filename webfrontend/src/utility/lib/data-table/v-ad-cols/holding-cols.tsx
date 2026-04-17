@@ -11,6 +11,8 @@ import {
   celldesign,
 } from "../../helpers/helper-config/colors";
 import { syncSingleHolding } from "../../stores";
+import { Row, Column } from "@tanstack/react-table";
+import { DistributionHolding } from "../../types/data-fetching-types";
 
 export const dataColsHoldings = [
   {
@@ -20,7 +22,7 @@ export const dataColsHoldings = [
         Holding
       </div>
     ),
-    cell: ({ row }: { row: any }) => {
+    cell: ({ row }: { row: Row<DistributionHolding> }) => {
       const name = row.original.holdingname;
       const symbol = row.original.symbol;
       const customHolding = row.original.custom;
@@ -60,7 +62,7 @@ export const dataColsHoldings = [
   },
   {
     accessorKey: "assetcount",
-    header: ({ column }: any) => {
+    header: ({ column }: { column: Column<DistributionHolding, unknown> }) => {
       const sorted = column.getIsSorted();
       return (
         <button
@@ -75,7 +77,7 @@ export const dataColsHoldings = [
         </button>
       );
     },
-    cell: ({ row }: any) => {
+    cell: ({ row }: { row: Row<DistributionHolding> }) => {
       const amount = row.original.assetcount;
       return (
         <div className={` flex flex-col justify-end items-end`}>
@@ -86,7 +88,7 @@ export const dataColsHoldings = [
   },
   {
     accessorKey: "distribution",
-    header: ({ column }: any) => {
+    header: ({ column }: { column: Column<DistributionHolding, unknown> }) => {
       const sorted = column.getIsSorted();
       return (
         <button
@@ -101,7 +103,7 @@ export const dataColsHoldings = [
         </button>
       );
     },
-    cell: ({ row }: any) => {
+    cell: ({ row }: { row: Row<DistributionHolding> }) => {
       const percentage = row.original.distribution;
 
       return (
@@ -117,7 +119,7 @@ export const dataColsHoldings = [
   },
   {
     accessorKey: "holdingchange24h",
-    header: ({ column }: any) => {
+    header: ({ column }: { column: Column<DistributionHolding, unknown> }) => {
       const sorted = column.getIsSorted();
       return (
         <button
@@ -132,7 +134,7 @@ export const dataColsHoldings = [
         </button>
       );
     },
-    cell: ({ row }: any) => {
+    cell: ({ row }: { row: Row<DistributionHolding> }) => {
       const percentage = row.original.holdingchange24h;
       const percentagecolor =
         percentage < 0 ? " text-red rounded-md" : " text-green rounded-md";
@@ -157,7 +159,7 @@ export const dataColsHoldings = [
   },
   {
     accessorKey: "profitloss",
-    header: ({ column }: any) => {
+    header: ({ column }: { column: Column<DistributionHolding, unknown> }) => {
       const sorted = column.getIsSorted();
       return (
         <button
@@ -172,7 +174,7 @@ export const dataColsHoldings = [
         </button>
       );
     },
-    cell: ({ row }: any) => {
+    cell: ({ row }: { row: Row<DistributionHolding> }) => {
       const profitloss = row.original.profitloss;
       const profitLossChange = row.original.profitlosschange;
       const renderProfitCell = () => {

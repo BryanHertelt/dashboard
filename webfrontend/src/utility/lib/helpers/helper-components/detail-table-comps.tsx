@@ -3,6 +3,28 @@ import { NftsIcon } from "../../../../../public/images";
 import { formatValue, formatCurrency } from "../../helpers";
 import { NftDetailImageContainer } from "../../helpers";
 import logger from "../../logging/logger";
+import { ChartData, ChartOptions } from "chart.js";
+
+interface DetailDataEntry {
+  id: number;
+  name: string;
+  assetvalue: number;
+  currencyvalue: number;
+  distribution: number;
+  other: boolean;
+  url?: string;
+}
+
+interface NftItem {
+  name: string;
+  nfturl: string;
+  nftvalue: number;
+}
+
+interface NftDistributionElement {
+  id: number;
+  nfts: NftItem[];
+}
 
 /**
  * `InfoCards` is a visual component that renders a list of distribution summary cards
@@ -40,9 +62,9 @@ export const InfoCards = ({
   changeActiveDisObj,
   activeDisObj,
 }: {
-  data: any[];
+  data: DetailDataEntry[][];
   tableStatus: string | undefined;
-  barData: { data: any; options: any };
+  barData: { data: ChartData<"bar">; options: ChartOptions<"bar"> };
   assetname: string | undefined;
   changeActiveDisObj: Function;
   activeDisObj: number | null;
@@ -52,7 +74,7 @@ export const InfoCards = ({
 
   const flatArray = data.flat();
 
-  return flatArray.map((disObj: any, index: number) => {
+  return flatArray.map((disObj: DetailDataEntry, index: number) => {
     const active =
       tableStatus != "nft" || disObj.name === "Others"
         ? "hidden"
@@ -262,7 +284,7 @@ export const StopLossCards = ({
  *
  * @returns A flex-wrapped horizontal list of NFT display cards.
  */
-export const DetailNfts = ({ data }: { data: any }) => {
+export const DetailNfts = ({ data }: { data: NftDistributionElement }) => {
   const distributionElement = data;
   logger.info("DetailNfts called");
   return (
@@ -270,7 +292,7 @@ export const DetailNfts = ({ data }: { data: any }) => {
       key={distributionElement.id}
       className="flex flex-row w-full flex-wrap justify-start pb-5"
     >
-      {distributionElement.nfts.map((nft: any) => {
+      {distributionElement.nfts.map((nft: NftItem) => {
         return (
           <div
             key={nft.name}

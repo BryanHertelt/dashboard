@@ -3,6 +3,8 @@ import { useState, useMemo, useEffect } from "react";
 import { DataTable } from "../data-table";
 import logger from "../logging/logger";
 import { configType } from "./types";
+import { ColumnDef } from "@tanstack/react-table";
+import { Asset, Group, Holding } from "../types/data-fetching-types";
 
 /**
  * `AssetTableController` is a container component responsible for
@@ -21,7 +23,7 @@ import { configType } from "./types";
  *   such as `{ perp: true, future: false }`.
  *
  * ### Internal State
- * - `tableData: any[]` - Holds the currently filtered list of assets shown in the table.
+ * - `tableData` - Holds the currently filtered list of assets shown in the table.
  * - `expandedRow: number | null` - Tracks the currently expanded row in the table, if any.
  *
  * ### Behavior
@@ -57,7 +59,7 @@ const AssetTableController = ({
       initialDataCount: tableConfig.initial?.length || 0,
     });
 
-    let filtered = tableConfig.initial.filter((asset: any) => {
+    let filtered = tableConfig.initial.filter((asset: Asset | Group | Holding) => {
       if (tableConfig.statusFilter === "") {
         return asset;
       }
@@ -73,22 +75,22 @@ const AssetTableController = ({
     if (tableStatus === "derivative") {
       if (filterType.perp && filterType.future) {
         filtered = tableConfig.initial.filter(
-          (asset: any) => asset.assettype === "derivative"
+          (asset: Asset | Group | Holding) => "assettype" in asset && asset.assettype === "derivative"
         );
       } else if (filterType.perp && !filterType.future) {
         filtered = tableConfig.initial.filter(
-          (asset: any) =>
-            asset.assettype === "derivative" &&
-            asset.derivativetype === "perpetual"
+          (asset: Asset | Group | Holding) =>
+            "assettype" in asset && asset.assettype === "derivative" &&
+            "derivativetype" in asset && asset.derivativetype === "perpetual"
         );
         logger.debug("Filtered derivatives (future only)", {
           filteredCount: filtered.length,
         });
       } else if (!filterType.perp && filterType.future) {
         filtered = tableConfig.initial.filter(
-          (asset: any) =>
-            asset.assettype === "derivative" &&
-            asset.derivativetype === "future"
+          (asset: Asset | Group | Holding) =>
+            "assettype" in asset && asset.assettype === "derivative" &&
+            "derivativetype" in asset && asset.derivativetype === "future"
         );
         logger.debug("Filtered derivatives (future only)", {
           filteredCount: filtered.length,
@@ -104,9 +106,9 @@ const AssetTableController = ({
     });
   }, [tableStatus, filterType, tableConfig.initial]);
 
-  const col: any = useMemo(() => {
+  const col: ColumnDef<Asset | Group | Holding>[] | undefined = useMemo(() => {
     const statusConfig = tableConfig.status.find(
-      (s: any) => s.status === tableStatus
+      (s) => s.status === tableStatus
     );
 
     logger.info("AssetTableController: columns configured for table", {

@@ -7,6 +7,8 @@ import {
   firstcelldesign,
   celldesign,
 } from "../../helpers/helper-config/colors";
+import { Row, Column } from "@tanstack/react-table";
+import { DistributionGroup } from "../../types/data-fetching-types";
 export const dataColsGroups = [
   {
     accessorKey: "groupname",
@@ -15,7 +17,7 @@ export const dataColsGroups = [
         Group
       </div>
     ),
-    cell: ({ row }: { row: any }) => {
+    cell: ({ row }: { row: Row<DistributionGroup> }) => {
       const name = row.original.groupname;
       const color =
         row.original.color === undefined ? icongray : row.original.color;
@@ -35,7 +37,7 @@ export const dataColsGroups = [
   },
   {
     accessorKey: "assetcount",
-    header: ({ column }: any) => {
+    header: ({ column }: { column: Column<DistributionGroup, unknown> }) => {
       const sorted = column.getIsSorted();
       return (
         <button
@@ -50,7 +52,7 @@ export const dataColsGroups = [
         </button>
       );
     },
-    cell: ({ row }: any) => {
+    cell: ({ row }: { row: Row<DistributionGroup> }) => {
       const amount = row.original.assetcount;
       return (
         <div className={` flex flex-col justify-end items-end`}>
@@ -61,7 +63,7 @@ export const dataColsGroups = [
   },
   {
     accessorKey: "distribution",
-    header: ({ column }: any) => {
+    header: ({ column }: { column: Column<DistributionGroup, unknown> }) => {
       const sorted = column.getIsSorted();
       return (
         <button
@@ -76,7 +78,7 @@ export const dataColsGroups = [
         </button>
       );
     },
-    cell: ({ row }: any) => {
+    cell: ({ row }: { row: Row<DistributionGroup> }) => {
       const percentage = row.original.distribution;
 
       return (
@@ -93,7 +95,7 @@ export const dataColsGroups = [
   },
   {
     accessorKey: "groupchange24h",
-    header: ({ column }: any) => {
+    header: ({ column }: { column: Column<DistributionGroup, unknown> }) => {
       const sorted = column.getIsSorted();
       return (
         <button
@@ -108,7 +110,7 @@ export const dataColsGroups = [
         </button>
       );
     },
-    cell: ({ row }: any) => {
+    cell: ({ row }: { row: Row<DistributionGroup> }) => {
       const percentage = row.original.groupchange24h;
       const percentagecolor =
         percentage < 0 ? " text-red rounded-md" : " text-green rounded-md;";
@@ -134,7 +136,7 @@ export const dataColsGroups = [
   },
   {
     accessorKey: "profitloss",
-    header: ({ column }: any) => {
+    header: ({ column }: { column: Column<DistributionGroup, unknown> }) => {
       const sorted = column.getIsSorted();
       return (
         <button
@@ -150,7 +152,7 @@ export const dataColsGroups = [
         </button>
       );
     },
-    cell: ({ row }: any) => {
+    cell: ({ row }: { row: Row<DistributionGroup> }) => {
       const profitloss = row.original.profitloss;
       const profitLossChange = row.original.profitlosschange;
       const renderProfitCell = () => {
@@ -190,7 +192,7 @@ export const dataColsGroups = [
 /**
  *  {
     accessorKey: "assetcount",
-    header: ({ column }: any) => {
+    header: ({ column }: { column: Column<DistributionGroup, unknown> }) => {
       const sorted = column.getIsSorted();
       return (
         <button
@@ -205,7 +207,7 @@ export const dataColsGroups = [
         </button>
       );
     },
-    cell: ({ row }: any) => {
+    cell: ({ row }: { row: Row<DistributionGroup> }) => {
       const amount = parseFloat(row.getValue("assetcount"));
 
       return (
@@ -221,14 +223,14 @@ export const dataColsGroups = [
    *  {
     accessorKey: "groupchange24hvalue",
     header: "Percentage",
-    cell: ({ row }: { row: any }) => {
+    cell: ({ row }: { row: Row<DistributionGroup> }) => {
       const assetcount: string = row.getValue("groupchange24hvalue");
       return <div className="flex flex-row justify-end"> {assetcount} </div>;
     },
   },
   {
     accessorKey: "profitloss",
-    header: ({ column }: any) => {
+    header: ({ column }: { column: Column<DistributionGroup, unknown> }) => {
       const sorted = column.getIsSorted();
       return (
         <button
@@ -244,7 +246,7 @@ export const dataColsGroups = [
         </button>
       );
     },
-    cell: ({ row }: any) => {
+    cell: ({ row }: { row: Row<DistributionGroup> }) => {
       const profitloss = row.getValue("profitloss");
       const profitLossChange = row.original.profitlosschange;
       const renderProfitCell = () => {

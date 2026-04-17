@@ -17,7 +17,7 @@ export const formatDecimals = (num: number, roundedNumber: number) => {
         const noTrailingZeros = trimmedDecimals.replace(/0+$/, "");
         const firstDigits = noTrailingZeros.slice(0, 2);
   
-        const subscriptMap: any = {
+        const subscriptMap: Record<string, string> = {
           "0": "\u2080",
           "1": "\u2081",
           "2": "\u2082",

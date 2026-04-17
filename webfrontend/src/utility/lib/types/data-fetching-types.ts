@@ -1,3 +1,5 @@
+import { QueryClient } from "@tanstack/react-query";
+
 export interface ADcompPropsType {
   portfolioResponse: PortfolioResponseObject[];
   assetResponse: AssetResponseObject[];
@@ -53,7 +55,7 @@ export interface QueryConstructorInterfaceDistribution {
   initialData?: PortfolioResponseObject[] | AssetResponseObject[] | TimeFrameResponseObject[] ;
   slug: string;
   staleTime?: number;
-  queryFunction: any; 
+  queryFunction: (scope: string) => Promise<unknown>;
   cacheTime?: number;
   searchquery?: string;
 }
@@ -293,9 +295,9 @@ export interface QueryConstructorInterface {
 }
 
 export interface MutationConstructorInterface {
-holdingId: string, 
-queryClient: any, 
-setSyncStatus: Function, 
+  holdingId: string;
+  queryClient: QueryClient;
+  setSyncStatus: Function;
 }
 
 export type AssetGroups = {

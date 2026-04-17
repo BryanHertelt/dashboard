@@ -12,6 +12,7 @@ import {
   MutationConstructorInterface,
   QueryConstructorInterfaceChart,
   Holding,
+  AssetHoldings,
 } from "../types/data-fetching-types";
 import { QueryConstructorInterface } from "../types/data-fetching-types";
 import { syncSingleHolding } from "../stores";
@@ -50,7 +51,7 @@ export const useHoldingMutation = ({
   queryClient,
 }: {
   setSyncStatus: Function;
-  queryClient: any;
+  queryClient: QueryClient;
 }) => {
   return useMutation({
     mutationFn: async (holdingId: number) => {
@@ -66,7 +67,7 @@ export const useHoldingMutation = ({
       );
     },
     onSuccess: (updatedHolding) => {
-      queryClient.setQueryData(["PortfolioAD", "Holdings"], (oldData: any) => {
+      queryClient.setQueryData(["PortfolioAD", "Holdings"], (oldData: AssetHoldings | undefined) => {
         if (!oldData?.holdings) return oldData;
         return {
           ...oldData,
@@ -132,7 +133,7 @@ export const useValueChart = (
   return { processedQueryData, isLoading, isError, error, isSuccess };
 };
 
-export const useDetailComponent = (props: any) => {
+export const useDetailComponent = (props: { tableStatus: string | undefined; assetId: number }) => {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["detail components", props.assetId],
     queryFn: async () =>

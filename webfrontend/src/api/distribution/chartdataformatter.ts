@@ -1,5 +1,6 @@
 import {
     Chart as ChartJS,
+    Chart,
     CategoryScale,
     LinearScale,
     PointElement,
@@ -10,6 +11,7 @@ import {
     ChartOptions,
     ArcElement,
     Filler,
+    ScriptableContext,
   } from "chart.js";
 import { assetGroupData, holdingsData } from "./asset-distributiontabledata";
 
@@ -60,7 +62,7 @@ export const assetLineChartData = {
           label: "currentValue",
           data: [890000, 880000, 2000, 850000, 890000, 120000, 400000], 
           borderColor: "#005BEA",
-          backgroundColor: (context: any) => {
+          backgroundColor: (context: ScriptableContext<"line">) => {
             const bgColor = [
               "rgba(0, 91, 234, 0.3)",
               "rgba(0, 91, 234, 0.2)",
@@ -194,7 +196,7 @@ export const holdingsPieChartData = {
   export const doughnutLabel = 
   {
     id: "doughnutLabel",
-    afterDatasetsDraw(chart: any, args: any, plugins: any) {
+    afterDatasetsDraw(chart: Chart, args: Record<string, never>, plugins: Record<string, unknown>) {
       const { ctx, data } = chart;
   
       const centerX = chart.getDatasetMeta(0).data[0].x;

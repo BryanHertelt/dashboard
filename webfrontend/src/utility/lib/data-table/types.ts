@@ -1,4 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
+import { Dispatch, SetStateAction } from "react";
+import { Asset, Group, Holding } from "../types/data-fetching-types";
 
 export type StatusItem<StatusKey extends string> = {
     status: StatusKey;
@@ -14,7 +16,7 @@ export type StatusItem<StatusKey extends string> = {
   
   export type configType = {
     statusFilter: string
-    initial: any[];
+    initial: (Asset | Group | Holding)[];
     detail: boolean;
     status: { status: string; statusTitle: string; columns: object[] }[];
     filter: {
@@ -41,19 +43,19 @@ export type StatusItem<StatusKey extends string> = {
   }
 
   export interface DataTableProps<TData, TValue> {
-    columns: ColumnDef<any, TValue>[];
-    data: any;
+    columns: ColumnDef<TData, TValue>[];
+    data: TData[];
     currentValue: number;
-    detail: boolean; 
+    detail: boolean;
     expandedRow?: number | null;
-    setExpandedRow?: any;
+    setExpandedRow?: Dispatch<SetStateAction<number | null>>;
     tableStatus?: string;
   }
   
   
   export type AssetTableConfig<StatusKey extends string> = {
     title: string;
-    initial: any[];
+    initial: (Asset | Group | Holding)[];
     currentValue: number;
     status: StatusItem<StatusKey>[];
     filter: FilterItem<StatusKey>[];

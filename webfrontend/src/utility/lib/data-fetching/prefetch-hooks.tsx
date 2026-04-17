@@ -1,9 +1,10 @@
 import { getDetailAssetData } from "../data-fetching";
+import { QueryClient } from "@tanstack/react-query";
 
 export const prefetchDetailComponent = async (
   assettype: string,
   id: number,
-  queryClient: any
+  queryClient: QueryClient
 ) => {
   await queryClient.prefetchQuery({
     queryKey: ["detail components", id],

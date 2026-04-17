@@ -23,7 +23,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 const HoldingDistributionComponent = ({
   holdingData,
 }: {
-  holdingData: any;
+  holdingData: AssetHoldings;
 }) => {
   const thresholdValue = 5;
   const setSyncStatus = syncSingleHolding((state) => state.setSyncStatus);

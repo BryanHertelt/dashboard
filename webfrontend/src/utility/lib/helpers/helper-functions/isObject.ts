@@ -3,7 +3,7 @@
  * @param value The parameter could be any dataformat.
  * @returns Wether the argument is an object or not.
  */
-export const isObject = (value: any) => {
+export const isObject = (value: unknown) => {
     return (
       typeof value === "object" &&
       value !== null &&

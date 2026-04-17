@@ -33,18 +33,26 @@ ChartJS.register(
 );
 
 
+type PieDataElement = {
+  disElId: number | string;
+  disElVal: number;
+  disElName: string;
+  disElDistribution: number;
+  disColor: string;
+};
+
 type HoverLabelInformation = {
-selectedDatasetIndex: any
-selectedIndex: any
-updatedPieData: any, 
-tresholdValue: number, 
-otherValue: number, 
-otherDistribution: number, 
-pieData: any, 
-total: number, 
-full: boolean, 
-others: string, 
-}
+  selectedDatasetIndex: { current: number | null };
+  selectedIndex: { current: number | null };
+  updatedPieData: PieDataElement[];
+  tresholdValue: number;
+  otherValue: number;
+  otherDistribution: number;
+  pieData: PieDataElement[];
+  total: number;
+  full: boolean;
+  others: string;
+};
 
 /**
 * `renderHoverLabel` is a canvas-drawing utility for Chart.js doughnut charts

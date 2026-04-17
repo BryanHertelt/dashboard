@@ -23,7 +23,10 @@ import {
   ArcElement,
   Filler,
   TimeScale,
+  ScriptableContext,
+  TooltipModel,
 } from "chart.js";
+import { TimeUnit } from "chart.js";
 
 ChartJS.register(
   CategoryScale,
@@ -39,8 +42,8 @@ ChartJS.register(
 );
 
 export const LineChartComponent = (props: {
-  processedQueryData: any;
-  timeframe: { timeframe: string; timeunit: any };
+  processedQueryData: { x: string; y: number[] }[];
+  timeframe: { timeframe: string; timeunit: TimeUnit };
   comparators: { costbasis: boolean; btc: boolean; eth: boolean };
   scope: string;
 }) => {
@@ -85,7 +88,7 @@ export const LineChartComponent = (props: {
         label: scope === "development" ? "change" : "networth",
         data: portfolioData,
         borderColor: scope === "development" ? black : flyzerBlue,
-        backgroundColor: (context: any) => {
+        backgroundColor: (context: ScriptableContext<"line">) => {
           if (!context.chart.chartArea) {
             return chartBgColors[2];
           }
@@ -127,7 +130,7 @@ export const LineChartComponent = (props: {
       },
       tooltip: {
         enabled: false,
-        external: (context: any) => {
+        external: (context: { chart: ChartJS; tooltip: TooltipModel<"line"> }) => {
           let tooltipEl = document.getElementById("chartjs-tooltip");
           if (!tooltipEl) {
             tooltipEl = document.createElement("div");
@@ -150,7 +153,7 @@ export const LineChartComponent = (props: {
             tooltipEl.classList.add("no-transform");
           }
 
-          function getBody(bodyItem: any) {
+          function getBody(bodyItem: { lines: string[] }) {
             return bodyItem.lines;
           }
 

@@ -114,7 +114,7 @@ export const DistributionChart = ({
   }
 
   const sortedEntries = [...config.pieData].sort(
-    (prevDisObj: any, thisDisObj: any) =>
+    (prevDisObj, thisDisObj) =>
       prevDisObj.disElDistribution < thisDisObj.disElDistribution
         ? 1
         : prevDisObj.disElDistribution > thisDisObj.disElDistribution
@@ -128,7 +128,7 @@ export const DistributionChart = ({
   const mainDisObj: MainAssetsChart[] = [];
   const otherDisObj: OtherAssetsChart[] = [];
 
-  sortedEntries.forEach((disObj: any, index: number) => {
+  sortedEntries.forEach((disObj, index) => {
     if (index < config.tresholdValue) {
       mainDisObj.push({
         distribution: disObj.disElDistribution,

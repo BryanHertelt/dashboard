@@ -12,6 +12,12 @@ import {
   celldesign,
   sortingicondesgin,
 } from "../../helpers/helper-config/colors";
+import { Row, Column, ColumnDef } from "@tanstack/react-table";
+import {
+  DistributionCrypto,
+  DistributionDerivative,
+  DistributionNFT,
+} from "../../types/data-fetching-types";
 
 interface nftDataInterface {
   assetid: number;
@@ -61,7 +67,7 @@ export interface derivativesDataInterface {
 /**
  * dataColsCurrency is an object, which holds header and column definitions for the data-table status currency.
  */
-export const dataColsCurrency = [
+export const dataColsCurrency: ColumnDef<DistributionCrypto>[] = [
   {
     accessorKey: "assetname",
     header: () => (
@@ -72,7 +78,7 @@ export const dataColsCurrency = [
         Asset{" "}
       </div>
     ),
-    cell: ({ row }: any) => {
+    cell: ({ row }) => {
       const name = row.getValue("assetname");
 
       return (
@@ -90,7 +96,7 @@ export const dataColsCurrency = [
   },
   {
     accessorKey: "distribution",
-    header: ({ column }: any) => {
+    header: ({ column }) => {
       const sorted = column.getIsSorted();
       return (
         <button
@@ -105,7 +111,7 @@ export const dataColsCurrency = [
         </button>
       );
     },
-    cell: ({ row }: any) => {
+    cell: ({ row }) => {
       const percentage = parseFloat(row.getValue("distribution"));
       const formattedPercentage = formatValue(Number(percentage));
       return (
@@ -115,7 +121,7 @@ export const dataColsCurrency = [
   },
   {
     accessorKey: "assetvalue",
-    header: ({ column }: any) => {
+    header: ({ column }) => {
       const sorted = column.getIsSorted();
       return (
         <button
@@ -130,7 +136,7 @@ export const dataColsCurrency = [
         </button>
       );
     },
-    cell: ({ row }: any) => {
+    cell: ({ row }) => {
       const value = parseFloat(row.getValue("assetvalue"));
       const formattedValue = formatCurrency(value);
       const formattedAmount = formatValue(Number(row.original.assetamount));
@@ -153,7 +159,7 @@ export const dataColsCurrency = [
   },
   {
     accessorKey: "assetchange24h",
-    header: ({ column }: any) => {
+    header: ({ column }) => {
       const sorted = column.getIsSorted();
       return (
         <button
@@ -168,7 +174,7 @@ export const dataColsCurrency = [
         </button>
       );
     },
-    cell: ({ row }: any) => {
+    cell: ({ row }) => {
       const percentage = parseFloat(row.getValue("assetchange24h"));
       const percentagecolor =
         percentage < 0 ? " text-red rounded-md" : " text-green rounded-md;";
@@ -194,7 +200,7 @@ export const dataColsCurrency = [
   },
   {
     accessorKey: "profitloss",
-    header: ({ column }: any) => {
+    header: ({ column }) => {
       const sorted = column.getIsSorted();
       return (
         <button
@@ -210,7 +216,7 @@ export const dataColsCurrency = [
         </button>
       );
     },
-    cell: ({ row }: any) => {
+    cell: ({ row }) => {
       const profitloss = row.getValue("profitloss");
       const profitLossChange = row.original.profitlosschange;
       const renderProfitCell = () => {
@@ -254,7 +260,7 @@ export const dataColsCurrency = [
 /**
  * dataColsDerivative is an object, which holds header and column definitions for the data-table status derivative.
  */
-export const dataColsDerivative = [
+export const dataColsDerivative: ColumnDef<DistributionDerivative>[] = [
   {
     accessorKey: "assetname",
     header: () => (
@@ -262,7 +268,7 @@ export const dataColsDerivative = [
         Symbol
       </div>
     ),
-    cell: ({ row }: any) => {
+    cell: ({ row }) => {
       const name = row.getValue("assetname");
       const tradeDirection = row.original.tradedirection;
       const leverage = row.original.leverage;
@@ -295,7 +301,7 @@ export const dataColsDerivative = [
 
   {
     accessorKey: "entry",
-    header: ({ column }: any) => {
+    header: ({ column }) => {
       const sorted = column.getIsSorted();
       return (
         <button
@@ -311,7 +317,7 @@ export const dataColsDerivative = [
         </button>
       );
     },
-    cell: ({ row }: any) => {
+    cell: ({ row }) => {
       const amount = parseFloat(row.getValue("entry"));
       const formatted = formatCurrency(amount);
 
@@ -320,7 +326,7 @@ export const dataColsDerivative = [
   },
   {
     accessorKey: "liquidationprice",
-    header: ({ column }: any) => {
+    header: ({ column }) => {
       const sorted = column.getIsSorted();
       return (
         <button
@@ -336,7 +342,7 @@ export const dataColsDerivative = [
         </button>
       );
     },
-    cell: ({ row }: any) => {
+    cell: ({ row }) => {
       const amount = parseFloat(row.getValue("liquidationprice"));
       const formatted = formatCurrency(amount);
 
@@ -345,7 +351,7 @@ export const dataColsDerivative = [
   },
   {
     accessorKey: "margin",
-    header: ({ column }: any) => {
+    header: ({ column }) => {
       const sorted = column.getIsSorted();
       return (
         <button
@@ -361,7 +367,7 @@ export const dataColsDerivative = [
         </button>
       );
     },
-    cell: ({ row }: any) => {
+    cell: ({ row }) => {
       const amount = parseFloat(row.getValue("margin"));
       const formatted = formatCurrency(amount);
 
@@ -370,7 +376,7 @@ export const dataColsDerivative = [
   },
   {
     accessorKey: "profitloss",
-    header: ({ column }: any) => {
+    header: ({ column }) => {
       const sorted = column.getIsSorted();
       return (
         <button
@@ -386,7 +392,7 @@ export const dataColsDerivative = [
         </button>
       );
     },
-    cell: ({ row }: any) => {
+    cell: ({ row }) => {
       const profitloss = row.getValue("profitloss");
       const profitLossChange = row.original.profitlosschange;
       const renderProfitCell = () => {
@@ -423,11 +429,11 @@ export const dataColsDerivative = [
 /**
  * dataColsNft is an object, which holds header and column definitions for the data-table status nft.
  */
-export const dataColsNft = [
+export const dataColsNft: ColumnDef<DistributionNFT>[] = [
   {
     accessorKey: "assetname",
     header: () => <div className=" font-normal"> Collection </div>,
-    cell: ({ row }: any) => {
+    cell: ({ row }) => {
       const name = row.getValue("assetname");
       const symbol = row.original.symbol;
 
@@ -443,7 +449,7 @@ export const dataColsNft = [
   },
   {
     accessorKey: "collectionfloorprice",
-    header: ({ column }: any) => {
+    header: ({ column }) => {
       const sorted = column.getIsSorted();
       return (
         <button
@@ -459,14 +465,14 @@ export const dataColsNft = [
         </button>
       );
     },
-    cell: ({ row }: any) => {
+    cell: ({ row }) => {
       const amount = parseFloat(row.getValue("collectionvalue"));
       return <div className={`${celldesign}`}>{amount} ETH</div>;
     },
   },
   {
     accessorKey: "collectionvalue",
-    header: ({ column }: any) => {
+    header: ({ column }) => {
       const sorted = column.getIsSorted();
       return (
         <button
@@ -481,7 +487,7 @@ export const dataColsNft = [
         </button>
       );
     },
-    cell: ({ row }: any) => {
+    cell: ({ row }) => {
       const amount = parseFloat(row.getValue("collectionvalue"));
       const formattedAmount = formatCurrency(amount);
       const valueEth = row.original.collectionvalueeth;
@@ -497,14 +503,14 @@ export const dataColsNft = [
   {
     accessorKey: "assetamount",
     header: () => <div className={`${headerdesign} pr-5`}>Amount </div>,
-    cell: ({ row }: any) => {
+    cell: ({ row }) => {
       const count = parseFloat(row.getValue("assetamount"));
       return <div className={`${celldesign} pr-5`}> {count} </div>;
     },
   },
   {
     accessorKey: "profitloss",
-    header: ({ column }: any) => {
+    header: ({ column }) => {
       const sorted = column.getIsSorted();
       return (
         <button
@@ -520,7 +526,7 @@ export const dataColsNft = [
         </button>
       );
     },
-    cell: ({ row }: any) => {
+    cell: ({ row }) => {
       const profitloss = row.getValue("profitloss");
       const profitLossChange = row.original.profitlosschange;
       const renderProfitCell = () => {

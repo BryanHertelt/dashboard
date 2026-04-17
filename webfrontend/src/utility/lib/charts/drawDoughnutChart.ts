@@ -1,3 +1,5 @@
+import { Chart, ChartEvent, ActiveElement } from "chart.js";
+
 /**
  * `drawDoughnutChart` manages hover interactions for a Chart.js doughnut chart,
  * tracking the currently hovered segment and triggering redraws when needed.
@@ -21,7 +23,13 @@
  *
  * @returns void - All updates are side effects on refs and the Chart.js canvas.
  */
-export const drawDoughnutChart = (hover:any, element:any, chart:any, selectedDatasetIndex:any, selectedIndex: any) => {
+export const drawDoughnutChart = (
+  hover: ChartEvent,
+  element: ActiveElement[],
+  chart: Chart,
+  selectedDatasetIndex: { current: number | null },
+  selectedIndex: { current: number | null }
+) => {
     if (element[0]) {
         selectedDatasetIndex.current = element[0].datasetIndex;
         selectedIndex.current = element[0].index;
