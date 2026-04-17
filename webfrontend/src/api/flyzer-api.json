@@ -1,0 +1,590 @@
+{
+  "uuid": "acbb9bd9-0b15-4d53-974d-b51203fa98cf",
+  "lastMigration": 33,
+  "name": "Flyzer API Mock",
+  "endpointPrefix": "",
+  "latency": 0,
+  "port": 3001,
+  "hostname": "",
+  "folders": [],
+  "routes": [
+    {
+      "uuid": "2ac2c2da-4ea7-494a-9020-f66a027989e4",
+      "type": "http",
+      "documentation": "GET /1 — all assets distribution for portfolio 1",
+      "method": "get",
+      "endpoint": "1",
+      "responses": [
+        {
+          "uuid": "d6d427fc-33ca-4363-9f77-87ad1375e608",
+          "body": "{\n  \"portfolioid\": 1,\n  \"currentvalue\": 1250000,\n  \"assets\": [\n    {\n      \"symbol\": \"A\",\n      \"scope\": \"asset\",\n      \"portfolioid\": 1,\n      \"userid\": 1,\n      \"groupid\": 1,\n      \"holdingid\": 1,\n      \"assettype\": \"cryptocurrency\",\n      \"assetid\": 1,\n      \"assetname\": \"Bitcoin\",\n      \"assetabbreviation\": \"BTC\",\n      \"assetamount\": 2.5,\n      \"assetpercentage\": 35.2,\n      \"assetvalue\": 440000,\n      \"assetmarketprice\": 176000,\n      \"assetchange24h\": 3.2,\n      \"assetchange24hourvalue\": 13700,\n      \"assetchange7d\": [420000, 425000, 430000, 435000, 438000, 439000, 440000],\n      \"profitloss\": 85000,\n      \"profitlosschange\": 23.9,\n      \"notes\": \"Core holding\"\n    },\n    {\n      \"symbol\": \"A\",\n      \"scope\": \"asset\",\n      \"portfolioid\": 1,\n      \"userid\": 1,\n      \"groupid\": 1,\n      \"holdingid\": 2,\n      \"assettype\": \"cryptocurrency\",\n      \"assetid\": 2,\n      \"assetname\": \"Ethereum\",\n      \"assetabbreviation\": \"ETH\",\n      \"assetamount\": 12.0,\n      \"assetpercentage\": 25.6,\n      \"assetvalue\": 320000,\n      \"assetmarketprice\": 26667,\n      \"assetchange24h\": 2.1,\n      \"assetchange24hourvalue\": 6720,\n      \"assetchange7d\": [305000, 308000, 311000, 314000, 317000, 319000, 320000],\n      \"profitloss\": 56000,\n      \"profitlosschange\": 21.2,\n      \"notes\": \"\"\n    },\n    {\n      \"symbol\": \"A\",\n      \"scope\": \"asset\",\n      \"portfolioid\": 1,\n      \"userid\": 1,\n      \"groupid\": 2,\n      \"holdingid\": 1,\n      \"assettype\": \"cryptocurrency\",\n      \"assetid\": 3,\n      \"assetname\": \"Solana\",\n      \"assetabbreviation\": \"SOL\",\n      \"assetamount\": 800,\n      \"assetpercentage\": 12.0,\n      \"assetvalue\": 150000,\n      \"assetmarketprice\": 187.5,\n      \"assetchange24h\": 5.3,\n      \"assetchange24hourvalue\": 7500,\n      \"assetchange7d\": [135000, 138000, 141000, 144000, 147000, 149000, 150000],\n      \"profitloss\": 30000,\n      \"profitlosschange\": 25.0,\n      \"notes\": \"\"\n    },\n    {\n      \"symbol\": \"A\",\n      \"scope\": \"asset\",\n      \"portfolioid\": 1,\n      \"userid\": 1,\n      \"groupid\": 2,\n      \"holdingid\": 2,\n      \"assettype\": \"cryptocurrency\",\n      \"assetid\": 4,\n      \"assetname\": \"BNB\",\n      \"assetabbreviation\": \"BNB\",\n      \"assetamount\": 150,\n      \"assetpercentage\": 8.0,\n      \"assetvalue\": 100000,\n      \"assetmarketprice\": 666.67,\n      \"assetchange24h\": -1.4,\n      \"assetchange24hourvalue\": -1400,\n      \"assetchange7d\": [104000, 103000, 102000, 101000, 100500, 100200, 100000],\n      \"profitloss\": 15000,\n      \"profitlosschange\": 17.6,\n      \"notes\": \"\"\n    },\n    {\n      \"symbol\": \"A\",\n      \"scope\": \"asset\",\n      \"portfolioid\": 1,\n      \"userid\": 1,\n      \"groupid\": 5,\n      \"holdingid\": 3,\n      \"assettype\": \"cryptocurrency\",\n      \"assetid\": 5,\n      \"assetname\": \"Dogecoin\",\n      \"assetabbreviation\": \"DOGE\",\n      \"assetamount\": 500000,\n      \"assetpercentage\": 6.0,\n      \"assetvalue\": 75000,\n      \"assetmarketprice\": 0.15,\n      \"assetchange24h\": 8.2,\n      \"assetchange24hourvalue\": 5700,\n      \"assetchange7d\": [65000, 67000, 69000, 71000, 73000, 74000, 75000],\n      \"profitloss\": 25000,\n      \"profitlosschange\": 50.0,\n      \"notes\": \"High risk\"\n    },\n    {\n      \"symbol\": \"BAYC\",\n      \"scope\": \"asset\",\n      \"portfolioid\": 1,\n      \"userid\": 1,\n      \"groupid\": 3,\n      \"holdingid\": 2,\n      \"assettype\": \"nft\",\n      \"assetid\": 10,\n      \"assetname\": \"Bored Ape Yacht Club #4321\",\n      \"assetpercentage\": 5.6,\n      \"collectionvalue\": 70000,\n      \"collectionvalueeth\": 2.625,\n      \"collectionfloorprice\": 68000,\n      \"assetamount\": 1,\n      \"profitloss\": 45000,\n      \"profitlosschange\": 180.0,\n      \"notes\": \"\"\n    },\n    {\n      \"symbol\": \"BTCUSDT\",\n      \"scope\": \"asset\",\n      \"portfolioid\": 1,\n      \"userid\": 1,\n      \"groupid\": 4,\n      \"holdingid\": 4,\n      \"assettype\": \"derivative\",\n      \"assetid\": 20,\n      \"assetname\": \"BTC/USDT Perpetual\",\n      \"assetpercentage\": 8.0,\n      \"derivativeexchange\": \"Binance Futures\",\n      \"positiontype\": \"open\",\n      \"tradedirection\": \"long\",\n      \"derivativetype\": \"perpetual\",\n      \"leverage\": 10,\n      \"assetvalue\": 100000,\n      \"entry\": 172000,\n      \"unrealizedpl\": 4000,\n      \"price\": 176000,\n      \"liquidationprice\": 155000,\n      \"margin\": 10000,\n      \"tp\": 185000,\n      \"sl\": 165000,\n      \"settlementdate\": \"\",\n      \"profitloss\": 4000,\n      \"profitlosschange\": 4.0\n    }\n  ]\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "All assets",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "uuid": "16b991e7-29ef-4b7f-8690-cadd4b14c08a",
+      "type": "http",
+      "documentation": "GET /1/assetgroups — asset group distribution for portfolio 1",
+      "method": "get",
+      "endpoint": "1/assetgroups",
+      "responses": [
+        {
+          "uuid": "f3fb0a24-7fc1-49ff-bbc5-f980b0c04a83",
+          "body": "{\n  \"portfolioid\": 1,\n  \"currentvalue\": 1250000,\n  \"groups\": [\n    {\n      \"scope\": \"group\",\n      \"groupid\": 1,\n      \"portfolioid\": 1,\n      \"userid\": 1,\n      \"groupname\": \"Blue Chips\",\n      \"assetcount\": 2,\n      \"groupvalue\": 760000,\n      \"grouppercentage\": 60.8,\n      \"groupchange24h\": 2.8,\n      \"groupchange24hvalue\": 20400,\n      \"groupchange7d\": [725000, 733000, 741000, 749000, 755000, 758000, 760000],\n      \"profitloss\": 141000,\n      \"profitlosschange\": 22.8,\n      \"description\": \"Top market cap cryptocurrencies\"\n    },\n    {\n      \"scope\": \"group\",\n      \"groupid\": 2,\n      \"portfolioid\": 1,\n      \"userid\": 1,\n      \"groupname\": \"Layer 1 Alts\",\n      \"assetcount\": 2,\n      \"groupvalue\": 250000,\n      \"grouppercentage\": 20.0,\n      \"groupchange24h\": 2.3,\n      \"groupchange24hvalue\": 5600,\n      \"groupchange7d\": [239000, 241000, 243000, 245000, 247000, 249000, 250000],\n      \"profitloss\": 45000,\n      \"profitlosschange\": 21.9,\n      \"description\": \"Emerging Layer 1 blockchains\"\n    },\n    {\n      \"scope\": \"group\",\n      \"groupid\": 3,\n      \"portfolioid\": 1,\n      \"userid\": 1,\n      \"groupname\": \"NFTs\",\n      \"assetcount\": 1,\n      \"groupvalue\": 70000,\n      \"grouppercentage\": 5.6,\n      \"groupchange24h\": -0.5,\n      \"groupchange24hvalue\": -350,\n      \"groupchange7d\": [72000, 71500, 71000, 70800, 70600, 70200, 70000],\n      \"profitloss\": 45000,\n      \"profitlosschange\": 180.0,\n      \"description\": \"NFT collection holdings\"\n    },\n    {\n      \"scope\": \"group\",\n      \"groupid\": 4,\n      \"portfolioid\": 1,\n      \"userid\": 1,\n      \"groupname\": \"Derivatives\",\n      \"assetcount\": 1,\n      \"groupvalue\": 100000,\n      \"grouppercentage\": 8.0,\n      \"groupchange24h\": 4.0,\n      \"groupchange24hvalue\": 4000,\n      \"groupchange7d\": [96000, 97000, 98000, 99000, 99500, 99800, 100000],\n      \"profitloss\": 4000,\n      \"profitlosschange\": 4.0,\n      \"description\": \"Leveraged derivatives positions\"\n    },\n    {\n      \"scope\": \"group\",\n      \"groupid\": 5,\n      \"portfolioid\": 1,\n      \"userid\": 1,\n      \"groupname\": \"Speculative\",\n      \"assetcount\": 1,\n      \"groupvalue\": 75000,\n      \"grouppercentage\": 6.0,\n      \"groupchange24h\": 8.2,\n      \"groupchange24hvalue\": 5700,\n      \"groupchange7d\": [65000, 67000, 69000, 71000, 73000, 74000, 75000],\n      \"profitloss\": 25000,\n      \"profitlosschange\": 50.0,\n      \"description\": \"Higher risk speculative assets\"\n    }\n  ]\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Asset groups",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "uuid": "cb394611-5d36-451c-b2f9-1db902cafe4c",
+      "type": "http",
+      "documentation": "GET /1/holdings — holdings distribution for portfolio 1",
+      "method": "get",
+      "endpoint": "1/holdings",
+      "responses": [
+        {
+          "uuid": "f14ce8e0-b26a-49a3-9fe7-584eb21903ba",
+          "body": "{\n  \"portfolioid\": 1,\n  \"currentvalue\": 1250000,\n  \"holdings\": [\n    {\n      \"scope\": \"holding\",\n      \"holdingid\": 1,\n      \"portfolioid\": 1,\n      \"custom\": false,\n      \"symbol\": \"BINANCE\",\n      \"userid\": 1,\n      \"holdingname\": \"Binance Exchange\",\n      \"assetcount\": 3,\n      \"holdingvalue\": 490000,\n      \"holdingpercentage\": 39.2,\n      \"holdingchange24h\": 3.4,\n      \"holdingchange24hvalue\": 16200,\n      \"holdingchange7d\": [465000, 470000, 475000, 480000, 484000, 487000, 490000],\n      \"profitloss\": 85000,\n      \"profitlosschange\": 20.9,\n      \"description\": \"Binance CEX holdings\"\n    },\n    {\n      \"scope\": \"holding\",\n      \"holdingid\": 2,\n      \"portfolioid\": 1,\n      \"custom\": false,\n      \"symbol\": \"COINBASE\",\n      \"userid\": 1,\n      \"holdingname\": \"Coinbase\",\n      \"assetcount\": 2,\n      \"holdingvalue\": 320000,\n      \"holdingpercentage\": 25.6,\n      \"holdingchange24h\": 2.1,\n      \"holdingchange24hvalue\": 6720,\n      \"holdingchange7d\": [305000, 308000, 311000, 314000, 317000, 319000, 320000],\n      \"profitloss\": 56000,\n      \"profitlosschange\": 21.2,\n      \"description\": \"Coinbase Exchange holdings\"\n    },\n    {\n      \"scope\": \"holding\",\n      \"holdingid\": 3,\n      \"portfolioid\": 1,\n      \"custom\": false,\n      \"symbol\": \"METAMASK\",\n      \"userid\": 1,\n      \"holdingname\": \"MetaMask Wallet\",\n      \"assetcount\": 2,\n      \"holdingvalue\": 280000,\n      \"holdingpercentage\": 22.4,\n      \"holdingchange24h\": 1.8,\n      \"holdingchange24hvalue\": 4900,\n      \"holdingchange7d\": [268000, 271000, 274000, 276000, 278000, 279000, 280000],\n      \"profitloss\": 49000,\n      \"profitlosschange\": 21.2,\n      \"description\": \"Self-custody DeFi wallet\"\n    },\n    {\n      \"scope\": \"holding\",\n      \"holdingid\": 4,\n      \"portfolioid\": 1,\n      \"custom\": true,\n      \"symbol\": \"LEDGER\",\n      \"userid\": 1,\n      \"holdingname\": \"Ledger Cold Storage\",\n      \"assetcount\": 1,\n      \"holdingvalue\": 100000,\n      \"holdingpercentage\": 8.0,\n      \"holdingchange24h\": 4.0,\n      \"holdingchange24hvalue\": 4000,\n      \"holdingchange7d\": [96000, 97000, 98000, 99000, 99500, 99800, 100000],\n      \"profitloss\": 4000,\n      \"profitlosschange\": 4.0,\n      \"description\": \"Cold storage derivatives margin\"\n    },\n    {\n      \"scope\": \"holding\",\n      \"holdingid\": 5,\n      \"portfolioid\": 1,\n      \"custom\": false,\n      \"symbol\": \"KRAKEN\",\n      \"userid\": 1,\n      \"holdingname\": \"Kraken Exchange\",\n      \"assetcount\": 1,\n      \"holdingvalue\": 60000,\n      \"holdingpercentage\": 4.8,\n      \"holdingchange24h\": -0.5,\n      \"holdingchange24hvalue\": -300,\n      \"holdingchange7d\": [62000, 61500, 61200, 61000, 60800, 60500, 60000],\n      \"profitloss\": 10000,\n      \"profitlosschange\": 20.0,\n      \"description\": \"Kraken Exchange holdings\"\n    }\n  ]\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Holdings",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "uuid": "f35d43a4-9ae3-4b27-8ae6-3a34130e0c9d",
+      "type": "http",
+      "documentation": "POST /1/sync-holdings/:holdingId — sync a single holding and return updated Holding object",
+      "method": "post",
+      "endpoint": "1/sync-holdings/:holdingId",
+      "responses": [
+        {
+          "uuid": "76b23985-bffd-4424-8db5-b93fb118e1b1",
+          "body": "{\n  \"scope\": \"holding\",\n  \"holdingid\": 1,\n  \"portfolioid\": 1,\n  \"custom\": false,\n  \"symbol\": \"BINANCE\",\n  \"userid\": 1,\n  \"holdingname\": \"Binance Exchange\",\n  \"assetcount\": 3,\n  \"holdingvalue\": 492500,\n  \"holdingpercentage\": 39.4,\n  \"holdingchange24h\": 3.6,\n  \"holdingchange24hvalue\": 17100,\n  \"holdingchange7d\": [465000, 470000, 475000, 480000, 484000, 487000, 492500],\n  \"profitloss\": 87500,\n  \"profitlosschange\": 21.6,\n  \"description\": \"Binance CEX holdings\"\n}",
+          "latency": 400,
+          "statusCode": 200,
+          "label": "Synced holding 1 (Binance)",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "params",
+              "modifier": "holdingId",
+              "value": "1",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "32cc123c-40a2-4051-9fbd-114de61223b0",
+          "body": "{\n  \"scope\": \"holding\",\n  \"holdingid\": 2,\n  \"portfolioid\": 1,\n  \"custom\": false,\n  \"symbol\": \"COINBASE\",\n  \"userid\": 1,\n  \"holdingname\": \"Coinbase\",\n  \"assetcount\": 2,\n  \"holdingvalue\": 321500,\n  \"holdingpercentage\": 25.7,\n  \"holdingchange24h\": 2.2,\n  \"holdingchange24hvalue\": 6900,\n  \"holdingchange7d\": [305000, 308000, 311000, 314000, 317000, 319000, 321500],\n  \"profitloss\": 57500,\n  \"profitlosschange\": 21.8,\n  \"description\": \"Coinbase Exchange holdings\"\n}",
+          "latency": 400,
+          "statusCode": 200,
+          "label": "Synced holding 2 (Coinbase)",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "params",
+              "modifier": "holdingId",
+              "value": "2",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "3d3f1453-4268-41c7-add5-a21344293fb1",
+          "body": "{\n  \"scope\": \"holding\",\n  \"holdingid\": 3,\n  \"portfolioid\": 1,\n  \"custom\": false,\n  \"symbol\": \"METAMASK\",\n  \"userid\": 1,\n  \"holdingname\": \"MetaMask Wallet\",\n  \"assetcount\": 2,\n  \"holdingvalue\": 281200,\n  \"holdingpercentage\": 22.5,\n  \"holdingchange24h\": 1.9,\n  \"holdingchange24hvalue\": 5200,\n  \"holdingchange7d\": [268000, 271000, 274000, 276000, 278000, 279000, 281200],\n  \"profitloss\": 50200,\n  \"profitlosschange\": 21.7,\n  \"description\": \"Self-custody DeFi wallet\"\n}",
+          "latency": 400,
+          "statusCode": 200,
+          "label": "Synced holding 3 (MetaMask)",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "params",
+              "modifier": "holdingId",
+              "value": "3",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "725b91ae-dbd9-46ba-ac5d-710c61a879d3",
+          "body": "{\n  \"scope\": \"holding\",\n  \"holdingid\": 4,\n  \"portfolioid\": 1,\n  \"custom\": true,\n  \"symbol\": \"LEDGER\",\n  \"userid\": 1,\n  \"holdingname\": \"Ledger Cold Storage\",\n  \"assetcount\": 1,\n  \"holdingvalue\": 100800,\n  \"holdingpercentage\": 8.1,\n  \"holdingchange24h\": 4.2,\n  \"holdingchange24hvalue\": 4200,\n  \"holdingchange7d\": [96000, 97000, 98000, 99000, 99500, 99800, 100800],\n  \"profitloss\": 4800,\n  \"profitlosschange\": 4.8,\n  \"description\": \"Cold storage derivatives margin\"\n}",
+          "latency": 400,
+          "statusCode": 200,
+          "label": "Synced holding 4 (Ledger)",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "params",
+              "modifier": "holdingId",
+              "value": "4",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "0c408428-e937-4492-b363-c88b551a9405",
+          "body": "{\n  \"scope\": \"holding\",\n  \"holdingid\": 5,\n  \"portfolioid\": 1,\n  \"custom\": false,\n  \"symbol\": \"KRAKEN\",\n  \"userid\": 1,\n  \"holdingname\": \"Kraken Exchange\",\n  \"assetcount\": 1,\n  \"holdingvalue\": 59500,\n  \"holdingpercentage\": 4.8,\n  \"holdingchange24h\": -0.8,\n  \"holdingchange24hvalue\": -480,\n  \"holdingchange7d\": [62000, 61500, 61200, 61000, 60800, 60200, 59500],\n  \"profitloss\": 9500,\n  \"profitlosschange\": 19.0,\n  \"description\": \"Kraken Exchange holdings\"\n}",
+          "latency": 400,
+          "statusCode": 200,
+          "label": "Synced holding 5 (Kraken) — default fallback",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "uuid": "82412768-81c7-407a-a8d2-b622d7f5b7b1",
+      "type": "http",
+      "documentation": "GET /1/cryptocurrency?assetid=:id — cryptocurrency asset detail",
+      "method": "get",
+      "endpoint": "1/cryptocurrency",
+      "responses": [
+        {
+          "uuid": "07bfbe35-5769-45f0-bed8-cff088b0b324",
+          "body": "{\n  \"symbol\": \"A\",\n  \"scope\": \"asset\",\n  \"portfolioid\": 1,\n  \"userid\": 1,\n  \"groupid\": 1,\n  \"holdingid\": 1,\n  \"assettype\": \"cryptocurrency\",\n  \"assetid\": 1,\n  \"assetname\": \"Bitcoin\",\n  \"assetabbreviation\": \"BTC\",\n  \"assetamount\": 2.5,\n  \"assetpercentage\": 35.2,\n  \"assetvalue\": 440000,\n  \"assetmarketprice\": 176000,\n  \"assetchange24h\": 3.2,\n  \"assetchange24hourvalue\": 13700,\n  \"assetchange7d\": [420000, 425000, 430000, 435000, 438000, 439000, 440000],\n  \"profitloss\": 85000,\n  \"profitlosschange\": 23.9,\n  \"notes\": \"Core holding\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "BTC detail",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "query",
+              "modifier": "assetid",
+              "value": "1",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "50385bb0-d816-48aa-892e-7c833eebadf6",
+          "body": "{\n  \"symbol\": \"A\",\n  \"scope\": \"asset\",\n  \"portfolioid\": 1,\n  \"userid\": 1,\n  \"groupid\": 1,\n  \"holdingid\": 2,\n  \"assettype\": \"cryptocurrency\",\n  \"assetid\": 2,\n  \"assetname\": \"Ethereum\",\n  \"assetabbreviation\": \"ETH\",\n  \"assetamount\": 12.0,\n  \"assetpercentage\": 25.6,\n  \"assetvalue\": 320000,\n  \"assetmarketprice\": 26667,\n  \"assetchange24h\": 2.1,\n  \"assetchange24hourvalue\": 6720,\n  \"assetchange7d\": [305000, 308000, 311000, 314000, 317000, 319000, 320000],\n  \"profitloss\": 56000,\n  \"profitlosschange\": 21.2,\n  \"notes\": \"\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "ETH detail",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "query",
+              "modifier": "assetid",
+              "value": "2",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "e67e73a0-07d6-41ac-a8eb-d8dd489c52bc",
+          "body": "{\n  \"symbol\": \"A\",\n  \"scope\": \"asset\",\n  \"portfolioid\": 1,\n  \"userid\": 1,\n  \"groupid\": 2,\n  \"holdingid\": 1,\n  \"assettype\": \"cryptocurrency\",\n  \"assetid\": 3,\n  \"assetname\": \"Solana\",\n  \"assetabbreviation\": \"SOL\",\n  \"assetamount\": 800,\n  \"assetpercentage\": 12.0,\n  \"assetvalue\": 150000,\n  \"assetmarketprice\": 187.5,\n  \"assetchange24h\": 5.3,\n  \"assetchange24hourvalue\": 7500,\n  \"assetchange7d\": [135000, 138000, 141000, 144000, 147000, 149000, 150000],\n  \"profitloss\": 30000,\n  \"profitlosschange\": 25.0,\n  \"notes\": \"\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "SOL detail — default fallback",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "uuid": "6a9bf408-56fd-4efa-a55d-99e6f246c7a0",
+      "type": "http",
+      "documentation": "GET /1/nft?assetid=:id — NFT asset detail",
+      "method": "get",
+      "endpoint": "1/nft",
+      "responses": [
+        {
+          "uuid": "6b2a7bcd-2421-45f5-9fd2-5d745b9a0b55",
+          "body": "{\n  \"symbol\": \"BAYC\",\n  \"scope\": \"asset\",\n  \"portfolioid\": 1,\n  \"userid\": 1,\n  \"groupid\": 3,\n  \"holdingid\": 2,\n  \"assettype\": \"nft\",\n  \"assetid\": 10,\n  \"assetname\": \"Bored Ape Yacht Club #4321\",\n  \"assetpercentage\": 5.6,\n  \"collectionvalue\": 70000,\n  \"collectionvalueeth\": 2.625,\n  \"collectionfloorprice\": 68000,\n  \"assetamount\": 1,\n  \"profitloss\": 45000,\n  \"profitlosschange\": 180.0,\n  \"notes\": \"\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "BAYC NFT detail",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "uuid": "a1c0c0c4-d6b3-4920-8352-5e6afa12b50a",
+      "type": "http",
+      "documentation": "GET /1/derivative?assetid=:id — derivative asset detail",
+      "method": "get",
+      "endpoint": "1/derivative",
+      "responses": [
+        {
+          "uuid": "37a47c73-115a-4e8a-a0db-3de53a9cd17e",
+          "body": "{\n  \"symbol\": \"BTCUSDT\",\n  \"scope\": \"asset\",\n  \"portfolioid\": 1,\n  \"userid\": 1,\n  \"groupid\": 4,\n  \"holdingid\": 4,\n  \"assettype\": \"derivative\",\n  \"assetid\": 20,\n  \"assetname\": \"BTC/USDT Perpetual\",\n  \"assetpercentage\": 8.0,\n  \"derivativeexchange\": \"Binance Futures\",\n  \"positiontype\": \"open\",\n  \"tradedirection\": \"long\",\n  \"derivativetype\": \"perpetual\",\n  \"leverage\": 10,\n  \"assetvalue\": 100000,\n  \"entry\": 172000,\n  \"unrealizedpl\": 4000,\n  \"price\": 176000,\n  \"liquidationprice\": 155000,\n  \"margin\": 10000,\n  \"tp\": 185000,\n  \"sl\": 165000,\n  \"settlementdate\": \"\",\n  \"profitloss\": 4000,\n  \"profitlosschange\": 4.0\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "BTC perp long detail",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "uuid": "6f1722a2-3360-483e-953f-fd3865ec5c6a",
+      "type": "http",
+      "documentation": "GET /1/value-history?timeframe=:tf — portfolio value chart data. y is an array per the layer.tsx validator.",
+      "method": "get",
+      "endpoint": "1/value-history",
+      "responses": [
+        {
+          "uuid": "085241f7-1596-4014-81da-df071d02bd8d",
+          "body": "[\n  {\"x\": \"2026-04-10T00:00:00Z\", \"y\": [1180000]},\n  {\"x\": \"2026-04-11T00:00:00Z\", \"y\": [1195000]},\n  {\"x\": \"2026-04-12T00:00:00Z\", \"y\": [1210000]},\n  {\"x\": \"2026-04-13T00:00:00Z\", \"y\": [1225000]},\n  {\"x\": \"2026-04-14T00:00:00Z\", \"y\": [1235000]},\n  {\"x\": \"2026-04-15T00:00:00Z\", \"y\": [1245000]},\n  {\"x\": \"2026-04-16T00:00:00Z\", \"y\": [1250000]}\n]",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "7d timeframe",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "query",
+              "modifier": "timeframe",
+              "value": "7d",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "57fa3283-12ef-4bd6-9a13-b2eefc0a2ce0",
+          "body": "[\n  {\"x\": \"2026-04-16T00:00:00Z\", \"y\": [1245000]},\n  {\"x\": \"2026-04-16T06:00:00Z\", \"y\": [1247000]},\n  {\"x\": \"2026-04-16T12:00:00Z\", \"y\": [1248500]},\n  {\"x\": \"2026-04-16T18:00:00Z\", \"y\": [1249200]},\n  {\"x\": \"2026-04-17T00:00:00Z\", \"y\": [1250000]}\n]",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "1d timeframe",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "query",
+              "modifier": "timeframe",
+              "value": "1d",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "70d06173-fbd5-4b8a-853b-c152d508a26c",
+          "body": "[\n  {\"x\": \"2026-01-17T00:00:00Z\", \"y\": [980000]},\n  {\"x\": \"2026-02-17T00:00:00Z\", \"y\": [1020000]},\n  {\"x\": \"2026-03-17T00:00:00Z\", \"y\": [1080000]},\n  {\"x\": \"2026-03-27T00:00:00Z\", \"y\": [1140000]},\n  {\"x\": \"2026-04-07T00:00:00Z\", \"y\": [1200000]},\n  {\"x\": \"2026-04-17T00:00:00Z\", \"y\": [1250000]}\n]",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "3m timeframe — default fallback",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "uuid": "12d2ec0a-e733-413b-aa96-fb0ec5a824b0",
+      "type": "http",
+      "documentation": "POST /1/detailtype — rebalancing: body { assetId, desiredbalance }",
+      "method": "post",
+      "endpoint": "1/detailtype",
+      "responses": [
+        {
+          "uuid": "b868c4a7-8f36-4f6d-952d-1b67fd67eda3",
+          "body": "{\n  \"success\": true,\n  \"message\": \"Desired balance updated\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Rebalancing accepted",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    }
+  ],
+  "rootChildren": [
+    {
+      "type": "route",
+      "uuid": "2ac2c2da-4ea7-494a-9020-f66a027989e4"
+    },
+    {
+      "type": "route",
+      "uuid": "16b991e7-29ef-4b7f-8690-cadd4b14c08a"
+    },
+    {
+      "type": "route",
+      "uuid": "cb394611-5d36-451c-b2f9-1db902cafe4c"
+    },
+    {
+      "type": "route",
+      "uuid": "f35d43a4-9ae3-4b27-8ae6-3a34130e0c9d"
+    },
+    {
+      "type": "route",
+      "uuid": "82412768-81c7-407a-a8d2-b622d7f5b7b1"
+    },
+    {
+      "type": "route",
+      "uuid": "6a9bf408-56fd-4efa-a55d-99e6f246c7a0"
+    },
+    {
+      "type": "route",
+      "uuid": "a1c0c0c4-d6b3-4920-8352-5e6afa12b50a"
+    },
+    {
+      "type": "route",
+      "uuid": "6f1722a2-3360-483e-953f-fd3865ec5c6a"
+    },
+    {
+      "type": "route",
+      "uuid": "12d2ec0a-e733-413b-aa96-fb0ec5a824b0"
+    }
+  ],
+  "proxyMode": false,
+  "proxyHost": "",
+  "proxyRemovePrefix": false,
+  "tlsOptions": {
+    "enabled": false,
+    "type": "CERT",
+    "pfxPath": "",
+    "certPath": "",
+    "keyPath": "",
+    "caPath": "",
+    "passphrase": ""
+  },
+  "cors": true,
+  "headers": [
+    {
+      "key": "Content-Type",
+      "value": "application/json"
+    },
+    {
+      "key": "Access-Control-Allow-Origin",
+      "value": "*"
+    },
+    {
+      "key": "Access-Control-Allow-Methods",
+      "value": "GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS"
+    },
+    {
+      "key": "Access-Control-Allow-Headers",
+      "value": "Content-Type, Origin, Accept, Authorization, Content-Length, X-Requested-With"
+    }
+  ],
+  "proxyReqHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "proxyResHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "data": [],
+  "callbacks": []
+}
