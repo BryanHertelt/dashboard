@@ -99,11 +99,14 @@ export const DrDetail = ({
     { header: "Total Cost", data: data.totalcost },
   ];
 
+  console.log("This is the data", data)
+
   const initialData = {
     desiredbalance: data.desiredbalance,
     currentbalance: data.currentbalance,
   };
   logger.info("DrDetail called", { initialData: initialData });
+
 
   return (
     <div className="flex flex-col w-full h-full">

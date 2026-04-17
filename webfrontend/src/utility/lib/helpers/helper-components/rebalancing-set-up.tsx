@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { formatCurrency, formatValue } from "../../helpers";
 import { Bar } from "react-chartjs-2";
 import {
@@ -109,7 +109,7 @@ export const RebalancingSetUp = ({
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value;
+    const value = e.target.value;
 
     if (!/^\d*\.?\d*$/.test(value)) {
       setToast({ active: true, title: "Please type in a number" });
