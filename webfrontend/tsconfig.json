@@ -45,7 +45,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "jest.config.js",
+    "jest.config.mjs",
     "__tests__/layout.test.jsx",
     "__tests__/assetdistribution.test.jsx",
     "__tests__/bar-charts.test.jsx",
