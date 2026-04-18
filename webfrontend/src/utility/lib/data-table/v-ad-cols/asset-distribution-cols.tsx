@@ -12,31 +12,12 @@ import {
   celldesign,
   sortingicondesgin,
 } from "../../helpers/helper-config/colors";
-import { Row, Column, ColumnDef } from "@tanstack/react-table";
+import { ColumnDef } from "@tanstack/react-table";
 import {
   DistributionCrypto,
   DistributionDerivative,
   DistributionNFT,
 } from "../../types/data-fetching-types";
-
-interface nftDataInterface {
-  assetid: number;
-  assetname: string;
-  asseetpercentage: string;
-  assettype: "nft";
-  collectionfloorprice: number;
-  collectionvalue: number;
-  collectionvalueth: number;
-  groupid: number;
-  holdingid: number;
-  assetamount: number;
-  notes?: string;
-  portfolioid: number;
-  profitloss: number;
-  profitlosschange: number;
-  symbol: string;
-  userid: number;
-}
 
 export interface derivativesDataInterface {
   symbol: string;

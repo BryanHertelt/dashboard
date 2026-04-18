@@ -1,5 +1,4 @@
 import React from "react";
-import Link from "next/link";
 import { sidebarelementinterface } from "@/api/sidebarnavAPI";
 
 export interface propsInterface {

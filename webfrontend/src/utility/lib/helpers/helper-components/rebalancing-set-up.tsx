@@ -116,16 +116,17 @@ export const RebalancingSetUp = ({
       return;
     }
     if (value.endsWith(".")) {
-      isToggled === "value"
-        ? setCalcV([
-            Math.round((Number(value) / currentValue) * 100 * 100) / 100,
-            value,
-          ])
-        : setCalcV([
-            value,
-            Math.round(Number((Number(value) / 100) * currentValue * 100)) /
-              100,
-          ]);
+      if (isToggled === "value") {
+        setCalcV([
+          Math.round((Number(value) / currentValue) * 100 * 100) / 100,
+          value,
+        ]);
+      } else {
+        setCalcV([
+          value,
+          Math.round(Number((Number(value) / 100) * currentValue * 100)) / 100,
+        ]);
+      }
       return;
     }
 
@@ -146,15 +147,17 @@ export const RebalancingSetUp = ({
       setCalcV([0, 0]);
     } else {
       setToast({ active: false, title: "" });
-      isToggled === "value"
-        ? setCalcV([
-            Math.round((roundedValue / currentValue) * 100 * 100) / 100,
-            roundedValue,
-          ])
-        : setCalcV([
-            roundedValue,
-            Math.round(Number((roundedValue / 100) * currentValue * 100)) / 100,
-          ]);
+      if (isToggled === "value") {
+        setCalcV([
+          Math.round((roundedValue / currentValue) * 100 * 100) / 100,
+          roundedValue,
+        ]);
+      } else {
+        setCalcV([
+          roundedValue,
+          Math.round(Number((roundedValue / 100) * currentValue * 100)) / 100,
+        ]);
+      }
     }
   };
 

@@ -6,14 +6,7 @@ const logger = pino({
   browser: {
     asObject: true,
     transmit: {
-      send: async (level, logEvent) => {
-        const logPayload = {
-          level,
-          time: logEvent.ts,
-          ...logEvent.bindings?.[0],
-          messages: logEvent.messages,
-        };
-
+      send: async () => {
         try {
           /**
            *  await fetch("/api/logging", {

@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 interface ImageContainerProps {
   url: string | undefined;
   alt: string;
@@ -14,8 +12,6 @@ interface ImageContainerProps {
  * @returns
  */
 export const HoldingLogoImageContainer = ({
-  url,
-  alt,
   placeholder,
 }: ImageContainerProps) => {
   /*<Image src={props.url} width={props.width} height={props.height} alt={props.alt}/> */
@@ -30,8 +26,6 @@ export const HoldingLogoImageContainer = ({
  * @returns
  */
 export const NftDetailImageContainer = ({
-  url,
-  alt,
   placeholder,
 }: ImageContainerProps) => {
   /*<Image src={props.url} width={props.width} height={props.height} alt={props.alt}/> */

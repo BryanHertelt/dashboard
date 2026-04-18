@@ -2,7 +2,7 @@ import {
   SortingDataTableIcon,
   CustomHoldingIcon,
 } from "../../../../../public/images/icons";
-import { formatCurrency, formatValue, formatDecimals } from "../../helpers";
+import { formatCurrency, formatValue } from "../../helpers";
 import { icongray } from "../../helpers/helper-config/colors";
 import {
   headerdesign,
@@ -10,7 +10,6 @@ import {
   firstcelldesign,
   celldesign,
 } from "../../helpers/helper-config/colors";
-import { syncSingleHolding } from "../../stores";
 import { Row, Column } from "@tanstack/react-table";
 import { DistributionHolding } from "../../types/data-fetching-types";
 

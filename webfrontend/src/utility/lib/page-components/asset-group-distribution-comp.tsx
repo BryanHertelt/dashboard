@@ -1,10 +1,6 @@
 "use client";
 
 import {
-  assetGroupPieChartData,
-  pieChartOptions,
-} from "@/api/distribution/chartdataformatter";
-import {
   AssetGroups,
   DistributionGroup,
   Group,

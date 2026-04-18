@@ -1,5 +1,3 @@
-import { icongray } from "../helper-config/colors";
-
 /**
  * `HSLToHex` converts a color value from HSL (Hue, Saturation, Lightness)
  * format into a hexadecimal color string.

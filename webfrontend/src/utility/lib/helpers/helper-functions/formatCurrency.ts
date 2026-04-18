@@ -9,15 +9,11 @@ export const formatCurrency = (number: number | null): string => {
       return "--";
     }
   
-    let num = Number(number?.toString().replace(",", "."));
+    const num = Number(number?.toString().replace(",", "."));
     const roundedNumber = Number(num.toFixed(2));
-  
+
     if (num > 0 && num < 1) {
       const formattedDecimals = formatDecimals(num, roundedNumber);
-      const currencyDecimals = new Intl.NumberFormat("en-Us", {
-        style: "currency",
-        currency: "USD",
-      }).format(Number(formattedDecimals));
       return `$${formattedDecimals}`;
     }
   

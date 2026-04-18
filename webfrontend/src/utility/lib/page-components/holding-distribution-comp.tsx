@@ -1,24 +1,19 @@
 "use client";
 
 import {
-  assetGroupPieChartData,
-  pieChartOptions,
-} from "@/api/distribution/chartdataformatter";
-import {
   AssetHoldings,
   DistributionHolding,
   Holding,
 } from "../types/data-fetching-types";
-import { useState, useMemo, useEffect, useRef } from "react";
-import { useDistributionData, useHoldingMutation } from "../data-fetching";
+import { useMemo, useEffect } from "react";
+import { useDistributionData } from "../data-fetching";
 import { getDistribution } from "../data-fetching";
 import { DistributionChart } from "../charts";
 import { SmallLoadingSkeleton } from "../data-fetching";
-import { dataColsGroups, AssetTableComponent } from "../data-table";
+import { AssetTableComponent } from "../data-table";
 import { ranHexGen } from "../helpers";
 import { dataColsHoldings } from "../data-table/v-ad-cols/holding-cols";
 import { syncSingleHolding } from "../stores";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const HoldingDistributionComponent = ({
   holdingData,

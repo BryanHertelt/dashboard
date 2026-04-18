@@ -1,5 +1,5 @@
 import { SortingDataTableIcon } from "../../../../../public/images/icons";
-import { formatCurrency, formatValue, formatDecimals } from "../../helpers";
+import { formatCurrency, formatValue } from "../../helpers";
 import { icongray } from "../../helpers/helper-config/colors";
 import {
   headerdesign,

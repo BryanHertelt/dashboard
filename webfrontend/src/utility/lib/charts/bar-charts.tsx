@@ -38,10 +38,12 @@ export const HoldingBarChart = ({ barData }: { barData: holdingProps[] }) => {
   const mainHoldings: holdingProps[] = [];
   const otherHoldings: [number, number][] = [];
 
-  barData.map((holding: holdingProps) => {
-    holding.holdingdistribution < 5
-      ? otherHoldings.push([holding.holdingdistribution, holding.currencyvalue])
-      : mainHoldings.push(holding);
+  barData.forEach((holding: holdingProps) => {
+    if (holding.holdingdistribution < 5) {
+      otherHoldings.push([holding.holdingdistribution, holding.currencyvalue]);
+    } else {
+      mainHoldings.push(holding);
+    }
   });
 
   const mainHoldingsFormatted = mainHoldings.map(

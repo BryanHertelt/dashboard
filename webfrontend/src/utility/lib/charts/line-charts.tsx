@@ -168,7 +168,7 @@ export const LineChartComponent = (props: {
             });
             innerHtml += "</thead><tbody>";
 
-            bodyLines.forEach(function (body: string[], i: number) {
+            bodyLines.forEach(function (body: string[]) {
               let keyStyle = "color:" + icongray;
               keyStyle += ";font-weight: 300 !important";
               let style = "background:" + white;
@@ -188,8 +188,8 @@ export const LineChartComponent = (props: {
                     : `<p style=${keyStyle}> Networth: </p> <p>${formatCurrency(
                         Number(body[0].substring(10, 50).replace(",", ""))
                       )}</p>`
-                }`;
-              ("</span>");
+                }` +
+                "</span>";
               const dateSpan =
                 '<span style="' +
                 style +
@@ -198,8 +198,8 @@ export const LineChartComponent = (props: {
                 ` Date: </p> <p> ${context.tooltip.title[0].substring(
                   0,
                   12
-                )} </p> `;
-              ("</span>");
+                )} </p> ` +
+                "</span>";
               const timeSpan =
                 '<span style="' +
                 style +
@@ -208,8 +208,8 @@ export const LineChartComponent = (props: {
                 ` Time: </p> <p> ${context.tooltip.title[0].substring(
                   13,
                   26
-                )} </p> `;
-              ("</span>");
+                )} </p> ` +
+                "</span>";
 
               innerHtml += "<tr><td>" + dataSpan + "</td></tr>";
               innerHtml += "<tr><td>" + dateSpan + "</td></tr>";

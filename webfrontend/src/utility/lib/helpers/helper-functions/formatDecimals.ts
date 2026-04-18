@@ -10,7 +10,7 @@ export const formatDecimals = (num: number, roundedNumber: number) => {
         numStr = result;
       }
       const decimalPart = numStr.split(".")[1];
-      let leadingZeros = (decimalPart.match(/^0+/)?.[0].length || 0) - 1;
+      const leadingZeros = (decimalPart.match(/^0+/)?.[0].length || 0) - 1;
   
       if (leadingZeros >= 2) {
         const trimmedDecimals = decimalPart.replace(/^0+/, "");

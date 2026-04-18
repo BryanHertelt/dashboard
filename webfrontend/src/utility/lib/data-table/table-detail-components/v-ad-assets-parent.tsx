@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef, useEffect, useCallback } from "react";
+import { useState, useMemo, useCallback } from "react";
 import useResizeObserver from "use-resize-observer";
 import {
   SmallErrorSkeleton,
@@ -6,7 +6,7 @@ import {
   useDetailComponent,
 } from "../../data-fetching";
 import { DrDetail, DisDetail } from "../../data-table";
-import { HoldingLogoImageContainer, isObject } from "../../helpers";
+import { isObject } from "../../helpers";
 import { TableDetailProps } from "../types";
 import logger from "../../logging/logger";
 type tabType = "DR" | "HD" | "AG";

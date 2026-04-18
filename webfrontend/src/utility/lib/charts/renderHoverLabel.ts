@@ -1,6 +1,5 @@
 import {
   Chart as ChartJS,
-  Chart as ChartType,
   CategoryScale,
   LinearScale,
   PointElement,
@@ -8,16 +7,12 @@ import {
   Title,
   Tooltip,
   Legend,
-  ChartOptions,
   ArcElement,
   Filler,
 } from "chart.js";
 
-import { Doughnut } from "react-chartjs-2";
-import { useRef, useState, useMemo } from "react";
 import { formatValue, formatCurrency } from "../helpers";
 import { black } from "../helpers/helper-config/colors";
-import { DistributionAsset } from "../types/data-fetching-types";
 
 
 ChartJS.register(
