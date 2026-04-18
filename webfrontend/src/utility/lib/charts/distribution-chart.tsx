@@ -120,7 +120,7 @@ export const DistributionChart = ({
         : 0
   );
 
-  logger.debug({ sortedEntries }, "distribution-chart.tsx >> sorted entries");
+  logger.info({ sortedEntries }, "distribution-chart.tsx >> sorted entries");
 
   //chart treshold logic
   const mainDisObj: MainAssetsChart[] = [];
@@ -157,7 +157,7 @@ export const DistributionChart = ({
   );
 
 
-  logger.debug({ mainDisObj, otherDisObj }, "distribution-chart.tsx >> [MainAssets, OtherAssets]");
+  logger.info({ mainDisObj, otherDisObj }, "distribution-chart.tsx >> [MainAssets, OtherAssets]");
 
   const baseColors = config.pieData
     .map((disObj, index) => {
@@ -168,7 +168,7 @@ export const DistributionChart = ({
     .filter((color) => color !== undefined); // Remove undefined values from map
 
   const colors = otherDisObj.length !== 0 ? [...baseColors, gray] : baseColors;
-  logger.debug(
+  logger.info(
     { colorsLength: colors.length, tresholdValue: config.tresholdValue - 1 },
     "distribution-chart.tsx >> colors generated, tresholdValue"
   );
@@ -187,12 +187,12 @@ export const DistributionChart = ({
     others: config.others,
   };
 
-  logger.debug("distribution-chart.tsx >> hoverLabel render starts");
+  logger.info("distribution-chart.tsx >> hoverLabel render starts");
   const hoverLabel = {
     id: "hoverLabel",
     afterDraw: (chart: ChartJS<"doughnut">) => {
-      const hoverLabel = renderHoverLabel(chart, hoverLabelInformation);
-      return hoverLabel;
+      const view = renderHoverLabel(chart, hoverLabelInformation);
+      return view;
     },
   };
 

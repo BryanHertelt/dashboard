@@ -70,7 +70,7 @@ export const InfoCards = ({
   activeDisObj: number | null;
 }) => {
   logger.info("InfoCards called");
-  logger.debug({ activeDisObj }, "InfoCards: active Object");
+  logger.info({ activeDisObj }, "InfoCards: active Object");
 
   const flatArray = data.flat();
 

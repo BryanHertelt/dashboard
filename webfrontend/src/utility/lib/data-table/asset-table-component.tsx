@@ -41,7 +41,7 @@ const AssetTableComponent = ({ config }: { config: configType }) => {
       acc[curr.filter] = true;
       return acc;
     }, {} as Record<string, boolean>);
-    logger.debug({ filterObj }, "AssetTableComponent: default filter object initialized");
+    logger.info({ filterObj }, "AssetTableComponent: default filter object initialized");
     return filterObj;
   }, [config.filter]);
 
