@@ -22,8 +22,8 @@ const AssetTableComponent = ({ config }: { config: configType }) => {
 
   if (!config?.status?.length || !config?.filter) {
     logger.error(
-      "AssetTableComponent: invalid config: status or filter array is empty or undefined",
-      { config }
+      { config },
+      "AssetTableComponent: invalid config: status or filter array is empty or undefined"
     );
   }
 
@@ -41,9 +41,7 @@ const AssetTableComponent = ({ config }: { config: configType }) => {
       acc[curr.filter] = true;
       return acc;
     }, {} as Record<string, boolean>);
-    logger.debug("AssetTableComponent: default filter object initialized", {
-      filterObj,
-    });
+    logger.debug({ filterObj }, "AssetTableComponent: default filter object initialized");
     return filterObj;
   }, [config.filter]);
 
@@ -66,11 +64,10 @@ const AssetTableComponent = ({ config }: { config: configType }) => {
         if (foundStatus) {
           setCurrentTab(config.status.indexOf(foundStatus));
           setTableStatus(status);
-          logger.info("AssetTableComponent:status tab clicked", {
-            status,
-            statusTitle: label,
-            currentTab: config.status.indexOf(foundStatus),
-          });
+          logger.info(
+            { status, statusTitle: label, currentTab: config.status.indexOf(foundStatus) },
+            "AssetTableComponent:status tab clicked"
+          );
         }
       }}
       className={`${
@@ -103,13 +100,10 @@ const AssetTableComponent = ({ config }: { config: configType }) => {
                 onClick={() => {
                   setFilter((prevState) => {
                     const newFilter = { ...prevState, [key]: !prevState[key] };
-                    logger.info("AssetTableComponent: filter toggled", {
-                      filterKey: key,
-                      filterTitle,
-                      newState: !prevState[key],
-                      tableStatus,
-                      fullFilterState: newFilter,
-                    });
+                    logger.info(
+                      { filterKey: key, filterTitle, newState: !prevState[key], tableStatus, fullFilterState: newFilter },
+                      "AssetTableComponent: filter toggled"
+                    );
                     return newFilter;
                   });
                 }}

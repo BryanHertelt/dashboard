@@ -63,7 +63,7 @@ export function DataTable<TData extends RowData, TValue>({
     (row: Row<TData>) => {
       const holdingId = row.original.holdingid;
       if (!holdingId) {
-        logger.error("Missing holdingId in row", { row: row.original });
+        logger.error({ row: row.original }, "Missing holdingId in row");
         return;
       }
 
@@ -72,7 +72,7 @@ export function DataTable<TData extends RowData, TValue>({
       );
 
       if (!currentHolding) {
-        logger.warn("No sync status found for holding", { holdingId });
+        logger.warn({ holdingId }, "No sync status found for holding");
         return;
       }
 
@@ -101,7 +101,7 @@ export function DataTable<TData extends RowData, TValue>({
         )
       );
 
-      logger.info("Sync status updated", { holdingId, updatedStatus });
+      logger.info({ holdingId, updatedStatus }, "Sync status updated");
     },
     [syncStatus, setSyncStatus]
   );
@@ -195,9 +195,7 @@ export function DataTable<TData extends RowData, TValue>({
                             className="w-6 pl-3"
                             onClick={() => {
                               if (detail) {
-                                logger.info("ShowDetailIcon clicked", {
-                                  rowId: row.id,
-                                });
+                                logger.info({ rowId: row.id }, "ShowDetailIcon clicked");
                                 setExpandedRow((prev: number | null) =>
                                   prev === Number(row.id)
                                     ? null
@@ -213,10 +211,10 @@ export function DataTable<TData extends RowData, TValue>({
                                 row.original.assettype &&
                                 row.original.assetid
                               ) {
-                                logger.debug("Prefetching detail", {
-                                  assettype: row.original.assettype,
-                                  assetid: row.original.assetid,
-                                });
+                                logger.debug(
+                                  { assettype: row.original.assettype, assetid: row.original.assetid },
+                                  "Prefetching detail"
+                                );
                                 prefetchDetailComponent(
                                   row.original.assettype,
                                   row.original.assetid,

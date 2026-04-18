@@ -82,10 +82,7 @@ export const TableDetailComponent = (props: TableDetailProps) => {
   const [currentTab, setCurrentTab] = useState<number>(0);
   const { data, isLoading, isError } = useDetailComponent(props);
 
-  logger.info("TableDetailComponent called", {
-    tabs: tabs,
-    activeDisObj: { activeDisObj },
-  });
+  logger.info({ tabs: tabs, activeDisObj: { activeDisObj } }, "TableDetailComponent called");
 
   const handleTabSwitch = useCallback(
     (index: number, button: string) => {
@@ -117,15 +114,12 @@ export const TableDetailComponent = (props: TableDetailProps) => {
   }
 
   if (isError) {
-    logger.error("TableDetailComponent: detail fetch failed", {
-      isError: isError,
-      data: data,
-    });
+    logger.error({ isError: isError, data: data }, "TableDetailComponent: detail fetch failed");
     return <SmallErrorSkeleton />;
   } else if (isObject(data) === false || Object.keys(data).length === 0) {
     logger.error(
-      "TableDetailComponent: wrong data format or empty Object while calling detailcomponent",
-      { dataType: typeof data, data: data }
+      { dataType: typeof data, data: data },
+      "TableDetailComponent: wrong data format or empty Object while calling detailcomponent"
     );
     return <SmallErrorSkeleton />;
   } else {

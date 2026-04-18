@@ -114,13 +114,12 @@ export const DrDetail = ({
     { header: "Total Cost", data: data.totalcost },
   ];
 
-  console.log("This is the data", data)
 
   const initialData = {
     desiredbalance: data.desiredbalance,
     currentbalance: data.currentbalance,
   };
-  logger.info("DrDetail called", { initialData: initialData });
+  logger.info( { initialData: initialData }, "DrDetail called");
 
 
   return (
@@ -244,7 +243,7 @@ export const buildBar = (cardData: BarCardData[], totalAmount: number) => {
       },
     },
   };
-  logger.debug("buildBar", { data: data, options: options });
+  logger.debug( { data: data, options: options }, "buildBar");
   return { data, options };
 };
 
@@ -317,7 +316,7 @@ export const DisDetail = ({
     }[];
   };
 }) => {
-  logger.info("DisDetail is called for:", tableStatus);
+  logger.info( tableStatus, "DisDetail is called for");
 
   //Check for entries and return Error Skeleton if there are no Entries
   if (detailData.length === 0) {
@@ -355,7 +354,7 @@ export const DisDetail = ({
       ? -1
       : 0
   );
-  logger.debug("DisDetail: sorted entries for bar chart", sortedEntries);
+  logger.debug( sortedEntries, "DisDetail: sorted entries for bar chart");
 
   //Categorize items, based on index position and screen position.
   let mainDisObj: DetailDataExtended[][] = [];
@@ -403,7 +402,7 @@ export const DisDetail = ({
         )
       : null,
   ];
-  logger.debug("DisDetail: treshold for barchart", otherObj);
+  logger.debug(otherObj, "DisDetail: treshold for barchart");
 
   // Generating data, which are used for the infocards.
   const cardData =
@@ -411,7 +410,7 @@ export const DisDetail = ({
       ? [...mainDisObj, otherDisObj].flat()
       : mainDisObj.flat();
 
-  logger.debug("DisDetail: generated card data", cardData);
+  logger.debug( cardData, "DisDetail: generated card data");
 
   // Generating data, which are used for the bar-chart.
   const barData = buildBar(
@@ -420,7 +419,7 @@ export const DisDetail = ({
       : mainDisObj.flat(),
     totalAmount
   );
-  logger.debug("DisDetail: generated bar data", barData);
+  logger.debug(barData, "DisDetail: generated bar data");
 
   logger.debug("DisDetail: Rendering InfoCards, DetailNFTS and StopLossCards");
   return (

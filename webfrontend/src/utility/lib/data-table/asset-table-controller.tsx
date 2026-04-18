@@ -53,11 +53,10 @@ const AssetTableController = ({
    * logic for derivative assets.
    */
   useEffect(() => {
-    logger.info("AssetTableController: called", {
-      tableStatus,
-      filterType,
-      initialDataCount: tableConfig.initial?.length || 0,
-    });
+    logger.info(
+      { tableStatus, filterType, initialDataCount: tableConfig.initial?.length || 0 },
+      "AssetTableController: called"
+    );
 
     let filtered = tableConfig.initial.filter((asset: Asset | Group | Holding) => {
       if (tableConfig.statusFilter === "") {
@@ -66,11 +65,10 @@ const AssetTableController = ({
       return asset[tableConfig.statusFilter] === tableStatus;
     });
 
-    logger.debug("AssetTableController: applied status filter", {
-      tableStatus,
-      statusFilter: tableConfig.statusFilter,
-      filteredCount: filtered.length,
-    });
+    logger.debug(
+      { tableStatus, statusFilter: tableConfig.statusFilter, filteredCount: filtered.length },
+      "AssetTableController: applied status filter"
+    );
 
     if (tableStatus === "derivative") {
       if (filterType.perp && filterType.future) {
@@ -83,27 +81,23 @@ const AssetTableController = ({
             "assettype" in asset && asset.assettype === "derivative" &&
             "derivativetype" in asset && asset.derivativetype === "perpetual"
         );
-        logger.debug("Filtered derivatives (future only)", {
-          filteredCount: filtered.length,
-        });
+        logger.debug({ filteredCount: filtered.length }, "Filtered derivatives (future only)");
       } else if (!filterType.perp && filterType.future) {
         filtered = tableConfig.initial.filter(
           (asset: Asset | Group | Holding) =>
             "assettype" in asset && asset.assettype === "derivative" &&
             "derivativetype" in asset && asset.derivativetype === "future"
         );
-        logger.debug("Filtered derivatives (future only)", {
-          filteredCount: filtered.length,
-        });
+        logger.debug({ filteredCount: filtered.length }, "Filtered derivatives (future only)");
       }
     }
 
     setTableData(filtered);
     setExpandedRow(null);
-    logger.info("AssetTableController: table data updated", {
-      tableStatus,
-      filteredCount: filtered.length,
-    });
+    logger.info(
+      { tableStatus, filteredCount: filtered.length },
+      "AssetTableController: table data updated"
+    );
   }, [tableStatus, filterType, tableConfig.initial]);
 
   const col: ColumnDef<Asset | Group | Holding>[] | undefined = useMemo(() => {
@@ -111,19 +105,17 @@ const AssetTableController = ({
       (s) => s.status === tableStatus
     );
 
-    logger.info("AssetTableController: columns configured for table", {
-      tableStatus,
-      columnCount: statusConfig?.columns?.length || 0,
-    });
+    logger.info(
+      { tableStatus, columnCount: statusConfig?.columns?.length || 0 },
+      "AssetTableController: columns configured for table"
+    );
     return statusConfig?.columns;
   }, [tableStatus, tableData]);
 
-  logger.debug("AssetTableController: rendering DataTable", {
-    tableStatus,
-    dataCount: tableData.length,
-    columnCount: col?.length,
-    expandedRow,
-  });
+  logger.debug(
+    { tableStatus, dataCount: tableData.length, columnCount: col?.length, expandedRow },
+    "AssetTableController: rendering DataTable"
+  );
 
   return (
     <div className="">

@@ -94,10 +94,8 @@ export const DistributionChart = ({
     const end = performance.now();
     const duration = end - start;
     logger.info(
-      `Asset Distribution Doughnut Chart rendered with the following data`,
-      {
-        duration: duration.toFixed(2),
-      }
+      { duration: duration.toFixed(2) },
+      `Asset Distribution Doughnut Chart rendered with the following data`
     );
   }, []);
 
@@ -107,8 +105,8 @@ export const DistributionChart = ({
 
   if (!config.pieData || config.pieData.length === 0) {
     logger.error(
-      "distribution-chart.tsx >> Pie Data is undefined or empty",
-      config.pieData
+      { pieData: config.pieData },
+      "distribution-chart.tsx >> Pie Data is undefined or empty"
     );
     return <SmallErrorSkeleton />;
   }
@@ -122,7 +120,7 @@ export const DistributionChart = ({
         : 0
   );
 
-  logger.debug("distribution-chart.tsx >> sorted entries", sortedEntries);
+  logger.debug({ sortedEntries }, "distribution-chart.tsx >> sorted entries");
 
   //chart treshold logic
   const mainDisObj: MainAssetsChart[] = [];
@@ -159,10 +157,7 @@ export const DistributionChart = ({
   );
 
 
-  logger.debug("distribution-chart.tsx >> [MainAssets, OtherAssets]", [
-    mainDisObj,
-    otherDisObj,
-  ]);
+  logger.debug({ mainDisObj, otherDisObj }, "distribution-chart.tsx >> [MainAssets, OtherAssets]");
 
   const baseColors = config.pieData
     .map((disObj, index) => {
@@ -174,9 +169,8 @@ export const DistributionChart = ({
 
   const colors = otherDisObj.length !== 0 ? [...baseColors, gray] : baseColors;
   logger.debug(
-    "distribution-chart.tsx >> colors generated, tresholdValue",
-    colors.length,
-    config.tresholdValue - 1
+    { colorsLength: colors.length, tresholdValue: config.tresholdValue - 1 },
+    "distribution-chart.tsx >> colors generated, tresholdValue"
   );
 
   // render HoverLabel
