@@ -43,7 +43,7 @@ interface RowData {
   assetamount?: number;
 }
 
-export function DataTable<TData extends RowData, TValue>({
+export function DataTable<TData, TValue>({
   data,
   columns,
   detail,
@@ -61,7 +61,7 @@ export function DataTable<TData extends RowData, TValue>({
   // Memoize handleSync to prevent unnecessary recreations
   const handleSync = useCallback(
     (row: Row<TData>) => {
-      const holdingId = row.original.holdingid;
+      const holdingId = (row.original as RowData).holdingid;
       if (!holdingId) {
         logger.error({ row: row.original }, "Missing holdingId in row");
         return;
@@ -114,7 +114,7 @@ export function DataTable<TData extends RowData, TValue>({
   // Memoize getDetailComponent to avoid unnecessary recreations
   const getDetailComponent = useCallback(
     (row: Row<TData>, tableStatus: string | undefined) => {
-      const rowData = data[Number(row.id)] || {};
+      const rowData = (data[Number(row.id)] as RowData) || {};
       const assetName =
         tableStatus === "cryptocurrency"
           ? rowData.assetabbreviation || "Unknown"
@@ -196,7 +196,7 @@ export function DataTable<TData extends RowData, TValue>({
                             onClick={() => {
                               if (detail) {
                                 logger.info({ rowId: row.id }, "ShowDetailIcon clicked");
-                                setExpandedRow((prev: number | null) =>
+                                setExpandedRow?.((prev: number | null) =>
                                   prev === Number(row.id)
                                     ? null
                                     : Number(row.id)
@@ -206,18 +206,19 @@ export function DataTable<TData extends RowData, TValue>({
                               }
                             }}
                             onMouseEnter={() => {
+                              const orig = row.original as RowData;
                               if (
                                 detail &&
-                                row.original.assettype &&
-                                row.original.assetid
+                                orig.assettype &&
+                                orig.assetid
                               ) {
                                 logger.debug(
-                                  { assettype: row.original.assettype, assetid: row.original.assetid },
+                                  { assettype: orig.assettype, assetid: orig.assetid },
                                   "Prefetching detail"
                                 );
                                 prefetchDetailComponent(
-                                  row.original.assettype,
-                                  row.original.assetid,
+                                  orig.assettype,
+                                  orig.assetid,
                                   queryClient
                                 );
                               }
@@ -229,9 +230,9 @@ export function DataTable<TData extends RowData, TValue>({
                                 expandedRow={expandedRow}
                               />
                             ) : validTableStatus === "holdings" &&
-                              row.original.holdingid ? (
+                              (row.original as RowData).holdingid ? (
                               <ReloadSingleHoldingIcon
-                                rowId={Number(row.original.holdingid)}
+                                rowId={Number((row.original as RowData).holdingid)}
                                 index={index}
                               />
                             ) : null}

@@ -87,8 +87,8 @@ export const useHoldingMutation = ({
         )
       );
 
-      queryClient.invalidateQueries(["PortfolioAD", "Asset-Groups"]);
-      queryClient.invalidateQueries(["PortfolioAD", "Assets"]);
+      queryClient.invalidateQueries({ queryKey: ["PortfolioAD", "Asset-Groups"] });
+      queryClient.invalidateQueries({ queryKey: ["PortfolioAD", "Assets"] });
     },
     onError: (_error, holdingId: number) => {
       setSyncStatus((prev: { holdingId: number; status: string }[]) =>

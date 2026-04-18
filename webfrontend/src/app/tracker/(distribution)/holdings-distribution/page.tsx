@@ -1,6 +1,5 @@
 import HoldingDistributionComponent from "@/utility/lib/page-components/holding-distribution-comp";
 import FirstLogin from "@/utility/lib/trackerlayout/firstlogin";
-import { getAllAssetGroups } from "@/utility/lib/data-fetching/layer";
 import { getDistribution } from "@/utility/lib/data-fetching";
 
 const HoldingsDistribution = async () => {

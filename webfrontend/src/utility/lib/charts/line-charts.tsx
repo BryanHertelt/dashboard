@@ -78,7 +78,7 @@ export const LineChartComponent = (props: {
     (timestamp: { x: string; y: number[] }) => timestamp.y[0]
   );
   const timestamps = processedQueryData.map(
-    (timestamp: { x: string; y: number }) => timestamp.x
+    (timestamp: { x: string; y: number[] }) => timestamp.x
   );
 
   const data = {
@@ -251,7 +251,7 @@ export const LineChartComponent = (props: {
       x: {
         type: "time",
         time: {
-          unit: timeframe.timeunit,
+          unit: timeframe.timeunit as TimeUnit,
         },
         ticks: {
           stepSize:

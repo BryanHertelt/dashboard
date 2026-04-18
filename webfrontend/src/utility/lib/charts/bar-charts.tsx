@@ -85,11 +85,11 @@ export const HoldingBarChart = ({ barData }: { barData: holdingProps[] }) => {
   const datasets: ChartDataset<"bar">[] = [];
 
   if (otherHoldings.length != 0 && mainHoldings.length != 0) {
-    datasets.push(mainHoldingsFormatted, otherHoldingsFormatted);
+    datasets.push(...mainHoldingsFormatted, otherHoldingsFormatted);
   } else if (otherHoldings.length != 0 && mainHoldings.length == 0) {
     datasets.push(otherHoldingsFormatted);
   } else if (otherHoldings.length == 0 && mainHoldings.length != 0) {
-    datasets.push(mainHoldingsFormatted);
+    datasets.push(...mainHoldingsFormatted);
   } else {
     console.error(
       "No holding data available in asset detailcomponent> asset details> holding chart."

@@ -79,7 +79,7 @@ export const dataColsCurrency: ColumnDef<DistributionCrypto>[] = [
       </div>
     ),
     cell: ({ row }) => {
-      const name = row.getValue("assetname");
+      const name = row.getValue<string>("assetname");
 
       return (
         <div className={`${firstcelldesign} w-full`}>
@@ -217,7 +217,7 @@ export const dataColsCurrency: ColumnDef<DistributionCrypto>[] = [
       );
     },
     cell: ({ row }) => {
-      const profitloss = row.getValue("profitloss");
+      const profitloss = row.getValue<number>("profitloss");
       const profitLossChange = row.original.profitlosschange;
       const renderProfitCell = () => {
         return (
@@ -269,7 +269,7 @@ export const dataColsDerivative: ColumnDef<DistributionDerivative>[] = [
       </div>
     ),
     cell: ({ row }) => {
-      const name = row.getValue("assetname");
+      const name = row.getValue<string>("assetname");
       const tradeDirection = row.original.tradedirection;
       const leverage = row.original.leverage;
       const symbol = row.original.symbol;
@@ -393,7 +393,7 @@ export const dataColsDerivative: ColumnDef<DistributionDerivative>[] = [
       );
     },
     cell: ({ row }) => {
-      const profitloss = row.getValue("profitloss");
+      const profitloss = row.getValue<number>("profitloss");
       const profitLossChange = row.original.profitlosschange;
       const renderProfitCell = () => {
         return (
@@ -434,7 +434,7 @@ export const dataColsNft: ColumnDef<DistributionNFT>[] = [
     accessorKey: "assetname",
     header: () => <div className=" font-normal"> Collection </div>,
     cell: ({ row }) => {
-      const name = row.getValue("assetname");
+      const name = row.getValue<string>("assetname");
       const symbol = row.original.symbol;
 
       return (
@@ -527,7 +527,7 @@ export const dataColsNft: ColumnDef<DistributionNFT>[] = [
       );
     },
     cell: ({ row }) => {
-      const profitloss = row.getValue("profitloss");
+      const profitloss = row.getValue<number>("profitloss");
       const profitLossChange = row.original.profitlosschange;
       const renderProfitCell = () => {
         return (

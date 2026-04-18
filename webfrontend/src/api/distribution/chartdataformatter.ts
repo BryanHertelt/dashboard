@@ -152,7 +152,7 @@ export const holdingsPieChartData = {
     scales: {
       x: {
         ticks: {
-          callback: (value, index, values) => {
+          callback: () => {
             return []
           }
         }
@@ -196,8 +196,8 @@ export const holdingsPieChartData = {
   export const doughnutLabel = 
   {
     id: "doughnutLabel",
-    afterDatasetsDraw(chart: Chart, args: Record<string, never>, plugins: Record<string, unknown>) {
-      const { ctx, data } = chart;
+    afterDatasetsDraw(chart: Chart) {
+      const { ctx} = chart;
   
       const centerX = chart.getDatasetMeta(0).data[0].x;
       const centerY = chart.getDatasetMeta(0).data[0].y;

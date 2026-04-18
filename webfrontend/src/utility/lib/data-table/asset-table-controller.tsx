@@ -62,7 +62,7 @@ const AssetTableController = ({
       if (tableConfig.statusFilter === "") {
         return asset;
       }
-      return asset[tableConfig.statusFilter] === tableStatus;
+      return (asset as unknown as Record<string, unknown>)[tableConfig.statusFilter] === tableStatus;
     });
 
     logger.debug(
@@ -100,7 +100,8 @@ const AssetTableController = ({
     );
   }, [tableStatus, filterType, tableConfig.initial]);
 
-  const col: ColumnDef<Asset | Group | Holding>[] | undefined = useMemo(() => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const col: ColumnDef<any, any>[] | undefined = useMemo(() => {
     const statusConfig = tableConfig.status.find(
       (s) => s.status === tableStatus
     );
@@ -121,7 +122,7 @@ const AssetTableController = ({
     <div className="">
       <DataTable
         data={tableData}
-        columns={col}
+        columns={col ?? []}
         expandedRow={expandedRow}
         tableStatus={tableStatus}
         currentValue={tableConfig.currentValue}

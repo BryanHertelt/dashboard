@@ -18,7 +18,8 @@ export type StatusItem<StatusKey extends string> = {
     statusFilter: string
     initial: (Asset | Group | Holding)[];
     detail: boolean;
-    status: { status: string; statusTitle: string; columns: object[] }[];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  status: { status: string; statusTitle: string; columns: ColumnDef<any, any>[] }[];
     filter: {
       filter: string;
       filterTitle: string;

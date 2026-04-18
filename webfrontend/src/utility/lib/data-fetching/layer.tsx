@@ -14,7 +14,7 @@ export const getDistribution = async (
       ? `${baseUrl}/assetgroups`
       : baseUrl;
   try {
-    let rawdata = await fetch(
+    const rawdata = await fetch(
       `${url}`,
       // while dev, need fast data updates, replace with cache strategy in build
       { cache: "no-store" }
@@ -22,7 +22,7 @@ export const getDistribution = async (
     if (!rawdata.ok) {
       throw new Error("API is not reachable");
     }
-    let data = await rawdata.json();
+    const data = await rawdata.json();
     if (!isObject(data)) {
       throw new Error("Invalid response format: PortfolioData isn't an object");
     }
@@ -47,14 +47,14 @@ export const getDetailAssetData = async (
   assetid: number
 ) => {
   try {
-    let rawdata = await fetch(`${baseUrl}/${slug}?assetid=${assetid}`, {
+    const rawdata = await fetch(`${baseUrl}/${slug}?assetid=${assetid}`, {
       cache: "no-store",
     });
     if (!rawdata.ok) {
       throw new Error("API is not reachable");
     }
 
-    let data = await rawdata.json();
+    const data = await rawdata.json();
     if (!isObject(data)) {
       throw new Error("Wrong response format: data is not an object");
     }
@@ -71,10 +71,10 @@ export const getDetailAssetData = async (
 
 export const getTimeFrames = async (scope: string, timeframe: string) => {
   try {
-    let rawdata = await fetch(`${baseUrl}/${scope}?timeframe=${timeframe}`, {
+    const rawdata = await fetch(`${baseUrl}/${scope}?timeframe=${timeframe}`, {
       cache: "no-store",
     });
-    let data = await rawdata.json();
+    const data = await rawdata.json();
 
     data.map((timebit: { x: string; y: number[] }) => {
       if (typeof timebit.x != "string") {

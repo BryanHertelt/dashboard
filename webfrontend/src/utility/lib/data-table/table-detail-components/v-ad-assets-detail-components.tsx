@@ -215,7 +215,7 @@ export const buildBar = (cardData: BarCardData[], totalAmount: number) => {
   const datasets: ChartDataset<"bar">[] = [];
 
   if (cardDataFormatted.length != 0) {
-    datasets.push(cardDataFormatted);
+    datasets.push(...cardDataFormatted);
   }
   const data: ChartData<"bar"> = {
     labels: [""],
@@ -357,27 +357,27 @@ export const DisDetail = ({
   logger.debug( sortedEntries, "DisDetail: sorted entries for bar chart");
 
   //Categorize items, based on index position and screen position.
-  let mainDisObj: DetailDataExtended[][] = [];
-  let otherDisObj: DetailDataExtended[][] = [];
+  const mainRaw: detailDataProps[][] = [];
+  const otherRaw: detailDataProps[][] = [];
 
   const widthProp = window.innerWidth < 1100 ? 9 : 14;
 
   if (detailData.length > widthProp + 1) {
-    mainDisObj.push(sortedEntries.slice(0, widthProp));
-    otherDisObj.push(sortedEntries.slice(widthProp));
+    mainRaw.push(sortedEntries.slice(0, widthProp));
+    otherRaw.push(sortedEntries.slice(widthProp));
   } else {
-    mainDisObj.push(sortedEntries);
+    mainRaw.push(sortedEntries);
   }
 
   //Add properties to the objects (other => to determine the background color, distribution=> to avoid calculations everytime)
-  mainDisObj = mainDisObj.map((disObj) =>
+  const mainDisObj: DetailDataExtended[][] = mainRaw.map((disObj) =>
     disObj.map((obj: detailDataProps) => ({
       ...obj,
       other: false,
       distribution: Number(obj.assetvalue / totalAmount) * 100,
     }))
   );
-  otherDisObj = otherDisObj.map((disObj) =>
+  const otherDisObj: DetailDataExtended[][] = otherRaw.map((disObj) =>
     disObj.map((obj: detailDataProps) => ({
       ...obj,
       other: true,
@@ -386,29 +386,27 @@ export const DisDetail = ({
   );
 
   //Wrapping all elements in the treshold in one object which can be displayed by the bar chart.
-  const otherObj = [
-    otherDisObj.length > 0
-      ? otherDisObj[0].reduce(
-          (acc: { name: string; assetvalue: number; currencyvalue: number }, curr: DetailDataExtended) => {
-            acc.assetvalue += curr.assetvalue;
-            acc.currencyvalue += curr.currencyvalue;
-            return acc;
-          },
-          {
-            name: "Others",
-            assetvalue: 0,
-            currencyvalue: 0,
-          }
-        )
-      : null,
-  ];
+  const otherObj: BarCardData[] = otherDisObj.length > 0
+    ? [otherDisObj[0].reduce(
+        (acc: { name: string; assetvalue: number; currencyvalue: number }, curr: DetailDataExtended) => {
+          acc.assetvalue += curr.assetvalue;
+          acc.currencyvalue += curr.currencyvalue;
+          return acc;
+        },
+        {
+          name: "Others",
+          assetvalue: 0,
+          currencyvalue: 0,
+        }
+      )]
+    : [];
   logger.debug(otherObj, "DisDetail: treshold for barchart");
 
   // Generating data, which are used for the infocards.
-  const cardData =
+  const cardData: DetailDataExtended[][] =
     detailData.length > widthProp + 1
-      ? [...mainDisObj, otherDisObj].flat()
-      : mainDisObj.flat();
+      ? [...mainDisObj, ...otherDisObj]
+      : mainDisObj;
 
   logger.debug( cardData, "DisDetail: generated card data");
 
@@ -447,7 +445,8 @@ export const DisDetail = ({
         </div>
         {activeDisObj != null ? (
           <DetailNfts
-            data={detailData.find((disObj) => activeDisObj === disObj.id)}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            data={detailData.find((disObj) => activeDisObj === disObj.id) as any}
           />
         ) : null}
       </div>

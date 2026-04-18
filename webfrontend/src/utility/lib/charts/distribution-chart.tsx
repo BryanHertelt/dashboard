@@ -130,13 +130,13 @@ export const DistributionChart = ({
     if (index < config.tresholdValue) {
       mainDisObj.push({
         distribution: disObj.disElDistribution,
-        label: disObj.disElId,
+        label: String(disObj.disElId),
       });
     } else {
       otherDisObj.push({
         value: disObj.disElVal,
         distribution: disObj.disElDistribution,
-        label: disObj.disElId,
+        label: String(disObj.disElId),
       });
     }
   });

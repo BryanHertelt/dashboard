@@ -13,6 +13,7 @@ import {
   AssetResponseObject,
   TimeFrameResponseObject,
 } from "../types/data-fetching-types";
+import { TimeUnit } from "chart.js";
 
 const LineChartController = ({
   currentValue,
@@ -28,7 +29,7 @@ const LineChartController = ({
   });
   const [timeframe, setTimeframe] = useState<{
     timeframe: string;
-    timeunit: string;
+    timeunit: TimeUnit;
   }>({
     timeframe: "7 days",
     timeunit: "day",
@@ -70,7 +71,7 @@ const LineChartController = ({
   const buttonLine =
     "flex flex-row items-center justify-center bg-gray text-black text-xs w-40 h-4/5 rounded-sm mt-1 ml-3";
 
-  const dropDownMenuValues = [
+  const dropDownMenuValues: { timeframe: string; timeunit: TimeUnit }[] = [
     { timeframe: "YTD", timeunit: "month" },
     { timeframe: "all", timeunit: "year" },
     { timeframe: "1 hour", timeunit: "minute" },
@@ -86,7 +87,7 @@ const LineChartController = ({
     { timeframe: "5 years", timeunit: "year" },
   ];
 
-  const handleTimeFrames = (item: { timeframe: string; timeunit: string }) => {
+  const handleTimeFrames = (item: { timeframe: string; timeunit: TimeUnit }) => {
     setComparators((prev) => {
       return {
         costbasis: prev.costbasis,

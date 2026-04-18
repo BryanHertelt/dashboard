@@ -114,7 +114,7 @@ export const InfoCards = ({
               className="w-4 h-4 rounded-sm"
               style={{
                 backgroundColor: !disObj.other
-                  ? barData.data.datasets[index].backgroundColor
+                  ? barData.data.datasets[index].backgroundColor as string
                   : "#D9D9D9",
               }}
             />
