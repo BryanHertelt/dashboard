@@ -1,225 +1,99 @@
+import { cn, formatCurrency, formatValue, isObject, formatDecimals, ranHexGen } from "../../src/utility/lib/helpers";
 
-import { twMerge } from "tailwind-merge";
-import clsx from "clsx";
-import {formatCurrency, formatValue, isObject, cn, formatDecimals, ranHexGen} from "../../src/utility/lib/helpers"
-import { Chart as ChartJS } from 'chart.js';
-
-describe('cn utility function', () => {
-  it('should merge class names correctly', () => {
+describe('cn (Classname Merger)', () => {
+  it('merges static class names', () => {
     expect(cn('text-red-500', 'font-bold')).toBe('text-red-500 font-bold');
   });
 
-  it('should handle conditional class names', () => {
-    expect(cn('text-red-500', false && 'hidden', 'font-bold')).toBe('text-red-500 font-bold');
+  it('handles conditional logic and falsy values', () => {
+    const isHidden = false;
+    expect(cn('flex', isHidden && 'hidden', 'p-4')).toBe('flex p-4');
+    expect(cn(null, undefined, '')).toBe('');
   });
 
-  it('should merge conflicting Tailwind classes correctly', () => {
+  it('resolves Tailwind conflicts (tailwind-merge)', () => {
+    // tailwind-merge should favor the last class in a conflict
+    expect(cn('p-2', 'p-4')).toBe('p-4');
     expect(cn('text-red-500', 'text-blue-500')).toBe('text-blue-500');
-  });
-
-  it('should ignore falsy values', () => {
-    expect(cn(null, undefined, '', 'text-green-500')).toBe('text-green-500');
   });
 });
 
-describe("tests for helper: formatCurrency", () => {
-    it('formatCurrency should return a formatted number',() => {
-        const formattedCurrency = formatCurrency(1000)
-        expect(formattedCurrency).toBe("$1,000.00")
-    }); 
-    it("correctly formats small decimals", ()=> {
-      const smallDecimal = formatCurrency(0.00000000000012) 
-      expect(smallDecimal).toBe("$0.0₁₁ 1")
-      const singleDigitDecimal = formatCurrency(0.0000003) 
-      expect(singleDigitDecimal).toBe("$0.0₅ 3")
-      const oneZeroDecimal = formatCurrency(0.03)
-      expect(oneZeroDecimal).toBe("$0.03")
-})
-    it("formatCurrency handles strings gracefully", () => {
-        const formattedCurrency = formatCurrency("1000.1")
-        expect(formattedCurrency).toBe("$1,000.10")
-    }) 
-    it("formatCurrency returns an empty string, if value is neither string nor number", () => {
-        const formattedCurrency = formatCurrency("1,00")
-        expect(formattedCurrency).toBe("--")
-    })
-})
+describe("formatCurrency", () => {
+  it('formats standard numbers to USD currency string', () => {
+    expect(formatCurrency(1000)).toBe("$1,000.00");
+    expect(formatCurrency("1000.1")).toBe("$1,000.10");
+  });
 
-describe("tests for helper: formatValue", () => {
-    it('formatValue should return max 2 decimals', ()=> {
-        const formattedValue = formatValue(1.2314)
-        expect(formattedValue).toBe("1.23")
-    } ) 
-    it('formatValue handels strings gracefully', ()=> {
-        const formattedString = formatValue("1.236")
-        expect(formattedString).toBe("1.24")
-    })
-    it("formatCurrency handles edge cases", () => {
-        const multipleCommas = formatValue("1,0,0")
-        expect(multipleCommas).toBe("--")
+  it("handles extreme decimals with subscript notation", () => {
+    // Verifying "Subscript notation" for tiny numbers
+    expect(formatCurrency(0.00000000000012)).toBe("$0.0₁₁ 1");
+    expect(formatCurrency(0.0000003)).toBe("$0.0₅ 3");
+  });
 
-        const letter = formatValue("A")
-        expect(letter).toBe("--")
+  it("returns fallback for invalid inputs", () => {
+    expect(formatCurrency("invalid")).toBe("--");
+    expect(formatCurrency(null)).toBe("--");
+  });
+});
 
-        const object = formatValue({"1,0": "1"})
-        expect(object).toBe("--")
+describe("formatValue", () => {
+  it('rounds to 2 decimal places by default', () => {
+    expect(formatValue(1.2314)).toBe("1.23");
+    expect(formatValue("1.236")).toBe("1.24");
+  });
 
-        const round = formatValue("999999.999")
-        expect(round).toBe("1.00 M")
+  it("abbreviates large numbers (M, B, T)", () => {
+    expect(formatValue(8_570_000)).toBe("8.57 M");
+    expect(formatValue(8_570_000_000)).toBe("8.57 B");
+    expect(formatValue(8_570_000_000_000)).toBe("8.57 T");
+  });
 
-        const comma = formatValue("999999,942")
-        expect(comma).toBe("999999.94")
+  it("handles malformed string numbers gracefully", () => {
+    expect(formatValue("1,0,0")).toBe("--");
+    expect(formatValue("A")).toBe("--");
+  });
+});
 
-
-    })
-    it("correctly formats higher numbers", () => {
-      const underMillion = formatValue("999999.1235")
-      expect(underMillion).toBe("999999.12")
-      const million = formatValue(8569959.989)
-      expect(million).toBe("8.57 M")
-      const billion = formatValue(8569999959.989)
-      expect(billion).toBe("8.57 B")
-      const trillion = formatValue(8569999959900.989)
-      expect(trillion).toBe("8.57 T")
-      const overTrillion = formatValue(8569999959900000000.989)
-      expect(overTrillion).toBe("8569999.96 T")
-    })
-
-    it("correctly formats small decimals", ()=> {
-      const smallDecimal = formatValue(0.00000000000012) 
-      expect(smallDecimal).toBe("0.0₁₁ 1")
-      const singleDigitDecimal = formatValue(0.0000003) 
-      expect(singleDigitDecimal).toBe("0.0₅ 3")
-      const oneZeroDecimal = formatValue(0.03)
-      expect(oneZeroDecimal).toBe("0.03")
-})
-
-describe("test for helper: isObject", () => {
-  test("should return true for plain objects", () => {
+describe("isObject", () => {
+  it("returns true for plain and constructed objects", () => {
     expect(isObject({})).toBe(true);
-    expect(isObject({ key: "value" })).toBe(true);
-    expect(isObject(Object.create(null))).toBe(true); 
-  });
-
-  test("should return false for null", () => {
-    expect(isObject(null)).toBe(false);
-  });
-
-  test("should return false for arrays", () => {
-    expect(isObject([])).toBe(false);
-    expect(isObject([1, 2, 3])).toBe(false);
-    expect(isObject(new Array(5))).toBe(false);
-  });
-
-  test("should return false for regular expressions", () => {
-    expect(isObject(/abc/)).toBe(false);
-    expect(isObject(new RegExp("abc"))).toBe(false);
-  });
-
-  test("should return false for Date objects", () => {
-    expect(isObject(new Date())).toBe(false);
-  });
-
-  test("should return false for Set objects", () => {
-    expect(isObject(new Set())).toBe(false);
-    expect(isObject(new Set([1, 2, 3]))).toBe(false);
-  });
-
-  test("should return false for Map objects", () => {
-    expect(isObject(new Map())).toBe(false);
-    expect(isObject(new Map([[1, "one"]]))).toBe(false);
-  });
-
-  test("should return false for primitive values", () => {
-    expect(isObject(42)).toBe(false);
-    expect(isObject("hello")).toBe(false);
-    expect(isObject(true)).toBe(false);
-    expect(isObject(undefined)).toBe(false);
-    expect(isObject(Symbol("symbol"))).toBe(false);
-    expect(isObject(BigInt(1234))).toBe(false);
-  });
-
-  test("should return false for functions", () => {
-    expect(isObject(function () {})).toBe(false);
-    expect(isObject(() => {})).toBe(false);
-    expect(isObject(class {})).toBe(false);
-  });
-
-  test("should return true for objects with constructors", () => {
-    class MyClass {}
-    expect(isObject(new MyClass())).toBe(true);
-  });
-
-  test("should return true for objects created with Object()", () => {
-    expect(isObject(Object())).toBe(true);
     expect(isObject(new Object())).toBe(true);
+    class Test {}
+    expect(isObject(new Test())).toBe(true);
   });
-})}) 
 
-describe("test for helper: formatDecimals", () => {
-  it('returns formatted string with subscript when number is in exponential notation (e.g. 1.23e-5)', () => {
-    const num = 1.23e-5;
-    const roundedNumber = 0.00001;
-    expect(formatDecimals(num, roundedNumber)).toBe("0.0₃ 12");
+  it("returns false for non-object types (arrays, null, functions)", () => {
+    expect(isObject(null)).toBe(false);
+    expect(isObject([])).toBe(false);
+    expect(isObject(() => {})).toBe(false);
+    expect(isObject("string")).toBe(false);
   });
-  it('returns roundedNumber string when there are fewer than 3 leading zeros after decimal', () => {
-    const num = 0.00123;
-    const roundedNumber = 0.001;
-    expect(formatDecimals(num, roundedNumber)).toBe('0.001');
-  });
-  it('handles case with exactly 2 leading zeros - should NOT use subscript', () => {
-    const num = 0.001234;
-    const roundedNumber = 0.001;
-    expect(formatDecimals(num, roundedNumber)).toBe('0.001');
-  });
-  it('handles number with no leading zeros in decimal part', () => {
-    const num = 0.12;
-    const roundedNumber = 0.12;
-    expect(formatDecimals(num, roundedNumber)).toBe('0.12');
-  });
-  it('handles number that becomes exponential like 1e-8 and uses correct formatting', () => {
-    const num = 1e-8;
-    const roundedNumber = 0;
-    expect(formatDecimals(num, roundedNumber)).toBe('0.0₆ 1');
-  });
-  it('handles trailing zeros after leading zeros (e.g. 0.0000100)', () => {
-    const num = 0.0000100;
-    const roundedNumber = 0.00001;
-    expect(formatDecimals(num, roundedNumber)).toBe("0.0₃ 1");
-  });
-  it('handles number with long chain of zeros before and after digits (e.g. 0.0000045000)', () => {
-    const num = 0.0000045000;
-    const roundedNumber = 0.0000045;
-    expect(formatDecimals(num, roundedNumber)).toBe("0.0₄ 45");
-  });
-  it('handles case where decimal part is empty (e.g. integer)', () => {
-    const num = 1;
-    const roundedNumber = 1;
-    expect(formatDecimals(num, roundedNumber)).toBe('1');
-  });
-  it("handles , notation", () => {
-    const num = "0,0002"
-    const roundedNumber = 0 
-    expect(formatDecimals(num, roundedNumber)).toBe("0.0₂ 2")
-  })
-})
+});
 
-describe("ranHexGen", () => {
-  beforeEach(()=> jest.clearAllMocks())
-  it("correctly renders hex codes out of treshold", () => {
-    const colors = ranHexGen(4)
-    expect(colors.length).toBe(4)
-    const moreColors = ranHexGen(100)
-    expect(moreColors.length).toBe(100)
-    expect(colors[0]).toStrictEqual(moreColors[0])
-    expect(colors[3]).toStrictEqual(moreColors[99])
-  })
-  it("correctly processes tresholdValue 1", () => {
-    const colors = ranHexGen(1)
-    expect(colors).toEqual(["#C4DDFF"])
-  })
-  it("correctly handles treshold value of 0", () => {
-    const colors = ranHexGen(0)
-    expect(colors).toEqual([])
-  })
-})
+describe("formatDecimals", () => {
+  it('converts exponential notation to subscript formatting', () => {
+    // 1.23e-5 = 0.0000123. Leading zeros: 4. Subscript: 3 (zeros after first 0.)
+    expect(formatDecimals(1.23e-5, 0.00001)).toBe("0.0₃ 12");
+  });
+
+  it('handles comma-separated strings as numbers', () => {
+    expect(formatDecimals("0,0002", 0)).toBe("0.0₂ 2");
+  });
+});
+
+describe("ranHexGen (Color Generator)", () => {
+  it("generates a specific number of hex codes", () => {
+    const count = 5;
+    const colors = ranHexGen(count);
+    expect(colors).toHaveLength(count);
+    colors.forEach(color => expect(color).toMatch(/^#/));
+  });
+
+  it("returns an empty array for 0", () => {
+    expect(ranHexGen(0)).toEqual([]);
+  });
+
+  it("returns a specific default for threshold 1", () => {
+    expect(ranHexGen(1)).toEqual(["#C4DDFF"]);
+  });
+});

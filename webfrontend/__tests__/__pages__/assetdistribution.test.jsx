@@ -207,17 +207,23 @@ describe("AssetDistribution", () => {
     const AssetDistributionComponent = await AssetDistribution();
     render(AssetDistributionComponent);
 
-    await waitFor(() => {
-      expect(StructureLayer.getPortfolioData).toHaveBeenCalledTimes(2);
+    await waitFor(()=> {
       expect(StructureLayer.getPortfolioData).toHaveBeenCalledWith(
         "portfolios",
         `portfolioid=1`
       );
-      expect(StructureLayer.getPortfolioData).toHaveBeenCalledWith(
+    })
+
+    await waitFor(() => {
+      expect(StructureLayer.getPortfolioData).toHaveBeenCalledTimes(2);
+      
+    });
+    await waitFor(()=> {
+    expect(StructureLayer.getPortfolioData).toHaveBeenCalledWith(
         "assets",
         `assettype=cryptocurrency`
       );
-    });
+    })
   });
   it("Passes responses to AssetDistributionComponent as props", async () => {
   
@@ -254,9 +260,9 @@ it("should return first login if there are no assets provided", async()=> {
 
 render(<FirstLogin />)
 
-const text = screen.findByText("Add your first holding")
+const text = await screen.findByText("Add your first holding")
 
-  expect(text).toBeInTheDocument
+  expect(text).toBeInTheDocument()
 
 })
 it("should render a sorry message if portfolio array is empty", async()=> {
@@ -266,7 +272,8 @@ it("should render a sorry message if portfolio array is empty", async()=> {
 
   const assetDistribution = await AssetDistribution() 
   render(assetDistribution)
-const text = screen.findByText("We are sorry, but there have to be an internal server error.")
-expect(text).toBeInTheDocument
+
+const text = await screen.findByText("We are sorry, but there have to be an internal server error.")
+expect(text).toBeInTheDocument()
 })
 });

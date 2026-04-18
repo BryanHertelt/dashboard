@@ -44,10 +44,6 @@ describe("nft-container", () => {
                 {"name": "Crazy", "nfturl": "https://www.example.com/azuki.png", "nftvalue": 8.7}]
     }
 
-    beforeEach(()=> {
-        render(<ExposeNfts data={mockNFTs} />)
-    })
-
     afterEach(()=> {
         jest.clearAllMocks()
     })
@@ -58,11 +54,13 @@ describe("nft-container", () => {
     })
 
     it("renders relevant data", () => {
+      render(<ExposeNfts data={mockNFTs} />)
        expect(screen.getByText("Crazy Ape...")).toBeInTheDocument()
        expect(screen.getByText("Ladybird")).toBeInTheDocument()
        expect(screen.getByText("Crazy")).toBeInTheDocument()
     })
     it("calls NFTDetailImageContainer with the right props", () => {
+      render(<ExposeNfts data={mockNFTs} />)
       expect(NftDetailImageContainer).toHaveBeenCalledTimes(3)
       expect(NftDetailImageContainer.mock.calls).toEqual(
         [

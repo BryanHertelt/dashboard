@@ -58,7 +58,6 @@ describe("prefetchDetailComponent", () => {
 });
 
 describe("retryDelay function", () => {
-  let queryClient;
   let retryDelayFn;
 
   beforeEach(() => {

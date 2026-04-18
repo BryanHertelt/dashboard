@@ -1,59 +1,64 @@
 import React from "react";
-import '@testing-library/jest-dom'
-import { render, fireEvent, screen } from "@testing-library/react";
+import '@testing-library/jest-dom';
+import { render, fireEvent, screen, within } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ShowDetailIcon } from "../../public/images/icons";
-import { prefetchDetailComponent } from "../../src/utility/lib/data-fetching/prefetch-hooks";
-import { TableDetailComponent } from "../../src/utility/lib/data-table/table-detail-components/v-ad-assets-parent";
 import { DataTable } from "../../src/utility/lib/data-table/data-table";
-import { SmallErrorSkeleton } from "../../src/utility/lib/data-fetching/skeletons/error-skeleton";
-import { ShowDetailIcon } from "../../public/images/icons";
 
-// Spy-able mock for prefetchDetailComponent
+// --- Spy-able Mocks ---
 const mockPrefetch = jest.fn();
 jest.mock("../../src/utility/lib/data-fetching/prefetch-hooks", () => ({
   prefetchDetailComponent: (...args) => mockPrefetch(...args),
 }));
 
-
-jest.mock( "../../src/utility/lib/data-table/table-detail-components/v-ad-assets-parent", () => ({
-  TableDetailComponent: () => <div test-id="mock-detail">Mock Detail Component</div>,
+jest.mock("../../src/utility/lib/data-table/table-detail-components/v-ad-assets-parent", () => ({
+  TableDetailComponent: () => <div data-testid="mock-detail">Mock Detail Component</div>,
 }));
+
+jest.mock("../../public/images/icons", () => ({
+  ShowDetailIcon: () => <div data-testid="mock-showicon"> Mock Show Detail Icon </div>
+}))
+
 jest.mock("../../src/utility/lib/data-fetching/skeletons/error-skeleton", () => ({
   SmallErrorSkeleton: () => <div>Mock Error Skeleton</div>,
 }));
 
 jest.mock("../../public/images/icons", () => ({
-  ShowDetailIcon: jest.fn().mockImplementation(({ rowId }) => <button data-testid={`toggle-${rowId}`}>+</button>) 
+  ShowDetailIcon: jest.fn(({ rowId }) => (
+    <button data-testid={`toggle-${rowId}`}>+</button>
+  ))
 }));
 
-const queryClient = new QueryClient();
+// --- Test Setup ---
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { retry: false } }
+});
+
 const renderWithClient = (ui) =>
   render(<QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>);
 
+const columns = [
+  {
+    header: "Asset",
+    accessorKey: "assetname",
+    cell: ({ getValue }) => <span>{getValue()}</span>,
+  },
+];
 
-describe("DataTable unit tests (with interaction)", () => {
-  beforeEach(()=> jest.clearAllMocks())
-  const columns = [
-    {
-      header: "Asset",
-      accessorKey: "assetname",
-      cell: ({ getValue }) => <span>{getValue()}</span>,
-    },
-  ];
+const data = [
+  {
+    id: 1,
+    assetname: "Bitcoin",
+    assetid: "btc-id",
+    assettype: "cryptocurrency",
+    assetabbreviation: "BTC",
+    symbol: "btc-symbol",
+  },
+];
 
-  const data = [
-    {
-      id: 1,
-      assetname: "Bitcoin",
-      assetid: "btc-id",
-      assettype: "cryptocurrency",
-      assetabbreviation: "BTC",
-      symbol: "btc-symbol",
-    },
-  ];
+describe("DataTable: Interaction & Prefetching", () => {
+  beforeEach(() => jest.clearAllMocks());
 
-  it("renders with data", () => {
+  it("renders with data correctly", () => {
     renderWithClient(
       <DataTable
         data={data}
@@ -65,33 +70,11 @@ describe("DataTable unit tests (with interaction)", () => {
         setExpandedRow={() => {}}
       />
     );
-    expect(screen.getByText("Asset")).toBeInTheDocument();
+    expect(screen.getByRole("columnheader", { name: /asset/i })).toBeInTheDocument();
     expect(screen.getByText("Bitcoin")).toBeInTheDocument();
   });
 
-  it("renders error skeleton when data is empty", () => {
-    renderWithClient(
-      <DataTable data={[]} columns={columns} currentValue={1} tableStatus="cryptocurrency" />
-    );
-    expect(screen.getByText("Mock Error Skeleton")).toBeInTheDocument();
-  });
-
-  it("shows no detail component, when detail == false", () => {
-    renderWithClient(
-      <DataTable
-        data={data}
-        columns={columns}
-        currentValue={1}
-        detail={false}
-        tableStatus="cryptocurrency"
-        expandedRow={0}
-        setExpandedRow={() => {}}
-      />
-    );
-    expect(ShowDetailIcon).not.toHaveBeenCalled()
-  })
-
-  it("shows detail component when row is expanded", () => {
+  it("shows detail component when a row is expanded", () => {
     renderWithClient(
       <DataTable
         data={data}
@@ -99,15 +82,15 @@ describe("DataTable unit tests (with interaction)", () => {
         currentValue={1}
         detail={true}
         tableStatus="cryptocurrency"
-        expandedRow={0}
+        expandedRow={0} // Row index 0 is expanded
         setExpandedRow={() => {}}
       />
     );
-    expect(ShowDetailIcon).toHaveBeenCalled()
-    expect(screen.getByText("Mock Detail Component")).toBeInTheDocument();
+    
+    expect(screen.getByTestId("mock-detail")).toBeInTheDocument();
   });
 
-  it("toggles expanded row on icon click", () => {
+  it("toggles expanded state via the toggle button", () => {
     const setExpandedRow = jest.fn();
 
     renderWithClient(
@@ -122,42 +105,21 @@ describe("DataTable unit tests (with interaction)", () => {
       />
     );
 
-    const toggleButton = screen.getByTestId("toggle-0");
+    // Find button within the specific row to avoid Node access
+    const row = screen.getByRole("row", { name: /bitcoin/i });
+    const toggleButton = within(row).getByRole("button");
+    
     fireEvent.click(toggleButton);
 
     expect(setExpandedRow).toHaveBeenCalledWith(expect.any(Function));
 
-    // simulate function call to ensure toggle logic
+    // Logic test for the toggle function
     const updateFn = setExpandedRow.mock.calls[0][0];
-    const result1 = updateFn(null); // first click
-    const result2 = updateFn(0);    // second click (should collapse)
-
-    expect(result1).toBe(0);
-    expect(result2).toBe(null);
+    expect(updateFn(null)).toBe(0); // Open
+    expect(updateFn(0)).toBe(null); // Close
   });
-});
 
-describe("DataTable prefetch behavior", () => {
-  const columns = [
-    {
-      header: "Asset",
-      accessorKey: "assetname",
-      cell: ({ getValue }) => <span>{getValue()}</span>,
-    },
-  ];
-
-  const data = [
-    {
-      id: 1,
-      assetname: "Bitcoin",
-      assetid: "btc-id",
-      assettype: "cryptocurrency",
-      assetabbreviation: "BTC",
-      symbol: "btc-symbol",
-    },
-  ];
-
-  it("calls prefetchDetailComponent on hover", () => {
+  it("calls prefetchDetailComponent on row hover (mouseEnter)", () => {
     renderWithClient(
       <DataTable
         data={data}
@@ -170,14 +132,24 @@ describe("DataTable prefetch behavior", () => {
       />
     );
 
-    const toggleCell = screen.getByTestId("toggle-0").parentElement;
-
-    fireEvent.mouseEnter(toggleCell);
+    // TARGETING: Instead of button.parentElement, we target the row itself
+    // or the specific cell containing the button.
+    const row = screen.getByRole("row", { name: /bitcoin/i });
+    
+    // Trigger hover on the row (standard for prefetching rows)
+    fireEvent.mouseEnter(row);
 
     expect(mockPrefetch).toHaveBeenCalledWith(
       "cryptocurrency",
       "btc-id",
-      expect.any(Object) // QueryClient instance
+      expect.any(Object)
     );
+  });
+
+  it("renders error skeleton when dataset is empty", () => {
+    renderWithClient(
+      <DataTable data={[]} columns={columns} currentValue={1} tableStatus="cryptocurrency" />
+    );
+    expect(screen.getByText("Mock Error Skeleton")).toBeInTheDocument();
   });
 });

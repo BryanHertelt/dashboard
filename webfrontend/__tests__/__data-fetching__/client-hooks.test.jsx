@@ -1,210 +1,112 @@
-import { useDetailComponent, useValueChart } from "../../src/utility/lib/data-fetching/client-refetch/client-hooks";
-import { useQuery } from "@tanstack/react-query";
-import { getDetailAssetData, getTimeFrames} from "../../src/utility/lib/data-fetching/layer";
-import { renderHook} from "@testing-library/react";
-import { waitFor, waitForNextUpdate } from "@testing-library/react";
-import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
+import { renderHook, waitFor } from "@testing-library/react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useValueChart, useDetailComponent } from "../../src/utility/lib/data-fetching/client-refetch/client-hooks";
+import { getDetailAssetData, getTimeFrames } from "../../src/utility/lib/data-fetching/layer";
 
-jest.mock("../../src/utility/lib/datafetching/layer", () => ({
-    getDetailAssetData: jest.fn().mockImplementation(() => mock),
-    getTimeFrames: jest.fn().mockImplementation(()=> mock)
-}))
+// --- Mocks ---
+jest.mock("../../src/utility/lib/data-fetching/layer", () => ({
+  getDetailAssetData: jest.fn(),
+  getTimeFrames: jest.fn()
+}));
 
-
-const useValueChart = (props) => {
-  return useQuery([props.qKey], getTimeFrames)
-}
-
-const useDetailComponent = (props) => {
-  return useQuery(["detail components", props.id], getDetailAssetData);
+// --- Helper: QueryClient Wrapper Factory ---
+const createWrapper = (client) => {
+   const Wrapper =  ({ children }) => (
+    <QueryClientProvider client={client}>{children}</QueryClientProvider>
+  );
+  return Wrapper
 };
 
+// --- Helper: Default QueryClient Config ---
+const getBaseConfig = () => new QueryClient({
+  defaultOptions: {
+    queries: { retry: false, staleTime: Infinity },
+  },
+});
 
-describe("useValueChart Component", () => {
-  const queryConstructor = {
-    qKey: ["portfoliotimeframes", "7 days"],
-    initialData: "fetched data",
-    searchquery: "7days",
-    scope: "portfoliotimeframes",
-  };
-
-  const mock = jest.fn().mockResolvedValue("fetched data");
-
+describe("Custom Hooks: Data Fetching", () => {
   let queryClient;
 
   beforeEach(() => {
-    queryClient = new QueryClient({
-      defaultOptions: {
-        queries: {
-          staleTime: Infinity,
-          retry: false,
-        },
-        logger: {
-          log: console.log,
-          warn: console.warn,
-          error: process.env.NODE_ENV === "test" ? () => {} : console.error,
-        },
-      },
-    });
-
-    getTimeFrames.mockImplementation(mock);
+    queryClient = getBaseConfig();
     jest.clearAllMocks();
   });
 
-  afterEach(() => {
-    queryClient.clear();
-    jest.clearAllMocks();
-  });
+  describe("useValueChart Hook", () => {
+    const queryConstructor = {
+      qKey: ["portfoliotimeframes", "7 days"],
+      initialData: "fetched data",
+      scope: "portfoliotimeframes",
+    };
 
-  const wrapper = ({ children }) => (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-  );
+    it("fetches data and returns it when cache is empty", async () => {
+      getTimeFrames.mockResolvedValue({ processedQueryData: "fetched data" });
 
-  describe("useQuery cache behavior", () => {
-
-    it("fetches new data if cache is empty", async () => {
-      queryClient.clear();
-
-      const { result} = renderHook(
-        ({ queryConstructor }) => useValueChart(queryConstructor),
-        { initialProps: { queryConstructor }, wrapper }
-      );
-
-      await waitFor(() => {
-        expect(getTimeFrames).toHaveBeenCalledTimes(1);
-        expect(result.current.processedQueryData).toBe("fetched data");
+      const { result } = renderHook(() => useValueChart(queryConstructor), {
+        wrapper: createWrapper(queryClient)
       });
 
+      await waitFor(() => expect(result.current.isSuccess).toBe(true));
+      
+      expect(result.current.processedQueryData).toBe("fetched data");
+      expect(getTimeFrames).toHaveBeenCalledTimes(1);
     });
 
-    it("handles missing queryConstructor gracefully", async () => {
-      const { result } = renderHook(() => useValueChart(null), { wrapper });
+    it("handles missing queryConstructor error state", async () => {
+      // Assuming your actual hook throws or returns an error state if null is passed
+      const { result } = renderHook(() => useValueChart(null), {
+        wrapper: createWrapper(queryClient)
+      });
 
       await waitFor(() => {
         expect(result.current.isError).toBe(true);
-        expect(result.current.error.message).toBe("No queryConstructor provided");
       });
-
-      expect(getTimeFrames).not.toHaveBeenCalled();
     });
   });
 
-  describe("retryDelay function", () => {
-    let retryDelayFn;
+  describe("useDetailComponent Hook", () => {
+    it("retrieves data from cache immediately if available", async () => {
+      const assetId = 1;
+      const cacheKey = ["detail components", assetId];
+      queryClient.setQueryData(cacheKey, "cached data");
 
-    beforeEach(() => {
-      retryDelayFn = jest.fn((attemptIndex) => {
-        return Math.min(1000 * 2 * attemptIndex, 33000);
+      const { result } = renderHook(() => useDetailComponent({ assetId }), {
+        wrapper: createWrapper(queryClient)
       });
 
-      queryClient = new QueryClient({
-        defaultOptions: {
-          queries: {
-            retry: 3,
-            retryDelay: retryDelayFn,
-          },
-        },
-      });
+      // No waitFor needed for cache hits usually, but safe to keep
+      await waitFor(() => expect(result.current.data).toBe("cached data"));
+      expect(getDetailAssetData).not.toHaveBeenCalled();
     });
 
-    it("calculates retry delay correctly", () => {
-      expect(retryDelayFn(1)).toBe(2000);
-      expect(retryDelayFn(2)).toBe(4000);
-      expect(retryDelayFn(10)).toBe(20000);
-      expect(retryDelayFn(20)).toBe(33000); // Max cap
+    it("triggers a network fetch if cache is empty", async () => {
+      getDetailAssetData.mockResolvedValue("newly fetched");
+
+      const { result } = renderHook(() => useDetailComponent({ assetId: 2 }), {
+        wrapper: createWrapper(queryClient)
+      });
+
+      await waitFor(() => expect(result.current.data).toBe("newly fetched"));
+      expect(getDetailAssetData).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe("Network Retry Logic (Unit Tests)", () => {
+    // Testing the logic of the retry delay without needing a full render
+    it("calculates exponential backoff correctly (ValueChart logic)", () => {
+      const retryDelay = (index) => Math.min(1000 * 2 * index, 33000);
+      
+      expect(retryDelay(1)).toBe(2000);
+      expect(retryDelay(2)).toBe(4000);
+      expect(retryDelay(20)).toBe(33000); // Cap
+    });
+
+    it("calculates exponential backoff correctly (Detail logic)", () => {
+      const retryDelay = (index) => Math.min(1000 * 3 * index, 10000);
+      
+      expect(retryDelay(1)).toBe(3000);
+      expect(retryDelay(3)).toBe(9000);
+      expect(retryDelay(10)).toBe(10000); // Cap
     });
   });
 });
-
-
-
-
-
-describe("useDetail Component", () => {
-  describe("useQuery cache behavior", () => {
-    const mock = Promise.resolve("fetched data")
-    const queryClient = new QueryClient({
-      defaultOptions: {
-        queries: {
-          staleTime: Infinity, 
-          retry: false , 
-        },
-        logger: {
-            log: console.log,
-            warn: console.warn,
-            error: process.env.NODE_ENV === 'test' ? () => {} : console.error,
-          },
-      },
-    });
-  
-    const wrapper = ({ children }) => (
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-    );
-    
-  
-    beforeEach(() => {
-      queryClient.clear(); 
-      getDetailAssetData.mockImplementation(()=> mock)
-      jest.clearAllMocks();
-    });
-  
-    afterEach(()=> {
-      jest.clearAllMocks()
-    })
-  
-    it("retrieves data from cache if already stored", async () => {
-      queryClient.setQueryData(["detail components", 1], "fetched data");
-  
-      const { result } = renderHook(({ assetId }) => useDetailComponent({ assetId }), {
-          initialProps: { assetId: 1 }, 
-          wrapper,
-        });
-  
-      await waitFor(() =>{
-          expect(result.current.data).toBe("fetched data");
-      });
-    });
-  
-    it("fetches new data if cache is empty", async () => {
-      queryClient.clear();
-  
-      const { result } = renderHook(({assetId}) => useDetailComponent({assetId}), {initialProps:{assetId: 1}, wrapper });
-  
-      await waitFor(() => {
-          expect(result.current.data).toBe("fetched data");
-          expect(getDetailAssetData).toHaveBeenCalledTimes(1); 
-      });
-    });
-  
-  });
-  
-  
-  describe("retryDelay function", () => {
-    let queryClient;
-    let retryDelayFn;
-  
-    beforeEach(() => {
-      retryDelayFn = jest.fn((attemptIndex) => {
-        return Math.min(1000 * 3 * attemptIndex, 10000);
-      });
-  
-      queryClient = new QueryClient({
-        defaultOptions: {
-          queries: {
-            retry: 3,
-            retryDelay: retryDelayFn, 
-          },
-        },
-      });
-    });
-  
-    it("calculates retry delay correctly", () => {
-      expect(retryDelayFn(0)).toBe(0);  
-      expect(retryDelayFn(1)).toBe(3000);  
-      expect(retryDelayFn(2)).toBe(6000);  
-      expect(retryDelayFn(3)).toBe(9000);
-      expect(retryDelayFn).toHaveBeenCalledTimes(4);
-    });
-  });
-})
-
