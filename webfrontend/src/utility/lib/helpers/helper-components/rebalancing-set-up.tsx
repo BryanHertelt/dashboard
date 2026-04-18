@@ -91,15 +91,15 @@ export const RebalancingSetUp = ({
   }>({ active: false, title: "" });
   const [isToggled, setToggled] = useState<string>("none");
 
+  useEffect(() => {
+    setPrintV([`${formatValue(calcV[0])}%`, formatCurrency(calcV[1])]);
+  }, [calcV]);
+
   if (desiredbalance === null) {
     return (
       <p> Set desired balancing to see your rebalancing statistics here.</p>
     );
   }
-
-  useEffect(() => {
-    setPrintV([`${formatValue(calcV[0])}%`, formatCurrency(calcV[1])]);
-  }, [calcV]);
 
   const handleSubmit = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();

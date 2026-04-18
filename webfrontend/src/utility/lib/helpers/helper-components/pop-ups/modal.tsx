@@ -13,9 +13,9 @@ const Modal = ({
   onClose: () => void;
   title: string | undefined;
 }) => {
-  if (!isOpen) return null;
-
   const [note, setNote] = useState<string>("");
+
+  if (!isOpen) return null;
 
   const handleNoteChange = (event: ChangeEvent<HTMLInputElement>) => {
     setNote(event.target.value);

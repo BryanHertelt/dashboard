@@ -2,21 +2,16 @@
 import { useQuery, useMutation, QueryClient } from "@tanstack/react-query";
 import logger from "../logging/logger";
 import {
-  getDistribution,
   postHoldingSync,
   getTimeFrames,
   getDetailAssetData,
 } from "../data-fetching";
 import {
-  QueryConstructorInterfaceDistribution,
-  MutationConstructorInterface,
   QueryConstructorInterfaceChart,
   Holding,
   AssetHoldings,
 } from "../types/data-fetching-types";
 import { QueryConstructorInterface } from "../types/data-fetching-types";
-import { syncSingleHolding } from "../stores";
-import { SyncStatusItem, SyncStoreState } from "../stores/clear-cache";
 
 export const useDistributionData = (
   queryConstructor: QueryConstructorInterface
@@ -103,21 +98,13 @@ export const useHoldingMutation = ({
 export const useValueChart = (
   queryConstructor: QueryConstructorInterfaceChart
 ) => {
-  if (!queryConstructor || Object.keys(queryConstructor).length === 0) {
-    console.error(
-      "useDistributionData Hook: Refetch not possible, because there is no queryConstructor provided."
-    );
-    return {
-      processedQueryData: [],
-      isLoading: false,
-      isError: true,
-      error: new Error("No queryConstructor provided"),
-    };
-  }
+  const isValid = !!queryConstructor && Object.keys(queryConstructor).length > 0;
+
   const { data, isLoading, isError, error, isSuccess } = useQuery({
-    queryKey: [queryConstructor.qKey],
+    queryKey: isValid ? [queryConstructor.qKey] : ["__invalid__"],
     staleTime: 5000,
     gcTime: 5000,
+    enabled: isValid,
     queryFn: async () => {
       const result = await getTimeFrames(
         queryConstructor.scope,
@@ -129,8 +116,21 @@ export const useValueChart = (
       return Math.min(1000 * 2 * attemptIndex, 33000);
     },
   });
-  const processedQueryData = data;
-  return { processedQueryData, isLoading, isError, error, isSuccess };
+
+  if (!isValid) {
+    logger.error(
+      "useValueChart Hook: Refetch not possible, because there is no queryConstructor provided."
+    );
+    return {
+      processedQueryData: [],
+      isLoading: false,
+      isError: true,
+      error: new Error("No queryConstructor provided"),
+      isSuccess: false,
+    };
+  }
+
+  return { processedQueryData: data, isLoading, isError, error, isSuccess };
 };
 
 export const useDetailComponent = (props: { tableStatus: string | undefined; assetId: number }) => {
