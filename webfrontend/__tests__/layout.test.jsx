@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import ShallowRenderer from 'react-test-renderer/shallow';
-import FoldedSideBar, { renderFoldedBulletPoints } from '@/utility/lib/trackerlayout/sidebar/foldedsidebar';
+import FoldedSideBar from '@/utility/lib/trackerlayout/sidebar/foldedsidebar';
 import UnfoldedSidebar from '@/utility/lib/trackerlayout/sidebar/unfoldedsidebar';
 import '@testing-library/jest-dom';
 import HeadBarContainer from '@/utility/lib/trackerlayout/headbar';
@@ -69,17 +69,17 @@ describe('HeadbarContainer', () => {
   it('renders correctly', () => { 
   const renderer = new ShallowRenderer(); 
   renderer.render(<HeadBarContainer />); 
-  const result =renderer.getRenderOutput(); 
+  const view =renderer.getRenderOutput(); 
   
-  expect(result.type).toBe('nav')
+  expect(view).toBe('nav')
   }); 
 
   it('matches snapshots', ()=> {
   const renderer = new ShallowRenderer(); 
   renderer.render(<HeadBarContainer />); 
-  const result = renderer.getRenderOutput(); 
+  const view = renderer.getRenderOutput(); 
 
-  expect(result).toMatchSnapshot(); 
+  expect(view).toMatchSnapshot(); 
   })
   });
 
@@ -87,16 +87,16 @@ describe('SidebarContainer', ()=> {
   it('renders correctly', ()=> {
     const renderer = new ShallowRenderer(); 
     renderer.render(<SidebarContainer />); 
-    const result = renderer.getRenderOutput(); 
+    const view = renderer.getRenderOutput(); 
 
-    expect(result.type).toBe('div')
+    expect(view).toBe('div')
   })
 
   it('matches snapshot', ()=> {
     const renderer = new ShallowRenderer(); 
     renderer.render(<SidebarContainer />) 
-    const result = renderer.getRenderOutput() 
+    const view = renderer.getRenderOutput() 
 
-    expect(result).toMatchSnapshot(); 
+    expect(view).toMatchSnapshot(); 
   })
 })
