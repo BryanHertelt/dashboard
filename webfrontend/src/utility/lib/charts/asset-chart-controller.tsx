@@ -135,7 +135,7 @@ const LineChartController = ({
             </button>
           </div>
           <div className={`${dropDownDesign} absolute top-10 right-1`}>
-            {dropDownMenuValues.map((item, index) => {
+            {dropDownMenuValues.map((item) => {
               return (
                 <button
                   key={item.timeframe}
