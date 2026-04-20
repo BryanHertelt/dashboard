@@ -40,7 +40,7 @@ describe("Custom Hooks: Data Fetching", () => {
     };
 
     it("fetches data and returns it when cache is empty", async () => {
-      getTimeFrames.mockResolvedValue({ processedQueryData: "fetched data" });
+      getTimeFrames.mockResolvedValue("fetched data");
 
       const { result } = renderHook(() => useValueChart(queryConstructor), {
         wrapper: createWrapper(queryClient)

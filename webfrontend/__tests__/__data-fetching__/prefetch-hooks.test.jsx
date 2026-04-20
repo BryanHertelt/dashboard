@@ -59,6 +59,7 @@ describe("prefetchDetailComponent", () => {
 
 describe("retryDelay function", () => {
   let retryDelayFn;
+  let queryClient;
 
   beforeEach(() => {
     retryDelayFn = jest.fn((attemptIndex) => {

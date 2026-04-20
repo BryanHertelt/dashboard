@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom'
 import { render, screen, fireEvent } from '@testing-library/react'
 import AssetValueChartComponent from "../../src/utility/lib/charts/asset-chart-controller"
-import { LineChartComponent } from "../../src/utility/lib/charts/line-charts";
+import { LineChartComponent } from "../../src/utility/lib/charts";
 import { useValueChart, SmallLoadingSkeleton, SmallErrorSkeleton } from "../../src/utility/lib/data-fetching";
 
 // --- Mocks ---
@@ -25,8 +25,8 @@ jest.mock("../../public/images/index", () => ({
 }))
 
 // --- Test Constants ---
-const mockSevenDays = [{ "x": "2025-01-16T00:00:00.000Z", "y": [1304, 100] }];
-const queryMock = [{ "x": "2025-01-16T00:00:00.000Z", "y": [1304, 100] }];
+const mockSevenDays = [{ "x": "2025-01-16T00:00:00.000Z", "y": [1304, 100, 50] }];
+const queryMock = [{ "x": "2025-01-16T00:00:00.000Z", "y": [1304, 100, 50] }];
 const importantElements = ["BitcoinIcon", "EthereumIcon", "Cost Basis", "Assets", "7d", "My Assets", "$50.00"];
 
 const dropDownMenuValues = [

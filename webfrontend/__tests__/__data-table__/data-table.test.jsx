@@ -132,12 +132,9 @@ describe("DataTable: Interaction & Prefetching", () => {
       />
     );
 
-    // TARGETING: Instead of button.parentElement, we target the row itself
-    // or the specific cell containing the button.
     const row = screen.getByRole("row", { name: /bitcoin/i });
-    
-    // Trigger hover on the row (standard for prefetching rows)
-    fireEvent.mouseEnter(row);
+    const toggleButton = within(row).getByTestId("toggle-0");
+    fireEvent.mouseEnter(toggleButton.closest("td"));
 
     expect(mockPrefetch).toHaveBeenCalledWith(
       "cryptocurrency",

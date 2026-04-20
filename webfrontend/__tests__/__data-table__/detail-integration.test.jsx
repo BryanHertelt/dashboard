@@ -42,6 +42,10 @@ jest.mock("../../src/utility/lib/helpers/helper-components/image-container", () 
   NftDetailImageContainer: jest.fn(() => null),
 }));
 
+jest.mock("../../public/images", () => ({
+  NftsIcon: jest.fn(() => null),
+}));
+
 let resizeCallback;
 jest.mock("use-resize-observer", () => ({
   __esModule: true,

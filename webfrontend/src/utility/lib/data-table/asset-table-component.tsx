@@ -122,7 +122,7 @@ const AssetTableComponent = ({ config }: { config: configType }) => {
   const AddOnButtons = () => {
     return (
       <>
-        {config.addOns.map(
+        {(config.addOns ?? []).map(
           (
             addOn: { addOnStatus: string; addOnTitle: string },
             index: number
@@ -153,6 +153,7 @@ const AssetTableComponent = ({ config }: { config: configType }) => {
           <nav className="relative flex flex-row pl-7 w-3/4 justify-start">
             <div
               className="relative flex flex-row bg-gray rounded-md lg:w-2/6 lp:w-2/6 xl:w-1/4 md:w-3/6 sm:w-4/6"
+              data-testid="tab-container"
               ref={tabRef}
             >
               {config.status.map((statusConfig) => (

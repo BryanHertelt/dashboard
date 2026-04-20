@@ -92,6 +92,7 @@ describe("nft-container", () => {
       )
     })
     it("renders relevant pricing information", () => {
+      render(<ExposeNfts data={mockNFTs} />)
       mockNFTs.nfts.map((nft)=> {
         expect(screen.getByText(`${formatValue(nft.nftvalue)} ETH`)).toBeInTheDocument()
       })

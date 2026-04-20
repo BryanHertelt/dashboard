@@ -1,7 +1,7 @@
-import { HoldingLogoImageContainer } from "../../helpers";
+import { HoldingLogoImageContainer, NftDetailImageContainer } from "./image-container";
 import { NftsIcon } from "../../../../../public/images";
-import { formatValue, formatCurrency } from "../../helpers";
-import { NftDetailImageContainer } from "../../helpers";
+import { formatValue } from "../helper-functions/formatValue";
+import { formatCurrency } from "../helper-functions/formatCurrency";
 import logger from "../../logging/logger";
 import { ChartData, ChartOptions } from "chart.js";
 

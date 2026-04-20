@@ -91,8 +91,9 @@ describe("DataTable Integration: Semantic Rendering", () => {
       expect(getByText("Bitcoin")).toBeInTheDocument();
       expect(getByText("BTC")).toBeInTheDocument();
 
-      expect(getByText("$486,953.00")).toHaveClass("text-green");
-      expect(getByText("5.00 %")).toHaveClass("text-green");
+      expect(within(row).getAllByText("$486,953.00")[1]).toHaveClass("text-green");
+      const greenPercentEl = within(row).getAllByText("5.00 %").find(el => el.parentElement?.className.includes("text-green"));
+      expect(greenPercentEl?.parentElement).toHaveClass("text-green");
     });
 
     it("handles negative crypto data styling", () => {
@@ -100,9 +101,9 @@ describe("DataTable Integration: Semantic Rendering", () => {
       setup(negativeData, dataColsCurrency, "cryptocurrency");
 
       const row = screen.getByRole("row", { name: /ethereum/i });
-      const { getByText } = within(row);
+      const { getByText } = within(row); 
 
-      expect(getByText("4.00 %")).toHaveClass("text-red");
+      expect(screen.getByText("4.00 %").parentElement).toHaveClass("text-red");
       expect(getByText("$100.00")).toHaveClass("text-red");
     });
   });

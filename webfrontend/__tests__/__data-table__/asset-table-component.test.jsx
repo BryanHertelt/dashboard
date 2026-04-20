@@ -122,10 +122,9 @@ describe("AssetTableComponent", () => {
 
   it("recalculates button widths via ResizeObserver", async () => {
     setup();
-    const navDiv = screen.getByRole("navigation").within("div");
 
     act(() => {
-      resizeCallback([{ target: navDiv, contentRect: { width: 450 } }], {});
+      resizeCallback([{ contentRect: { width: 450 } }], {});
     });
 
     await waitFor(() => {

@@ -6,7 +6,7 @@ const AssetDistribution = async () => {
   const [assetDistributionResponse] = await Promise.all([
     await getDistribution("all"),
   ]);
-  if (assetDistributionResponse === "failed") {
+  if (!assetDistributionResponse || Array.isArray(assetDistributionResponse)) {
     return <p> We will be right back for you!</p>;
   } else if (assetDistributionResponse.assets.length === 0) {
     return <FirstLogin />;
