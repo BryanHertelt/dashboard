@@ -71,7 +71,7 @@ describe('HeadbarContainer', () => {
   renderer.render(<HeadBarContainer />); 
   const view =renderer.getRenderOutput(); 
   
-  expect(view).toBe('nav')
+  expect(view.type).toBe('nav')
   }); 
 
   it('matches snapshots', ()=> {
@@ -89,7 +89,7 @@ describe('SidebarContainer', ()=> {
     renderer.render(<SidebarContainer />); 
     const view = renderer.getRenderOutput(); 
 
-    expect(view).toBe('div')
+    expect(view.type).toBe('div')
   })
 
   it('matches snapshot', ()=> {

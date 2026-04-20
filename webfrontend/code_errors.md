@@ -15,42 +15,6 @@ These are **warnings** about incorrect or missing `useEffect`/`useCallback`/`use
 | `src/utility/lib/data-table/asset-table-component.tsx` | 21 | `useEffect` missing dependency: `start` |
 | `src/utility/lib/data-table/asset-table-controller.tsx` | 101 | `useEffect` missing dependency: `tableConfig.statusFilter` |
 | `src/utility/lib/page-components/holding-distribution-comp.tsx` | 66 | `useEffect` missing dependency: `setSyncStatus` |
----
-
-## 7. Test Failures — Wrong Module Paths (Suite-level failures)
-
-These test suites **fail to run** because they import from incorrect paths that do not exist.
-
-| Test File | Wrong Path Used | Correct Path |
-|-----------|----------------|--------------|
-| `__tests__/__pages__/assetdistribution.test.jsx` | `../src/utility/lib/datafetching/layer` | `../src/utility/lib/data-fetching/layer` |
-| `__tests__/__data-fetching__/prefetch-hooks.test.jsx` | `../../src/utility/lib/datafetching/layer` | `../../src/utility/lib/data-fetching/layer` |
-| `__tests__/__data-fetching__/client-hooks.test.jsx` | `../../src/utility/lib/datafetching/layer` | `../../src/utility/lib/data-fetching/layer` |
-| `__tests__/__helper__/nft-container.test.jsx` | `../../src/utility/lib/helpers/helper-components` | path to the specific component |
-| `__tests__/__charts__/line-charts.test.jsx` | `../../src/utility/lib/helpers/helper-functions` | path to specific helper |
-| `__tests__/__charts__/bar-charts.test.jsx` | `../../src/utility/lib/helpers/helper-functions` | path to specific helper |
-| `__tests__/__build-component__/value-chart-comp.test.jsx` | `../../src/utility/lib/helpers/helper-functions` | path to specific helper |
-| `__tests__/__data-fetching__/layer.test.jsx` | — | Syntax error in test file at line 10 (unexpected `,`) |
-
----
-
-## 8. Test Failures — Wrong Assertions
-
-These tests run but fail because the assertions are incorrect.
-
-### `__tests__/layout.test.jsx`
-
-- **`HeadbarContainer › renders correctly`** (line 74): `expect(view).toBe('nav')` — `view` is a React element, not the string `'nav'`. The assertion logic is wrong; should check `view.type` or use snapshot/query-based assertion.
-- **`SidebarContainer › renders correctly`** (line 92): Same issue — `expect(view).toBe('div')` compares a React element against a string literal.
-
-### `__tests__/__data-table__/detail-integration.test.jsx`
-
-- **`TableDetailComponent › error state › renders error, when hook returns error`** (line 265): `logger.error` is being called with arguments in the wrong order — the test expects `(message, object)` but the source passes `(object, message)`.
-- **`TableDetailComponent › error state › renders error, when wrong data is passed`** (line 285): Same argument-order mismatch for `logger.error`.
-
-### `__tests__/__charts__/distribution-charts.test.jsx`
-
-- **`DistributionChart Component › handles empty data`** (line 63): `logger.error` argument order mismatch — test expects `(message, data)` but source calls `(data, message)`.
 
 ---
 
@@ -60,30 +24,10 @@ These tests run but fail because the assertions are incorrect.
 
 **`TypeError: Cannot read properties of undefined (reading 'map')`**
 
-`config.addOns` is `undefined` when the component renders in tests. `config.addOns.map(...)` is called without a null/undefined guard. Affects all `AssetTableComponent` tests across multiple test suites:
+`config.addOns` is `undefined` when the component renders in tests. `config.addOns.map(...)` is called without a null/undefined guard. The `configType` defines `addOns` as required but neither `testmocks.js` nor the unit test's inline `tableConfig` include it. Affects:
 
 - `__tests__/__data-table__/asset-table-component.test.jsx` (11 failing tests)
 - `__tests__/__data-table__/integration.test.jsx` (8 failing tests)
-- `__tests__/__data-table__/detail-integration.test.jsx`
-
----
-
-## 10. Test Failures — Logic / Data Mismatch
-
-### `__tests__/__data-table__/table-detail-components.test.jsx`
-
-- **`DisDetail › renders InfoCards with processed card data`**: The component renders fewer items than expected — the test expects 14 IDs but receives 1.
-- **`DisDetail › sorts using currencyvalue and not nft-amount`**: Sorting logic returns `undefined` instead of the expected sorted IDs (`[253, 156, 133]`). The component is likely sorting on a field that does not exist in the test data.
-
-
---- 
-
-
-### Testing Library naming convention
-
-| File | Line | Issue |
-|------|------|-------|
-| `src/utility/lib/charts/distribution-chart.tsx` | 194 | `render` return value named `hoverLabel` — must be destructured or named `view` / `utils` |
 
 ---
 
@@ -92,7 +36,7 @@ These tests run but fail because the assertions are incorrect.
 | Issue | Detail |
 |-------|--------|
 | `next lint` CLI is deprecated | Will be removed in Next.js 16. Migrate to `npx eslint` directly. |
-| `caniuse-lite` (browserslist) data is 11 months old | Run `npx update-browserslist-db@latest` to update. |
+| `caniuse-lite` (browserslist) data is outdated | Run `npx update-browserslist-db@latest` to update. |
 
 ---
 
@@ -100,15 +44,6 @@ These tests run but fail because the assertions are incorrect.
 
 | Category | Errors | Warnings |
 |----------|--------|---------|
-| React Hooks — rules of hooks | 3 | — |
 | React Hooks — exhaustive deps | — | 5 |
-| Unused variables/imports | 39 | — |
-| Unused expressions | 6 | — |
-| TypeScript type safety | 5 | — |
-| JSX/HTML | 1 | — |
-| Test — wrong module paths | 8 suites | — |
-| Test — wrong assertions | 5 tests | — |
-| Test — runtime errors | 20+ tests | — |
-| Test — logic/data mismatch | 2 tests | — |
-| Debug statements in source | — | 8 |
+| Test — runtime errors | 19+ tests | — |
 | Deprecated tooling | — | 2 |
