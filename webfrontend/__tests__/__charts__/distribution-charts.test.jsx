@@ -55,8 +55,8 @@ describe("DistributionChart Component", () => {
     setUpTest(1000, [], false, 10);
     expect(SmallErrorSkeleton).toHaveBeenCalled();
     expect(logger.error).toHaveBeenCalledWith(
-      expect.stringContaining("Pie Data is undefined or empty"),
-      []
+      expect.objectContaining({ pieData: [] }),
+      expect.stringContaining("Pie Data is undefined or empty")
     );
   });
 

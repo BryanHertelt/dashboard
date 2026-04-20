@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import { render, screen } from "@testing-library/react";
-import { BarChartRebalancing, HoldingBarChart } from "@/utility/lib/design-components/charts/barcharts";
+import { BarChartRebalancing, HoldingBarChart } from "@/utility/lib/charts/bar-charts";
 import { Bar } from "react-chartjs-2";
 
 // --- Mocks ---
@@ -8,7 +8,7 @@ jest.mock("react-chartjs-2", () => ({
   Bar: jest.fn(() => null)
 }));
 
-jest.mock("../../src/utility/lib/helpers/helper-functions", () => ({
+jest.mock("../../src/utility/lib/helpers", () => ({
   formatValue: jest.fn((num) => Number(num).toFixed(2)),
   formatCurrency: jest.fn((num) => `$${Number(num).toLocaleString('en-US', { minimumFractionDigits: 2 })}`)
 }));
@@ -22,10 +22,10 @@ const mockRebalancingData = {
 };
 
 const mockHoldingData = [
-  { holdingname: "Binance", holdingdistribution: 45, currencyvalue: 75655.23 },
-  { holdingname: "Huobi", holdingdistribution: 3, currencyvalue: 10000 },
-  { holdingname: "Polygon", holdingdistribution: 5, currencyvalue: 80443.96 },
-  { holdingname: "Bybit", holdingdistribution: 4, currencyvalue: 10000 }
+  { name: "Binance", holdingdistribution: 45, currencyvalue: 75655.23 },
+  { name: "Huobi", holdingdistribution: 3, currencyvalue: 10000 },
+  { name: "Polygon", holdingdistribution: 5, currencyvalue: 80443.96 },
+  { name: "Bybit", holdingdistribution: 4, currencyvalue: 10000 }
 ];
 
 // --- Refactored BarChartRebalancing Tests ---
@@ -65,8 +65,8 @@ describe("BarChartRebalancing", () => {
 
 // --- Refactored HoldingBarChart Tests ---
 describe("HoldingBarChart", () => {
-  const setup = (data = mockHoldingData) => 
-    render(<HoldingBarChart data={data} />);
+  const setup = (data = mockHoldingData) =>
+    render(<HoldingBarChart barData={data} />);
 
   beforeEach(() => jest.clearAllMocks());
 
@@ -80,8 +80,8 @@ describe("HoldingBarChart", () => {
 
   it("renders only 'Other Holdings' if no main holdings (>5%) exist", () => {
     const minorData = [
-      { holdingname: "Huobi", holdingdistribution: 3, currencyvalue: 10000 },
-      { holdingname: "Bybit", holdingdistribution: 4, currencyvalue: 10000 }
+      { name: "Huobi", holdingdistribution: 3, currencyvalue: 10000 },
+      { name: "Bybit", holdingdistribution: 4, currencyvalue: 10000 }
     ];
     setup(minorData);
     
@@ -96,7 +96,7 @@ describe("HoldingBarChart", () => {
   });
 
   it("renders only specific assets if none fall under 'Other'", () => {
-    const majorOnly = [{ holdingname: "Binance", holdingdistribution: 45, currencyvalue: 75655.23 }];
+    const majorOnly = [{ name: "Binance", holdingdistribution: 45, currencyvalue: 75655.23 }];
     setup(majorOnly);
 
     expect(screen.queryByText(/Other Holdings/i)).not.toBeInTheDocument();
@@ -112,6 +112,6 @@ describe("HoldingBarChart", () => {
 
   it("renders error message when data is empty", () => {
     setup([]);
-    expect(screen.getByText(/No chart data available right now/i)).toBeInTheDocument();
+    expect(screen.getByText(/No chart data available/i)).toBeInTheDocument();
   });
 });

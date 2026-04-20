@@ -1,6 +1,6 @@
 import { renderHook, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useValueChart, useDetailComponent } from "../../src/utility/lib/data-fetching/client-refetch/client-hooks";
+import { useValueChart, useDetailComponent } from "../../src/utility/lib/data-fetching/client-hooks";
 import { getDetailAssetData, getTimeFrames } from "../../src/utility/lib/data-fetching/layer";
 
 // --- Mocks ---

@@ -1,10 +1,10 @@
 import '@testing-library/jest-dom'
 import { render } from '@testing-library/react'
-import { LineChartComponent } from "../../src/utility/lib/design-components/charts/line-charts"
+import { LineChartComponent } from "../../src/utility/lib/charts/line-charts"
 import { Line } from 'react-chartjs-2'
 
 // --- Mocks ---
-jest.mock("../../src/utility/lib/helpers/helper-functions", () => ({
+jest.mock("../../src/utility/lib/helpers", () => ({
   formatValue: jest.fn((n) => Number(n).toFixed(2)),
   formatCurrency: jest.fn((n) => `$${Number(n).toFixed(2)}`)
 }))

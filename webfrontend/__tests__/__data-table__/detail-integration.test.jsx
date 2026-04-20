@@ -156,8 +156,8 @@ describe("TableDetailComponent", () => {
       setup();
       
       expect(logger.error).toHaveBeenCalledWith(
-        expect.stringContaining("detail fetch failed"),
-        expect.objectContaining(errorContext)
+        expect.objectContaining(errorContext),
+        expect.stringContaining("detail fetch failed")
       );
       expect(SmallErrorSkeleton).toHaveBeenCalled();
     });

@@ -4,7 +4,25 @@ import { DataTable } from '../../src/utility/lib/data-table/data-table';
 import { dataColsCurrency, dataColsDerivative, dataColsNft } from '../../src/utility/lib/data-table/v-ad-cols/asset-distribution-cols';
 import '@testing-library/jest-dom';
 
-const queryClient = new QueryClient();
+jest.mock("../../public/images/icons", () => ({
+  PositionDirectionIcon: jest.fn(() => <span data-testid="position-direction-icon">P</span>),
+  SortingDataTableIcon: jest.fn(() => <span>S</span>),
+  ShowDetailIcon: jest.fn(({ rowId }) => <button data-testid={`toggle-${rowId}`}>+</button>),
+}));
+
+jest.mock("../../src/utility/lib/data-fetching/prefetch-hooks", () => ({
+  prefetchDetailComponent: jest.fn(),
+}));
+
+jest.mock("../../src/utility/lib/data-table/table-detail-components/v-ad-assets-parent", () => ({
+  TableDetailComponent: jest.fn(() => <div data-testid="mock-detail">Detail View</div>),
+}));
+
+jest.mock("../../src/utility/lib/data-fetching/skeletons/error-skeleton", () => ({
+  SmallErrorSkeleton: jest.fn(() => <div>Error Skeleton</div>),
+}));
+
+const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
 
 const setup = (data, columns, status) =>
   render(
@@ -20,6 +38,46 @@ const setup = (data, columns, status) =>
     </QueryClientProvider>
   );
 
+// --- Test Data ---
+const cryptodata = [
+  {
+    symbol: "A", assettype: "cryptocurrency", assetid: 1,
+    assetname: "Bitcoin", assetabbreviation: "BTC",
+    assetamount: 0.5, distribution: 5, assetvalue: 486953,
+    assetchange24h: 5, profitloss: 486953, profitlosschange: 20,
+  },
+  {
+    symbol: "A", assettype: "cryptocurrency", assetid: 2,
+    assetname: "Ethereum", assetabbreviation: "ETH",
+    assetamount: 2, distribution: -3, assetvalue: 72000,
+    assetchange24h: 2, profitloss: 100, profitlosschange: 5,
+  },
+];
+
+const nftdata = [
+  {
+    symbol: "B", assettype: "nft", assetid: 312,
+    assetname: "Moonbirds", collectionvalue: 1200,
+    collectionfloorprice: 1200, collectionvalueeth: 1,
+    assetamount: 5, distribution: 3,
+    profitloss: 100, profitlosschange: 10,
+  },
+];
+
+const derivativedata = [
+  {
+    symbol: "C", assettype: "derivative", assetid: 12,
+    assetname: "BTCUSDT", derivativeexchange: "Bybit",
+    positiontype: "open", tradedirection: "long",
+    derivativetype: "future", leverage: 5,
+    assetvalue: 15000, size: 15000, entry: 30000,
+    unrealizedpl: 2500, price: 32000,
+    liquidationprice: 25000, margin: 100,
+    tp: 3, sl: 29, distribution: 3,
+    profitloss: 1000, profitlosschange: 26,
+  },
+];
+
 describe("DataTable Integration: Semantic Rendering", () => {
   afterEach(() => jest.clearAllMocks());
 
@@ -27,20 +85,13 @@ describe("DataTable Integration: Semantic Rendering", () => {
     it("verifies row data and color-coding without Node traversal", () => {
       setup(cryptodata, dataColsCurrency, "cryptocurrency");
 
-      // Target the row by the accessible name (the text content of the row)
       const row = screen.getByRole("row", { name: /bitcoin/i });
       const { getByText } = within(row);
 
-      // Verify text presence
       expect(getByText("Bitcoin")).toBeInTheDocument();
       expect(getByText("BTC")).toBeInTheDocument();
 
-      // Verify styling: 
-      // If the class is on the element with the text, this works:
       expect(getByText("$486,953.00")).toHaveClass("text-green");
-
-      // If the class is on a wrapper, use a test-id or more specific selector
-      // In this case, we check the specific numeric value string for the class
       expect(getByText("5.00 %")).toHaveClass("text-green");
     });
 
@@ -51,7 +102,6 @@ describe("DataTable Integration: Semantic Rendering", () => {
       const row = screen.getByRole("row", { name: /ethereum/i });
       const { getByText } = within(row);
 
-      // We assert directly on the text element's class
       expect(getByText("4.00 %")).toHaveClass("text-red");
       expect(getByText("$100.00")).toHaveClass("text-red");
     });
@@ -78,8 +128,7 @@ describe("DataTable Integration: Semantic Rendering", () => {
 
       expect(getByText("x5")).toBeInTheDocument();
       expect(getByText("C Bybit")).toBeInTheDocument();
-      
-      // Using the data-testid we defined in our icon mock earlier
+
       expect(getByTestId("position-direction-icon")).toBeInTheDocument();
     });
   });

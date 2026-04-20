@@ -1,8 +1,8 @@
 import { QueryClient } from "@tanstack/react-query";
-import { prefetchDetailComponent } from "../../src/utility/lib/datafetching/client-refetch/prefetch-hooks"; 
-import { getDetailAssetData } from "../../src/utility/lib/datafetching/layer";
+import { prefetchDetailComponent } from "../../src/utility/lib/data-fetching/prefetch-hooks";
+import { getDetailAssetData } from "../../src/utility/lib/data-fetching/layer";
 
-jest.mock("../../src/utility/lib/datafetching/layer", () => ({
+jest.mock("../../src/utility/lib/data-fetching/layer", () => ({
   getDetailAssetData: jest.fn(),
 }));
 

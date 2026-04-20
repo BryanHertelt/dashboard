@@ -1,46 +1,46 @@
 
-import {ExposeNfts, NftDetailImageContainer} from "../../src/utility/lib/helpers/helper-components"
-import { formatValue } from "../../src/utility/lib/helpers/helper-functions";
+import { ExposeNfts } from "../../src/utility/lib/helpers/helper-components/nft-container"
+import { NftDetailImageContainer } from "../../src/utility/lib/helpers/helper-components/image-container"
+import { formatValue } from "../../src/utility/lib/helpers"
 import { render, screen } from "@testing-library/react";
 import '@testing-library/jest-dom'
 
-jest.mock("../../src/utility/lib/helpers/helper-components", () => ({
+jest.mock("../../src/utility/lib/helpers/helper-components/image-container", () => ({
     NftDetailImageContainer: jest.fn().mockImplementation(() => null)
     }))
 
+jest.mock("../../src/utility/lib/helpers", () => ({
+    formatValue: jest.fn((number)=> {
+        if(isNaN(Number(number))){
+          console.error("Type error in formatValue")
+          return("")
+        }
+        const formattedValue = Number(number).toFixed(2)
 
-    jest.mock("../../src/utility/lib/helpers/helper-functions", () => ({
-        formatValue: jest.fn((number)=> {
-            if(isNaN(Number(number))){
-              console.error("Type error in formatValue")
-              return("")
-            }
-            const formattedValue = Number(number).toFixed(2)
-          
-            return formattedValue
-          }),
-        formatCurrency: jest.fn((number)=> {
-            if(isNaN(Number(number))){
-              console.error("Type error in formatCurrency")
-              return("")
-            }
-          const formattedCurrency = new Intl.NumberFormat("en-US", {
-              style: "currency",
-              currency: "USD",
-            }).format(Number(number)); 
-          return formattedCurrency
-          })
-    })) 
+        return formattedValue
+      }),
+    formatCurrency: jest.fn((number)=> {
+        if(isNaN(Number(number))){
+          console.error("Type error in formatCurrency")
+          return("")
+        }
+      const formattedCurrency = new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "USD",
+        }).format(Number(number));
+      return formattedCurrency
+      })
+    }))
 
 
 
 describe("nft-container", () => {
     const mockNFTs = {
-            "assetvalue": 7, "name": "Binance", 
-            "holdingurl": "https://www.example.com/huobi.png", 
+            "assetvalue": 7, "name": "Binance",
+            "holdingurl": "https://www.example.com/huobi.png",
             "nftcount": 3, "nfts": [
-                {"name": "Crazy Ape", "nfturl": "https://www.example.com/bayc.png",  "nftvalue": 15.5}, 
-                {"name": "Ladybird", "nfturl": "https://www.example.com/cryptopunks.png","nftvalue": 20.3}, 
+                {"name": "Crazy Ape", "nfturl": "https://www.example.com/bayc.png",  "nftvalue": 15.5},
+                {"name": "Ladybird", "nfturl": "https://www.example.com/cryptopunks.png","nftvalue": 20.3},
                 {"name": "Crazy", "nfturl": "https://www.example.com/azuki.png", "nftvalue": 8.7}]
     }
 

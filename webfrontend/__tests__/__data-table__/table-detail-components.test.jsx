@@ -3,6 +3,7 @@ import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { DrDetail, DisDetail } from "../../src/utility/lib/data-table/table-detail-components/v-ad-assets-detail-components";
 import { RebalancingSetUp } from '../../src/utility/lib/helpers/helper-components/rebalancing-set-up';
+import { StopLossCards } from '../../src/utility/lib/helpers/helper-components/detail-table-comps';
 import { Bar } from 'react-chartjs-2';
 import { formatCurrency } from '../../src/utility/lib/helpers/helper-functions/formatCurrency';
 import { cryptoMockDetail, derivativeMockDetail, nftMockDetail } from "../testmocks";

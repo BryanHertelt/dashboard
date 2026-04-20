@@ -1,31 +1,27 @@
 import '@testing-library/jest-dom'
 import { render, screen, fireEvent } from '@testing-library/react'
-import AssetValueChartComponent from "../../src/utility/lib/build-components/value-chart-comp"
-import { LineChartComponent } from "../../src/utility/lib/design-components/charts/line-charts";
-import { useValueChart } from "../../src/utility/lib/datafetching/client-refetch/client-hooks";
-import { LoadingSkeleton, ErrorSkeleton } from "../../src/utility/lib/datafetching/loading-skeleton"
+import AssetValueChartComponent from "../../src/utility/lib/charts/asset-chart-controller"
+import { LineChartComponent } from "../../src/utility/lib/charts/line-charts";
+import { useValueChart, SmallLoadingSkeleton, SmallErrorSkeleton } from "../../src/utility/lib/data-fetching";
 
 // --- Mocks ---
-jest.mock("../../src/utility/lib/helpers/helper-functions", () => ({
+jest.mock("../../src/utility/lib/helpers", () => ({
   formatCurrency: jest.fn((num) => `$${Number(num).toFixed(2)}`)
 }))
 
-jest.mock("../../src/utility/lib/design-components/charts/line-charts", () => ({
+jest.mock("../../src/utility/lib/charts", () => ({
   LineChartComponent: jest.fn(() => null)
 }))
 
-jest.mock("../../src/utility/lib/datafetching/client-refetch/client-hooks", () => ({
-  useValueChart: jest.fn()
+jest.mock("../../src/utility/lib/data-fetching", () => ({
+  useValueChart: jest.fn(),
+  SmallLoadingSkeleton: jest.fn(() => null),
+  SmallErrorSkeleton: jest.fn(() => null)
 }))
 
 jest.mock("../../public/images/index", () => ({
   BitcoinIcon: () => <span>BitcoinIcon</span>,
   EthereumIcon: () => <span>EthereumIcon</span>,
-}))
-
-jest.mock("../../src/utility/lib/datafetching/loading-skeleton", () => ({
-  LoadingSkeleton: jest.fn(() => null),
-  ErrorSkeleton: jest.fn(() => null)
 }))
 
 // --- Test Constants ---
@@ -43,10 +39,10 @@ const dropDownMenuValues = [
 const setup = (hookOverrides = {}, propsOverrides = {}) => {
   const defaultHook = { processedQueryData: queryMock, isLoading: false, isError: false, ...hookOverrides };
   useValueChart.mockReturnValue(defaultHook);
-  
+
   const props = { initialData: mockSevenDays, currentValue: 50, ...propsOverrides };
   const utils = render(<AssetValueChartComponent {...props} />);
-  
+
   return { ...utils };
 };
 
@@ -61,7 +57,7 @@ describe("AssetValueChartComponent", () => {
   it("handles 'Cost Basis' interaction", () => {
     setup();
     fireEvent.click(screen.getByRole("button", { name: /Cost Basis/i }));
-    
+
     expect(LineChartComponent).toHaveBeenCalledTimes(2); // Initial + Click
     expect(LineChartComponent).toHaveBeenLastCalledWith(
       expect.objectContaining({ comparators: { costbasis: true, btc: false, eth: false } }),
@@ -80,7 +76,7 @@ describe("AssetValueChartComponent", () => {
     it(`updates chart when clicking ${name}`, () => {
       setup();
       fireEvent.click(screen.getByRole("button", { name: new RegExp(name, 'i') }));
-      
+
       expect(LineChartComponent).toHaveBeenLastCalledWith(
         expect.objectContaining({ comparators: match }),
         expect.any(Object)
@@ -101,8 +97,8 @@ describe("AssetValueChartComponent", () => {
 
   // Combined Status Tests (Loading / Error)
   const statusCases = [
-    { desc: "Loading", hook: { isLoading: true }, expected: LoadingSkeleton },
-    { desc: "Error", hook: { isError: true }, expected: ErrorSkeleton }
+    { desc: "Loading", hook: { isLoading: true }, expected: SmallLoadingSkeleton },
+    { desc: "Error", hook: { isError: true }, expected: SmallErrorSkeleton }
   ];
 
   statusCases.forEach(({ desc, hook, expected }) => {
@@ -118,7 +114,7 @@ describe("AssetValueChartComponent", () => {
     dropDownMenuValues.forEach(({ timeframe, timeunit }) => {
       const btn = screen.getByRole("button", { name: new RegExp(timeframe, 'i') });
       fireEvent.click(btn);
-      
+
       expect(LineChartComponent).toHaveBeenLastCalledWith(
         expect.objectContaining({ timeframe: { timeframe, timeunit } }),
         expect.any(Object)

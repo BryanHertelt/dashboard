@@ -1,6 +1,6 @@
 import { render, waitFor, screen } from "@testing-library/react";
 import AssetDistribution from "../src/app/tracker/(distribution)/asset-distribution/page";
-import { StructureLayer } from "../src/utility/lib/datafetching/layer";
+import { StructureLayer } from "../src/utility/lib/data-fetching/layer";
 import AssetDistributionComponent from "../src/utility/lib/page-components/asset-distribution-comp";
 import FirstLogin from "@/utility/lib/trackerlayout/firstlogin";
 
@@ -171,12 +171,13 @@ const mockAssetResponse = [
 ];
 
 beforeEach(() => {
-  StructureLayer.fetchDistributionUnits.mockClear();
+  StructureLayer.getPortfolioData.mockClear();
 });
 
 // Mock the StructureLayer module
-jest.mock("../src/utility/lib/datafetching/layer", () => ({
+jest.mock("../src/utility/lib/data-fetching/layer", () => ({
   StructureLayer: {
+    fetchDistributionUnits: jest.fn(),
     getPortfolioData: jest.fn((...args) => {
       console.log("Mock called with args:", args);
       return Promise.resolve({
@@ -239,7 +240,7 @@ describe("AssetDistribution", () => {
     );
   });
   it("Should return failed array if the mock fails", async()=> {
-await StructureLayer.fetchDistributionUnits
+await StructureLayer.getPortfolioData
 .mockRejectedValueOnce(["failed"])
 .mockRejectedValueOnce(["failed"])
 
@@ -254,7 +255,7 @@ expect(AssetDistributionComponent).toHaveBeenCalledWith(
 )
   })
 it("should return first login if there are no assets provided", async()=> {
-  await StructureLayer.fetchDistributionUnits
+  await StructureLayer.getPortfolioData
   .mockResolvedValue(mockPortfolioResponse)
   .mockResolvedValue([])
 
@@ -266,7 +267,7 @@ const text = await screen.findByText("Add your first holding")
 
 })
 it("should render a sorry message if portfolio array is empty", async()=> {
-  await StructureLayer.fetchDistributionUnits
+  await StructureLayer.getPortfolioData
   .mockResolvedValue([])
   .mockResolvedValue(mockAssetResponse)
 

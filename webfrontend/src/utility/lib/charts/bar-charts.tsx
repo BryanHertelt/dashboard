@@ -22,7 +22,69 @@ ChartJS.register(
   Legend
 );
 
-import { chartColors, darkerGray } from "../helpers/helper-config/colors";
+import { chartColors, darkerGray, flyzerBlue, lightBlue } from "../helpers/helper-config/colors";
+
+interface rebalancingProps {
+  currentbalance: number;
+  desiredbalance: number;
+  currentbalancenumber: number | null;
+  desiredbalancenumber: number | null;
+}
+
+export const BarChartRebalancing = ({
+  data,
+}: {
+  data: rebalancingProps;
+  theme?: string;
+}) => {
+  const { currentbalance, desiredbalance, currentbalancenumber, desiredbalancenumber } = data;
+
+  if (desiredbalancenumber === null || desiredbalancenumber === undefined) {
+    return <p> Set desired balancing to see your rebalancing statistics here.</p>;
+  }
+
+  const chartData: ChartData<"bar"> = {
+    labels: [""],
+    datasets: [
+      {
+        label: `Current: ${formatValue(currentbalance)}% ~ ${formatCurrency(currentbalancenumber)}`,
+        data: [currentbalance],
+        backgroundColor: flyzerBlue,
+        borderWidth: 0,
+        borderRadius: 7,
+      },
+      {
+        label: `Desired: ${formatValue(desiredbalance)}% ~ ${formatCurrency(desiredbalancenumber)}`,
+        data: [desiredbalance],
+        backgroundColor: lightBlue,
+        borderWidth: 0,
+        borderRadius: 7,
+      },
+    ],
+  };
+
+  const options: ChartOptions<"bar"> = {
+    responsive: true,
+    indexAxis: "y",
+    maintainAspectRatio: false,
+    scales: {
+      x: { stacked: false, display: false },
+      y: { stacked: true, display: false },
+    },
+    plugins: { legend: { display: false }, tooltip: { enabled: false } },
+  };
+
+  return (
+    <div className="w-full">
+      <Bar data={chartData} options={options} />
+      <div className="flex flex-col mt-2">
+        {chartData.datasets.map((dataset, i) => (
+          <span key={i} className="text-xs text-icongray">{dataset.label}</span>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 interface holdingProps {
   assetvalue: number;

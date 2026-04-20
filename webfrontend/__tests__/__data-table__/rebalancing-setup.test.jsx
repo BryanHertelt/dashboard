@@ -4,7 +4,13 @@ import { RebalancingSetUp } from '../../src/utility/lib/helpers/helper-component
 import { postRebalancing } from '../../src/utility/lib/data-fetching/layer';
 import '@testing-library/jest-dom';
 
-// ... (Mocks stay the same)
+jest.mock("react-chartjs-2", () => ({
+  Bar: jest.fn(() => null)
+}));
+
+jest.mock("../../src/utility/lib/data-fetching/layer", () => ({
+  postRebalancing: jest.fn()
+}));
 
 describe("Rebalancing SetUp - Integration & Unit", () => {
   const defaultProps = {
@@ -38,7 +44,7 @@ describe("Rebalancing SetUp - Integration & Unit", () => {
     // Focus to remove formatting, change, then blur
     fireEvent.click(percentageInput);
     fireEvent.change(percentageInput, { target: { value: '25' } });
-    
+
     // Check if absolute input updated accordingly (25% of 265,550)
     expect(absoluteInput).toHaveValue("$66,387.50");
   });
@@ -67,7 +73,7 @@ describe("Rebalancing SetUp - Integration & Unit", () => {
 
   describe("Edge Case: Null Data", () => {
     it("renders placeholder when desired balance is missing", () => {
-      setupComponent({ ...defaultProps, data: { ...defaultProps.data, desiredbalance: null } });
+      render(<RebalancingSetUp {...defaultProps} data={{ ...defaultProps.data, desiredbalance: null }} />);
       expect(screen.getByText(/Set desired balancing/i)).toBeInTheDocument();
     });
   });

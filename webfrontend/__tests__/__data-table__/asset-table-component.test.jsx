@@ -3,7 +3,8 @@ import { render, screen, fireEvent, waitFor, act } from "@testing-library/react"
 import { AssetTableComponent } from "../../src/utility/lib/data-table"
 import AssetTableController from '../../src/utility/lib/data-table/asset-table-controller'
 import logger from '../../src/utility/lib/logging/logger'
-import { dataColsCurrency, dataColsNft, dataColsDerivative, dataColsGroups } from '../../src/utility/lib/data-table/v-ad-cols/asset-distribution-cols'
+import { dataColsCurrency, dataColsNft, dataColsDerivative } from '../../src/utility/lib/data-table/v-ad-cols/asset-distribution-cols'
+import { dataColsGroups } from '../../src/utility/lib/data-table/v-ad-cols/asset-group-distribution-cols'
 
 // --- Mocks ---
 jest.mock('../../src/utility/lib/logging/logger', () => ({
@@ -88,8 +89,8 @@ describe("AssetTableComponent", () => {
   it("logs error for invalid configuration", () => {
     setup({ ...tableConfig, status: [] });
     expect(logger.error).toHaveBeenCalledWith(
-      expect.stringContaining("invalid config"), 
-      expect.any(Object)
+      expect.any(Object),
+      expect.stringContaining("invalid config")
     );
   });
 
