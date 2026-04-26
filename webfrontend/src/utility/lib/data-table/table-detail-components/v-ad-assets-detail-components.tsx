@@ -125,13 +125,12 @@ export const DrDetail = ({
   return (
     <div className="flex flex-col w-full h-full">
       <div className="flex flex-row w-full h-4/6  ">
-        <div className="card h-full w-5/6"> </div>
-        <div className="flex flex-col h-full w-1/6">
+        <div className="flex flex-row h-full w-full">
           {portfolioRebalancingData.map((cards) => {
             return (
               <div
                 role="Detail Rebalancing Cards"
-                className={`flex flex-col border border-black justify-center card mb-2.5 py-3 px-3 w-full sm:h-20 md:h-20 lp:h-16 lg:h-16 xl:h-16`}
+                className={`flex flex-col  justify-center card mb-2.5 py-3 px-3 w-full sm:h-20 md:h-20 lp:h-16 lg:h-16 xl:h-16 mr-4`}
                 key={cards.header}
               >
                 <p
