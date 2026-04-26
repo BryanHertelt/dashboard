@@ -1,12 +1,7 @@
-import Link from "next/link";
+import { redirect } from "next/navigation";
 
 const HomePage = () => {
-  return (
-    <>
-      <p> Welcome in Flyzer</p>
-      <Link href={"/tracker"}> Click here to go to the tracker </Link>
-    </>
-  );
+  redirect("/tracker/asset-distribution");
 };
 
 export default HomePage;
