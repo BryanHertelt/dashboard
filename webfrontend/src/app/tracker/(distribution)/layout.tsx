@@ -47,7 +47,7 @@ const AssetDistributionLayout = ({
     <section className="flex flex-col flex-wrap w-full px-12 mt-10">
       <header className="flex flex-col justify-center w-full h-1/6">
         <h1 className="text-3xl font-light">Asset-Distribution</h1>
-        <nav className="relative flex flex-row sm:w-3/4  md:w-3/5 lp:w-1/3 lg:w-1/3 xl:w-1/6 justify-start card py-1 mt-3">
+        <nav className="relative flex flex-row sm:w-3/4  md:w-3/5 lp:w-1/3 lg:w-1/3 xl:w-2/6 justify-start card py-1 mt-3">
           <div
             className="relative flex flex-row w-full justify-around"
             ref={routeRef}
@@ -58,10 +58,10 @@ const AssetDistributionLayout = ({
                 href={navElement.link}
                 className={`${
                   currentRoute === navElement.id ? "text-white" : "text-black"
-                } z-50 relative p-2 text-xs overflow-hidden md:text-xs text-center  rounded-md w-1/3 `}
+                } z-50 relative p-2 text-xs overflow-hidden md:text-xs text-center  rounded-md w-1/3`}
                 onClick={() => handleTabSwitch(index, navElement.id)}
               >
-                <div className="w-full h-full">{navElement.name}</div>
+                <div className="w-full h-full flex flex-row justify-center items-center">{navElement.name}</div>
               </Link>
             ))}
             <div
